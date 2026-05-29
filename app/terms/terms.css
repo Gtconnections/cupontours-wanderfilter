@@ -1,0 +1,145 @@
+/* app/terms/terms.css */
+/* Añade esto al principio de tu archivo para activar el scroll suave en la página */
+html {
+  scroll-behavior: smooth;
+}
+
+.massive-heading {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 24px; /* CORREGIDO: Espacio suficiente antes de la fecha */
+}
+
+.last-updated {
+  font-size: 13px;
+  color: #999999;
+  display: block; /* Asegura que tome su propia línea */
+  margin-bottom: 60px; /* Separa la fecha del primer bloque de texto */
+}
+
+.legal-text-block {
+  margin-bottom: 56px;
+  /* CORREGIDO: Da un respiro de 200px arriba al hacer clic en el ancla 
+     para que el header fijo blanco no tape el título de la sección */
+  scroll-margin-top: 200px; 
+}
+/* ==========================================================================
+   ESTRUCTURA GENERAL Y CONTENEDORES
+   ========================================================================== */
+.terms-page {
+  padding-top: 140px; /* Margen para el header fijo */
+  background-color: #ffffff;
+}
+
+.terms-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 140px;
+  display: flex;
+  gap: 100px; /* Gran separación asimétrica entre el menú y el texto */
+}
+
+/* ==========================================================================
+   MENÚ LATERAL (STICKY SIDEBAR)
+   ========================================================================== */
+.terms-sidebar {
+  flex: 0 0 240px;
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: 180px; /* Se queda fijo al hacer scroll */
+  height: max-content;
+}
+
+.terms-sidebar h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888888;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.legal-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legal-nav a {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.legal-nav a:hover,
+.legal-nav a.active {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   CONTENIDO LEGAL (EDITORIAL TYPOGRAPHY)
+   ========================================================================== */
+.terms-content {
+  flex: 1;
+  max-width: 720px; /* Ancho restringido óptimo para lectura cómoda */
+}
+
+.last-updated {
+  font-size: 13px;
+  color: #999999;
+  margin-top: -16px;
+  margin-bottom: 60px;
+}
+
+.legal-text-block {
+  margin-bottom: 56px; /* Gran separación entre bloques legales */
+  scroll-margin-top: 180px; /* Compensa el anclaje al hacer clic en el menú */
+}
+
+.legal-text-block h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+.legal-text-block p {
+  font-size: 15px;
+  line-height: 1.7; /* Texto espaciado elegante */
+  color: #333333;
+  margin-bottom: 16px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .terms-container {
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 80px;
+  }
+  .terms-sidebar {
+    flex: 1;
+    width: 100%;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 24px;
+  }
+  .sidebar-sticky {
+    position: static;
+  }
+  .legal-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+  .massive-heading {
+    font-size: 44px;
+  }
+}

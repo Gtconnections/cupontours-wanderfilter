@@ -1,0 +1,228 @@
+/* app/services/services.css */
+
+.services-page {
+  padding-top: 140px;
+  background-color: #ffffff;
+}
+
+.inner-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.pre-title {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.massive-heading {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.05;
+}
+
+.section-header {
+  margin-bottom: 60px;
+}
+
+.section-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.section-header p {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 550px;
+}
+
+.bg-gray-light {
+  background-color: #fafafa;
+}
+
+/* ==========================================================================
+   1. HERO INTRODUCTORIO
+   ========================================================================== */
+.services-hero {
+  padding: 40px 40px 80px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.hero-container { max-width: 700px; }
+.hero-subtitle { font-size: 18px; line-height: 1.6; color: var(--text-muted); margin-top: 24px; }
+
+/* ==========================================================================
+   2. WHAT WE OFFER (GRID CON HOVER EFECTO)
+   ========================================================================== */
+.offer-section {
+  padding: 100px 40px;
+  border-top: 1px solid var(--border-light);
+}
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.offer-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  padding: 40px 32px;
+  border-radius: 16px;
+  /* Interacción base */
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* DETALLE DEL HOVER DE LA CAJA */
+.offer-card:hover {
+  transform: translateY(-4px);
+  border-color: #111111;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+}
+
+.offer-icon-wrapper {
+  color: var(--text-main);
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.offer-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.5px; }
+.offer-card p { font-size: 14px; line-height: 1.6; color: var(--text-muted); }
+
+/* ==========================================================================
+   3. WHY CHOOSE CUPONTOURS
+   ========================================================================== */
+.why-section {
+  padding: 120px 40px;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.why-card {
+  border-radius: 16px;
+  padding: 24px;
+  transition: background-color 0.2s ease;
+}
+
+/* Interacción sutil de fila/tarjeta */
+.why-card:hover {
+  background-color: #fafafa;
+}
+
+.why-icon-container {
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+
+.why-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+.why-card p { font-size: 14px; line-height: 1.6; color: var(--text-muted); }
+
+/* ==========================================================================
+   4. TRAVEL & LIFESTYLE SERVICES LISTS
+   ========================================================================== */
+.split-services-section {
+  padding: 120px 40px;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.split-services-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  gap: 120px;
+}
+
+.services-col {
+  flex: 1;
+}
+
+.col-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 16px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.service-list-item {
+  padding: 16px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+/* Interacción de lista premium */
+.service-list-item:hover {
+  background: #ffffff;
+  padding-left: 24px; /* Pequeño desplazamiento dinámico hacia la derecha */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.service-list-item h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+
+.service-list-item p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   5. CALL TO ACTION (CTA)
+   ========================================================================== */
+.services-cta {
+  padding: 140px 40px;
+  text-align: center;
+}
+
+.cta-container { max-width: 600px; margin: 0 auto; }
+.services-cta h2 { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; }
+.services-cta p { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 40px; }
+
+.cta-actions { display: flex; justify-content: center; gap: 16px; }
+
+.btn-black-pill {
+  background: var(--text-main); color: white; border: none;
+  padding: 14px 32px; border-radius: 40px; font-weight: 600; font-size: 15px; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-black-pill:hover { background: #222; }
+
+.btn-outline-pill {
+  background: transparent; color: var(--text-main); border: 1px solid var(--border-light);
+  padding: 14px 32px; border-radius: 40px; font-weight: 600; font-size: 15px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline-pill:hover { background: #f0f0f0; border-color: var(--text-main); }
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .offer-grid, .why-grid { grid-template-columns: 1fr; gap: 24px; }
+  .split-services-container { flex-direction: column; gap: 40px; }
+  .massive-heading { font-size: 44px; }
+  .col-title { margin-bottom: 24px; }
+}

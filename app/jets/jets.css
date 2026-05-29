@@ -1,0 +1,354 @@
+/* app/jets/jets.css */
+
+.aviation-page {
+  background-color: #ffffff;
+}
+
+.pre-title {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.inner-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.bg-gray-light {
+  background-color: #fafafa;
+}
+
+/* ==========================================================================
+   1. HERO CINEMATOGRÁFICO
+   ========================================================================== */
+.aviation-hero {
+  height: 70vh;
+  min-height: 550px;
+  position: relative;
+  /* Imagen inmersiva fiel a tu captura original */
+  background: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=1920&q=80') center/cover;
+  display: flex;
+  align-items: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 0 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: #e0e0e0;
+  max-width: 550px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. QUOTE FORM & SPLIT LAYOUT
+   ========================================================================== */
+.quote-split-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 120px 40px;
+}
+
+.split-container {
+  display: flex;
+  gap: 100px;
+  align-items: flex-start;
+}
+
+.split-text-side {
+  flex: 1;
+}
+
+.split-text-side h2 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.body-lead {
+  font-size: 18px;
+  color: var(--text-main);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.body-text {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.split-form-side {
+  flex: 1.2;
+}
+
+.quote-form-card {
+  background: #f7f7f9;
+  padding: 44px;
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+}
+
+.quote-form-card h3 { font-size: 24px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.5px; }
+.form-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
+
+.clean-aviation-form .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+.clean-aviation-form .input-group { flex: 1; display: flex; flex-direction: column; }
+.clean-aviation-form label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: #555; margin-bottom: 8px; }
+
+.clean-aviation-form input, .clean-aviation-form select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  color: var(--text-main);
+}
+.clean-aviation-form input:focus, .clean-aviation-form select:focus { border-color: var(--text-main); }
+
+.btn-black-full {
+  width: 100%; background: var(--text-main); color: white; border: none;
+  padding: 16px; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer;
+  margin-top: 16px; transition: background 0.2s;
+}
+.btn-black-full:hover { background: #222; }
+
+/* ==========================================================================
+   3. EDITORIAL PITCH BANNER
+   ========================================================================== */
+.editorial-pitch {
+  padding: 120px 40px;
+  text-align: center;
+}
+.pitch-container { max-width: 800px; margin: 0 auto; }
+.editorial-quote {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 28px;
+  line-height: 1.4;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+.pitch-subtext { font-size: 15px; color: var(--text-muted); }
+
+/* ==========================================================================
+   ACTUALIZACIÓN: RECURSOS GRÁFICOS (PILLARS & OBJECTIVES)
+   ========================================================================== */
+
+.pillars-section {
+  padding: 120px 0;
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.pillar-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenedor de la imagen con ratio de aspecto editorial fijo (16:10) */
+.pillar-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background-color: #f0f0f2;
+}
+
+.pillar-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillar-card:hover .pillar-image-wrapper img {
+  transform: scale(1.04);
+}
+
+/* Identificador numérico minimalista flotando sobre la imagen */
+.pillar-num {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.pillar-card h3 { 
+  font-size: 18px; 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+  color: var(--text-main);
+}
+
+.pillar-card p { 
+  font-size: 13.5px; 
+  line-height: 1.6; 
+  color: var(--text-muted); 
+}
+
+/* ==========================================================================
+   ACTUALIZACIÓN: OBJETIVOS E ICONOS VECTORIALES (Quiet Luxury)
+   ========================================================================== */
+.objectives-section {
+  padding: 120px 0;
+}
+
+.objectives-header { 
+  text-align: center; 
+  margin-bottom: 60px; 
+}
+
+.objectives-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.obj-card {
+  background: #ffffff;
+  padding: 44px;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.obj-card:hover { 
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+/* Contenedor circular limpio para el icono vectorial */
+.obj-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: #f4f4f7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.obj-card h3 { 
+  font-size: 20px; 
+  font-weight: 600; 
+  margin-bottom: 12px; 
+  color: var(--text-main);
+}
+
+.obj-card p { 
+  font-size: 14px; 
+  line-height: 1.6; 
+  color: var(--text-muted); 
+}
+
+/* RESPONSIVE AJUSTADO */
+@media (max-width: 1024px) {
+  .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
+}
+
+@media (max-width: 640px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+  .objectives-grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   6. BRUTALIST DARK BANNER
+   ========================================================================== */
+.aviation-dark-banner {
+  background: var(--text-main);
+  color: white;
+  padding: 120px 40px;
+  text-align: center;
+}
+.dark-banner-content { max-width: 600px; margin: 0 auto; }
+.aviation-dark-banner h2 { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; margin-bottom: 16px; }
+.aviation-dark-banner p { color: #aaa; font-size: 16px; margin-bottom: 40px; }
+.banner-actions { display: flex; justify-content: center; gap: 16px; }
+
+.btn-white-pill {
+  background: #ffffff; color: #000000; border: none; padding: 14px 32px; border-radius: 40px; font-weight: 600; font-size: 15px; cursor: pointer;
+}
+.btn-outline-white {
+  background: transparent; color: #ffffff; border: 1px solid #444; padding: 14px 32px; border-radius: 40px; font-weight: 600; font-size: 15px; cursor: pointer; transition: border-color 0.2s;
+}
+.btn-outline-white:hover { border-color: #ffffff; }
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .split-container { flex-direction: column; gap: 60px; }
+  .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+  .objectives-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hero-title { font-size: 40px; }
+}
+@media (max-width: 600px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+  .quote-form-card { padding: 24px; }
+  .clean-aviation-form .form-row { flex-direction: column; gap: 16px; }
+}

@@ -1,0 +1,764 @@
+/* app/about/about.css */
+
+/* ==========================================================================
+   1. HERO SECTION
+   ========================================================================== */
+.about-page {
+  padding-top: 120px; /* Compensa el header fijo */
+}
+
+.about-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin-bottom: 60px;
+}
+
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 700px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  background-color: var(--bg-gray);
+}
+
+.video-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-align: left;
+}
+
+.video-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.video-subtitle { font-size: 13px; color: #ccc; }
+
+.play-btn {
+  width: 48px;
+  height: 48px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.play-btn:hover { transform: scale(1.05); }
+
+/* ==========================================================================
+   2. STATS & LETTER
+   ========================================================================== */
+.about-letter-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 120px;
+}
+
+.letter-container {
+  display: flex;
+  gap: 80px;
+}
+
+.stats-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.stat-block h3 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.stat-block p {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.letter-column {
+  flex: 3;
+}
+
+.letter-column p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.signature-block {
+  position: relative;
+  margin-top: 60px;
+}
+
+.signature-text {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.signature-role {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stamp-img {
+  position: absolute;
+  right: 0;
+  top: -20px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  opacity: 0.8;
+  transform: rotate(15deg);
+}
+
+/* ==========================================================================
+   3. TEAM SECTION
+   ========================================================================== */
+.team-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 120px;
+}
+
+.team-header {
+  margin-bottom: 60px;
+}
+
+.team-header h2 {
+  font-size: 40px;
+  letter-spacing: -1px;
+}
+
+.team-header .text-light {
+  color: var(--text-light);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 40px 20px;
+}
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background-color: var(--bg-gray);
+}
+
+.member-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.team-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   4. INVESTORS SECTION
+   ========================================================================== */
+.investors-section {
+  background-color: var(--bg-gray);
+  padding: 120px 40px;
+}
+
+.investors-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  gap: 100px;
+}
+
+.investors-text {
+  flex: 1;
+}
+
+.investors-text h2 {
+  font-size: 40px;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+}
+
+.investors-text .text-light {
+  color: var(--text-light);
+}
+
+.investors-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+.investors-list {
+  flex: 1;
+  position: relative;
+}
+
+.list-title {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.investor-names {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.investor-names li {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.redpoint-logo {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ==========================================================================
+   5. DARK SECTION (Press & Careers)
+   ========================================================================== */
+.dark-section {
+  background-color: var(--bg-dark);
+  color: white;
+  padding: 120px 0 0; /* Padding bottom es manejado por el footer en el layout */
+}
+
+/* Press */
+.press-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+.dark-pre { color: #888; }
+.dark-title { font-size: 40px; margin-bottom: 60px; letter-spacing: -1px; }
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.news-card {
+  background-color: #111111;
+  border: 1px solid var(--border-dark);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: white;
+  transition: border-color 0.2s, background-color 0.2s;
+  min-height: 200px;
+}
+
+.news-card:hover {
+  border-color: #444;
+  background-color: #1a1a1a;
+}
+
+.news-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  color: #888;
+}
+
+.publisher { font-size: 14px; font-weight: 500; }
+.arrow-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.news-title {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 500;
+  margin-top: auto; /* Empuja el título hacia abajo si es necesario */
+}
+
+/* Careers CTA */
+.careers-cta-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 100px;
+}
+
+.careers-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 400px;
+  display: flex;
+  align-items: center;
+}
+
+.careers-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.careers-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.careers-content {
+  position: relative;
+  z-index: 2;
+  padding: 60px;
+}
+
+.careers-pre { color: #ccc; margin-bottom: 16px; }
+.careers-content h2 {
+  font-size: 40px;
+  letter-spacing: -1px;
+  margin-bottom: 40px;
+  line-height: 1.1;
+}
+.text-light-dark { color: #888; }
+
+.btn-white-pill {
+  background: white;
+  color: black;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-white-pill:hover { background: #f0f0f0; }
+
+/* Dark Logos Bar */
+.dark-logos-bar {
+  border-top: 1px solid var(--border-dark);
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.featured-in {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.logos-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  color: #888;
+  font-family: "Georgia", serif; /* Simulando tipografías de periódicos */
+  font-size: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .letter-container, .investors-container { flex-direction: column; gap: 40px; }
+  .news-grid { grid-template-columns: 1fr; }
+  .careers-card { height: auto; min-height: 400px; }
+  .dark-logos-bar { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+
+/* app/about/about.css */
+
+/* ==========================================================================
+   TIPOGRAFÍA Y UTILIDADES
+   ========================================================================== */
+.about-page { padding-top: 100px; }
+
+.pre-title {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.massive-heading {
+  font-size: 56px; /* Letra enorme para los títulos de sección */
+  font-weight: 700;
+  letter-spacing: -2px; /* Apretado para look editorial */
+  line-height: 1.05;
+  margin-bottom: 32px;
+}
+
+.text-light { color: #a3a3a3; }
+.text-light-dark { color: #888; }
+
+/* ==========================================================================
+   1. HERO SECTION
+   ========================================================================== */
+.about-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 64px; /* Aún más grande para el título principal */
+  font-weight: 600;
+  letter-spacing: -2.5px;
+  line-height: 1.1;
+  margin-bottom: 60px;
+}
+
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9; /* Formato súper panorámico */
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.video-poster { width: 100%; height: 100%; object-fit: cover; }
+
+.video-overlay {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+
+.video-info { display: flex; flex-direction: column; color: white; text-align: left; }
+.video-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.video-subtitle { font-size: 13px; color: #ccc; }
+
+.play-btn {
+  width: 44px; height: 44px;
+  background: white; color: black; border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 0.2s;
+}
+.play-btn:hover { transform: scale(1.05); }
+
+/* ==========================================================================
+   2. STATS & LETTER
+   ========================================================================== */
+.about-letter-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 140px;
+}
+
+.letter-container {
+  display: flex;
+  gap: 80px;
+}
+
+/* El grid de 3 columnas para los Stats */
+.stats-column { flex: 1; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat-block h3 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.stat-block p {
+  font-size: 12px; /* Texto sutil */
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* La carta (letter) alineada a la derecha */
+.letter-column { flex: 1; }
+.letter-column p {
+  font-size: 15px; /* Texto de lectura pequeño y elegante */
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.signature-block { position: relative; margin-top: 60px; }
+.signature-text {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 28px;
+  margin-bottom: 4px;
+  color: var(--text-main);
+}
+.signature-role { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+
+.stamp-img {
+  position: absolute;
+  right: -20px;
+  top: -30px;
+  width: 120px;
+  height: auto;
+  opacity: 0.9;
+  transform: rotate(10deg);
+  mix-blend-mode: multiply; /* Para que el sello se mezcle con el fondo blanco */
+}
+
+/* ==========================================================================
+   3. TEAM SECTION
+   ========================================================================== */
+.team-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 140px;
+}
+
+.team-header { margin-bottom: 60px; }
+
+/* Grid exacto de 4 columnas */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px 20px;
+}
+
+.team-card { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; /* Alineado a la izquierda */
+}
+
+/* AQUÍ ESTÁ LA CORRECCIÓN: Imágenes pequeñas y elegantes */
+.member-img {
+  width: 72px;  /* Tamaño fijo pequeño */
+  height: 72px; /* Tamaño fijo pequeño */
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background-color: var(--border-light);
+}
+
+.member-img img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+}
+
+.member-info h4 { 
+  font-size: 14px; 
+  font-weight: 600; 
+  margin-bottom: 2px; 
+  color: var(--text-main);
+}
+
+.member-info p { 
+  font-size: 13px; 
+  color: #888; /* Gris más claro para el cargo */
+}
+
+/* ==========================================================================
+   4. INVESTORS SECTION
+   ========================================================================== */
+.investors-section {
+  background-color: #fafafa;
+  padding: 120px 40px;
+}
+
+.investors-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  gap: 120px;
+}
+
+.investors-text { flex: 1.2; }
+.investors-desc { 
+  font-size: 14px; 
+  line-height: 1.6; 
+  color: var(--text-muted); 
+  max-width: 400px; 
+  margin-top: 24px;
+}
+
+.investors-list-wrapper { flex: 1; }
+.list-title { 
+  display: block; 
+  font-size: 11px; 
+  font-weight: 600; 
+  color: #888; 
+  margin-bottom: 24px; 
+}
+
+.investors-list-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Alinea el cuadro negro con la parte inferior de la lista */
+}
+
+.investor-names { 
+  list-style: none; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; /* Más apretado */
+}
+
+.investor-names li { 
+  font-size: 14px; 
+  color: #555; 
+  font-weight: 500;
+}
+
+/* El bloque negro característico de Redpoint */
+.black-square-logo {
+  width: 100px;
+  height: 100px;
+  background-color: #0a0a0a;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* RESPONSIVE AJUSTES */
+@media (max-width: 992px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .investors-container { flex-direction: column; gap: 60px; }
+}
+
+/* ==========================================================================
+   5. DARK SECTION (Press & Careers)
+   ========================================================================== */
+.dark-section { background-color: var(--bg-dark); color: white; padding: 140px 0 0; }
+
+/* Press */
+.press-container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px 100px; }
+.dark-pre { color: #888; margin-bottom: 24px;}
+.dark-title { color: white; margin-bottom: 80px; }
+
+.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.news-card {
+  background-color: #111111;
+  border: 1px solid #222222;
+  border-radius: 16px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s;
+  min-height: 280px; /* Tarjetas altas */
+}
+.news-card:hover { border-color: #444; background-color: #151515; }
+
+.news-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; color: #888; }
+.publisher { font-size: 13px; font-weight: 600; }
+.arrow-icon { width: 32px; height: 32px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; }
+
+.news-title { font-size: 20px; line-height: 1.4; font-weight: 500; margin-top: auto; }
+
+/* Careers CTA */
+.careers-cta-container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px 100px; }
+.careers-card { position: relative; border-radius: 24px; overflow: hidden; height: 450px; display: flex; align-items: center; }
+.careers-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+.careers-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%); }
+.careers-content { position: relative; z-index: 2; padding: 80px; }
+.careers-pre { color: #ccc; margin-bottom: 24px; }
+
+.btn-white-pill { background: white; color: black; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; }
+.btn-white-pill:hover { background: #f0f0f0; }
+
+/* Dark Logos Bar */
+.dark-logos-bar { border-top: 1px solid #222; padding: 50px 40px; display: flex; align-items: center; gap: 60px; max-width: var(--max-width); margin: 0 auto; }
+.featured-in { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #666; font-weight: 600; white-space: nowrap; }
+.logos-row { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; color: #888; font-family: "Georgia", serif; font-size: 20px; }
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .letter-container, .investors-container { flex-direction: column; gap: 40px; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .news-grid { grid-template-columns: 1fr; }
+  .careers-content { padding: 40px; }
+  .dark-logos-bar { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+

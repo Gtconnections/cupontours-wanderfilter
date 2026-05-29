@@ -1,0 +1,309 @@
+:root {
+  --bg-main: #ffffff;
+  --bg-dark: #000000;
+  --bg-footer: #fafafa;
+  --text-main: #000000;
+  --text-muted: #717171;
+  --text-light: #a3a3a3;
+  --border-light: #ebebeb;
+  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --max-width: 1440px;
+  --transition: all 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-stack); color: var(--text-main); background-color: var(--bg-main); -webkit-font-smoothing: antialiased; }
+
+/* HEADER */
+.main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: transparent; padding: 20px 0; transition: var(--transition); border-bottom: 1px solid transparent; }
+.main-header.header-scrolled { background: #ffffff; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
+.header-container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 700; text-decoration: none; color: #ffffff; transition: color 0.3s; }
+.header-scrolled .logo { color: var(--text-main); }
+
+/* ==========================================================================
+   INTERACTIVE SEARCH BAR (PILL) - CORREGIDO
+   ========================================================================== */
+.search-wrapper {
+  position: relative;
+  margin: 0 auto;
+  /* ESTO ARREGLA EL CALENDARIO: Fuerza al contenedor a medir exactamente lo mismo que la barra */
+  display: flex;
+  justify-content: center;
+  width: max-content; 
+}
+
+.interactive-search-bar {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 40px;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  /* ALTURA REDUCIDA (Antes 56px, ahora 50px para verse más fino) */
+  height: 50px; 
+  padding: 0;
+}
+
+.header-scrolled .interactive-search-bar {
+  border: 1px solid var(--border-light);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.interactive-search-bar.is-active {
+  background: #ebebeb; /* Un gris un pelín más elegante */
+  border-color: #e5e5e5;
+  box-shadow: none;
+}
+
+.search-segment {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /* ESPACIADO AUMENTADO (Antes 24px, ahora 40px para separar más los campos) */
+  padding: 0 40px; 
+  cursor: pointer;
+  border-radius: 40px;
+  transition: all 0.2s ease;
+}
+
+.segment-content {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.interactive-search-bar.is-active .search-segment:not(.active):hover {
+  background: #dfdfdf;
+}
+
+.search-segment.active {
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  cursor: default;
+}
+
+/* Ajustes finos para los bordes */
+.where-segment { padding-left: 32px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.when-segment { border-radius: 0; }
+.who-segment { padding-right: 8px; border-top-left-radius: 0; border-bottom-left-radius: 0; justify-content: space-between;}
+
+.search-divider {
+  width: 1px;
+  height: 24px;
+  background: #dddddd;
+}
+.interactive-search-bar.is-active .search-divider {
+  opacity: 0;
+}
+
+.search-btn {
+  background: var(--text-main);
+  color: #ffffff;
+  border: none;
+  /* Altura del botón ajustada a la nueva altura de la barra */
+  height: 40px; 
+  padding: 0 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 20px;
+  transition: transform 0.2s;
+}
+.search-btn:active { transform: scale(0.95); }
+
+/* ==========================================================================
+   POPOVERS (Where, When, Who Dropdowns)
+   ========================================================================== */
+.search-popover {
+  position: absolute;
+  top: calc(100% + 12px);
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  padding: 24px;
+  z-index: 1001;
+  animation: popFade 0.2s ease forwards;
+}
+
+@keyframes popFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 1. WHERE */
+/* Alineado a la izquierda de la barra */
+.popover-where { left: 0; width: 380px; padding: 0; overflow: hidden; }
+.where-input { width: 100%; border: none; padding: 24px 24px 16px; font-size: 16px; font-family: inherit; outline: none; border-bottom: 1px solid var(--border-light); }
+.popover-section { padding: 16px 24px; }
+.popover-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; font-weight: 500;}
+.location-item { display: flex; align-items: center; gap: 16px; padding: 8px 0; cursor: pointer; transition: opacity 0.2s; }
+.location-item:hover { opacity: 0.7; }
+.location-item .icon-box { width: 48px; height: 48px; border: 1px solid var(--border-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 18px; }
+.location-item .region-img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-light); }
+.location-item span { font-weight: 500; font-size: 15px; }
+
+/* 2. WHEN (Calendario centrado perfectamente) */
+.popover-when { 
+  left: 50%; 
+  transform: translateX(-50%); 
+  width: 720px; 
+  padding: 32px; 
+}
+.when-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 32px; background: #f5f5f5; width: fit-content; margin: 0 auto 32px; border-radius: 30px; padding: 4px; }
+.when-tab { padding: 8px 24px; border-radius: 30px; border: none; background: transparent; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-muted); transition: all 0.2s;}
+.when-tab.active { background: white; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+.calendar-container { display: flex; gap: 40px; margin-bottom: 24px; }
+.calendar-month { flex: 1; }
+.month-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: 600; font-size: 15px; }
+.cal-nav { background: transparent; border: none; cursor: pointer; color: var(--text-main); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%;}
+.cal-nav:hover { background: #f5f5f5; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px 0; text-align: center; }
+.cal-day-name { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;}
+.cal-day { height: 40px; display: flex; align-items: center; justify-content: center; font-size: 14px; border-radius: 50%; font-weight: 500; }
+.cal-day.disabled { color: #ccc; }
+.cal-day.selectable { cursor: pointer; transition: background 0.2s; }
+.cal-day.selectable:hover { background: #f0f0f0; }
+
+.exact-dates-footer { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+.exact-btn { padding: 8px 16px; border-radius: 30px; border: none; background: transparent; color: #aaa; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;}
+.exact-btn.active { background: #f5f5f5; color: var(--text-main); }
+.exact-btn:hover:not(.active) { color: var(--text-main); }
+
+/* 3. WHO */
+/* Alineado a la derecha de la barra */
+.popover-who { right: 0; width: 340px; padding: 24px; }
+.counter-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+.counter-label { font-size: 16px; font-weight: 500; }
+.counter-controls { display: flex; align-items: center; gap: 16px; }
+.counter-controls button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-light); background: transparent; color: var(--text-muted); font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+.counter-controls button:hover:not(:disabled) { border-color: var(--text-main); color: var(--text-main); }
+.counter-controls button:disabled { opacity: 0.3; cursor: not-allowed; }
+.count-value { font-size: 15px; width: 24px; text-align: center; color: var(--text-muted);}
+.popover-divider { height: 1px; background: var(--border-light); margin: 16px 0; }
+
+/* Right Actions */
+.header-right { display: flex; align-items: center; gap: 12px; }
+.btn-host { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #ffffff; text-decoration: none; padding: 20px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; transition: var(--transition); }
+.header-scrolled .btn-host { background: #f5f5f5; color: var(--text-main); }
+.menu-btn { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: none; color: #ffffff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.header-scrolled .menu-btn { background: #f5f5f5; color: var(--text-main); }
+
+/* FOOTER */
+.main-footer { background: var(--bg-footer); font-size: 13px; }
+.footer-top { max-width: var(--max-width); margin: 0 auto; padding: 30px 40px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 24px; }
+.follow-text { font-weight: 600; color: var(--text-main); }
+.social-links { display: flex; gap: 20px; }
+.social-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.social-links a:hover { color: var(--text-main); }
+
+.footer-main { max-width: var(--max-width); margin: 0 auto; padding: 50px 40px; display: flex; gap: 100px; }
+.footer-logo-col { flex-shrink: 0; color: var(--text-main); width: 25%; }
+.footer-links-container { display: flex; gap: 80px; flex-grow: 1; width: 75%; justify-content: space-evenly; }
+.footer-col h4 { font-size: 13px; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.footer-col a:hover { color: var(--text-main); }
+.new-badge { border: 1px solid var(--border-light); padding: 2px 6px; border-radius: 12px; font-size: 10px; margin-left: 6px; font-weight: 500;}
+
+.footer-bottom { max-width: var(--max-width); margin: 0 auto; padding: 0 40px 40px; display: flex; justify-content: space-between; align-items: center; color: var(--text-light); }
+.btn-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; background: transparent; cursor: pointer; color: var(--text-main); transition: background 0.2s; }
+.btn-circle:hover { background: #eaeaea; }
+
+/* --- Right Actions & Menu Button --- */
+.header-right { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  position: relative; /* CRÍTICO para que el dropdown se posicione respecto a este contenedor */
+}
+
+.btn-host { 
+  background: rgba(255,255,255,0.15); 
+  backdrop-filter: blur(10px); 
+  color: #ffffff; 
+  text-decoration: none; 
+  padding: 20px 20px; 
+  border-radius: 30px; 
+  font-weight: 600; 
+  font-size: 14px; 
+  transition: var(--transition); 
+  line-height: 0;
+}
+.header-scrolled .btn-host { background: #f5f5f5; color: var(--text-main); }
+
+/* Botón de Menú */
+
+.header-scrolled .menu-btn { background: #f5f5f5; color: var(--text-main); border: 1px solid var(--border-light); }
+
+/* Estado Activo del Botón de Menú (Cuando está abierto) */
+.menu-btn.active { 
+  background: #222222 !important; 
+  color: #ffffff !important; 
+  border-color: #222222 !important; 
+}
+
+/* ==========================================================================
+   DROPDOWN MENU (Pixel Perfect)
+   ========================================================================== */
+.dropdown-menu { 
+  position: absolute; 
+  top: 100%; 
+  right: 0; 
+  margin-top: 12px; 
+  background: #ffffff; 
+  border-radius: 16px; /* Bordes bien redondeados como en la imagen */
+  width: 280px; /* Ancho generoso */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12); /* Sombra suave y amplia */
+  border: 1px solid var(--border-light); 
+  opacity: 0; 
+  transform: translateY(-10px); 
+  visibility: hidden; 
+  pointer-events: none; 
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s; 
+  overflow: hidden; 
+  z-index: 1001;
+}
+
+.dropdown-menu.open { 
+  opacity: 1; 
+  transform: translateY(0); 
+  visibility: visible; 
+  pointer-events: auto; 
+}
+
+.dropdown-menu ul { 
+  list-style: none; 
+  padding: 0; /* Padding superior e inferior para que el primer ítem no toque el borde */
+  margin: 0;
+}
+
+.dropdown-menu li a { 
+  display: block; 
+  padding: 12px 24px; /* Mucho respiro interno (padding) */
+  color: #222222; 
+  text-decoration: none; 
+  font-size: 14px;
+  font-weight: 600; 
+  transition: background 0.2s; 
+}
+
+.dropdown-menu li a:hover { 
+  background: #f7f7f7; 
+}
+
+/* Las líneas separadoras sutiles */
+.menu-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: 0; /* Margen para separar un poco de los enlaces */
+}
+
+.link-dinamic{
+  text-decoration: none;
+}

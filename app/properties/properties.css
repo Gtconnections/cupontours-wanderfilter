@@ -1,0 +1,260 @@
+/* app/properties/properties.css */
+
+.catalog-page-container {
+  background-color: #ffffff;
+}
+
+/* ==========================================================================
+   1. HERO INMERSIVO
+   ========================================================================== */
+.catalog-hero {
+  height: 50vh;
+  min-height: 400px;
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=80') center/cover;
+  display: flex;
+  align-items: center;
+}
+
+.catalog-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.catalog-hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 0 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.catalog-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.catalog-title {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.catalog-subtitle {
+  font-size: 16px;
+  color: #f0f0f0;
+  max-width: 500px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   2. SECCIÓN DE REJILLA (GRID CONTENEUR)
+   ========================================================================== */
+.catalog-listings-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px 40px 120px;
+}
+
+.catalog-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  font-size: 14px;
+}
+
+.properties-count { color: var(--text-muted); }
+.properties-count strong { color: var(--text-main); }
+
+.btn-filter-selector {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-main);
+  transition: border-color 0.2s;
+}
+.btn-filter-selector:hover { border-color: var(--text-main); }
+
+/* GRID DE 4 COLUMNAS EXACTAS */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px 24px; /* Separación amplia vertical y horizontal */
+}
+
+/* TARJETA INDIVIDUAL (EDITORIAL LOOK) */
+.catalog-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.catalog-image-box {
+  position: relative;
+  aspect-ratio: 1 / 1; /* Formato cuadrado limpio */
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  background-color: #f5f5f7;
+}
+
+.catalog-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Efecto hover micro-zoom de lujo */
+.catalog-card:hover .catalog-image-box img {
+  transform: scale(1.03);
+}
+
+.catalog-heart-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  transition: transform 0.2s;
+}
+.catalog-heart-btn:hover { transform: scale(1.1); }
+
+.catalog-dots-indicator {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0; /* Escondidos por defecto, aparecen en hover */
+  transition: opacity 0.2s ease;
+}
+.catalog-card:hover .catalog-dots-indicator { opacity: 1; }
+
+.catalog-dots-indicator .dot { width: 5px; height: 5px; background: rgba(255,255,255,0.4); border-radius: 50%; }
+.catalog-dots-indicator .dot.active { background: white; }
+
+/* INFORMACIÓN DE LA PROPIEDAD */
+.catalog-info-box { font-size: 14px; }
+.catalog-location-row { margin-bottom: 4px; }
+.location-text { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
+
+.catalog-prop-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catalog-prop-specs {
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.catalog-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f7f7f9;
+  padding-top: 10px;
+}
+
+.price-text { color: var(--text-muted); font-size: 13px; }
+.price-text strong { color: var(--text-main); font-size: 15px; font-weight: 700; }
+.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 13px; }
+
+/* BOTÓN DE CARGAR MÁS */
+.catalog-pagination-container {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.btn-load-more {
+  background: white;
+  border: 1px solid var(--border-light);
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .catalog-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
+  .catalog-title { font-size: 36px; }
+  .catalog-listings-section { padding: 40px 20px 80px; }
+}
+@media (max-width: 480px) {
+  .catalog-grid { grid-template-columns: 1fr; }
+  .catalog-meta-row { flex-direction: column; gap: 16px; align-items: flex-start; }
+}
+
+.listings-editorial-header {
+  margin-bottom: 60px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 40px;
+}
+
+.listings-editorial-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.listings-editorial-header p {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Modificamos sutilmente el meta-row para que acople debajo de la cabecera */
+.catalog-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  font-size: 14px;
+}

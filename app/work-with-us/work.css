@@ -1,0 +1,290 @@
+/* app/work-with-us/work.css */
+
+/* ==========================================================================
+   TIPOGRAFÍA Y UTILIDADES GLOBALES DE LA VISTA
+   ========================================================================== */
+.work-page { padding-top: 100px; }
+
+.pre-title {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.section-title {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 32px;
+}
+
+.text-light { color: #a3a3a3; }
+.text-light-dark { color: #888; }
+.bg-gray-light { background-color: #f9f9f9; }
+.mt-4 { margin-top: 32px; }
+
+.btn-black-pill {
+  background: var(--text-main);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.btn-black-pill:hover { background: #222; transform: translateY(-2px); }
+
+.btn-black-full {
+  width: 100%;
+  background: var(--text-main);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-black-full:hover { background: #222; }
+
+/* ==========================================================================
+   1. HERO MASIVO
+   ========================================================================== */
+.work-hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+}
+
+.hero-text-container {
+  max-width: 900px;
+  margin-bottom: 60px;
+}
+
+.work-massive-title {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 24px;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.hero-image-wrapper {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--border-light);
+}
+
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   2 & 3. SPLIT SECTIONS (Text + Form / Text + Image)
+   ========================================================================== */
+.work-split-section {
+  padding: 120px 40px;
+}
+
+.split-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  gap: 100px;
+  align-items: center;
+}
+
+.split-container.reverse {
+  flex-direction: row-reverse;
+}
+
+.split-text { flex: 1.2; }
+.split-text .text-content p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.split-image {
+  flex: 1;
+  aspect-ratio: 4/5;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.split-image img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Formulario */
+.split-form { flex: 1; }
+.form-card {
+  background: #f5f5f5;
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid var(--border-light);
+}
+
+.form-card h3 { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px; }
+.form-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+
+.form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+.input-group { flex: 1; display: flex; flex-direction: column; margin-bottom: 16px; }
+.input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: #555; margin-bottom: 8px; }
+.input-group input, .input-group textarea {
+  width: 100%;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+}
+.input-group input:focus, .input-group textarea:focus { border-color: var(--text-main); }
+.form-disclaimer { font-size: 12px; color: #999; margin-bottom: 24px; line-height: 1.4; }
+
+/* ==========================================================================
+   4. REVENUE ESTIMATES
+   ========================================================================== */
+.revenue-section {
+  padding: 120px 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-header.center { text-align: center; margin-bottom: 80px; }
+.section-header.center .pre-title { display: inline-block; }
+.subtitle-text { font-size: 16px; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+.revenue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.revenue-card {
+  background: #f9f9f9;
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.revenue-card:hover { transform: translateY(-5px); }
+
+.revenue-card.highlight {
+  background: #111111;
+  color: white;
+  border-color: #111;
+}
+
+.revenue-card h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; color: var(--text-muted); }
+.revenue-card.highlight h4 { color: #aaa; }
+
+.revenue-card .price { font-size: 56px; font-weight: 700; letter-spacing: -2px; margin-bottom: 24px; }
+.revenue-card p { font-size: 12px; line-height: 1.5; color: #888; }
+
+/* ==========================================================================
+   5. WHY WORK WITH US
+   ========================================================================== */
+.why-us-section {
+  padding: 120px 40px;
+}
+
+.logo-placeholder {
+  font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 24px;
+}
+
+.features-grid-3 {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+}
+
+.feature-block { text-align: center; }
+.icon-circle {
+  width: 64px; height: 64px;
+  background: white; border: 1px solid var(--border-light); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px; color: var(--text-main);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.feature-block h4 { font-size: 20px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.5px;}
+.feature-block p { font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+
+/* ==========================================================================
+   6. DARK BANNER
+   ========================================================================== */
+.dark-banner {
+  background: var(--text-main);
+  color: white;
+  padding: 140px 40px;
+  text-align: center;
+}
+
+.banner-content { max-width: 900px; margin: 0 auto; }
+.logo-placeholder.light { color: white; opacity: 0.5; margin-bottom: 32px; }
+.banner-content h2 { font-size: 40px; line-height: 1.2; letter-spacing: -1px; }
+
+/* ==========================================================================
+   7. PLATFORMS LOGOS
+   ========================================================================== */
+.platforms-section {
+  padding: 100px 40px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.small-title {
+  font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px;
+}
+
+.logos-flex {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+}
+
+.platform-logo {
+  font-size: 24px;
+  font-family: "Georgia", serif; /* Tipografía para simular marcas */
+  font-weight: 600;
+  color: #111;
+  opacity: 0.4;
+  filter: grayscale(100%);
+  transition: all 0.3s;
+  cursor: default;
+}
+.platform-logo:hover { opacity: 1; filter: grayscale(0%); }
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .split-container, .split-container.reverse { flex-direction: column; gap: 60px; }
+  .revenue-grid { grid-template-columns: 1fr; }
+  .features-grid-3 { grid-template-columns: 1fr; gap: 40px; }
+  .work-massive-title { font-size: 48px; }
+}

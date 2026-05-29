@@ -1,0 +1,235 @@
+/* app/home.css */
+
+/* ==========================================================================
+   1. CINEMATIC HERO
+   ========================================================================== */
+.home-hero {
+  height: 85vh;
+  min-height: 650px;
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80') center/cover;
+  display: flex;
+  align-items: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 0 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: #e2e2e2;
+  max-width: 550px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. CATEGORIES FILTER PILLS BAR
+   ========================================================================== */
+.categories-filter-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 40px 20px;
+}
+
+.filter-wrapper {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+.filter-wrapper::-webkit-scrollbar { display: none; }
+
+.filter-pill {
+  background: #f5f5f7;
+  border: 1px solid transparent;
+  color: var(--text-main);
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-pill.active, .filter-pill:hover {
+  background: var(--text-main);
+  color: white;
+}
+
+/* ==========================================================================
+   3. COLLECTIONS LISTINGS CONTENEUR
+   ========================================================================== */
+.home-listings-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 40px 100px;
+}
+
+.home-row-section {
+  margin-bottom: 80px;
+}
+
+.row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+}
+
+.row-pretitle {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.row-header h3 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.carousel-nav { display: flex; gap: 8px; }
+.carousel-nav button {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border-light); background: transparent;
+  color: var(--text-main); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.carousel-nav button:hover { background: #f5f5f7; }
+
+.property-carousel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* CARDS DE PRODUCTO */
+.prop-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.prop-image-container {
+  position: relative;
+  aspect-ratio: 1 / 1; /* Por defecto cuadrado para Casas */
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+/* Ratios asimétricos específicos por categoría visual */
+.prop-image-container.car-ratio { aspect-ratio: 16 / 10; }
+.prop-image-container.yacht-ratio { aspect-ratio: 4 / 3; }
+
+.prop-image-container img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.prop-card:hover .prop-image-container img { transform: scale(1.04); }
+
+.heart-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: transparent; border: none; color: white;
+  cursor: pointer; z-index: 2; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+}
+
+.prop-info { font-size: 14px; }
+.prop-title-row h4 {
+  font-weight: 600; font-size: 15px; margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prop-specs { color: var(--text-muted); margin-bottom: 6px; font-size: 13px; }
+.prop-price-row { display: flex; justify-content: space-between; align-items: center; }
+.price { font-weight: 600; color: var(--text-main); }
+.rating { color: var(--text-main); font-weight: 500; display: flex; align-items: center; font-size: 13px; }
+
+/* ==========================================================================
+   BANNERS INTERMEDIOS CINEMATOGRÁFICOS
+   ========================================================================== */
+.mid-banner {
+  height: 350px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+  margin-bottom: 60px;
+}
+
+.banner-cars { background: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1600&q=80') center/cover; }
+.banner-yachts { background: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1600&q=80') center/cover; }
+
+.mid-banner-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+.mid-banner-content { position: relative; z-index: 2; color: white; max-width: 500px; }
+.mid-banner-content h2 { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+.mid-banner-content p { font-size: 15px; color: #ddd; line-height: 1.5; }
+
+/* ==========================================================================
+   4. PLATFORMS DISTRIBUTION MARQUEE
+   ========================================================================== */
+.platforms-marquee-section {
+  border-top: 1px solid var(--border-light);
+  padding: 60px 40px;
+  background: #fafafa;
+}
+.marquee-wrapper { max-width: var(--max-width); margin: 0 auto; text-align: center; }
+.marquee-title { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; margin-bottom: 32px; }
+.marquee-row { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; }
+.marquee-row span { font-size: 20px; font-family: "Georgia", serif; font-weight: 600; color: #111; opacity: 0.35; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .property-carousel { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .mid-banner { padding: 0 40px; }
+}
+@media (max-width: 768px) {
+  .hero-title { font-size: 44px; }
+  .property-carousel { grid-template-columns: 1fr; }
+  .marquee-row { gap: 30px; }
+}

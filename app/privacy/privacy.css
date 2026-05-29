@@ -1,0 +1,131 @@
+/* app/privacy/privacy.css */
+
+/* ACTIVACIÓN DE SCROLL FLUIDO PREMIUM */
+html {
+  scroll-behavior: smooth;
+}
+
+.privacy-page {
+  padding-top: 140px; /* Margen superior para el header flotante */
+  background-color: #ffffff;
+}
+
+.privacy-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px 140px;
+  display: flex;
+  gap: 100px; /* Espaciado asimétrico amplio estilo Wander */
+}
+
+/* ==========================================================================
+   MENÚ LATERAL (STICKY SIDEBAR)
+   ========================================================================== */
+.privacy-sidebar {
+  flex: 0 0 240px;
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: 180px; /* Se ancla de forma fluida al bajar */
+  height: max-content;
+}
+
+.privacy-sidebar h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888888;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.legal-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legal-nav a {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.legal-nav a:hover,
+.legal-nav a.active {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   CONTENIDO LEGAL (EDITORIAL TYPOGRAPHY)
+   ========================================================================== */
+.privacy-content {
+  flex: 1;
+  max-width: 720px; /* Línea de lectura óptima */
+}
+
+.massive-heading {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 24px; /* CORREGIDO: Da espacio para que la fecha no se monte */
+}
+
+.last-updated {
+  font-size: 13px;
+  color: #999999;
+  display: block; /* Asegura su propio bloque */
+  margin-bottom: 60px; /* Separación amplia al primer bloque */
+}
+
+.legal-text-block {
+  margin-bottom: 56px;
+  /* CORREGIDO: Espacio de respiro ideal para que el header no tape el título al usar las anclas */
+  scroll-margin-top: 200px; 
+}
+
+.legal-text-block h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+.legal-text-block p {
+  font-size: 15px;
+  line-height: 1.7; /* Interlineado elegante */
+  color: #333333;
+  margin-bottom: 16px;
+}
+
+/* RESPONSIVE DISEÑO MÓVIL */
+@media (max-width: 992px) {
+  .privacy-container {
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 80px;
+  }
+  .privacy-sidebar {
+    flex: 1;
+    width: 100%;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 24px;
+  }
+  .sidebar-sticky {
+    position: static;
+  }
+  .legal-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+  .massive-heading {
+    font-size: 44px;
+  }
+}

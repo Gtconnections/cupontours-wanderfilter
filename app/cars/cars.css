@@ -1,0 +1,230 @@
+/* app/cars/cars.css */
+
+.fleet-page-container {
+  background-color: #ffffff;
+}
+
+/* ==========================================================================
+   1. HERO CINEMATOGRÁFICO
+   ========================================================================== */
+.fleet-hero {
+  height: 55vh;
+  min-height: 450px;
+  position: relative;
+  /* Simula la toma del auto oscuro en carretera de la captura */
+  background: url('https://s3-alpha.figma.com/hub/file/6734470254/b91819bd-ae0e-401b-9bd2-7ba44b95ae16-cover.png') bottom/cover;
+  display: flex;
+  align-items: center;
+}
+
+.fleet-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.fleet-hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 0 40px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.fleet-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.fleet-title {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.fleet-subtitle {
+  font-size: 16px;
+  color: #f0f0f0;
+  max-width: 550px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   2. SECCIÓN DEL LISTADO
+   ========================================================================== */
+.fleet-listings-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 60px 40px 120px;
+}
+
+.fleet-editorial-header {
+  margin-bottom: 50px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 40px;
+}
+
+.fleet-editorial-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.fleet-editorial-header p {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.fleet-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.fleet-count { color: var(--text-muted); }
+.fleet-count strong { color: var(--text-main); }
+
+.btn-sort-selector {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-main);
+  transition: border-color 0.2s;
+}
+.btn-sort-selector:hover { border-color: var(--text-main); }
+
+/* GRID PANORÁMICO DE 4 COLUMNAS */
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px 24px;
+}
+
+.fleet-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+/* AQUÍ EL DETALLE CLAVE: Ratio horizontal óptimo para autos */
+.fleet-image-box {
+  position: relative;
+  aspect-ratio: 16 / 10; 
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  background-color: #f5f5f7;
+}
+
+.fleet-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fleet-card:hover .fleet-image-box img {
+  transform: scale(1.03);
+}
+
+.fleet-heart-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  transition: transform 0.2s;
+}
+.fleet-heart-btn:hover { transform: scale(1.1); }
+
+/* DATOS TÉCNICOS INTERNOS */
+.fleet-info-box { font-size: 14px; }
+.location-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
+
+.fleet-car-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  color: var(--text-main);
+}
+
+.fleet-car-specs {
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.fleet-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f7f7f9;
+  padding-top: 10px;
+}
+
+.price-text { color: var(--text-muted); font-size: 13px; }
+.price-text strong { color: var(--text-main); font-size: 15px; font-weight: 700; }
+.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 13px; }
+
+/* PAGINACIÓN */
+.fleet-pagination-container {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.btn-load-more {
+  background: white;
+  border: 1px solid var(--border-light);
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s;
+}
+.btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .fleet-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .fleet-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
+  .fleet-title { font-size: 36px; }
+}
+@media (max-width: 480px) {
+  .fleet-grid { grid-template-columns: 1fr; }
+}
