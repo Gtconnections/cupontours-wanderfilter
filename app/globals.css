@@ -16,7 +16,7 @@
   /* Variables de escala elástica añadidas para Responsive */
   --header-padding: 15px 20px;
   --search-width: 100%;
-  --popover-width: calc(100vw - 40px);
+  --popover-width: calc(100vw - 32px); /* Calibrado para dar un respiro simétrico exacto */
 }
 
 @media (min-width: 1024px) {
@@ -321,7 +321,7 @@ body {
 .search-btn:active { transform: scale(0.95); }
 
 /* ==========================================================================
-   POPOVERS & VENTANAS EMERGENTES (MODULARES RESPONSIVAS)
+   POPOVERS CORREGIDOS: CENTRADO ABSOLUTO E INVICTO EN MÓVIL
    ========================================================================== */
 .search-popover {
   position: absolute;
@@ -331,9 +331,14 @@ body {
   box-shadow: 0 12px 36px rgba(0,0,0,0.15);
   padding: 16px;
   z-index: 1001;
-  width: calc(100vw - 32px);
-  left: 50% !important;
-  transform: translateX(-50%) !important;
+  width: var(--popover-width); /* Toma el ancho controlado elástico de la variable */
+  
+  /* ARREGLADO: Alineación simétrica perfecta para smartphones */
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 auto !important;
+  transform: none !important;
+  
   animation: popFade 0.2s ease forwards;
 }
 
@@ -354,10 +359,6 @@ body {
 .location-item span { font-weight: 500; font-size: 13px; }
 
 /* 2. WHEN POPOVER (CALENDARIO ELÁSTICO) */
-.popover-when { 
-  width: calc(100vw - 32px); 
-  padding: 16px; 
-}
 .when-tabs { display: flex; justify-content: center; gap: 4px; margin-bottom: 16px; background: #f5f5f5; width: fit-content; margin: 0 auto 16px; border-radius: 30px; padding: 4px; }
 .when-tab { padding: 6px 12px; border-radius: 30px; border: none; background: transparent; font-size: 11px; font-weight: 500; cursor: pointer; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
 .when-tab.active { background: white; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
@@ -379,7 +380,6 @@ body {
 .exact-btn.active { background: #f5f5f5; color: var(--text-main); }
 
 /* 3. WHO POPOVER */
-.popover-who { width: calc(100vw - 32px); padding: 16px; }
 .counter-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
 .counter-label { font-size: 14px; font-weight: 500; }
 .counter-controls { display: flex; align-items: center; gap: 12px; }
@@ -390,7 +390,6 @@ body {
 .popover-divider { height: 1px; background: var(--border-light); margin: 8px 0; }
 
 @media (min-width: 768px) {
-  .search-popover { width: var(--popover-width); }
   .popover-when { width: 680px; padding: 32px; }
   .calendar-container { flex-direction: row; gap: 32px; }
   .when-tab { padding: 8px 24px; font-size: 14px; }
@@ -573,8 +572,11 @@ body {
     width: max-content;
   }
 
+  /* CORREGIDO: width: max-content evita que la barra colapse o se estire infinitamente */
   .interactive-search-bar {
     display: flex;
+    width: max-content; 
+    max-width: max-content;
     height: 50px;
   }
 
@@ -590,6 +592,8 @@ body {
   .search-popover {
     width: 380px;
     left: auto !important;
+    right: auto !important;
+    margin: 0 !important;
     transform: none !important;
   }
   .popover-where { left: 0 !important; width: 380px; }
