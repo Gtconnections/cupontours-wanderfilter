@@ -1,17 +1,15 @@
-/* app/cars/cars.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (CATÁLOGO DE AUTOS)
+   ========================================================================== */
 .fleet-page-container {
   background-color: #ffffff;
 }
 
-/* ==========================================================================
-   1. HERO CINEMATOGRÁFICO
-   ========================================================================== */
+/* 1. HERO CINEMATOGRÁFICO */
 .fleet-hero {
-  height: 55vh;
-  min-height: 450px;
+  height: 45vh; /* Proporción balanceada para pantallas táctiles */
+  min-height: 380px;
   position: relative;
-  /* Simula la toma del auto oscuro en carretera de la captura */
   background: url('https://s3-alpha.figma.com/hub/file/6734470254/b91819bd-ae0e-401b-9bd2-7ba44b95ae16-cover.png') bottom/cover;
   display: flex;
   align-items: center;
@@ -20,14 +18,14 @@
 .fleet-hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.4) 100%);
 }
 
 .fleet-hero-content {
   position: relative;
   z-index: 2;
   color: white;
-  padding: 0 40px;
+  padding: 0 20px;
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -37,66 +35,65 @@
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.fleet-title {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
   margin-bottom: 16px;
 }
 
-.fleet-subtitle {
-  font-size: 16px;
-  color: #f0f0f0;
-  max-width: 550px;
-  line-height: 1.5;
-}
-
-/* ==========================================================================
-   2. SECCIÓN DEL LISTADO
-   ========================================================================== */
-.fleet-listings-section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 60px 40px 120px;
-}
-
-.fleet-editorial-header {
-  margin-bottom: 50px;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 40px;
-}
-
-.fleet-editorial-header h2 {
-  font-size: 36px;
+.fleet-title {
+  font-size: 32px; /* Tipografía elástica inicial móvil */
   font-weight: 700;
   letter-spacing: -1px;
-  color: var(--text-main);
+  line-height: 1.2;
   margin-bottom: 12px;
 }
 
+.fleet-subtitle {
+  font-size: 14px;
+  color: #f0f0f0;
+  max-width: 100%;
+  line-height: 1.5;
+}
+
+/* 2. SECCIÓN DEL LISTADO Y CABECERA EDITORIAL */
+.fleet-listings-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.fleet-editorial-header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 24px;
+}
+
+.fleet-editorial-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
 .fleet-editorial-header p {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-muted);
-  max-width: 600px;
-  line-height: 1.6;
+  max-width: 100%;
+  line-height: 1.5;
 }
 
 .fleet-meta-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  font-size: 14px;
+  flex-direction: column; /* Apilado cómodo para controles en móvil */
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: 13px;
 }
 
 .fleet-count { color: var(--text-muted); }
@@ -105,10 +102,10 @@
 .btn-sort-selector {
   background: transparent;
   border: 1px solid var(--border-light);
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 30px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -116,14 +113,16 @@
   gap: 8px;
   color: var(--text-main);
   transition: border-color 0.2s;
+  width: 100%; /* Botón amplio de fácil acceso táctil */
+  justify-content: space-between;
 }
 .btn-sort-selector:hover { border-color: var(--text-main); }
 
-/* GRID PANORÁMICO DE 4 COLUMNAS */
+/* GRID DE AUTOS ELÁSTICO (1 Columna en móviles compactos) */
 .fleet-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px 24px;
+  grid-template-columns: 1fr;
+  gap: 32px 16px;
 }
 
 .fleet-card {
@@ -132,13 +131,13 @@
   cursor: pointer;
 }
 
-/* AQUÍ EL DETALLE CLAVE: Ratio horizontal óptimo para autos */
+/* Ratio horizontal de alta gama óptimo para autos */
 .fleet-image-box {
   position: relative;
   aspect-ratio: 16 / 10; 
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   background-color: #f5f5f7;
 }
 
@@ -147,10 +146,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fleet-card:hover .fleet-image-box img {
-  transform: scale(1.03);
 }
 
 .fleet-heart-btn {
@@ -168,12 +163,12 @@
 .fleet-heart-btn:hover { transform: scale(1.1); }
 
 /* DATOS TÉCNICOS INTERNOS */
-.fleet-info-box { font-size: 14px; }
-.location-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
+.fleet-info-box { font-size: 13px; }
+.location-text { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
 
 .fleet-car-title {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 2px;
   margin-bottom: 4px;
   color: var(--text-main);
@@ -181,8 +176,8 @@
 
 .fleet-car-specs {
   color: var(--text-muted);
-  margin-bottom: 12px;
-  font-size: 13px;
+  margin-bottom: 8px;
+  font-size: 12px;
 }
 
 .fleet-price-row {
@@ -190,41 +185,77 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #f7f7f9;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
-.price-text { color: var(--text-muted); font-size: 13px; }
-.price-text strong { color: var(--text-main); font-size: 15px; font-weight: 700; }
-.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 13px; }
+.price-text { color: var(--text-muted); font-size: 12px; }
+.price-text strong { color: var(--text-main); font-size: 14px; font-weight: 700; }
+.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 12px; }
 
 /* PAGINACIÓN */
 .fleet-pagination-container {
   text-align: center;
-  margin-top: 80px;
+  margin-top: 48px;
 }
 
 .btn-load-more {
   background: white;
   border: 1px solid var(--border-light);
-  padding: 14px 32px;
+  padding: 12px 28px;
   border-radius: 40px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   color: var(--text-main);
   transition: all 0.2s;
+  width: 100%; /* Botón full-width adaptativo para móvil */
+  max-width: 300px;
 }
 .btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
 
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .fleet-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 768px) {
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 576px) {
   .fleet-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
-  .fleet-title { font-size: 36px; }
+  .btn-sort-selector { width: auto; }
 }
-@media (max-width: 480px) {
-  .fleet-grid { grid-template-columns: 1fr; }
+
+@media (min-width: 768px) {
+  .fleet-hero { height: 55vh; min-height: 450px; }
+  .fleet-hero-content { padding: 0 40px; }
+  .fleet-title { font-size: 40px; }
+  .fleet-subtitle { font-size: 15px; }
+  
+  .fleet-listings-section { padding: 60px 40px 80px; }
+  .fleet-editorial-header h2 { font-size: 32px; }
+  .fleet-meta-row { flex-direction: row; justify-content: space-between; font-size: 14px; }
+  .fleet-grid { grid-template-columns: repeat(3, 1fr); gap: 40px 20px; }
+  
+  .fleet-info-box { font-size: 14px; }
+  .fleet-car-title { font-size: 15px; }
+  .fleet-car-specs { font-size: 13px; }
+  .price-text { font-size: 13px; }
+  .price-text strong { font-size: 15px; }
+  .rating-text { font-size: 13px; }
+  .btn-load-more { width: auto; font-size: 14px; }
+}
+
+@media (min-width: 1200px) {
+  .fleet-title { font-size: 48px; letter-spacing: -1.5px; }
+  .fleet-subtitle { font-size: 16px; max-width: 550px; }
+  .fleet-listings-section { padding-bottom: 120px; }
+  .fleet-editorial-header { padding-bottom: 40px; margin-bottom: 50px; }
+  .fleet-editorial-header h2 { font-size: 36px; letter-spacing: -1px; }
+  .fleet-editorial-header p { font-size: 15px; max-width: 600px; }
+  .fleet-meta-row { margin-bottom: 32px; }
+  
+  /* Retorno al grid panorámico de 4 columnas en monitores de alta resolución */
+  .fleet-grid { grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
+  .fleet-image-box { border-radius: 14px; }
+  .fleet-card:hover .fleet-image-box img { transform: scale(1.03); }
+  .fleet-pagination-container { margin-top: 80px; }
+  .btn-load-more { padding: 14px 32px; }
 }

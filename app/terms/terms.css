@@ -1,80 +1,61 @@
-/* app/terms/terms.css */
-/* Añade esto al principio de tu archivo para activar el scroll suave en la página */
+/* ==========================================================================
+   WANDER LUXURY LEGAL - ARQUITECTURA GENERAL (MOBILE-FIRST)
+   ========================================================================== */
 html {
   scroll-behavior: smooth;
 }
 
-.massive-heading {
-  font-size: 64px;
-  font-weight: 700;
-  letter-spacing: -2px;
-  line-height: 1.05;
-  margin-bottom: 24px; /* CORREGIDO: Espacio suficiente antes de la fecha */
-}
-
-.last-updated {
-  font-size: 13px;
-  color: #999999;
-  display: block; /* Asegura que tome su propia línea */
-  margin-bottom: 60px; /* Separa la fecha del primer bloque de texto */
-}
-
-.legal-text-block {
-  margin-bottom: 56px;
-  /* CORREGIDO: Da un respiro de 200px arriba al hacer clic en el ancla 
-     para que el header fijo blanco no tape el título de la sección */
-  scroll-margin-top: 200px; 
-}
-/* ==========================================================================
-   ESTRUCTURA GENERAL Y CONTENEDORES
-   ========================================================================== */
 .terms-page {
-  padding-top: 140px; /* Margen para el header fijo */
+  padding-top: 100px;
   background-color: #ffffff;
 }
 
 .terms-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 40px 140px;
+  padding: 0 20px 60px;
   display: flex;
-  gap: 100px; /* Gran separación asimétrica entre el menú y el texto */
+  flex-direction: column;
+  gap: 32px;
 }
 
 /* ==========================================================================
-   MENÚ LATERAL (STICKY SIDEBAR)
+   MENÚ LATERAL (RIEL HORIZONTAL EN MÓVIL)
    ========================================================================== */
 .terms-sidebar {
-  flex: 0 0 240px;
+  width: 100%;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 20px;
 }
 
 .sidebar-sticky {
-  position: sticky;
-  top: 180px; /* Se queda fijo al hacer scroll */
+  position: static;
   height: max-content;
 }
 
 .terms-sidebar h3 {
-  font-size: 13px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #888888;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-weight: 600;
 }
 
 .legal-nav {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px 20px;
 }
 
 .legal-nav a {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .legal-nav a:hover,
@@ -87,59 +68,125 @@ html {
    CONTENIDO LEGAL (EDITORIAL TYPOGRAPHY)
    ========================================================================== */
 .terms-content {
-  flex: 1;
-  max-width: 720px; /* Ancho restringido óptimo para lectura cómoda */
+  width: 100%;
+  max-width: 100%;
+}
+
+.massive-heading {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 16px;
 }
 
 .last-updated {
-  font-size: 13px;
+  font-size: 12px;
   color: #999999;
-  margin-top: -16px;
-  margin-bottom: 60px;
+  display: block;
+  margin-bottom: 32px;
 }
 
 .legal-text-block {
-  margin-bottom: 56px; /* Gran separación entre bloques legales */
-  scroll-margin-top: 180px; /* Compensa el anclaje al hacer clic en el menú */
+  margin-bottom: 40px;
+  scroll-margin-top: 140px;
 }
 
 .legal-text-block h2 {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
-  letter-spacing: -0.5px;
-  margin-bottom: 20px;
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
   color: var(--text-main);
 }
 
 .legal-text-block p {
-  font-size: 15px;
-  line-height: 1.7; /* Texto espaciado elegante */
+  font-size: 14px;
+  line-height: 1.6;
   color: #333333;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
+
+/* ==========================================================================
+   MEDIA QUERIES (ADAPTACIÓN DE ALTA RESOLUCIÓN)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .massive-heading { font-size: 48px; }
+  .legal-text-block h2 { font-size: 20px; }
+  .terms-container { padding: 0 40px 80px; gap: 40px; }
+  .terms-sidebar { padding-bottom: 24px; }
+}
+
+@media (min-width: 1024px) {
+  .terms-page { 
+    padding-top: 140px;
+  }
+
   .terms-container {
-    flex-direction: column;
-    gap: 40px;
-    padding-bottom: 80px;
-  }
-  .terms-sidebar {
-    flex: 1;
-    width: 100%;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 24px;
-  }
-  .sidebar-sticky {
-    position: static;
-  }
-  .legal-nav {
     flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px 20px;
+    gap: 100px;
+    padding-bottom: 140px;
   }
+
+  .terms-sidebar {
+    flex: 0 0 240px;
+    width: auto;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .sidebar-sticky {
+    position: sticky;
+    top: 180px;
+  }
+
+  .terms-sidebar h3 {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .legal-nav {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .legal-nav a {
+    font-size: 14px;
+  }
+
+  .terms-content {
+    flex: 1;
+    max-width: 720px;
+  }
+
   .massive-heading {
-    font-size: 44px;
+    font-size: 64px;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .last-updated {
+    font-size: 13px;
+    margin-top: -16px;
+    margin-bottom: 60px;
+  }
+
+  .legal-text-block {
+    margin-bottom: 56px;
+    scroll-margin-top: 200px;
+  }
+
+  .legal-text-block h2 {
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    margin-bottom: 20px;
+  }
+
+  .legal-text-block p {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 16px;
   }
 }

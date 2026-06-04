@@ -1,17 +1,16 @@
-/* app/properties/properties.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (CATÁLOGO DE PROPIEDADES)
+   ========================================================================== */
 .catalog-page-container {
   background-color: #ffffff;
 }
 
-/* ==========================================================================
-   1. HERO INMERSIVO
-   ========================================================================== */
+/* 1. HERO INMERSIVO ASADAPTATIVO */
 .catalog-hero {
-  height: 50vh;
-  min-height: 400px;
+  height: 45vh; /* Altura elástica controlada en smartphones */
+  min-height: 350px;
   position: relative;
-  background: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=80') center/cover;
+  background: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80') center/cover;
   display: flex;
   align-items: center;
 }
@@ -19,14 +18,14 @@
 .catalog-hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.7) 100%);
 }
 
 .catalog-hero-content {
   position: relative;
   z-index: 2;
   color: white;
-  padding: 0 40px;
+  padding: 0 20px; /* Padding comprimido en móvil */
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -36,45 +35,66 @@
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.catalog-title {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
   margin-bottom: 16px;
 }
 
+.catalog-title {
+  font-size: 32px; /* Tipografía elástica calibrada para celulares */
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
 .catalog-subtitle {
-  font-size: 16px;
+  font-size: 14px;
   color: #f0f0f0;
-  max-width: 500px;
+  max-width: 100%;
   line-height: 1.5;
 }
 
-/* ==========================================================================
-   2. SECCIÓN DE REJILLA (GRID CONTENEUR)
-   ========================================================================== */
+/* 2. SECCIÓN DE REJILLA Y CABECERA EDITORIAL */
 .catalog-listings-section {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 60px 40px 120px;
+  padding: 40px 20px 60px; /* Respiro lateral adaptado a pantallas móviles */
 }
 
+.listings-editorial-header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 24px;
+}
+
+.listings-editorial-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.listings-editorial-header p {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 100%;
+  line-height: 1.5;
+}
+
+/* Ajustado y acoplado debajo de la cabecera (Única versión limpia) */
 .catalog-meta-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  font-size: 14px;
+  flex-direction: column; /* Apilado en vertical nativo para celulares */
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+  font-size: 13px;
 }
 
 .properties-count { color: var(--text-muted); }
@@ -83,10 +103,10 @@
 .btn-filter-selector {
   background: transparent;
   border: 1px solid var(--border-light);
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 30px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -94,14 +114,16 @@
   gap: 8px;
   color: var(--text-main);
   transition: border-color 0.2s;
+  width: 100%; /* Botón amplio de fácil acceso táctil */
+  justify-content: space-between;
 }
 .btn-filter-selector:hover { border-color: var(--text-main); }
 
-/* GRID DE 4 COLUMNAS EXACTAS */
+/* GRID DE PROPIEDADES ELÁSTICO (1 Columna por defecto en teléfonos) */
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px 24px; /* Separación amplia vertical y horizontal */
+  grid-template-columns: 1fr;
+  gap: 32px 16px;
 }
 
 /* TARJETA INDIVIDUAL (EDITORIAL LOOK) */
@@ -113,10 +135,10 @@
 
 .catalog-image-box {
   position: relative;
-  aspect-ratio: 1 / 1; /* Formato cuadrado limpio */
-  border-radius: 16px;
+  aspect-ratio: 1 / 1; /* Formato cuadrado limpio garantizado */
+  border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   background-color: #f5f5f7;
 }
 
@@ -127,15 +149,10 @@
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Efecto hover micro-zoom de lujo */
-.catalog-card:hover .catalog-image-box img {
-  transform: scale(1.03);
-}
-
 .catalog-heart-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 12px;
+  right: 12px;
   background: transparent;
   border: none;
   color: white;
@@ -146,31 +163,20 @@
 }
 .catalog-heart-btn:hover { transform: scale(1.1); }
 
+/* Puntos de navegación sutiles ocultos en móvil para priorizar rendimiento táctil */
 .catalog-dots-indicator {
-  position: absolute;
-  bottom: 12px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  opacity: 0; /* Escondidos por defecto, aparecen en hover */
-  transition: opacity 0.2s ease;
+  display: none;
 }
-.catalog-card:hover .catalog-dots-indicator { opacity: 1; }
-
-.catalog-dots-indicator .dot { width: 5px; height: 5px; background: rgba(255,255,255,0.4); border-radius: 50%; }
-.catalog-dots-indicator .dot.active { background: white; }
 
 /* INFORMACIÓN DE LA PROPIEDAD */
-.catalog-info-box { font-size: 14px; }
-.catalog-location-row { margin-bottom: 4px; }
-.location-text { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
+.catalog-info-box { font-size: 13px; }
+.catalog-location-row { margin-bottom: 2px; }
+.location-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
 
 .catalog-prop-title {
   font-weight: 600;
-  font-size: 15px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  margin-bottom: 2px;
   color: var(--text-main);
   white-space: nowrap;
   overflow: hidden;
@@ -179,8 +185,8 @@
 
 .catalog-prop-specs {
   color: var(--text-muted);
-  margin-bottom: 10px;
-  font-size: 13px;
+  margin-bottom: 8px;
+  font-size: 12px;
 }
 
 .catalog-price-row {
@@ -188,73 +194,88 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #f7f7f9;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
-.price-text { color: var(--text-muted); font-size: 13px; }
-.price-text strong { color: var(--text-main); font-size: 15px; font-weight: 700; }
-.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 13px; }
+.price-text { color: var(--text-muted); font-size: 12px; }
+.price-text strong { color: var(--text-main); font-size: 14px; font-weight: 700; }
+.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 12px; }
 
-/* BOTÓN DE CARGAR MÁS */
+/* BOTÓN DE CARGAR MÁS Adaptativo */
 .catalog-pagination-container {
   text-align: center;
-  margin-top: 80px;
+  margin-top: 48px;
 }
 
 .btn-load-more {
   background: white;
   border: 1px solid var(--border-light);
-  padding: 14px 32px;
+  padding: 12px 28px;
   border-radius: 40px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   color: var(--text-main);
   transition: background 0.2s, border-color 0.2s;
+  width: 100%;
+  max-width: 300px;
 }
 .btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
 
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .catalog-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 768px) {
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 576px) {
   .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
-  .catalog-title { font-size: 36px; }
-  .catalog-listings-section { padding: 40px 20px 80px; }
-}
-@media (max-width: 480px) {
-  .catalog-grid { grid-template-columns: 1fr; }
-  .catalog-meta-row { flex-direction: column; gap: 16px; align-items: flex-start; }
+  .catalog-meta-row { flex-direction: row; justify-content: space-between; align-items: center; }
+  .btn-filter-selector { width: auto; }
+  .btn-load-more { width: auto; }
 }
 
-.listings-editorial-header {
-  margin-bottom: 60px;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 40px;
+@media (min-width: 768px) {
+  .catalog-hero { height: 50vh; min-height: 400px; }
+  .catalog-hero-content { padding: 0 40px; }
+  .catalog-title { font-size: 38px; }
+  .catalog-subtitle { font-size: 15px; }
+  
+  .catalog-listings-section { padding: 60px 40px 80px; }
+  .listings-editorial-header { margin-bottom: 48px; padding-bottom: 32px; }
+  .listings-editorial-header h2 { font-size: 32px; }
+  .catalog-grid { grid-template-columns: repeat(3, 1fr); gap: 40px 20px; }
+  
+  .catalog-info-box { font-size: 14px; }
+  .location-text { font-size: 12px; }
+  .catalog-prop-title { font-size: 15px; }
+  .catalog-prop-specs { font-size: 13px; margin-bottom: 10px; }
+  .catalog-price-row { padding-top: 10px; }
+  .price-text { font-size: 13px; }
+  .price-text strong { font-size: 15px; }
+  .rating-text { font-size: 13px; }
+  .btn-load-more { font-size: 14px; }
 }
 
-.listings-editorial-header h2 {
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  color: var(--text-main);
-  margin-bottom: 12px;
-}
+@media (min-width: 1200px) {
+  .catalog-title { font-size: 48px; letter-spacing: -1.5px; line-height: 1.1; }
+  .catalog-subtitle { font-size: 16px; max-width: 500px; }
+  .catalog-listings-section { padding-bottom: 120px; }
+  
+  .listings-editorial-header { margin-bottom: 60px; padding-bottom: 40px; }
+  .listings-editorial-header h2 { font-size: 36px; letter-spacing: -1px; }
+  .listings-editorial-header p { font-size: 15px; max-width: 600px; line-height: 1.6; }
+  
+  .catalog-meta-row { margin-bottom: 32px; font-size: 14px; }
+  .btn-filter-selector { padding: 10px 20px; font-size: 14px; }
 
-.listings-editorial-header p {
-  font-size: 15px;
-  color: var(--text-muted);
-  max-width: 600px;
-  line-height: 1.6;
-}
-
-/* Modificamos sutilmente el meta-row para que acople debajo de la cabecera */
-.catalog-meta-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  font-size: 14px;
+  /* Activación estricta del layout panorámico original de 4 columnas */
+  .catalog-grid { grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
+  .catalog-image-box { border-radius: 16px; margin-bottom: 14px; }
+  .catalog-card:hover .catalog-image-box img { transform: scale(1.03); }
+  
+  /* Los indicadores interactivos de la galería se despliegan sutilmente en hover en escritorio */
+  .catalog-dots-indicator { display: flex; }
+  
+  .catalog-pagination-container { margin-top: 80px; }
+  .btn-load-more { padding: 14px 32px; }
 }

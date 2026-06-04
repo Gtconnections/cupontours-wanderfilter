@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // <-- 1. Importamos usePathname
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false); // Estado elástico para buscador móvil
   
   const [activeSearchTab, setActiveSearchTab] = useState(null);
   const [searchData, setSearchData] = useState({
@@ -17,13 +18,9 @@ export default function Header() {
 
   const menuRef = useRef(null);
   const searchRef = useRef(null);
-  
-  // <-- 2. Detectamos la ruta actual
   const pathname = usePathname(); 
   
-  // <-- 3. Lista de páginas con fondo blanco al inicio (¡Agrega más aquí en el futuro!)
   const lightPages = ['/about', '/work-with-us', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login'];
-  // 3. Lógica calibrada de alta fidelidad:
   const isLightPage = 
         lightPages.includes(pathname) || 
         (pathname.startsWith('/properties/') && pathname !== '/properties') ||
@@ -43,6 +40,7 @@ export default function Header() {
       }
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setActiveSearchTab(null);
+        setIsSearchExpanded(false); // Colapsa el buscador al hacer clic fuera
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -65,22 +63,33 @@ export default function Header() {
     }));
   };
 
-  // <-- 4. Aplicamos 'header-scrolled' si hacemos scroll, si abrimos el buscador, o si estamos en una página clara
-  const headerClasses = `main-header ${isScrolled || activeSearchTab || isLightPage ? 'header-scrolled' : ''}`;
+  const headerClasses = `main-header ${isScrolled || activeSearchTab || isSearchExpanded || isLightPage ? 'header-scrolled' : ''}`;
 
   return (
     <header className={headerClasses}>
       <div className="header-container">
-        {/* LOGO */}
-        <Link href="/" className="logo">CuponTours</Link>
+        {/* LOGO (Se oculta en móvil cuando el buscador está expandido para no asfixiar el espacio) */}
+        <Link href="/" className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>CuponTours</Link>
         
-        {/* CENTRO: BUSCADOR INTERACTIVO */}
-        <div className="search-wrapper" ref={searchRef}>
-          <div className={`interactive-search-bar ${activeSearchTab ? 'is-active' : ''}`}>
+        {/* CENTRO: BUSCADOR INTERACTIVO RESPONSIVO */}
+        <div className={`search-wrapper ${isSearchExpanded ? 'expanded' : ''}`} ref={searchRef}>
+          
+          {/* GATILLO MÓVIL: Píldora de búsqueda compacta */}
+          {!isSearchExpanded && (
+            <button className="mobile-search-trigger" onClick={() => setIsSearchExpanded(true)}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>{searchData.location || "Where to?"}</span>
+            </button>
+          )}
+
+          {/* BARRA COMPLETA (Se controla con la clase expanded en móvil) */}
+          <div className={`interactive-search-bar ${activeSearchTab ? 'is-active' : ''} ${isSearchExpanded ? 'show-expanded' : ''}`}>
             
             <div className={`search-segment where-segment ${activeSearchTab === 'where' ? 'active' : ''}`} onClick={() => setActiveSearchTab('where')}>
               <div className="segment-content">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="search-icon-small" style={{marginRight: '8px'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="search-icon-small">
                   <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
                 <span style={{color: searchData.location ? '#111' : '#717171', fontWeight: searchData.location ? '500' : '400'}}>
@@ -107,13 +116,13 @@ export default function Header() {
                   {activeSearchTab === 'who' ? 'Who?' : formatWho()}
                 </span>
               </div>
-              <button className="search-btn" onClick={(e) => { e.stopPropagation(); setActiveSearchTab(null); }}>
+              <button className="search-btn" onClick={(e) => { e.stopPropagation(); setActiveSearchTab(null); setIsSearchExpanded(false); }}>
                 Search
               </button>
             </div>
           </div>
 
-          {/* POPOVERS ... (El contenido de los Popovers de Where, When, Who se mantiene exactamente igual que antes) */}
+          {/* POPOVERS */}
           {activeSearchTab === 'where' && (
             <div className="search-popover popover-where">
               <input type="text" className="where-input" placeholder="Search locations..." value={searchData.location} onChange={(e) => setSearchData({...searchData, location: e.target.value})} />
@@ -162,9 +171,6 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <div className="exact-dates-footer">
-                <button className="exact-btn active">Exact dates</button><button className="exact-btn">± 1 day</button><button className="exact-btn">± 2 days</button><button className="exact-btn">± 3 days</button><button className="exact-btn">± 7 days</button>
-              </div>
             </div>
           )}
 
@@ -191,9 +197,9 @@ export default function Header() {
           )}
         </div>
 
-        {/* RIGHT ACTIONS & MENU */}
+        {/* RIGHT ACTIONS (Se oculta el botón secundario en móvil si el buscador se expande) */}
         <div className="header-right" ref={menuRef}>
-          <Link href="/jets" className="btn-host">Luxury Jets</Link>
+          <Link href="/jets" className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>Luxury Jets</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>

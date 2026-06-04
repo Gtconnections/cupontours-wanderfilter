@@ -1,33 +1,55 @@
-/* app/yachts/[id]/yacht-detail.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (DETALLE DE YATES)
+   ========================================================================== */
 .yacht-detail-page {
-  padding-top: 140px;
+  padding-top: 100px;
   background-color: #ffffff;
 }
 
 .detail-container {
   max-width: var(--max-width, 1280px);
   margin: 0 auto;
-  padding: 0 40px 120px;
+  padding: 0 20px 60px;
 }
 
-.yacht-detail-header { margin-bottom: 32px; }
-.yacht-detail-header .pre-title { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #888888; font-weight: 600; margin-bottom: 12px; }
-.yacht-detail-header .massive-heading { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; color: #111111; margin-bottom: 8px; }
-.yacht-location-tag { font-size: 14px; color: #666666; }
+.yacht-detail-header { 
+  margin-bottom: 24px; 
+}
 
-/* ==========================================================================
-   NUEVO: ESTRUCTURA ENCABEZADO Y BOTÓN DE RETORNO EDITORIAL
-   ========================================================================== */
+.yacht-detail-header .pre-title { 
+  display: block; 
+  font-size: 10px; 
+  text-transform: uppercase; 
+  letter-spacing: 1.5px; 
+  color: #888888; 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+}
+
+.yacht-detail-header .massive-heading { 
+  font-size: 28px; 
+  font-weight: 700; 
+  letter-spacing: -1px; 
+  line-height: 1.2; 
+  color: #111111; 
+  margin-bottom: 8px; 
+}
+
+.yacht-location-tag { 
+  font-size: 13px; 
+  color: #666666; 
+}
+
+/* ENCABEZADO ESTRUCTURA EDITORIAL CON BOTÓN DE RETORNO */
 .header-split-row {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end; /* Alinea el botón perfectamente con la base del título */
-  gap: 40px;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .header-text-side {
-  flex: 1;
+  width: 100%;
 }
 
 .btn-back-editorial {
@@ -36,200 +58,290 @@
   gap: 10px;
   background: transparent;
   color: var(--text-main, #111111);
-  border: 1px solid #e0e0e2; /* Borde ultra delgado */
-  padding: 10px 20px;
+  border: 1px solid #e0e0e2;
+  padding: 8px 16px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.2s ease;
 }
+.btn-back-editorial svg { transition: transform 0.2s ease; }
+.btn-back-editorial:hover { border-color: var(--text-main, #111111); background-color: #fafafa; }
+.btn-back-editorial:hover svg { transform: translateX(-2px); }
 
-.btn-back-editorial svg {
-  transition: transform 0.2s ease;
-}
-
-.btn-back-editorial:hover {
-  border-color: var(--text-main, #111111);
-  background-color: #fafafa;
-}
-
-/* Micro-interacción: la flecha se mueve sutilmente a la izquierda en hover */
-.btn-back-editorial:hover svg {
-  transform: translateX(-2px);
-}
-
-@media (max-width: 640px) {
-  .header-split-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-}
-/* CAROUSEL INTERACTIVO NÁUTICO */
+/* CARRUSEL INTERACTIVO AVANZADO CON SCROLL SNAP HÍBRIDO */
 .yacht-hero-carousel {
   width: 100%;
-  margin-bottom: 60px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .carousel-main-viewport {
   position: relative;
   width: 100%;
-  height: 520px;
-  border-radius: 24px;
-  overflow: hidden;
+  height: 280px; 
+  border-radius: 16px;
+  overflow-x: auto; 
+  display: flex;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
   background-color: #f7f7f9;
 }
+.carousel-main-viewport::-webkit-scrollbar { display: none; }
 
 .carousel-main-viewport img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: fadeInImage 0.4s ease-in-out;
+  flex-shrink: 0; 
+  scroll-snap-align: start;
 }
 
-@keyframes fadeInImage {
-  from { opacity: 0.7; }
-  to { opacity: 1; }
-}
-
+/* FLECHAS DE NAVEGACIÓN COMPACTAS Y VISIBLES EN MÓVIL */
 .carousel-arrow {
+  display: flex;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 36px; 
+  height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(0,0,0,0.05);
   color: #111111;
-  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
+.carousel-arrow:hover { background: #ffffff; transform: translateY(-50%) scale(1.05); }
+.carousel-arrow.prev { left: 12px; }
+.carousel-arrow.next { right: 12px; }
 
-.carousel-arrow:hover { background: #ffffff; scale: 1.05; }
-.carousel-arrow.prev { left: 24px; }
-.carousel-arrow.next { right: 24px; }
+.carousel-arrow svg {
+  width: 16px;
+  height: 16px;
+}
 
 .carousel-counter-badge {
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+  bottom: 16px;
+  right: 16px;
   background: rgba(17, 17, 17, 0.8);
   backdrop-filter: blur(8px);
   color: #ffffff;
   font-family: monospace;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 6px 14px;
+  font-size: 11px;
+  padding: 4px 10px;
   border-radius: 30px;
   z-index: 10;
 }
 
-.carousel-dots-indicator { display: flex; justify-content: center; gap: 8px; }
-.indicator-dot { width: 6px; height: 6px; background: #dddddd; border-radius: 50%; cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
-.indicator-dot.active { background: #111111; transform: scale(1.2); width: 14px; border-radius: 4px; }
+.carousel-dots-indicator { 
+  display: flex; 
+  justify-content: center; 
+  gap: 6px; 
+}
 
-/* LAYOUT STRUCTURE */
-.yacht-content-layout { display: flex; gap: 80px; position: relative; }
-.content-left-side { flex: 1.8; }
-.content-right-side { flex: 1.2; position: relative; }
+.indicator-dot { 
+  width: 6px; 
+  height: 6px; 
+  background: #dddddd; 
+  border-radius: 50%; 
+}
+.indicator-dot.active { 
+  background: #111111; 
+  width: 12px; 
+  border-radius: 4px; 
+}
 
-/* RIEL DE ESPECIFICACIONES (3 COLUMNAS MODULARES) */
+/* LAYOUT STRUCTURE (APILADO EN VERTICAL POR DEFECTO) */
+.yacht-content-layout { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 32px; 
+  position: relative; 
+}
+.content-left-side { width: 100%; }
+.content-right-side { width: 100%; position: relative; }
+
+/* REJILLA DE ESPECIFICACIONES MÓVIL */
 .yacht-quick-specs { 
   display: grid; 
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 24px; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 16px; 
   border-bottom: 1px solid #f0f0f2; 
-  padding-bottom: 32px; 
-  margin-bottom: 40px; 
+  padding-bottom: 24px; 
+  margin-bottom: 24px; 
 }
 .spec-pill { display: flex; flex-direction: column; }
-.spec-label { font-size: 10px; text-transform: uppercase; color: #888888; font-weight: 600; margin-bottom: 4px; letter-spacing: 0.5px; }
-.spec-value { font-size: 15px; font-weight: 600; color: #111111; }
+.spec-label { font-size: 9px; text-transform: uppercase; color: #888888; font-weight: 600; margin-bottom: 2px; letter-spacing: 0.5px; }
+.spec-value { font-size: 14px; font-weight: 600; color: #111111; }
 
-.detail-section-block h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; color: #111111; }
-.editorial-text p { font-size: 15px; line-height: 1.7; color: #333333; margin-bottom: 16px; }
+.detail-section-block h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 14px; color: #111111; }
+.editorial-text p { font-size: 14px; line-height: 1.6; color: #333333; margin-bottom: 12px; }
 
-/* SECCIÓN CARACTERÍSTICAS Y INCLUSIONES */
-.marine-features-section { border-top: 1px solid #f0f0f2; padding-top: 40px; margin-top: 20px; }
-.marine-categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
-.marine-category-group h3 { font-size: 13px; font-weight: 700; color: #111111; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
-.clean-marine-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-.clean-marine-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #444444; }
-.clean-marine-list li svg { color: #0284c7; flex-shrink: 0; } /* Azul océano para Yates */
+/* SECCIÓN CARACTERÍSTICAS E INCLUSIONES */
+.marine-features-section { border-top: 1px solid #f0f0f2; padding-top: 32px; margin-top: 16px; }
+.marine-categories-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+.marine-category-group h3 { font-size: 12px; font-weight: 700; color: #111111; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.clean-marine-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.clean-marine-list li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #444444; }
+.clean-marine-list li svg { color: #0284c7; flex-shrink: 0; }
 
-/* ==========================================================================
-   WIDGET DE RESERVA MARÍTIMO (STICKY DERECHO)
-   ========================================================================== */
+/* WIDGET DE RESERVAS MARÍTIMO */
 .booking-sticky-widget {
-  position: sticky;
-  top: 160px;
   background: #ffffff;
   border: 1px solid #f0f0f2;
-  padding: 40px;
-  border-radius: 24px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
 }
-.widget-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.widget-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .price-container { display: flex; flex-direction: column; }
 .widget-price { color: #666666; font-size: 13px; }
-.widget-price strong { color: #111111; font-size: 24px; font-weight: 700; }
-.widget-subprice { font-size: 12px; color: #888888; margin-top: 2px; }
-.widget-rating { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.widget-price strong { color: #111111; font-size: 20px; font-weight: 700; }
+.widget-subprice { font-size: 11px; color: #888888; margin-top: 2px; }
+.widget-rating { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
 
-/* CAJA SELECTORA DE FECHAS */
-.widget-date-picker-box { border: 1px solid #f0f0f2; border-radius: 16px; margin-bottom: 24px; position: relative; background: #ffffff; }
+/* SELECTOR DE FECHAS */
+.widget-date-picker-box { border: 1px solid #f0f0f2; border-radius: 12px; margin-bottom: 20px; position: relative; background: #ffffff; }
 .date-picker-header { display: flex; cursor: pointer; }
-.picker-col { flex: 1; padding: 16px; display: flex; flex-direction: column; }
-.picker-col label { font-size: 10px; text-transform: uppercase; font-weight: 700; color: #111111; margin-bottom: 6px; letter-spacing: 0.5px; }
-.picker-col span { font-size: 14px; color: #888888; }
+.picker-col { flex: 1; padding: 12px; display: flex; flex-direction: column; }
+.picker-col label { font-size: 9px; text-transform: uppercase; font-weight: 700; color: #111111; margin-bottom: 4px; letter-spacing: 0.5px; }
+.picker-col span { font-size: 13px; color: #888888; }
 .selected-value { color: #111111 !important; font-weight: 500; }
 .picker-divider { width: 1px; background-color: #f0f0f2; }
 
-/* CALENDARIO FLOTANTE */
-.editorial-calendar-popup { position: absolute; top: 105%; right: 0; width: 580px; background: #ffffff; border: 1px solid #f0f0f2; border-radius: 20px; padding: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); z-index: 50; }
-.calendar-months-container { display: flex; gap: 32px; }
+/* CALENDARIO FLOTANTE ADAPTADO A MÓVIL */
+.editorial-calendar-popup { 
+  position: absolute; 
+  top: 105%; 
+  right: 0; 
+  width: 100%; 
+  background: #ffffff; 
+  border: 1px solid #f0f0f2; 
+  border-radius: 16px; 
+  padding: 16px; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
+  z-index: 50; 
+}
+.calendar-months-container { display: flex; flex-direction: column; gap: 20px; }
 .month-block { flex: 1; }
-.month-block h4 { font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 16px; color: #111111; }
-.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 8px; }
-.calendar-weekdays span { font-size: 11px; color: #999999; font-weight: 500; }
-.calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.month-block h4 { font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 12px; color: #111111; }
+.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 6px; }
+.calendar-weekdays span { font-size: 10px; color: #999999; font-weight: 500; }
+.calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
 .empty-day { width: 100%; aspect-ratio: 1; }
 
-.day-btn { width: 100%; aspect-ratio: 1; background: transparent; border: none; font-size: 13px; font-weight: 500; color: #111111; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
+.day-btn { width: 100%; aspect-ratio: 1; background: transparent; border: none; font-size: 12px; font-weight: 500; color: #111111; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
 .day-btn:hover { background: #f4f4f7; }
 .day-btn.active-bound { background: #111111 !important; color: #ffffff !important; font-weight: 600; }
 .day-btn.in-range { background: #f4f4f7 !important; border-radius: 0; color: #000000; }
 
 /* DESGLOSE TARIFAS */
-.pricing-breakdown-box { margin-bottom: 24px; display: flex; flex-direction: column; gap: 14px; }
-.price-row-item { display: flex; justify-content: space-between; font-size: 14px; color: #666666; }
-.total-row { border-top: 1px solid #f0f0f2; padding-top: 16px; margin-top: 4px; color: #111111; font-weight: 600; font-size: 15px; }
+.pricing-breakdown-box { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
+.price-row-item { display: flex; justify-content: space-between; font-size: 13px; color: #666666; }
+.total-row { border-top: 1px solid #f0f0f2; padding-top: 14px; margin-top: 2px; color: #111111; font-weight: 600; font-size: 14px; }
 
-.btn-booking-primary { width: 100%; background: #111111; color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+.btn-booking-primary { width: 100%; background: #111111; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; }
 .btn-booking-primary:hover { background: #222222; }
-.booking-disclaimer { text-align: center; font-size: 12px; color: #999999; margin-top: 14px; line-height: 1.4; }
+.booking-disclaimer { text-align: center; font-size: 11px; color: #999999; margin-top: 12px; line-height: 1.4; }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
-  .yacht-content-layout { flex-direction: column; gap: 40px; }
-  .editorial-calendar-popup { width: 100%; max-width: 500px; position: fixed; top: 20%; left: 50%; transform: translate(-50%, 0); }
-  .calendar-months-container { flex-direction: column; gap: 24px; }
-  .marine-categories-grid { grid-template-columns: 1fr; gap: 24px; }
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 640px) {
+  .header-split-row { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 40px; }
 }
 
-@media (max-width: 768px) {
-  .yacht-quick-specs { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .carousel-main-viewport { height: 320px; }
+@media (min-width: 768px) {
+  .detail-container { padding: 0 40px 80px; }
+  .yacht-detail-header .massive-heading { font-size: 34px; }
+  .carousel-main-viewport { height: 380px; }
+  .carousel-arrow { width: 40px; height: 40px; }
+  .carousel-arrow svg { width: 18px; height: 18px; }
+  .carousel-arrow.prev { left: 20px; }
+  .carousel-arrow.next { right: 20px; }
+  .yacht-quick-specs { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .marine-categories-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+}
+
+@media (min-width: 1024px) {
+  .yacht-detail-page { padding-top: 140px; }
+  .detail-container { padding-bottom: 120px; }
+  .yacht-detail-header { margin-bottom: 32px; }
+  .yacht-detail-header .pre-title { font-size: 11px; margin-bottom: 12px; }
+  .yacht-detail-header .massive-heading { font-size: 40px; letter-spacing: -1px; }
+  .yacht-location-tag { font-size: 14px; }
+  .btn-back-editorial { padding: 10px 20px; font-size: 13px; }
+
+  /* Ajustes Desktop para bloquear el arrastre manual */
+  .yacht-hero-carousel { margin-bottom: 60px; gap: 16px; }
+  .carousel-main-viewport { height: 520px; border-radius: 24px; overflow-x: hidden; }
+  .carousel-dots-indicator { gap: 8px; }
+  .indicator-dot { width: 6px; height: 6px; }
+  .indicator-dot.active { width: 14px; }
+
+  /* Escalado de flechas a formato premium amplio en Desktop */
+  .carousel-arrow {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .carousel-arrow svg { width: 20px; height: 20px; }
+  .carousel-arrow.prev { left: 24px; }
+  .carousel-arrow.next { right: 24px; }
+  .carousel-counter-badge { bottom: 24px; right: 24px; font-size: 12px; padding: 6px 14px; }
+
+  /* Activación estricta del layout a doble columna en paralelo */
+  .yacht-content-layout { flex-direction: row; gap: 80px; }
+  .content-left-side { flex: 1.8; }
+  .content-right-side { flex: 1.2; }
+
+  .yacht-quick-specs { padding-bottom: 32px; margin-bottom: 40px; }
+  .spec-label { font-size: 10px; margin-bottom: 4px; }
+  .spec-value { font-size: 15px; }
+  .detail-section-block h2 { font-size: 24px; margin-bottom: 20px; }
+  .editorial-text p { font-size: 15px; margin-bottom: 16px; }
+
+  .marine-features-section { padding-top: 40px; margin-top: 20px; }
+  .marine-category-group h3 { font-size: 13px; margin-bottom: 14px; }
+  .clean-marine-list { gap: 10px; }
+  .clean-marine-list li { font-size: 14px; }
+
+  /* Caja Sticky lateral de cotización */
+  .booking-sticky-widget { position: sticky; top: 160px; padding: 40px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03); }
+  .widget-price-row { margin-bottom: 24px; }
+  .widget-price strong { font-size: 24px; }
+  .widget-subprice { font-size: 12px; }
+  .widget-rating { font-size: 14px; }
+
+  .widget-date-picker-box { border-radius: 16px; margin-bottom: 24px; }
+  .picker-col { padding: 16px; }
+  .picker-col label { font-size: 10px; margin-bottom: 6px; }
+  .picker-col span { font-size: 14px; }
+
+  /* Formato expandido horizontal del calendario flotante */
+  .editorial-calendar-popup { width: 580px; padding: 32px; border-radius: 20px; }
+  .calendar-months-container { flex-direction: row; gap: 32px; }
+  .month-block h4 { font-size: 14px; margin-bottom: 16px; }
+  .calendar-weekdays span { font-size: 11px; }
+  .calendar-days-grid { gap: 4px; }
+  .day-btn { font-size: 13px; }
+
+  .pricing-breakdown-box { margin-bottom: 24px; gap: 14px; }
+  .price-row-item { font-size: 14px; }
+  .total-row { padding-top: 16px; margin-top: 4px; font-size: 15px; }
+  .btn-booking-primary { padding: 16px; border-radius: 14px; font-size: 15px; }
+  .booking-disclaimer { font-size: 12px; margin-top: 14px; }
 }

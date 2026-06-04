@@ -1,43 +1,44 @@
-/* app/work-with-us/work.css */
-
 /* ==========================================================================
-   TIPOGRAFÍA Y UTILIDADES GLOBALES DE LA VISTA
+   WANDER LUXURY WORK - ARQUITECTURA GENERAL (MOBILE-FIRST)
    ========================================================================== */
-.work-page { padding-top: 100px; }
+.work-page { 
+  padding-top: 80px; /* Reducción elástica inicial para celulares */
+}
 
 .pre-title {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #888;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-weight: 600;
 }
 
 .section-title {
-  font-size: 48px;
+  font-size: 28px; /* Proporción calibrada elástica móvil */
   font-weight: 700;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
-  margin-bottom: 32px;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 24px;
 }
 
 .text-light { color: #a3a3a3; }
 .text-light-dark { color: #888; }
 .bg-gray-light { background-color: #f9f9f9; }
-.mt-4 { margin-top: 32px; }
+.mt-4 { margin-top: 24px; }
 
 .btn-black-pill {
   background: var(--text-main);
   color: white;
   border: none;
-  padding: 14px 32px;
+  padding: 12px 28px;
   border-radius: 40px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s;
+  display: inline-block;
 }
 .btn-black-pill:hover { background: #222; transform: translateY(-2px); }
 
@@ -46,8 +47,8 @@
   background: var(--text-main);
   color: white;
   border: none;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
@@ -55,141 +56,126 @@
 }
 .btn-black-full:hover { background: #222; }
 
-/* ==========================================================================
-   1. HERO MASIVO
-   ========================================================================== */
+/* 1. HERO MASIVO ELÁSTICO */
 .work-hero {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 60px 40px 100px;
+  padding: 32px 20px 48px; /* Margen de respiro lateral reducido en móvil */
 }
 
 .hero-text-container {
-  max-width: 900px;
-  margin-bottom: 60px;
+  max-width: 100%;
+  margin-bottom: 32px;
 }
 
 .work-massive-title {
-  font-size: 64px;
+  font-size: 34px; /* Evita desbordamientos de texto en celulares */
   font-weight: 700;
-  letter-spacing: -2px;
-  line-height: 1.05;
-  margin-bottom: 24px;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 16px;
 }
 
 .hero-subtitle {
-  font-size: 18px;
+  font-size: 15px;
   color: var(--text-muted);
-  max-width: 600px;
+  max-width: 100%;
   line-height: 1.5;
 }
 
 .hero-image-wrapper {
   width: 100%;
-  aspect-ratio: 21 / 9;
-  border-radius: 24px;
+  aspect-ratio: 16 / 9; /* Formato balanceado para pantallas compactas */
+  border-radius: 16px;
   overflow: hidden;
   background: var(--border-light);
 }
+.hero-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-.hero-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ==========================================================================
-   2 & 3. SPLIT SECTIONS (Text + Form / Text + Image)
-   ========================================================================== */
+/* 2 & 3. SPLIT SECTIONS (APILADO EN MÓVIL POR DEFECTO) */
 .work-split-section {
-  padding: 120px 40px;
+  padding: 48px 20px;
 }
 
 .split-container {
   max-width: var(--max-width);
   margin: 0 auto;
   display: flex;
-  gap: 100px;
-  align-items: center;
+  flex-direction: column; /* Flujo vertical nativo para smartphones */
+  gap: 40px;
+  align-items: stretch;
 }
+.split-container.reverse { flex-direction: column; } /* Mantiene el orden natural descendente */
 
-.split-container.reverse {
-  flex-direction: row-reverse;
-}
-
-.split-text { flex: 1.2; }
+.split-text { width: 100%; }
 .split-text .text-content p {
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 1.6;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .split-image {
-  flex: 1;
+  width: 100%;
   aspect-ratio: 4/5;
-  border-radius: 24px;
+  border-radius: 16px;
   overflow: hidden;
 }
 .split-image img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Formulario */
-.split-form { flex: 1; }
+/* Formulario Modular */
+.split-form { width: 100%; }
 .form-card {
   background: #f5f5f5;
-  padding: 40px;
-  border-radius: 24px;
+  padding: 24px; /* Compresión de cajas para ganar área táctil */
+  border-radius: 16px;
   border: 1px solid var(--border-light);
 }
 
-.form-card h3 { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px; }
-.form-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+.form-card h3 { font-size: 20px; margin-bottom: 6px; letter-spacing: -0.3px; }
+.form-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
 
-.form-row { display: flex; gap: 16px; margin-bottom: 16px; }
-.input-group { flex: 1; display: flex; flex-direction: column; margin-bottom: 16px; }
-.input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: #555; margin-bottom: 8px; }
+.form-row { display: flex; flex-direction: column; gap: 0; } /* Columnas apiladas en móvil */
+.input-group { display: flex; flex-direction: column; margin-bottom: 16px; }
+.input-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: #555; margin-bottom: 6px; }
 .input-group input, .input-group textarea {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   background: #ffffff;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 10px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 14px;
   outline: none;
   transition: all 0.2s;
 }
 .input-group input:focus, .input-group textarea:focus { border-color: var(--text-main); }
-.form-disclaimer { font-size: 12px; color: #999; margin-bottom: 24px; line-height: 1.4; }
+.form-disclaimer { font-size: 11px; color: #999; margin-bottom: 16px; line-height: 1.4; }
 
-/* ==========================================================================
-   4. REVENUE ESTIMATES
-   ========================================================================== */
+/* 4. REVENUE ESTIMATES (1 COLUMNA EN MÓVIL) */
 .revenue-section {
-  padding: 120px 40px;
+  padding: 48px 20px;
   max-width: var(--max-width);
   margin: 0 auto;
 }
 
-.section-header.center { text-align: center; margin-bottom: 80px; }
+.section-header.center { text-align: center; margin-bottom: 40px; }
 .section-header.center .pre-title { display: inline-block; }
-.subtitle-text { font-size: 16px; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+.subtitle-text { font-size: 14px; color: var(--text-muted); max-width: 100%; margin: 0 auto; }
 
 .revenue-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: 1fr; /* Lista secuencial vertical */
+  gap: 20px;
 }
 
 .revenue-card {
   background: #f9f9f9;
   border: 1px solid var(--border-light);
-  border-radius: 24px;
-  padding: 40px;
+  border-radius: 16px;
+  padding: 32px 24px;
   text-align: center;
-  transition: transform 0.2s;
 }
-.revenue-card:hover { transform: translateY(-5px); }
 
 .revenue-card.highlight {
   background: #111111;
@@ -197,67 +183,60 @@
   border-color: #111;
 }
 
-.revenue-card h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; color: var(--text-muted); }
+.revenue-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: var(--text-muted); }
 .revenue-card.highlight h4 { color: #aaa; }
+.revenue-card .price { font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; }
+.revenue-card p { font-size: 11px; line-height: 1.4; color: #888; }
 
-.revenue-card .price { font-size: 56px; font-weight: 700; letter-spacing: -2px; margin-bottom: 24px; }
-.revenue-card p { font-size: 12px; line-height: 1.5; color: #888; }
-
-/* ==========================================================================
-   5. WHY WORK WITH US
-   ========================================================================== */
+/* 5. WHY WORK WITH US */
 .why-us-section {
-  padding: 120px 40px;
+  padding: 48px 20px;
 }
 
 .logo-placeholder {
-  font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 24px;
+  font-size: 18px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 16px;
 }
 
 .features-grid-3 {
   max-width: var(--max-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 60px;
+  grid-template-columns: 1fr;
+  gap: 40px;
 }
 
 .feature-block { text-align: center; }
 .icon-circle {
-  width: 64px; height: 64px;
+  width: 56px; height: 56px;
   background: white; border: 1px solid var(--border-light); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 24px; color: var(--text-main);
+  margin: 0 auto 16px; color: var(--text-main);
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
-.feature-block h4 { font-size: 20px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.5px;}
-.feature-block p { font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+.feature-block h4 { font-size: 18px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.3px;}
+.feature-block p { font-size: 13.5px; line-height: 1.5; color: var(--text-muted); }
 
-/* ==========================================================================
-   6. DARK BANNER
-   ========================================================================== */
+/* 6. DARK BANNER */
 .dark-banner {
   background: var(--text-main);
   color: white;
-  padding: 140px 40px;
+  padding: 64px 20px;
+  text-align: center;
+}
+.banner-content { max-width: 100%; margin: 0 auto; }
+.logo-placeholder.light { color: white; opacity: 0.5; margin-bottom: 20px; }
+.banner-content h2 { font-size: 26px; line-height: 1.2; letter-spacing: -0.5px; }
+
+/* 7. PLATFORMS LOGOS */
+.platforms-section {
+  padding: 60px 20px;
+  border-bottom: 1px solid var(--border-light);
   text-align: center;
 }
 
-.banner-content { max-width: 900px; margin: 0 auto; }
-.logo-placeholder.light { color: white; opacity: 0.5; margin-bottom: 32px; }
-.banner-content h2 { font-size: 40px; line-height: 1.2; letter-spacing: -1px; }
-
-/* ==========================================================================
-   7. PLATFORMS LOGOS
-   ========================================================================== */
-.platforms-section {
-  padding: 100px 40px;
-  border-bottom: 1px solid var(--border-light);
-}
-
 .small-title {
-  font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px;
+  font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 32px; text-transform: uppercase; letter-spacing: 1px;
 }
 
 .logos-flex {
@@ -266,12 +245,12 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 60px;
+  gap: 32px 40px;
 }
 
 .platform-logo {
-  font-size: 24px;
-  font-family: "Georgia", serif; /* Tipografía para simular marcas */
+  font-size: 18px;
+  font-family: "Georgia", serif;
   font-weight: 600;
   color: #111;
   opacity: 0.4;
@@ -281,10 +260,86 @@
 }
 .platform-logo:hover { opacity: 1; filter: grayscale(0%); }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
-  .split-container, .split-container.reverse { flex-direction: column; gap: 60px; }
-  .revenue-grid { grid-template-columns: 1fr; }
-  .features-grid-3 { grid-template-columns: 1fr; gap: 40px; }
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .section-title { font-size: 38px; }
   .work-massive-title { font-size: 48px; }
+  .hero-subtitle { font-size: 16px; }
+  
+  .work-hero, .work-split-section, .revenue-section, .why-us-section, .dark-banner, .platforms-section { padding: 80px 40px; }
+  
+  .split-container { gap: 40px; }
+  .form-card { padding: 32px; }
+  .form-row { flex-direction: row; gap: 16px; }
+  
+  .revenue-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .features-grid-3 { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
+  .banner-content h2 { font-size: 34px; }
+  .logos-flex { gap: 48px; }
+  .platform-logo { font-size: 22px; }
+}
+
+@media (min-width: 1024px) {
+  .work-page { padding-top: 100px; }
+  .section-title { font-size: 48px; letter-spacing: -1.5px; margin-bottom: 32px; }
+  .mt-4 { margin-top: 32px; }
+  
+  .btn-black-pill { padding: 14px 32px; font-size: 15px; }
+  .btn-black-full { padding: 16px; font-size: 15px; }
+
+  .work-hero { padding: 60px 40px 100px; }
+  .hero-text-container { margin-bottom: 60px; max-width: 900px; }
+  .work-massive-title { font-size: 64px; letter-spacing: -2px; line-height: 1.05; margin-bottom: 24px; }
+  .hero-subtitle { font-size: 18px; max-width: 600px; }
+  .hero-image-wrapper { aspect-ratio: 21 / 9; border-radius: 24px; }
+
+  /* Restauramos el layout asimétrico Split de doble columna */
+  .work-split-section { padding: 120px 40px; }
+  .split-container { flex-direction: row; gap: 100px; align-items: center; }
+  .split-container.reverse { flex-direction: row-reverse; }
+  .split-text { flex: 1.2; }
+  .split-text .text-content p { font-size: 16px; margin-bottom: 24px; line-height: 1.7; }
+  .split-image { flex: 1; border-radius: 24px; }
+  .split-form { flex: 1; }
+  
+  .form-card { padding: 40px; border-radius: 24px; }
+  .form-card h3 { font-size: 24px; margin-bottom: 8px; }
+  .form-card p { font-size: 14px; margin-bottom: 32px; }
+  .input-group label { font-size: 11px; margin-bottom: 8px; }
+  .input-group input, .input-group textarea { padding: 16px; font-size: 15px; border-radius: 12px; }
+  .form-disclaimer { font-size: 12px; margin-bottom: 24px; }
+
+  .revenue-section { padding: 120px 40px; }
+  .section-header.center { margin-bottom: 80px; }
+  .subtitle-text { font-size: 16px; max-width: 600px; }
+  
+  /* Retorno estricto a las 3 columnas de estimación de ingresos */
+  .revenue-grid { grid-template-columns: repeat(3, 1fr); }
+  .revenue-card { border-radius: 24px; padding: 40px; transition: transform 0.2s; }
+  .revenue-card:hover { transform: translateY(-5px); }
+  .revenue-card h4 { font-size: 14px; margin-bottom: 24px; }
+  .revenue-card .price { font-size: 56px; letter-spacing: -2px; margin-bottom: 24px; }
+  .revenue-card p { font-size: 12px; }
+
+  .why-us-section { padding: 120px 40px; }
+  .logo-placeholder { font-size: 20px; margin-bottom: 24px; }
+  
+  /* Grilla original de 3 columnas de beneficios institucionales */
+  .features-grid-3 { grid-template-columns: repeat(3, 1fr); gap: 60px; }
+  .icon-circle { width: 64px; height: 64px; margin: 0 auto 24px; }
+  .feature-block h4 { font-size: 20px; margin-bottom: 16px; }
+  .feature-block p { font-size: 15px; line-height: 1.6; }
+
+  .dark-banner { padding: 140px 40px; }
+  .banner-content { max-width: 900px; }
+  .logo-placeholder.light { margin-bottom: 32px; }
+  .banner-content h2 { font-size: 40px; letter-spacing: -1px; }
+
+  .platforms-section { padding: 100px 40px; }
+  .small-title { font-size: 14px; margin-bottom: 40px; }
+  .logos-flex { gap: 60px; }
+  .platform-logo { font-size: 24px; }
 }

@@ -61,7 +61,7 @@ export default function YachtsPage() {
         {/* GRID COMPLETADO CON MICRO-ESPECIFICACIONES */}
         <div className="marine-grid">
           {fleet.map((yacht) => (
-            <Link href={`/properties/${yacht.id}`} key={yacht.id} className="link-dinamic">
+            <Link href={`/yachts/${yacht.id}`} key={yacht.id} className="link-dinamic">
               <div className="marine-card">
                 <div className="marine-image-box">
                   <img src={yacht.img} alt={yacht.title} loading="lazy" />

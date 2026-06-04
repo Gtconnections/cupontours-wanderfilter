@@ -1,54 +1,54 @@
-/* app/login/login.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (PÁGINA DE INICIO DE SESIÓN)
+   ========================================================================== */
 .login-split-page {
-  display: flex;
-  min-height: 100vh;
+  display: block; /* Flujo en bloque vertical nativo para smartphones */
+  min-height: auto; /* ARREGLADO: En móvil NO fuerza el 100vh para evitar el espacio vacío */
+  height: auto;     /* El contenedor medirá exactamente lo que mida el formulario */
   background-color: #ffffff;
-  padding-top: 100px; /* Despeja el header de Next */
+  padding-top: 80px; /* Despeja el header de Next */
   box-sizing: border-box;
 }
 
-/* ==========================================================================
-   COLUMNA IZQUIERDA: FORMULARIO
-   ========================================================================== */
+/* COLUMNA: FORMULARIO */
 .login-form-side {
-  flex: 1;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 60px;
+  padding: 32px 20px; /* Respiro optimizado para accesos táctiles móviles */
 }
 
 .login-box-container {
   width: 100%;
-  max-width: 420px; /* Ancho elegante restringido para login */
+  max-width: 420px; 
 }
 
 .login-header-text {
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .pre-title {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #888888;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .login-main-title {
-  font-size: 36px;
+  font-size: 26px; 
   font-weight: 700;
-  letter-spacing: -1.5px;
+  letter-spacing: -0.5px;
   color: var(--text-main);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .login-subtitle {
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--text-muted);
 }
 
@@ -56,17 +56,17 @@
 .wander-login-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px; 
 }
 
 .form-group-clean {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .form-group-clean label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #444444;
   text-transform: uppercase;
@@ -80,7 +80,7 @@
 }
 
 .forgot-link {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s ease;
@@ -106,7 +106,7 @@
 
 .input-with-icon input {
   width: 100%;
-  padding: 16px 16px 16px 48px; /* Padding extra a la izquierda para el icono */
+  padding: 14px 14px 14px 44px; 
   background-color: #fafafa;
   border: 1px solid var(--border-light);
   border-radius: 12px;
@@ -117,7 +117,6 @@
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Micro-interacción interactiva al enfocar el input */
 .input-with-icon input:focus {
   border-color: var(--text-main);
   background-color: #ffffff;
@@ -134,12 +133,12 @@
   background-color: var(--text-main);
   color: #ffffff;
   border: none;
-  padding: 16px;
-  font-size: 15px;
+  padding: 14px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 12px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 8px;
   transition: background-color 0.2s ease;
 }
 .btn-login-submit:hover {
@@ -147,9 +146,9 @@
 }
 
 .login-footer-redirect {
-  margin-top: 32px;
+  margin-top: 24px;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
@@ -162,60 +161,90 @@
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   COLUMNA DERECHA: IMAGEN CINEMÁTICA
-   ========================================================================== */
+/* COLUMNA GRÁFICA (Oculta por defecto en dispositivos móviles por usabilidad) */
 .login-image-side {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  padding: 60px;
+  display: none;
 }
 
-.login-bg-img {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  object-fit: cover;
-  z-index: 1;
+
+/* ==========================================================================
+   MEDIA QUERIES (PANTALLAS MEDIANAS, ESCRITORIO Y ADAPTACIONES)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .login-main-title { font-size: 32px; }
+  .login-form-side { padding: 40px; }
 }
 
-.login-image-overlay {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
-  z-index: 2;
-}
-
-.image-side-caption {
-  position: relative;
-  z-index: 3;
-  color: #ffffff;
-}
-
-.caption-tagline {
-  font-family: "Georgia", serif;
-  font-style: italic;
-  font-size: 24px;
-  margin-bottom: 6px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.caption-location {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.8;
-  font-weight: 600;
-}
-
-/* RESPONSIVE */
-@media (max-width: 992px) {
-  .login-image-side {
-    display: none; /* En tabletas y móviles la columna gráfica desaparece elegantemente */
+@media (min-width: 1024px) {
+  /* Se activa la elegante estructura dividida en dos columnas paralelas */
+  .login-split-page {
+    display: flex;
+    min-height: 100vh; /* RESTAURADO EN DESKTOP: Fuerza la pantalla completa */
+    padding-top: 100px;
   }
+  
   .login-form-side {
-    padding: 40px 24px;
+    flex: 1;
+    padding: 40px 60px;
+  }
+  
+  .login-header-text { margin-bottom: 40px; }
+  .pre-title { font-size: 11px; margin-bottom: 12px; }
+  .login-main-title { font-size: 36px; letter-spacing: -1.5px; margin-bottom: 12px; }
+  .login-subtitle { font-size: 14px; }
+  
+  .wander-login-form { gap: 24px; }
+  .form-group-clean { gap: 8px; }
+  .form-group-clean label { font-size: 12px; }
+  .forgot-link { font-size: 13px; }
+  
+  .input-with-icon input { padding: 16px 16px 16px 48px; font-size: 14px; }
+  .btn-login-submit { padding: 16px; font-size: 15px; margin-top: 10px; }
+  .login-footer-redirect { margin-top: 32px; font-size: 14px; }
+
+  /* Activación cinemática del bloque fotográfico derecho */
+  .login-image-side {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 60px;
+  }
+
+  .login-bg-img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .login-image-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+    z-index: 2;
+  }
+
+  .image-side-caption {
+    position: relative;
+    z-index: 3;
+    color: #ffffff;
+  }
+
+  .caption-tagline {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 24px;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  .caption-location {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    font-weight: 600;
   }
 }

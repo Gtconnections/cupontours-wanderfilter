@@ -61,7 +61,7 @@ export default function CarsPage() {
         {/* GRID DE 4 COLUMNAS CONCISO */}
         <div className="fleet-grid">
           {fleet.map((car) => (
-            <Link href={`/properties/${car.id}`} key={car.id} className="link-dinamic">
+            <Link href={`/cars/${car.id}`} key={car.id} className="link-dinamic">
               <div className="fleet-card">
                 <div className="fleet-image-box">
                   <img src={car.img} alt={car.title} loading="lazy" />

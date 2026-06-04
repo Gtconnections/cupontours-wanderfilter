@@ -1,38 +1,36 @@
-/* app/jets/jets.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (CATÁLOGO Y COTIZACIÓN DE JETS)
+   ========================================================================== */
 .aviation-page {
   background-color: #ffffff;
 }
 
 .pre-title {
   display: block;
-  font-size: 11px;
+  font-size: 10px; /* Redimensionado elástico para celulares */
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #888;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-weight: 600;
 }
 
 .inner-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 20px; /* Margen de respiro lateral reducido en móvil */
 }
 
 .bg-gray-light {
   background-color: #fafafa;
 }
 
-/* ==========================================================================
-   1. HERO CINEMATOGRÁFICO
-   ========================================================================== */
+/* 1. HERO CINEMATOGRÁFICO */
 .aviation-hero {
-  height: 70vh;
-  min-height: 550px;
+  height: 60vh; /* Altura elástica controlada en smartphones */
+  min-height: 420px;
   position: relative;
-  /* Imagen inmersiva fiel a tu captura original */
-  background: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=1920&q=80') center/cover;
+  background: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=1200&q=80') center/cover;
   display: flex;
   align-items: center;
 }
@@ -40,14 +38,14 @@
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
   color: white;
-  padding: 0 40px;
+  padding: 0 20px;
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -57,95 +55,103 @@
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .hero-title {
-  font-size: 56px;
+  font-size: 32px; /* Tipografía adaptable inicial */
   font-weight: 700;
-  letter-spacing: -2px;
-  line-height: 1.1;
-  margin-bottom: 20px;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 12px;
 }
 
 .hero-subtitle {
-  font-size: 16px;
+  font-size: 14px;
   color: #e0e0e0;
-  max-width: 550px;
-  line-height: 1.6;
+  max-width: 100%;
+  line-height: 1.5;
 }
 
-/* ==========================================================================
-   2. QUOTE FORM & SPLIT LAYOUT
-   ========================================================================== */
+/* 2. QUOTE FORM & SPLIT LAYOUT (APILADO EN MÓVIL) */
 .quote-split-section {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 120px 40px;
+  padding: 48px 20px;
 }
 
 .split-container {
   display: flex;
-  gap: 100px;
-  align-items: flex-start;
+  flex-direction: column; /* Apilado vertical nativo en teléfonos */
+  gap: 40px;
+  align-items: stretch;
 }
 
 .split-text-side {
-  flex: 1;
+  width: 100%;
 }
 
 .split-text-side h2 {
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: -1px;
-  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
   line-height: 1.2;
 }
 
 .body-lead {
-  font-size: 18px;
+  font-size: 15px;
   color: var(--text-main);
   line-height: 1.5;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   font-weight: 500;
 }
 
 .body-text {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.6;
 }
 
 .split-form-side {
-  flex: 1.2;
+  width: 100%;
 }
 
 .quote-form-card {
   background: #f7f7f9;
-  padding: 44px;
-  border-radius: 20px;
+  padding: 24px; /* Padding comprimido para no asfixiar pantallas chicas */
+  border-radius: 16px;
   border: 1px solid var(--border-light);
 }
 
-.quote-form-card h3 { font-size: 24px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.5px; }
-.form-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
+.quote-form-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.3px; }
+.form-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
 
-.clean-aviation-form .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
-.clean-aviation-form .input-group { flex: 1; display: flex; flex-direction: column; }
-.clean-aviation-form label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: #555; margin-bottom: 8px; }
+.clean-aviation-form .form-row { 
+  display: flex; 
+  flex-direction: column; /* Desglose en vertical para entradas de texto en móvil */
+  gap: 16px; 
+  margin-bottom: 0;
+}
+.clean-aviation-form .input-group { 
+  display: flex; 
+  flex-direction: column; 
+  margin-bottom: 16px;
+}
+.clean-aviation-form label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: #555; margin-bottom: 6px; }
 
 .clean-aviation-form input, .clean-aviation-form select {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 14px;
   background: #ffffff;
   border: 1px solid var(--border-light);
-  border-radius: 10px;
+  border-radius: 8px;
   font-family: inherit;
   font-size: 14px;
   outline: none;
@@ -156,40 +162,35 @@
 
 .btn-black-full {
   width: 100%; background: var(--text-main); color: white; border: none;
-  padding: 16px; border-radius: 10px; font-weight: 600; font-size: 15px; cursor: pointer;
-  margin-top: 16px; transition: background 0.2s;
+  padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;
+  margin-top: 8px; transition: background 0.2s;
 }
 .btn-black-full:hover { background: #222; }
 
-/* ==========================================================================
-   3. EDITORIAL PITCH BANNER
-   ========================================================================== */
+/* 3. EDITORIAL PITCH BANNER */
 .editorial-pitch {
-  padding: 120px 40px;
+  padding: 60px 20px;
   text-align: center;
 }
-.pitch-container { max-width: 800px; margin: 0 auto; }
+.pitch-container { max-width: 100%; margin: 0 auto; }
 .editorial-quote {
   font-family: "Georgia", serif;
   font-style: italic;
-  font-size: 28px;
+  font-size: 20px; /* Reducción estilística para lecturas táctiles */
   line-height: 1.4;
   color: var(--text-main);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
-.pitch-subtext { font-size: 15px; color: var(--text-muted); }
+.pitch-subtext { font-size: 13.5px; color: var(--text-muted); }
 
-/* ==========================================================================
-   ACTUALIZACIÓN: RECURSOS GRÁFICOS (PILLARS & OBJECTIVES)
-   ========================================================================== */
-
+/* 4. RECURSOS GRÁFICOS (PILLARS) */
 .pillars-section {
-  padding: 120px 0;
+  padding: 60px 0;
 }
 
 .pillars-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr; /* Una columna por defecto en teléfonos */
   gap: 32px;
 }
 
@@ -198,17 +199,15 @@
   flex-direction: column;
 }
 
-/* Contenedor de la imagen con ratio de aspecto editorial fijo (16:10) */
 .pillar-image-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   background-color: #f0f0f2;
 }
-
 .pillar-image-wrapper img {
   width: 100%;
   height: 100%;
@@ -216,11 +215,6 @@
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.pillar-card:hover .pillar-image-wrapper img {
-  transform: scale(1.04);
-}
-
-/* Identificador numérico minimalista flotando sobre la imagen */
 .pillar-num {
   position: absolute;
   bottom: 12px;
@@ -229,126 +223,186 @@
   backdrop-filter: blur(4px);
   color: #ffffff;
   font-family: monospace;
-  font-size: 11px;
+  font-size: 10px;
   padding: 4px 10px;
   border-radius: 20px;
   font-weight: 500;
 }
 
 .pillar-card h3 { 
-  font-size: 18px; 
+  font-size: 16px; 
   font-weight: 600; 
-  margin-bottom: 8px; 
+  margin-bottom: 6px; 
   color: var(--text-main);
 }
 
 .pillar-card p { 
-  font-size: 13.5px; 
-  line-height: 1.6; 
+  font-size: 13px; 
+  line-height: 1.5; 
   color: var(--text-muted); 
 }
 
-/* ==========================================================================
-   ACTUALIZACIÓN: OBJETIVOS E ICONOS VECTORIALES (Quiet Luxury)
-   ========================================================================== */
+/* 5. OBJETIVOS E ICONOS VECTORIALES */
 .objectives-section {
-  padding: 120px 0;
+  padding: 60px 0;
 }
 
 .objectives-header { 
   text-align: center; 
-  margin-bottom: 60px; 
+  margin-bottom: 40px; 
 }
 
 .objectives-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  max-width: 960px;
+  grid-template-columns: 1fr; /* Una columna secuencial móvil */
+  gap: 24px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 .obj-card {
   background: #ffffff;
-  padding: 44px;
-  border-radius: 16px;
+  padding: 24px;
+  border-radius: 12px;
   border: 1px solid var(--border-light);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
-  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.obj-card:hover { 
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-}
-
-/* Contenedor circular limpio para el icono vectorial */
 .obj-icon-wrapper {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   background: #f4f4f7;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-main);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .obj-card h3 { 
-  font-size: 20px; 
+  font-size: 18px; 
   font-weight: 600; 
-  margin-bottom: 12px; 
+  margin-bottom: 8px; 
   color: var(--text-main);
 }
 
 .obj-card p { 
-  font-size: 14px; 
-  line-height: 1.6; 
+  font-size: 13.5px; 
+  line-height: 1.5; 
   color: var(--text-muted); 
 }
 
-/* RESPONSIVE AJUSTADO */
-@media (max-width: 1024px) {
-  .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
-}
-
-@media (max-width: 640px) {
-  .pillars-grid { grid-template-columns: 1fr; }
-  .objectives-grid { grid-template-columns: 1fr; }
-}
-
-/* ==========================================================================
-   6. BRUTALIST DARK BANNER
-   ========================================================================== */
+/* 6. BRUTALIST DARK BANNER */
 .aviation-dark-banner {
   background: var(--text-main);
   color: white;
-  padding: 120px 40px;
+  padding: 60px 20px;
   text-align: center;
 }
-.dark-banner-content { max-width: 600px; margin: 0 auto; }
-.aviation-dark-banner h2 { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; margin-bottom: 16px; }
-.aviation-dark-banner p { color: #aaa; font-size: 16px; margin-bottom: 40px; }
-.banner-actions { display: flex; justify-content: center; gap: 16px; }
+.dark-banner-content { max-width: 100%; margin: 0 auto; }
+.aviation-dark-banner h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 12px; }
+.aviation-dark-banner p { color: #aaa; font-size: 14px; margin-bottom: 24px; }
 
-.btn-white-pill {
-  background: #ffffff; color: #000000; border: none; padding: 14px 32px; border-radius: 40px; font-weight: 600; font-size: 15px; cursor: pointer;
+.banner-actions { 
+  display: flex; 
+  flex-direction: column; /* Botones apilados de fácil acceso táctil en móvil */
+  align-items: center;
+  gap: 12px; 
 }
-.btn-outline-white {
-  background: transparent; color: #ffffff; border: 1px solid #444; padding: 14px 32px; border-radius: 40px; font-weight: 600; font-size: 15px; cursor: pointer; transition: border-color 0.2s;
+
+.btn-white-pill, .btn-outline-white {
+  width: 100%;
+  max-width: 280px;
+  padding: 14px; 
+  border-radius: 40px; 
+  font-weight: 600; 
+  font-size: 14px; 
+  cursor: pointer;
+  text-align: center;
 }
+.btn-white-pill { background: #ffffff; color: #000000; border: none; }
+.btn-outline-white { background: transparent; color: #ffffff; border: 1px solid #444; transition: border-color 0.2s; }
 .btn-outline-white:hover { border-color: #ffffff; }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
-  .split-container { flex-direction: column; gap: 60px; }
-  .pillars-grid { grid-template-columns: repeat(2, 1fr); }
-  .objectives-grid { grid-template-columns: 1fr; gap: 32px; }
-  .hero-title { font-size: 40px; }
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 576px) {
+  .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
+  .banner-actions { flex-direction: row; justify-content: center; gap: 16px; }
 }
-@media (max-width: 600px) {
-  .pillars-grid { grid-template-columns: 1fr; }
-  .quote-form-card { padding: 24px; }
-  .clean-aviation-form .form-row { flex-direction: column; gap: 16px; }
+
+@media (min-width: 768px) {
+  .pre-title { font-size: 11px; margin-bottom: 24px; }
+  .hero-title { font-size: 44px; }
+  .hero-subtitle { font-size: 15px; }
+  .inner-container { padding: 0 40px; }
+  
+  .quote-split-section { padding: 80px 40px; }
+  .split-text-side h2 { font-size: 32px; }
+  .body-lead { font-size: 16px; }
+  .quote-form-card { padding: 32px; }
+  .clean-aviation-form .form-row { flex-direction: row; }
+  
+  .editorial-pitch { padding: 80px 40px; }
+  .editorial-quote { font-size: 24px; }
+  .pillars-section, .objectives-section { padding: 80px 0; }
+  .objectives-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .obj-card { padding: 32px; }
+  .aviation-dark-banner { padding: 80px 40px; }
+  .aviation-dark-banner h2 { font-size: 34px; }
+}
+
+@media (min-width: 1024px) {
+  .aviation-hero { height: 70vh; min-height: 550px; }
+  .hero-content { padding: 0 40px; }
+  .hero-badge { padding: 6px 16px; font-size: 11px; margin-bottom: 24px; }
+  .hero-title { font-size: 56px; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
+  .hero-subtitle { font-size: 16px; max-width: 550px; }
+
+  /* Restauramos la asimetría premium de dos columnas paralelas */
+  .quote-split-section { padding: 120px 40px; }
+  .split-container { flex-direction: row; gap: 100px; align-items: flex-start; }
+  .split-text-side { flex: 1; }
+  .split-text-side h2 { font-size: 36px; letter-spacing: -1px; margin-bottom: 24px; }
+  .body-lead { font-size: 18px; margin-bottom: 20px; }
+  .body-text { font-size: 15px; }
+  .split-form-side { flex: 1.2; }
+  
+  .quote-form-card { padding: 44px; border-radius: 20px; }
+  .quote-form-card h3 { font-size: 24px; margin-bottom: 8px; }
+  .form-desc { font-size: 13px; margin-bottom: 32px; }
+  .clean-aviation-form label { font-size: 11px; margin-bottom: 8px; }
+  .clean-aviation-form input, .clean-aviation-form select { padding: 14px 16px; }
+  .btn-black-full { padding: 16px; font-size: 15px; margin-top: 16px; }
+
+  .editorial-pitch { padding: 120px 40px; }
+  .pitch-container { max-width: 800px; }
+  .editorial-quote { font-size: 28px; margin-bottom: 24px; }
+  .pitch-subtext { font-size: 15px; }
+
+  /* Distribución exacta en cuadrícula de 4 columnas para los pilares */
+  .pillars-section { padding: 120px 0; }
+  .pillars-grid { grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .pillar-image-wrapper { margin-bottom: 20px; }
+  .pillar-card:hover .pillar-image-wrapper img { transform: scale(1.04); }
+  .pillar-num { font-size: 11px; }
+  .pillar-card h3 { font-size: 18px; margin-bottom: 8px; }
+  .pillar-card p { font-size: 13.5px; }
+
+  .objectives-section { padding: 120px 0; }
+  .objectives-header { margin-bottom: 60px; }
+  .objectives-grid { gap: 40px; max-width: 960px; }
+  .obj-card { padding: 44px; border-radius: 16px; }
+  .obj-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); }
+  .obj-icon-wrapper { width: 48px; height: 48px; margin-bottom: 24px; }
+  .obj-card h3 { font-size: 20px; margin-bottom: 12px; }
+  .obj-card p { font-size: 14px; }
+
+  .aviation-dark-banner { padding: 120px 40px; }
+  .aviation-dark-banner h2 { font-size: 40px; letter-spacing: -1.5px; margin-bottom: 16px; }
+  .aviation-dark-banner p { font-size: 16px; margin-bottom: 40px; }
+  .btn-white-pill, .btn-outline-white { font-size: 15px; }
 }

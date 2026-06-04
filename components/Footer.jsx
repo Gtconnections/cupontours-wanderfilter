@@ -55,7 +55,7 @@ export default function Footer() {
               <li><Link href="/login">Owner Dashboard <span className="new-badge">VIP</span></Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/terms">Terms of Service</Link></li>
-              <li><Link href="/policy">Privacy Policy</Link></li>
+              <li><Link href="/privacy">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>

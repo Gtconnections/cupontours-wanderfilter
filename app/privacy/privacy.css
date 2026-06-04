@@ -1,57 +1,59 @@
-/* app/privacy/privacy.css */
-
-/* ACTIVACIÓN DE SCROLL FLUIDO PREMIUM */
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (PÁGINA DE PRIVACIDAD)
+   ========================================================================== */
 html {
   scroll-behavior: smooth;
 }
 
 .privacy-page {
-  padding-top: 140px; /* Margen superior para el header flotante */
+  padding-top: 100px; /* Reducción elástica inicial para celulares */
   background-color: #ffffff;
 }
 
 .privacy-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 40px 140px;
+  padding: 0 20px 60px; /* Padding comprimido para pantallas móviles */
   display: flex;
-  gap: 100px; /* Espaciado asimétrico amplio estilo Wander */
+  flex-direction: column; /* Flujo vertical nativo para smartphones */
+  gap: 32px; 
 }
 
-/* ==========================================================================
-   MENÚ LATERAL (STICKY SIDEBAR)
-   ========================================================================== */
+/* MENÚ LATERAL EN MÓVIL (RIEL HORIZONTAL FLUIDO) */
 .privacy-sidebar {
-  flex: 0 0 240px;
+  width: 100%;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 20px;
 }
 
 .sidebar-sticky {
-  position: sticky;
-  top: 180px; /* Se ancla de forma fluida al bajar */
+  position: static; /* Desactivado en móvil por usabilidad */
   height: max-content;
 }
 
 .privacy-sidebar h3 {
-  font-size: 13px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #888888;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-weight: 600;
 }
 
 .legal-nav {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row; /* Elementos alineados en fila horizontal */
+  flex-wrap: wrap; /* Permite saltos fluidos si se satura el ancho móvil */
+  gap: 12px 20px;
 }
 
 .legal-nav a {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .legal-nav a:hover,
@@ -60,72 +62,102 @@ html {
   font-weight: 600;
 }
 
-/* ==========================================================================
-   CONTENIDO LEGAL (EDITORIAL TYPOGRAPHY)
-   ========================================================================== */
+/* CONTENIDO LEGAL (EDITORIAL TYPOGRAPHY) */
 .privacy-content {
-  flex: 1;
-  max-width: 720px; /* Línea de lectura óptima */
+  width: 100%;
+  max-width: 100%;
 }
 
 .massive-heading {
-  font-size: 64px;
+  font-size: 34px; /* Proporción tipográfica optimizada para celulares */
   font-weight: 700;
-  letter-spacing: -2px;
-  line-height: 1.05;
-  margin-bottom: 24px; /* CORREGIDO: Da espacio para que la fecha no se monte */
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 16px;
 }
 
 .last-updated {
-  font-size: 13px;
+  font-size: 12px;
   color: #999999;
-  display: block; /* Asegura su propio bloque */
-  margin-bottom: 60px; /* Separación amplia al primer bloque */
+  display: block;
+  margin-bottom: 32px; /* Margen de separación adaptado en móvil */
 }
 
 .legal-text-block {
-  margin-bottom: 56px;
-  /* CORREGIDO: Espacio de respiro ideal para que el header no tape el título al usar las anclas */
-  scroll-margin-top: 200px; 
+  margin-bottom: 40px;
+  scroll-margin-top: 140px; /* Margen de anclaje ajustado a la cabecera móvil */
 }
 
 .legal-text-block h2 {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
-  letter-spacing: -0.5px;
-  margin-bottom: 20px;
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
   color: var(--text-main);
 }
 
 .legal-text-block p {
-  font-size: 15px;
-  line-height: 1.7; /* Interlineado elegante */
+  font-size: 14px;
+  line-height: 1.6;
   color: #333333;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-/* RESPONSIVE DISEÑO MÓVIL */
-@media (max-width: 992px) {
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .massive-heading { font-size: 48px; }
+  .legal-text-block h2 { font-size: 20px; }
+  .privacy-container { padding: 0 40px 80px; gap: 40px; }
+  .privacy-sidebar { padding-bottom: 24px; }
+}
+
+@media (min-width: 1024px) {
+  .privacy-page { padding-top: 140px; }
+  
+  /* Activación del ecosistema asimétrico con menú lateral Sticky */
   .privacy-container {
-    flex-direction: column;
-    gap: 40px;
-    padding-bottom: 80px;
-  }
-  .privacy-sidebar {
-    flex: 1;
-    width: 100%;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 24px;
-  }
-  .sidebar-sticky {
-    position: static;
-  }
-  .legal-nav {
     flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px 20px;
+    gap: 100px;
+    padding-bottom: 140px;
   }
-  .massive-heading {
-    font-size: 44px;
+  
+  .privacy-sidebar {
+    flex: 0 0 240px;
+    width: auto;
+    border-bottom: none;
+    padding-bottom: 0;
   }
+  
+  .sidebar-sticky {
+    position: sticky;
+    top: 180px; /* Fijado elegante al desplazar el scroll */
+  }
+  
+  .privacy-sidebar h3 { font-size: 13px; margin-bottom: 24px; }
+  
+  .legal-nav {
+    flex-direction: column; /* Comportamiento de lista vertical clásica */
+    gap: 16px;
+  }
+  
+  .legal-nav a { font-size: 14px; }
+  
+  .privacy-content {
+    flex: 1;
+    max-width: 720px; /* Bloque de lectura óptico editorial */
+  }
+  
+  .massive-heading { font-size: 64px; letter-spacing: -2px; line-height: 1.05; margin-bottom: 24px; }
+  .last-updated { font-size: 13px; margin-bottom: 60px; }
+  
+  .legal-text-block {
+    margin-bottom: 56px;
+    scroll-margin-top: 200px; /* Restaura respiro holgado para el salto de anclas */
+  }
+  
+  .legal-text-block h2 { font-size: 22px; letter-spacing: -0.5px; margin-bottom: 20px; }
+  .legal-text-block p { font-size: 15px; line-height: 1.7; margin-bottom: 16px; }
 }

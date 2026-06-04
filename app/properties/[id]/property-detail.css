@@ -1,33 +1,55 @@
-/* app/properties/[id]/property-detail.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (DETALLE DE PROPIEDADES)
+   ========================================================================== */
 .property-detail-page {
-  padding-top: 140px;
+  padding-top: 100px; /* Reducido en móvil para priorizar rendimiento visual */
   background-color: #ffffff;
 }
 
 .detail-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 40px 120px;
+  padding: 0 20px 60px; /* Padding elástico comprimido para smartphones */
 }
 
-.property-detail-header { margin-bottom: 32px; }
-.pre-title { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #888888; font-weight: 600; margin-bottom: 12px; }
-.massive-heading { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.2; color: var(--text-main); margin-bottom: 8px; }
-.property-location-tag { font-size: 14px; color: var(--text-muted); }
+.property-detail-header { 
+  margin-bottom: 24px; 
+}
 
-/* ==========================================================================
-   NUEVO: ESTRUCTURA ENCABEZADO Y BOTÓN DE RETORNO EDITORIAL
-   ========================================================================== */
+.pre-title { 
+  display: block; 
+  font-size: 10px; 
+  text-transform: uppercase; 
+  letter-spacing: 1.5px; 
+  color: #888888; 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+}
+
+.massive-heading { 
+  font-size: 28px; /* Proporciones tipográficas controladas en móvil */
+  font-weight: 700; 
+  letter-spacing: -0.5px; 
+  line-height: 1.2; 
+  color: var(--text-main); 
+  margin-bottom: 8px; 
+}
+
+.property-location-tag { 
+  font-size: 13px; 
+  color: var(--text-muted); 
+}
+
+/* ENCABEZADO FLEXIBLE CON RETORNO EDITORIAL */
 .header-split-row {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end; /* Alineación perfecta con la línea base del título */
-  gap: 40px;
+  flex-direction: column-reverse; /* El botón se posiciona arriba de forma natural en móvil */
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .header-text-side {
-  flex: 1;
+  width: 100%;
 }
 
 .btn-back-editorial {
@@ -37,160 +59,157 @@
   background: transparent;
   color: var(--text-main, #111111);
   border: 1px solid var(--border-light, #e0e0e2);
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.2s ease;
 }
+.btn-back-editorial svg { transition: transform 0.2s ease; }
+.btn-back-editorial:hover { border-color: var(--text-main, #111111); background-color: #fafafa; }
+.btn-back-editorial:hover svg { transform: translateX(-2px); }
 
-.btn-back-editorial svg {
-  transition: transform 0.2s ease;
-}
-
-.btn-back-editorial:hover {
-  border-color: var(--text-main, #111111);
-  background-color: #fafafa;
-}
-
-/* Micro-interacción: la flecha se desplaza sutilmente a la izquierda en hover */
-.btn-back-editorial:hover svg {
-  transform: translateX(-2px);
-}
-
-@media (max-width: 640px) {
-  .header-split-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-}
-
-/* GALERÍA ASIMÉTRICA */
+/* GALERÍA RESPONSIVA (1 COLUMNA EN CELULARES) */
 .property-gallery-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 16px;
-  height: 480px;
-  border-radius: 20px;
+  grid-template-columns: 1fr; /* Una sola columna fluida por defecto */
+  gap: 12px;
+  height: 280px; /* Altura controlada para pantallas táctiles */
+  border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 60px;
+  margin-bottom: 32px;
 }
 .gallery-main-img img, .gallery-side-imgs img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-side-imgs { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; }
+.gallery-side-imgs { display: none; } /* Ocultamos vistas secundarias en móvil para optimizar carga */
 
-/* LAYOUT STRUCTURE */
-.property-content-layout { display: flex; gap: 80px; position: relative; }
-.content-left-side { flex: 1.8; }
-.content-right-side { flex: 1.2; position: relative; }
+/* INTERFAZ DEL LAYOUT MULTICOLUMNA */
+.property-content-layout { 
+  display: flex; 
+  flex-direction: column; /* Apilado nativo vertical en smartphones */
+  gap: 32px; 
+  position: relative; 
+}
+.content-left-side { width: 100%; }
+.content-right-side { width: 100%; position: relative; }
 
-.property-quick-specs { display: flex; gap: 32px; border-bottom: 1px solid var(--border-light); padding-bottom: 32px; margin-bottom: 40px; }
+/* RIEL TÉCNICO DE MÉTRICAS (GRID FLUIDO) */
+.property-quick-specs { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas elásticas en móvil */
+  gap: 16px; 
+  border-bottom: 1px solid var(--border-light); 
+  padding-bottom: 24px; 
+  margin-bottom: 24px; 
+}
 .spec-pill { display: flex; flex-direction: column; }
-.spec-label { font-size: 10px; text-transform: uppercase; color: #888; font-weight: 600; margin-bottom: 4px; }
-.spec-value { font-size: 15px; font-weight: 600; color: var(--text-main); }
+.spec-label { font-size: 9px; text-transform: uppercase; color: #888; font-weight: 600; margin-bottom: 2px; }
+.spec-value { font-size: 14px; font-weight: 600; color: var(--text-main); }
 
-.detail-section-block h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; }
-.editorial-text p { font-size: 15px; line-height: 1.7; color: #333333; margin-bottom: 16px; }
+.detail-section-block h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 14px; }
+.editorial-text p { font-size: 14px; line-height: 1.6; color: #333333; margin-bottom: 12px; }
 
-/* ==========================================================================
-   WIDGET DE RESERVA PREMIUM (RIGHT SIDE)
-   ========================================================================== */
+/* MÓDULO DE AMENITIES EDITORIAL */
+.amenities-master-section {
+  border-top: 1px solid var(--border-light);
+  padding-top: 32px;
+  margin-top: 16px;
+}
+.amenities-categories-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Una columna por defecto en teléfonos */
+  gap: 24px;
+}
+.amenity-category-group h3 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.clean-amenities-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.clean-amenities-list li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #444444; }
+.clean-amenities-list li svg { color: #10b981; flex-shrink: 0; }
+
+/* SECCIÓN NORMAS REFACTORIZADA */
+.house-rules-section {
+  border-top: 1px solid var(--border-light);
+  padding-top: 32px;
+  margin-top: 32px;
+}
+.rules-box ul { padding-left: 16px; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.rules-box li { font-size: 13px; line-height: 1.5; color: #555555; }
+
+/* WIDGET DE RESERVAS AUTOMÁTICO */
 .booking-sticky-widget {
-  position: sticky;
-  top: 160px;
   background: #ffffff;
   border: 1px solid var(--border-light);
-  padding: 40px;
-  border-radius: 24px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
 }
+.widget-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.widget-price { color: var(--text-muted); font-size: 13px; }
+.widget-price strong { color: var(--text-main); font-size: 20px; font-weight: 700; }
+.widget-rating { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
 
-.widget-price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.widget-price { color: var(--text-muted); font-size: 14px; }
-.widget-price strong { color: var(--text-main); font-size: 24px; font-weight: 700; }
-.widget-rating { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
-
-/* CONTENEDOR MARCO DEL SELECTOR */
+/* CONTROL DEL SELECTOR DE FECHAS */
 .widget-date-picker-box {
   border: 1px solid var(--border-light);
-  border-radius: 16px;
-  margin-bottom: 24px;
+  border-radius: 12px;
+  margin-bottom: 20px;
   position: relative;
   background: #ffffff;
 }
-
 .date-picker-header { display: flex; border-bottom: 1px solid var(--border-light); cursor: pointer; }
-.picker-col { flex: 1; padding: 16px; display: flex; flex-direction: column; }
-.picker-col label, .guests-text-container label { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-main); margin-bottom: 6px; letter-spacing: 0.5px; }
-.picker-col span, .guests-text-container span { font-size: 14px; color: #888888; }
+.picker-col { flex: 1; padding: 12px; display: flex; flex-direction: column; }
+.picker-col label, .guests-text-container label { font-size: 9px; text-transform: uppercase; font-weight: 700; color: var(--text-main); margin-bottom: 4px; letter-spacing: 0.5px; }
+.picker-col span, .guests-text-container span { font-size: 13px; color: #888888; }
 .selected-value { color: var(--text-main) !important; font-weight: 500; }
 .picker-divider { width: 1px; background-color: var(--border-light); }
 
-/* CONTENEDOR HUÉSPEDES FIJO (CORREGIDO: EVITA EL TRASLAPE) */
-.guests-picker-row {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
+.guests-picker-row { padding: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
 .guests-text-container { display: flex; flex-direction: column; }
 .guests-picker-row svg { color: #666; transition: transform 0.2s ease; }
 .rotate-icon { transform: rotate(180deg); }
 
-/* ==========================================================================
-   NUEVO CALENDARIO EDITORIAL DESPLEGABLE INTERACTIVO (WANDER LOOK)
-   ========================================================================== */
+/* POPUP CALENDARIO FLOTANTE - COBERTURA COMPLETA MÓVIL */
 .editorial-calendar-popup {
   position: absolute;
   top: 105%;
   right: 0;
-  width: 580px; /* Ancho extendido horizontal elegante */
+  width: 100%; /* Toma el ancho modular del widget en teléfonos */
   background: #ffffff;
   border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   z-index: 50;
 }
-
-.calendar-months-container { display: flex; gap: 32px; }
+.calendar-months-container { display: flex; flex-direction: column; gap: 20px; } /* Meses secuenciales en vertical */
 .month-block { flex: 1; }
-.month-block h4 { font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 16px; color: var(--text-main); }
-
-.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 8px; }
-.calendar-weekdays span { font-size: 11px; color: #999999; font-weight: 500; }
-
-.calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.month-block h4 { font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 12px; color: var(--text-main); }
+.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 6px; }
+.calendar-weekdays span { font-size: 10px; color: #999999; font-weight: 500; }
+.calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
 .empty-day { width: 100%; aspect-ratio: 1; }
 
-/* Botones de Días */
 .day-btn {
-  width: 100%;
-  aspect-ratio: 1;
-  background: transparent;
-  border: none;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-main);
-  cursor: pointer;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
+  width: 100%; aspect-ratio: 1; background: transparent; border: none;
+  font-size: 12px; font-weight: 500; color: var(--text-main); cursor: pointer;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease;
 }
 .day-btn:hover { background: #f4f4f7; }
-
-/* Rangos Activos */
 .day-btn.active-bound { background: var(--text-main) !important; color: #ffffff !important; font-weight: 600; }
 .day-btn.in-range { background: #f4f4f7 !important; border-radius: 0; color: #000000; }
 
-/* ==========================================================================
-   DESPLEGABLE HUÉSPEDES CORREGIDO (ESPACIADO AMPLIO)
-   ========================================================================== */
+/* DESPLEGABLE HUÉSPEDES */
 .editorial-guests-dropdown {
   position: absolute;
   top: 105%;
@@ -198,115 +217,115 @@
   width: 100%;
   background: #ffffff;
   border: 1px solid var(--border-light);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
   z-index: 45;
   box-sizing: border-box;
 }
-
 .guest-control-row { display: flex; justify-content: space-between; align-items: center; }
 .guest-label-side { display: flex; flex-direction: column; gap: 2px; }
-.guest-label-side .main-label { font-size: 14px; font-weight: 600; color: var(--text-main); }
-.guest-label-side .sub-label { font-size: 12px; color: var(--text-muted); }
-
-.guest-counter-side { display: flex; align-items: center; gap: 16px; }
+.guest-label-side .main-label { font-size: 13px; font-weight: 600; color: var(--text-main); }
+.guest-label-side .sub-label { font-size: 11px; color: var(--text-muted); }
+.guest-counter-side { display: flex; align-items: center; gap: 12px; }
 .guest-counter-side button {
-  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-light);
-  background: #ffffff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-light);
+  background: #ffffff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
 .guest-counter-side button:hover:not(:disabled) { border-color: var(--text-main); background: #fafafa; }
 .guest-counter-side button:disabled { opacity: 0.25; cursor: not-allowed; }
-.count-num { font-size: 15px; font-weight: 600; min-width: 16px; text-align: center; }
+.count-num { font-size: 14px; font-weight: 600; min-width: 16px; text-align: center; }
 
-/* DESGLOSE DE PRECIOS EDITORIAL */
-.pricing-breakdown-box { margin-bottom: 24px; display: flex; flex-direction: column; gap: 14px; }
-.price-row-item { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-muted); }
-.total-row { border-top: 1px solid var(--border-light); padding-top: 16px; margin-top: 4px; color: var(--text-main); font-weight: 600; font-size: 15px; }
+/* FORMULACIÓN EDITORIAL DE PRECIOS */
+.pricing-breakdown-box { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
+.price-row-item { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
+.total-row { border-top: 1px solid var(--border-light); padding-top: 14px; margin-top: 2px; color: var(--text-main); font-weight: 600; font-size: 14px; }
 
 .btn-booking-primary {
-  width: 100%; background: var(--text-main); color: white; border: none; padding: 16px;
-  border-radius: 14px; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s;
+  width: 100%; background: var(--text-main); color: white; border: none; padding: 14px;
+  border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s;
 }
 .btn-booking-primary:hover { background: #222; }
-.booking-disclaimer { text-align: center; font-size: 12px; color: #999; margin-top: 14px; }
+.booking-disclaimer { text-align: center; font-size: 11px; color: #999; margin-top: 12px; }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
-  .property-content-layout { flex-direction: column; gap: 40px; }
-  .editorial-calendar-popup { width: 100%; max-width: 500px; }
-  .calendar-months-container { flex-direction: column; gap: 24px; }
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y MONITOR ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 640px) {
+  .header-split-row { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 40px; }
 }
 
-/* DISEÑO DEL MÓDULO DE AMENITIES COMPLETAS */
-.amenities-master-section {
-  border-top: 1px solid var(--border-light);
-  padding-top: 40px;
-  margin-top: 20px;
+@media (min-width: 768px) {
+  .detail-container { padding: 0 40px 80px; }
+  .massive-heading { font-size: 34px; }
+  .property-gallery-grid { grid-template-columns: 2fr 1fr; height: 380px; }
+  .gallery-side-imgs { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; }
+  .property-quick-specs { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .amenities-categories-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
 }
 
-.amenities-categories-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-}
+@media (min-width: 1024px) {
+  .property-detail-page { padding-top: 140px; }
+  .detail-container { padding-bottom: 120px; }
+  .property-detail-header { margin-bottom: 32px; }
+  .pre-title { font-size: 11px; margin-bottom: 12px; }
+  .massive-heading { font-size: 40px; letter-spacing: -1px; margin-bottom: 8px; }
+  .property-location-tag { font-size: 14px; }
+  .btn-back-editorial { padding: 10px 20px; font-size: 13px; }
 
-.amenity-category-group h3 {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-main);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 14px;
-}
+  .property-gallery-grid { height: 480px; gap: 16px; border-radius: 20px; margin-bottom: 60px; }
 
-.clean-amenities-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  /* Activación estricta del flujo asimétrico de doble columna congelada en scroll */
+  .property-content-layout { flex-direction: row; gap: 80px; }
+  .content-left-side { flex: 1.8; }
+  .content-right-side { flex: 1.2; }
+  
+  .property-quick-specs { display: flex; gap: 32px; padding-bottom: 32px; margin-bottom: 40px; }
+  .spec-label { font-size: 10px; margin-bottom: 4px; }
+  .spec-value { font-size: 15px; }
+  .detail-section-block h2 { font-size: 24px; margin-bottom: 20px; }
+  .editorial-text p { font-size: 15px; margin-bottom: 16px; }
 
-.clean-amenities-list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: #444444;
-}
+  .amenities-master-section { padding-top: 40px; margin-top: 20px; }
+  .amenity-category-group h3 { font-size: 14px; margin-bottom: 14px; }
+  .clean-amenities-list { gap: 10px; }
+  .clean-amenities-list li { font-size: 14px; }
 
-.clean-amenities-list li svg {
-  color: #10b981; /* Verde esmeralda elegante de check */
-  flex-shrink: 0;
-}
+  .house-rules-section { padding-top: 40px; margin-top: 40px; }
+  .rules-box ul { padding-left: 20px; margin-top: 12px; gap: 8px; }
+  .rules-box li { font-size: 14px; }
 
-/* SECCIÓN NORMAS (HOUSE RULES) */
-.house-rules-section {
-  border-top: 1px solid var(--border-light);
-  padding-top: 40px;
-  margin-top: 40px;
-}
+  /* Widget Sticky derecho */
+  .booking-sticky-widget { position: sticky; top: 160px; padding: 40px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03); }
+  .widget-price-row { margin-bottom: 24px; }
+  .widget-price strong { font-size: 24px; }
+  .widget-rating { font-size: 14px; }
 
-.rules-box ul {
-  padding-left: 20px;
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+  .widget-date-picker-box { border-radius: 16px; margin-bottom: 24px; }
+  .picker-col { padding: 16px; }
+  .picker-col label, .guests-text-container label { font-size: 10px; margin-bottom: 6px; }
+  .picker-col span, .guests-text-container span { font-size: 14px; }
+  .guests-picker-row { padding: 16px; }
 
-.rules-box li {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #555555;
-}
+  /* El calendario flotante recupera su distribución panorámica paralela horizontal */
+  .editorial-calendar-popup { width: 580px; padding: 32px; border-radius: 20px; }
+  .calendar-months-container { flex-direction: row; gap: 32px; }
+  .month-block h4 { font-size: 14px; margin-bottom: 16px; }
+  .calendar-weekdays span { font-size: 11px; }
+  .calendar-days-grid { gap: 4px; }
+  .day-btn { font-size: 13px; }
 
-/* REFACTORIZACIÓN RESPONSIVA PARA AMENITIES */
-@media (max-width: 768px) {
-  .amenities-categories-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
+  .editorial-guests-dropdown { padding: 24px; border-radius: 16px; }
+  .guest-label-side .main-label { font-size: 14px; }
+  .guest-label-side .sub-label { font-size: 12px; }
+  .guest-counter-side { gap: 16px; }
+  .guest-counter-side button { width: 36px; height: 36px; font-size: 16px; }
+  .count-num { font-size: 15px; min-width: 16px; }
+
+  .pricing-breakdown-box { margin-bottom: 24px; gap: 14px; }
+  .price-row-item { font-size: 14px; }
+  .total-row { padding-top: 16px; margin-top: 4px; font-size: 15px; }
+  .btn-booking-primary { padding: 16px; border-radius: 14px; font-size: 15px; }
+  .booking-disclaimer { font-size: 12px; margin-top: 14px; }
 }

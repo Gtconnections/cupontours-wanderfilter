@@ -1,18 +1,16 @@
-/* app/yachts/yachts.css */
-
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (CATÁLOGO DE YATES)
+   ========================================================================== */
 .marine-page-container {
   background-color: #ffffff;
 }
 
-/* ==========================================================================
-   1. HERO NAVAL INMERSIVO
-   ========================================================================== */
+/* 1. HERO NAVAL INMERSIVO */
 .marine-hero {
-  height: 55vh;
-  min-height: 450px;
+  height: 45vh; /* Altura elástica balanceada para celulares */
+  min-height: 380px;
   position: relative;
-  /* Simula perfectamente la excelente toma marina de tu captura original */
-  background: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80') center/cover;
+  background: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80') center/cover;
   display: flex;
   align-items: center;
 }
@@ -20,14 +18,14 @@
 .marine-hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%);
 }
 
 .marine-hero-content {
   position: relative;
   z-index: 2;
   color: white;
-  padding: 0 40px;
+  padding: 0 20px;
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -37,66 +35,65 @@
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.marine-title {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
   margin-bottom: 16px;
 }
 
-.marine-subtitle {
-  font-size: 16px;
-  color: #f0f0f0;
-  max-width: 550px;
-  line-height: 1.5;
-}
-
-/* ==========================================================================
-   2. REJILLA DE CATÁLOGO (GRID CONTENEUR)
-   ========================================================================== */
-.marine-listings-section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 60px 40px 120px;
-}
-
-.marine-editorial-header {
-  margin-bottom: 50px;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 40px;
-}
-
-.marine-editorial-header h2 {
-  font-size: 36px;
+.marine-title {
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: -1px;
-  color: var(--text-main);
+  line-height: 1.2;
   margin-bottom: 12px;
 }
 
+.marine-subtitle {
+  font-size: 14px;
+  color: #f0f0f0;
+  max-width: 100%;
+  line-height: 1.5;
+}
+
+/* 2. SECCIÓN DE CABECERA EDITORIAL Y REJILLA */
+.marine-listings-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.marine-editorial-header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 24px;
+}
+
+.marine-editorial-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
 .marine-editorial-header p {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-muted);
-  max-width: 600px;
-  line-height: 1.6;
+  max-width: 100%;
+  line-height: 1.5;
 }
 
 .marine-meta-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  font-size: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: 13px;
 }
 
 .marine-count { color: var(--text-muted); }
@@ -105,10 +102,10 @@
 .btn-sort-selector {
   background: transparent;
   border: 1px solid var(--border-light);
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 30px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -116,14 +113,16 @@
   gap: 8px;
   color: var(--text-main);
   transition: border-color 0.2s;
+  width: 100%;
+  justify-content: space-between;
 }
 .btn-sort-selector:hover { border-color: var(--text-main); }
 
-/* GRID SIMÉTRICO DE 4 COLUMNAS */
+/* GRID DE EMBARCACIONES ELÁSTICO */
 .marine-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px 24px;
+  grid-template-columns: 1fr;
+  gap: 32px 16px;
 }
 
 .marine-card {
@@ -135,10 +134,10 @@
 /* RATIO NAVAL PREMIUM EXCLUSIVO PARA YATES (4:3) */
 .marine-image-box {
   position: relative;
-  aspect-ratio: 4 / 3; 
-  border-radius: 14px;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   background-color: #f5f5f7;
 }
 
@@ -147,10 +146,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.marine-card:hover .marine-image-box img {
-  transform: scale(1.03);
 }
 
 .marine-heart-btn {
@@ -168,102 +163,128 @@
 .marine-heart-btn:hover { transform: scale(1.1); }
 
 /* DETALLES TIPOGRÁFICOS */
-.marine-info-box { font-size: 14px; }
-.location-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
+.marine-info-box { font-size: 13px; }
+.location-text { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
 
 .marine-yacht-title {
   font-weight: 600;
-  font-size: 15px;
-  margin-top: 2px;
-  margin-bottom: 4px;
-  color: var(--text-main);
-}
-
-.marine-yacht-specs {
-  color: var(--text-muted);
-  margin-bottom: 12px;
-  font-size: 13px;
-}
-
-.marine-price-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f7f7f9;
-  padding-top: 10px;
-}
-
-.price-text { color: var(--text-muted); font-size: 13px; }
-.price-text strong { color: var(--text-main); font-size: 15px; font-weight: 700; }
-.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 13px; }
-
-/* PAGINACIÓN */
-.marine-pagination-container {
-  text-align: center;
-  margin-top: 80px;
-}
-
-.btn-load-more {
-  background: white;
-  border: 1px solid var(--border-light);
-  padding: 14px 32px;
-  border-radius: 40px;
-  font-family: inherit;
   font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--text-main);
-  transition: all 0.2s;
-}
-.btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .marine-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 768px) {
-  .marine-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
-  .marine-title { font-size: 36px; }
-}
-@media (max-width: 480px) {
-  .marine-grid { grid-template-columns: 1fr; }
-}
-
-/* Agrega o sustituye estas clases en tu app/yachts/yachts.css */
-
-.marine-yacht-title {
-  font-weight: 600;
-  font-size: 15px;
   margin-top: 2px;
-  margin-bottom: 12px; /* Ampliado para dar espacio a las especificaciones */
+  margin-bottom: 10px;
   color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* NUEVO: Bloque horizontal de micro-especificaciones náuticas */
+/* Bloque horizontal de micro-especificaciones náuticas */
 .marine-technical-specs {
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
   padding-bottom: 2px;
 }
 
 .spec-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .spec-item svg {
-  color: #999999; /* Gris suave para que el icono sea discreto */
+  color: #999999;
+  flex-shrink: 0;
 }
 
-/* Ajuste fino de la línea de precio */
+/* Línea de precio ultra delgada de alta gama */
 .marine-price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #f2f2f5; /* Línea de división ultra delgada */
-  padding-top: 12px;
+  border-top: 1px solid #f2f2f5;
+  padding-top: 10px;
+}
+
+.price-text { color: var(--text-muted); font-size: 12px; }
+.price-text strong { color: var(--text-main); font-size: 14px; font-weight: 700; }
+.rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 12px; }
+
+/* PAGINACIÓN */
+.marine-pagination-container {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.btn-load-more {
+  background: white;
+  border: 1px solid var(--border-light);
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+.btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
+
+
+/* ==========================================================================
+   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   ========================================================================== */
+@media (min-width: 576px) {
+  .marine-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
+  .marine-meta-row { flex-direction: row; justify-content: space-between; align-items: center; }
+  .btn-sort-selector { width: auto; }
+  .btn-load-more { width: auto; }
+}
+
+@media (min-width: 768px) {
+  .marine-hero { height: 55vh; min-height: 450px; }
+  .marine-hero-content { padding: 0 40px; }
+  .marine-title { font-size: 40px; }
+  .marine-subtitle { font-size: 15px; }
+  
+  .marine-listings-section { padding: 60px 40px 80px; }
+  .marine-editorial-header { margin-bottom: 40px; padding-bottom: 32px; }
+  .marine-editorial-header h2 { font-size: 32px; }
+  .marine-meta-row { font-size: 14px; margin-bottom: 32px; }
+  .marine-grid { grid-template-columns: repeat(3, 1fr); gap: 40px 20px; }
+  
+  .marine-info-box { font-size: 14px; }
+  .location-text { font-size: 11px; }
+  .marine-yacht-title { font-size: 15px; }
+  .marine-technical-specs { gap: 14px; }
+  .spec-item { font-size: 12px; }
+  .price-text { font-size: 13px; }
+  .price-text strong { font-size: 15px; }
+  .rating-text { font-size: 13px; }
+  .btn-load-more { font-size: 14px; }
+}
+
+@media (min-width: 1200px) {
+  .marine-badge { padding: 6px 16px; font-size: 11px; margin-bottom: 20px; }
+  .marine-title { font-size: 48px; letter-spacing: -1.5px; }
+  .marine-subtitle { font-size: 16px; max-width: 550px; }
+  
+  .marine-listings-section { padding-bottom: 120px; }
+  .marine-editorial-header { margin-bottom: 50px; padding-bottom: 40px; }
+  .marine-editorial-header h2 { font-size: 36px; letter-spacing: -1px; }
+  .marine-editorial-header p { font-size: 15px; max-width: 600px; line-height: 1.6; }
+  
+  .marine-grid { grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
+  .marine-image-box { border-radius: 14px; margin-bottom: 14px; }
+  .marine-card:hover .marine-image-box img { transform: scale(1.03); }
+  
+  .marine-yacht-title { margin-bottom: 12px; }
+  .marine-technical-specs { gap: 16px; margin-bottom: 16px; }
+  .marine-price-row { padding-top: 12px; }
+  
+  .marine-pagination-container { margin-top: 80px; }
+  .btn-load-more { padding: 14px 32px; }
 }
