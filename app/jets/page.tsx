@@ -1,8 +1,13 @@
-import React from 'react';
+"use client";
+import React, { useState, useRef, useEffect } from 'react';
 import './jets.css';
 
 export default function JetsPage() {
-  // Pilares con imágenes realistas y descriptivas de aviación ejecutiva
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [departureDate, setDepartureDate] = useState('');
+  const [returnDate, setReturnDate] = useState('');
+  const calendarRef = useRef<HTMLDivElement>(null);
+
   const pillars = [
     { 
       title: 'Experience', 
@@ -25,6 +30,17 @@ export default function JetsPage() {
       img: 'https://images.unsplash.com/photo-1524850301259-7729d41d11d9?auto=format&fit=crop&w=500&q=80'
     }
   ];
+
+  // Cerrar el calendario al hacer clic fuera
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+        setIsCalendarOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <main className="aviation-page">
@@ -53,6 +69,7 @@ export default function JetsPage() {
             <div className="quote-form-card">
               <h3>Request a Quote</h3>
               <p className="form-desc">Complete your flight criteria and our private flight specialists will coordinate options.</p>
+              
               <form className="clean-aviation-form">
                 <div className="form-row">
                   <div className="input-group">
@@ -64,16 +81,85 @@ export default function JetsPage() {
                     <input type="text" placeholder="City or Airport Code" />
                   </div>
                 </div>
-                <div className="form-row">
-                  <div className="input-group">
-                    <label>Departure Date</label>
-                    <input type="date" />
+
+                {/* CAJA SELECTORA DE FECHAS EDITORIAL CONTENEDORA */}
+                <div className="widget-date-picker-box" ref={calendarRef}>
+                  <div className="date-picker-header" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
+                    <div className="picker-col">
+                      <label>Departure Date</label>
+                      <span className={departureDate ? "selected-value" : ""}>
+                        {departureDate || "Select Date"}
+                      </span>
+                    </div>
+                    <div className="picker-divider"></div>
+                    <div className="picker-col">
+                      <label>Return Date</label>
+                      <span className={returnDate ? "selected-value" : ""}>
+                        {returnDate || "Add Date"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="input-group">
-                    <label>Return Date (Optional)</label>
-                    <input type="date" />
-                  </div>
+
+                  {/* POPUP CALENDARIO FLOTANTE EDITORIAL */}
+                  {isCalendarOpen && (
+                    <div className="editorial-calendar-popup">
+                      <div className="calendar-months-container">
+                        
+                        {/* Mayo 2026 */}
+                        <div className="month-block">
+                          <h4>May 2026</h4>
+                          <div className="calendar-weekdays">
+                            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                          </div>
+                          <div className="calendar-days-grid">
+                            {Array.from({ length: 5 }).map((_, i) => <div key={`empty-may-${i}`} className="empty-day" />)}
+                            {Array.from({ length: 31 }).map((_, i) => {
+                              const day = i + 1;
+                              const dateString = `May ${day}, 2026`;
+                              return (
+                                <button
+                                  type="button"
+                                  key={`may-${day}`}
+                                  className={`day-btn ${departureDate === dateString ? "active-bound" : ""}`}
+                                  onClick={() => { setDepartureDate(dateString); }}
+                                >
+                                  {day}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Junio 2026 */}
+                        <div className="month-block">
+                          <h4>June 2026</h4>
+                          <div className="calendar-weekdays">
+                            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                          </div>
+                          <div className="calendar-days-grid">
+                            <div className="empty-day" />
+                            {Array.from({ length: 30 }).map((_, i) => {
+                              const day = i + 1;
+                              const dateString = `June ${day}, 2026`;
+                              return (
+                                <button
+                                  type="button"
+                                  key={`june-${day}`}
+                                  className={`day-btn ${returnDate === dateString ? "active-bound" : ""}`}
+                                  onClick={() => { setReturnDate(dateString); setIsCalendarOpen(false); }}
+                                >
+                                  {day}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  )}
                 </div>
+
                 <div className="form-row">
                   <div className="input-group">
                     <label>Passengers</label>
@@ -134,20 +220,16 @@ export default function JetsPage() {
           </div>
           <div className="objectives-grid">
             
-            {/* Tarjeta de Best Deal */}
             <div className="obj-card">
               <div className="obj-icon-wrapper">
-                {/* Icono de Trato / Porcentaje Premium */}
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
               </div>
               <h3>The Best Deal</h3>
               <p>Optimized market positioning ensuring premium tier pricing and operational efficiency across private routes.</p>
             </div>
 
-            {/* Tarjeta de Best Experience */}
             <div className="obj-card">
               <div className="obj-icon-wrapper">
-                {/* Icono de Corona / Excelencia */}
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
               </div>
               <h3>The Best Experience</h3>

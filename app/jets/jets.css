@@ -7,7 +7,7 @@
 
 .pre-title {
   display: block;
-  font-size: 10px; /* Redimensionado elástico para celulares */
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #888;
@@ -18,7 +18,7 @@
 .inner-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 20px; /* Margen de respiro lateral reducido en móvil */
+  padding: 0 20px;
 }
 
 .bg-gray-light {
@@ -27,7 +27,7 @@
 
 /* 1. HERO CINEMATOGRÁFICO */
 .aviation-hero {
-  height: 60vh; /* Altura elástica controlada en smartphones */
+  height: 60vh;
   min-height: 420px;
   position: relative;
   background: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=1200&q=80') center/cover;
@@ -65,7 +65,7 @@
 }
 
 .hero-title {
-  font-size: 32px; /* Tipografía adaptable inicial */
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: -1px;
   line-height: 1.2;
@@ -79,7 +79,7 @@
   line-height: 1.5;
 }
 
-/* 2. QUOTE FORM & SPLIT LAYOUT (APILADO EN MÓVIL) */
+/* 2. QUOTE FORM & SPLIT LAYOUT */
 .quote-split-section {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -88,7 +88,7 @@
 
 .split-container {
   display: flex;
-  flex-direction: column; /* Apilado vertical nativo en teléfonos */
+  flex-direction: column;
   gap: 40px;
   align-items: stretch;
 }
@@ -125,7 +125,7 @@
 
 .quote-form-card {
   background: #f7f7f9;
-  padding: 24px; /* Padding comprimido para no asfixiar pantallas chicas */
+  padding: 24px;
   border-radius: 16px;
   border: 1px solid var(--border-light);
 }
@@ -135,7 +135,7 @@
 
 .clean-aviation-form .form-row { 
   display: flex; 
-  flex-direction: column; /* Desglose en vertical para entradas de texto en móvil */
+  flex-direction: column;
   gap: 16px; 
   margin-bottom: 0;
 }
@@ -160,6 +160,134 @@
 }
 .clean-aviation-form input:focus, .clean-aviation-form select:focus { border-color: var(--text-main); }
 
+/* CAJA SELECTORA DE FECHAS EDITORIAL COPIADA DE PROPIEDADES */
+.widget-date-picker-box {
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  position: relative;
+  background: #ffffff;
+}
+
+.date-picker-header {
+  display: flex;
+  cursor: pointer;
+}
+
+.picker-col {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-col label {
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.picker-col span {
+  font-size: 13px;
+  color: #888888;
+}
+
+.selected-value {
+  color: var(--text-main) !important;
+  font-weight: 500;
+}
+
+.picker-divider {
+  width: 1px;
+  background-color: var(--border-light);
+}
+
+/* POPUP CALENDARIO FLOTANTE EDITORIAL */
+.editorial-calendar-popup {
+  position: absolute;
+  top: 105%;
+  right: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  z-index: 50;
+}
+
+.calendar-months-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.month-block {
+  flex: 1;
+}
+
+.month-block h4 {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.calendar-weekdays span {
+  font-size: 10px;
+  color: #999999;
+  font-weight: 500;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.empty-day {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.day-btn {
+  width: 100%;
+  aspect-ratio: 1;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.day-btn:hover {
+  background: #f4f4f7;
+}
+
+.day-btn.active-bound {
+  background: var(--text-main) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
 .btn-black-full {
   width: 100%; background: var(--text-main); color: white; border: none;
   padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;
@@ -176,7 +304,7 @@
 .editorial-quote {
   font-family: "Georgia", serif;
   font-style: italic;
-  font-size: 20px; /* Reducción estilística para lecturas táctiles */
+  font-size: 20px;
   line-height: 1.4;
   color: var(--text-main);
   margin-bottom: 16px;
@@ -190,7 +318,7 @@
 
 .pillars-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Una columna por defecto en teléfonos */
+  grid-template-columns: 1fr;
   gap: 32px;
 }
 
@@ -254,7 +382,7 @@
 
 .objectives-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Una columna secuencial móvil */
+  grid-template-columns: 1fr;
   gap: 24px;
   max-width: 100%;
   margin: 0 auto;
@@ -306,7 +434,7 @@
 
 .banner-actions { 
   display: flex; 
-  flex-direction: column; /* Botones apilados de fácil acceso táctil en móvil */
+  flex-direction: column; 
   align-items: center;
   gap: 12px; 
 }
@@ -324,7 +452,6 @@
 .btn-white-pill { background: #ffffff; color: #000000; border: none; }
 .btn-outline-white { background: transparent; color: #ffffff; border: 1px solid #444; transition: border-color 0.2s; }
 .btn-outline-white:hover { border-color: #ffffff; }
-
 
 /* ==========================================================================
    MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
@@ -353,6 +480,11 @@
   .obj-card { padding: 32px; }
   .aviation-dark-banner { padding: 80px 40px; }
   .aviation-dark-banner h2 { font-size: 34px; }
+  
+  .widget-date-picker-box { border-radius: 16px; }
+  .picker-col { padding: 16px; }
+  .picker-col label { font-size: 10px; margin-bottom: 6px; }
+  .picker-col span { font-size: 14px; }
 }
 
 @media (min-width: 1024px) {
@@ -362,7 +494,6 @@
   .hero-title { font-size: 56px; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
   .hero-subtitle { font-size: 16px; max-width: 550px; }
 
-  /* Restauramos la asimetría premium de dos columnas paralelas */
   .quote-split-section { padding: 120px 40px; }
   .split-container { flex-direction: row; gap: 100px; align-items: flex-start; }
   .split-text-side { flex: 1; }
@@ -383,7 +514,6 @@
   .editorial-quote { font-size: 28px; margin-bottom: 24px; }
   .pitch-subtext { font-size: 15px; }
 
-  /* Distribución exacta en cuadrícula de 4 columnas para los pilares */
   .pillars-section { padding: 120px 0; }
   .pillars-grid { grid-template-columns: repeat(4, 1fr); gap: 32px; }
   .pillar-image-wrapper { margin-bottom: 20px; }
@@ -405,4 +535,12 @@
   .aviation-dark-banner h2 { font-size: 40px; letter-spacing: -1.5px; margin-bottom: 16px; }
   .aviation-dark-banner p { font-size: 16px; margin-bottom: 40px; }
   .btn-white-pill, .btn-outline-white { font-size: 15px; }
+
+  /* El calendario flotante expande su formato horizontal panorámico en PC */
+  .editorial-calendar-popup { width: 580px; padding: 32px; border-radius: 20px; }
+  .calendar-months-container { flex-direction: row; gap: 32px; }
+  .month-block h4 { font-size: 14px; margin-bottom: 16px; }
+  .calendar-weekdays span { font-size: 11px; }
+  .calendar-days-grid { gap: 4px; }
+  .day-btn { font-size: 13px; }
 }
