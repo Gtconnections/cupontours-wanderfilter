@@ -1,34 +1,41 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { getCatalogItems, CatalogItem } from '../lib/api'; // Ajusta la ruta relativa si es necesario
 import './home.css';
+
+// NUEVOS IMPORTS MODULARES SEPARADOS
+import { getProperties, PropertyCatalogItem } from '../lib/api/properties';
+import { getCars, CarCatalogItem } from '../lib/api/cars';
+import { getYachts, YachtCatalogItem } from '../lib/api/yachts';
+
+// Definimos una interfaz comodín para que el renderizador de filas acepte cualquiera de las tres estructuras
+type GenericCatalogItem = PropertyCatalogItem | CarCatalogItem | YachtCatalogItem;
 
 interface RenderRowProps {
   title: string;
   pretitle: string;
-  data: CatalogItem[];
+  data: GenericCatalogItem[];
   type: 'home' | 'car' | 'yacht';
   isLoading: boolean;
 }
 
 export default function HomePage() {
-  const [homes, setHomes] = useState<CatalogItem[]>([]);
-  const [cars, setCars] = useState<CatalogItem[]>([]);
-  const [yachts, setYachts] = useState<CatalogItem[]>([]);
+  const [homes, setHomes] = useState<PropertyCatalogItem[]>([]);
+  const [cars, setCars] = useState<CarCatalogItem[]>([]);
+  const [yachts, setYachts] = useState<YachtCatalogItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
-      // Ejecutamos las tres llamadas asíncronas en paralelo para máxima velocidad
+      // Las llamadas viajan de forma simultánea a sus archivos independientes correspondientes
       const [homesData, carsData, yachtsData] = await Promise.all([
-        getCatalogItems('home'),
-        getCatalogItems('car'),
-        getCatalogItems('yacht')
+        getProperties(),
+        getCars(),
+        getYachts()
       ]);
 
-      setHomes(homesData.slice(0, 4));  // Limitamos a 4 items por fila como tu diseño original
+      setHomes(homesData.slice(0, 4));
       setCars(carsData.slice(0, 4));
       setYachts(yachtsData.slice(0, 4));
       setIsLoading(false);
