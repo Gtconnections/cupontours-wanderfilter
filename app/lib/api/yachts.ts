@@ -12,7 +12,7 @@ export interface YachtCatalogItem {
 
 export async function getYachts(): Promise<YachtCatalogItem[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/yachts`, {
+    const response = await fetch(`${API_BASE_URL}/landing/yachts/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

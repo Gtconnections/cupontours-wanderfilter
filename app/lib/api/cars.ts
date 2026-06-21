@@ -12,7 +12,7 @@ export interface CarCatalogItem {
 
 export async function getCars(): Promise<CarCatalogItem[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/cars`, {
+    const response = await fetch(`${API_BASE_URL}/landing/cars/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
