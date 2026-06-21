@@ -12,7 +12,7 @@ export interface YachtCatalogItem {
 
 export async function getYachts(): Promise<YachtCatalogItem[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/landing/yachts/`, {
+    const response = await fetch(`${API_BASE_URL}/api/yachts`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,27 +21,33 @@ export async function getYachts(): Promise<YachtCatalogItem[]> {
 
     if (!response.ok) throw new Error("Failed to fetch yachts");
     const data = await response.json();
-
     const results = data.results || data.data || data || [];
 
     return results.map((item: any): YachtCatalogItem => {
-      const id = item.id || item._id || Math.random();
-      const title = item.title || item.name || "Luxury Yacht";
-      const specs = item.specs || `${item.guests || 12} Guests • ${item.cabins || 3} Cabins`;
+      const id = item.id || Math.random();
+      
+      // Usamos la clave 'name' directo del JSON (Ej: "103' Azimut + Slide")
+      const title = item.name || "Luxury Yacht";
+      
+      // Combinamos la longitud en pies y la capacidad máxima de pasajeros
+      const length = item.length ? `${item.length}ft` : "60ft";
+      const capacity = item.capacity ? `${item.capacity} Guests` : "12 Guests";
+      const specs = `${length} • ${capacity}`;
+      
+      // Mapeo del precio por día completo
+      const price = item.price_full_day ? `$${Math.round(parseFloat(item.price_full_day))} / day` : "$9,500 / day";
+      
+      // Enlace directo a la imagen principal del bucket de DigitalOcean
+      const img = item.principal_image || "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
 
-      let price = "";
-      if (item.price && typeof item.price === "object") {
-        const amount = item.price.amount || 0;
-        const currency = item.price.currency || "$";
-        price = `${currency}${amount} / day`;
-      } else {
-        price = item.price ? String(item.price) : "$1,400 / day";
-      }
-
-      const img = item.image || item.img || item.images?.[0] || "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
-      const rating = item.rating ? String(item.rating) : "5.0";
-
-      return { id, title, specs, price, rating, img };
+      return {
+        id,
+        title,
+        specs,
+        price,
+        rating: "5.0",
+        img,
+      };
     });
   } catch (error) {
     console.error("Error fetching yachts:", error);

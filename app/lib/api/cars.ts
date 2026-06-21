@@ -12,7 +12,7 @@ export interface CarCatalogItem {
 
 export async function getCars(): Promise<CarCatalogItem[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/landing/cars/`, {
+    const response = await fetch(`${API_BASE_URL}/api/cars`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,27 +21,31 @@ export async function getCars(): Promise<CarCatalogItem[]> {
 
     if (!response.ok) throw new Error("Failed to fetch cars");
     const data = await response.json();
-
     const results = data.results || data.data || data || [];
 
     return results.map((item: any): CarCatalogItem => {
-      const id = item.id || item._id || Math.random();
-      const title = item.title || item.name || "Premium Car";
-      const specs = item.specs || `${item.seats || 5} Seats • Premium Performance`;
+      const id = item.id || Math.random();
+      
+      // Combinamos la marca y el modelo (Ej: "Chevrolet Tahoe SRT")
+      const title = item.brand && item.model ? `${item.brand} ${item.model}` : "Premium Car";
+      
+      // Especificación limpia usando el año real del vehículo
+      const specs = item.year ? `Model ${item.year} • Premium Fleet` : "Automatic • Luxury SUV";
+      
+      // Mapeo del precio real de renta
+      const price = item.rent_price ? `$${Math.round(parseFloat(item.rent_price))} / day` : "$199 / day";
+      
+      // Enlace directo a la imagen principal del bucket
+      const img = item.principal_image || "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80";
 
-      let price = "";
-      if (item.price && typeof item.price === "object") {
-        const amount = item.price.amount || 0;
-        const currency = item.price.currency || "$";
-        price = `${currency}${amount} / day`;
-      } else {
-        price = item.price ? String(item.price) : "$250 / day";
-      }
-
-      const img = item.image || item.img || item.images?.[0] || "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80";
-      const rating = item.rating ? String(item.rating) : "5.0";
-
-      return { id, title, specs, price, rating, img };
+      return {
+        id,
+        title,
+        specs,
+        price,
+        rating: "5.0", // Fallback estático si el carro no maneja rating en BD
+        img,
+      };
     });
   } catch (error) {
     console.error("Error fetching cars:", error);
