@@ -14,8 +14,8 @@ export async function getCatalogItems(type: 'home' | 'car' | 'yacht'): Promise<C
   try {
     let endpoint = "";
     if (type === 'home') endpoint = "/api/properties";
-    else if (type === 'car') endpoint = "/api/landing/cars";
-    else if (type === 'yacht') endpoint = "/api/landing/yachts";
+    else if (type === 'car') endpoint = "/api/landing/cars/";
+    else if (type === 'yacht') endpoint = "/api/landing/yachts/";
 
     // Nota: Eliminamos los query params innecesarios si vas a manejar límites fijos en tu UI
     const response = await fetch(`${BACKEND_URL}${endpoint}`, {
