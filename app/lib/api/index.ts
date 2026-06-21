@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app";
+const BACKEND_URL = "https://cupontours.com";
 
 // Reutilizamos la interfaz visual para asegurar compatibilidad de datos
 export interface CatalogItem {
