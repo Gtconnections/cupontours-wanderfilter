@@ -13,7 +13,7 @@ export interface CatalogItem {
 export async function getCatalogItems(type: 'home' | 'car' | 'yacht'): Promise<CatalogItem[]> {
   try {
     let endpoint = "";
-    if (type === 'home') endpoint = "/api/properties";
+    if (type === 'home') endpoint = "/api/properties?limit=8";
     else if (type === 'car') endpoint = "/api/landing/cars/";
     else if (type === 'yacht') endpoint = "/api/landing/yachts/";
 
