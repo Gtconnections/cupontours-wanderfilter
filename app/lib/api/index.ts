@@ -14,7 +14,7 @@ export async function getCatalogItems(type: 'home' | 'car' | 'yacht'): Promise<C
   try {
     // Definimos el endpoint correspondiente según el tipo
     let endpoint = "";
-    if (type === 'home') endpoint = "/api/properties";
+    if (type === 'home') endpoint = "/api/properties?limit=8";
     else if (type === 'car') endpoint = "/api/cars";
     else if (type === 'yacht') endpoint = "/api/yachts";
 
