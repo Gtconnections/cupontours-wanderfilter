@@ -5,7 +5,7 @@
  */
 
 import { hostawayClient } from './hostaway-client'
-import { logError } from '@/lib/utils/logger'
+import { logError } from '../../lib/utils/logger'
 
 export interface HostawayAmenity {
   id: number

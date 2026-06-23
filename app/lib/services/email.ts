@@ -3,7 +3,7 @@
  * Service for sending transactional emails using SendGrid API
  */
 
-import { serverConfig, clientConfig } from '@/lib/config'
+import { serverConfig, clientConfig } from '../../lib/config'
 
 export interface EmailTemplate {
   to: string | string[]
