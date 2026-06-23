@@ -124,49 +124,127 @@
 }
 
 .quote-form-card {
-  background: #f7f7f9;
+  background: #ffffff;
   padding: 24px;
-  border-radius: 16px;
-  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  border: 1px solid #f0f0f2;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
 }
 
-.quote-form-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.3px; }
-.form-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
+.quote-form-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; color: #111; }
+.form-desc { font-size: 12px; color: #666; margin-bottom: 24px; }
 
-.clean-aviation-form .form-row { 
-  display: flex; 
+/* ==========================================================================
+   WANDER STYLE RE-DESIGN (CARS & YACHTS FORM ALIGNMENT)
+   ========================================================================== */
+.custom-wander-layout {
+  display: flex;
   flex-direction: column;
-  gap: 16px; 
-  margin-bottom: 0;
+  gap: 16px;
 }
-.clean-aviation-form .input-group { 
-  display: flex; 
-  flex-direction: column; 
-  margin-bottom: 16px;
-}
-.clean-aviation-form label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: #555; margin-bottom: 6px; }
 
-.clean-aviation-form input, .clean-aviation-form select {
+.flex-row-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wander-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  width: 100%;
+}
+
+.wander-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #3f3f46;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-label svg {
+  color: #a1a1aa;
+}
+
+.wander-input {
   width: 100%;
   padding: 12px 14px;
-  background: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  color: var(--text-main);
-}
-.clean-aviation-form input:focus, .clean-aviation-form select:focus { border-color: var(--text-main); }
-
-/* CAJA SELECTORA DE FECHAS EDITORIAL COPIADA DE PROPIEDADES */
-.widget-date-picker-box {
-  border: 1px solid var(--border-light);
+  border: 1px solid #e4e4e7;
   border-radius: 12px;
-  margin-bottom: 16px;
-  position: relative;
+  font-size: 13px;
+  color: #18181b;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.wander-input::placeholder {
+  color: #a1a1aa;
+}
+
+.wander-input:focus {
+  border-color: #111111;
+  box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.03);
+}
+
+.select-wander {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* Divisiones de Tiempo Particionadas */
+.time-input-split {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.time-period-select {
+  width: 90px !important;
+  flex-shrink: 0;
+}
+
+/* Divisores de Secciones Textuales */
+.form-section-divider {
+  border-top: 1px solid #f0f0f2;
+  padding-top: 16px;
+  margin-top: 8px;
+  display: flex;
+}
+
+.form-section-divider span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #111111;
+}
+
+/* Ajustes de Triple Columna de Contacto */
+.contacts-triple-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* CAJA SELECTORA DE FECHAS EDITORIAL RE-ESTILIZADA */
+.reset-picker-box {
+  border: 1px solid #e4e4e7 !important;
+  border-radius: 12px !important;
   background: #ffffff;
+  margin-bottom: 0 !important;
 }
 
 .date-picker-header {
@@ -174,45 +252,37 @@
   cursor: pointer;
 }
 
-.picker-col {
+.picker-col.spec-padding-col {
   flex: 1;
-  padding: 12px;
+  padding: 12px 14px !important;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
-.picker-col label {
-  font-size: 9px;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 4px;
-  letter-spacing: 0.5px;
-}
-
-.picker-col span {
+.picker-col.spec-padding-col span {
   font-size: 13px;
-  color: #888888;
+  color: #a1a1aa;
 }
 
 .selected-value {
-  color: var(--text-main) !important;
+  color: #111111 !important;
   font-weight: 500;
 }
 
 .picker-divider {
   width: 1px;
-  background-color: var(--border-light);
+  background-color: #e4e4e7;
 }
 
-/* POPUP CALENDARIO FLOTANTE EDITORIAL */
+/* POPUP CALENDARIO FLOTANTE EDITORIAL PLACEMENT */
 .editorial-calendar-popup {
   position: absolute;
   top: 105%;
   right: 0;
   width: 100%;
   background: #ffffff;
-  border: 1px solid var(--border-light);
+  border: 1px solid #e4e4e7;
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
@@ -225,16 +295,12 @@
   gap: 20px;
 }
 
-.month-block {
-  flex: 1;
-}
-
 .month-block h4 {
   font-size: 13px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 12px;
-  color: var(--text-main);
+  color: #111111;
 }
 
 .calendar-weekdays {
@@ -269,7 +335,7 @@
   border: none;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-main);
+  color: #111111;
   cursor: pointer;
   border-radius: 50%;
   display: flex;
@@ -283,17 +349,65 @@
 }
 
 .day-btn.active-bound {
-  background: var(--text-main) !important;
+  background: #111111 !important;
   color: #ffffff !important;
   font-weight: 600;
 }
 
-.btn-black-full {
-  width: 100%; background: var(--text-main); color: white; border: none;
-  padding: 14px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;
-  margin-top: 8px; transition: background 0.2s;
+/* BOTÓN PRINCIPAL WANDER */
+.btn-booking-primary.override-btn-submit {
+  width: 100%;
+  background: #111111;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
 }
-.btn-black-full:hover { background: #222; }
+.btn-booking-primary.override-btn-submit:hover {
+  background: #222222;
+}
+
+/* CAJA INFORMATIVA DE PASOS POSTERIORES (BLUE BOX) */
+.wander-info-box {
+  margin-top: 8px;
+  background-color: #eff6ff;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-box-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-box-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-box-list li {
+  font-size: 12px;
+  color: #2563eb;
+  line-height: 1.4;
+  text-align: left;
+}
 
 /* 3. EDITORIAL PITCH BANNER */
 .editorial-pitch {
@@ -306,10 +420,10 @@
   font-style: italic;
   font-size: 20px;
   line-height: 1.4;
-  color: var(--text-main);
+  color: #111111;
   margin-bottom: 16px;
 }
-.pitch-subtext { font-size: 13.5px; color: var(--text-muted); }
+.pitch-subtext { font-size: 13.5px; color: #666666; }
 
 /* 4. RECURSOS GRÁFICOS (PILLARS) */
 .pillars-section {
@@ -361,13 +475,13 @@
   font-size: 16px; 
   font-weight: 600; 
   margin-bottom: 6px; 
-  color: var(--text-main);
+  color: #111111;
 }
 
 .pillar-card p { 
   font-size: 13px; 
   line-height: 1.5; 
-  color: var(--text-muted); 
+  color: #666666; 
 }
 
 /* 5. OBJETIVOS E ICONOS VECTORIALES */
@@ -392,7 +506,7 @@
   background: #ffffff;
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid var(--border-light);
+  border: 1px solid #f0f0f2;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
 }
 
@@ -404,7 +518,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-main);
+  color: #111111;
   margin-bottom: 16px;
 }
 
@@ -412,18 +526,18 @@
   font-size: 18px; 
   font-weight: 600; 
   margin-bottom: 8px; 
-  color: var(--text-main);
+  color: #111111;
 }
 
 .obj-card p { 
   font-size: 13.5px; 
   line-height: 1.5; 
-  color: var(--text-muted); 
+  color: #666666; 
 }
 
 /* 6. BRUTALIST DARK BANNER */
 .aviation-dark-banner {
-  background: var(--text-main);
+  background: #111111;
   color: white;
   padding: 60px 20px;
   text-align: center;
@@ -442,7 +556,7 @@
 .btn-white-pill, .btn-outline-white {
   width: 100%;
   max-width: 280px;
-  padding: 14px; 
+  padding: 10px; 
   border-radius: 40px; 
   font-weight: 600; 
   font-size: 14px; 
@@ -454,11 +568,16 @@
 .btn-outline-white:hover { border-color: #ffffff; }
 
 /* ==========================================================================
-   MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
+   MEDIA QUERIES GRIDS & RESPONSIVE PANELS
    ========================================================================== */
 @media (min-width: 576px) {
   .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
   .banner-actions { flex-direction: row; justify-content: center; gap: 16px; }
+  .flex-row-layout { flex-direction: row; }
+  .contacts-triple-row { flex-direction: row; }
+  .email-flex-group { flex: 2; }
+  .country-flex-group { flex: 0.8; }
+  .phone-flex-group { flex: 1.5; }
 }
 
 @media (min-width: 768px) {
@@ -471,7 +590,6 @@
   .split-text-side h2 { font-size: 32px; }
   .body-lead { font-size: 16px; }
   .quote-form-card { padding: 32px; }
-  .clean-aviation-form .form-row { flex-direction: row; }
   
   .editorial-pitch { padding: 80px 40px; }
   .editorial-quote { font-size: 24px; }
@@ -481,10 +599,8 @@
   .aviation-dark-banner { padding: 80px 40px; }
   .aviation-dark-banner h2 { font-size: 34px; }
   
-  .widget-date-picker-box { border-radius: 16px; }
-  .picker-col { padding: 16px; }
-  .picker-col label { font-size: 10px; margin-bottom: 6px; }
-  .picker-col span { font-size: 14px; }
+  .calendar-months-container { flex-direction: row; gap: 32px; }
+  .editorial-calendar-popup.placement-adjusted { width: 520px; right: 0; left: auto; }
 }
 
 @media (min-width: 1024px) {
@@ -500,14 +616,11 @@
   .split-text-side h2 { font-size: 36px; letter-spacing: -1px; margin-bottom: 24px; }
   .body-lead { font-size: 18px; margin-bottom: 20px; }
   .body-text { font-size: 15px; }
-  .split-form-side { flex: 1.2; }
+  .split-form-side { flex: 1.3; }
   
-  .quote-form-card { padding: 44px; border-radius: 20px; }
+  .quote-form-card { padding: 44px; border-radius: 24px; }
   .quote-form-card h3 { font-size: 24px; margin-bottom: 8px; }
   .form-desc { font-size: 13px; margin-bottom: 32px; }
-  .clean-aviation-form label { font-size: 11px; margin-bottom: 8px; }
-  .clean-aviation-form input, .clean-aviation-form select { padding: 14px 16px; }
-  .btn-black-full { padding: 16px; font-size: 15px; margin-top: 16px; }
 
   .editorial-pitch { padding: 120px 40px; }
   .pitch-container { max-width: 800px; }
@@ -536,11 +649,107 @@
   .aviation-dark-banner p { font-size: 16px; margin-bottom: 40px; }
   .btn-white-pill, .btn-outline-white { font-size: 15px; }
 
-  /* El calendario flotante expande su formato horizontal panorámico en PC */
-  .editorial-calendar-popup { width: 580px; padding: 32px; border-radius: 20px; }
-  .calendar-months-container { flex-direction: row; gap: 32px; }
-  .month-block h4 { font-size: 14px; margin-bottom: 16px; }
-  .calendar-weekdays span { font-size: 11px; }
-  .calendar-days-grid { gap: 4px; }
-  .day-btn { font-size: 13px; }
+  /* Alineamiento perfecto de etiquetas y inputs simulados */
+  .alignment-adjusted-row { align-items: flex-end; }
+  .space-label-matching { margin-bottom: 4px; }
+  .editorial-calendar-popup { width: 540px; }
+}
+
+a{
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   ESTILOS CORREGIDOS PARA EL PICKER SIMPLE (SINGLE MONTH WANDER STYLE)
+   ========================================================================== */
+
+/* Asegurar que el contenedor padre sirva como ancla relativa */
+.reset-picker-box {
+  position: relative !important;
+  width: 100%;
+}
+
+/* Rediseño estructural y posicionamiento absoluto del dropdown */
+.simple-single-month-picker.editorial-calendar-popup {
+  position: absolute !important;
+  top: calc(100% + 6px) !important; /* Lo posiciona exactamente debajo de la barra */
+  left: 0 !important;
+  width: 320px !important; /* Ancho perfecto para un solo mes compacto */
+  background: #ffffff !important;
+  border: 1px solid #ebebeb !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  padding: 20px !important;
+  z-index: 999 !important; /* Forzar por encima de cualquier otro campo o select */
+}
+
+/* Ajuste interno del bloque mensual */
+.simple-single-month-picker .month-block {
+  width: 100% !important;
+}
+
+.simple-single-month-picker h4 {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #111111 !important;
+  text-align: center !important;
+  margin-bottom: 14px !important;
+  letter-spacing: -0.2px;
+}
+
+/* Grilla de días de la semana */
+.simple-single-month-picker .calendar-weekdays {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  text-align: center !important;
+  margin-bottom: 8px !important;
+}
+
+.simple-single-month-picker .calendar-weekdays span {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #a1a1aa !important;
+}
+
+/* Grilla numérica de los días */
+.simple-single-month-picker .calendar-days-grid {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 6px !important;
+}
+
+/* Estilo Wander Premium para los botones de los días */
+.simple-single-month-picker .day-btn {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #18181b !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Hover sutil */
+.simple-single-month-picker .day-btn:hover {
+  background-color: #f4f4f5 !important;
+  color: #111111 !important;
+}
+
+/* Estado activo (Día seleccionado) */
+.simple-single-month-picker .day-btn.active-bound {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* Espacios vacíos del inicio de mes */
+.simple-single-month-picker .empty-day {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
 }

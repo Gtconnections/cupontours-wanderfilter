@@ -1,5 +1,6 @@
 import React from 'react';
 import './services.css';
+import Link from 'next/link';
 
 export default function ServicesPage() {
   const coreOffers = [
@@ -7,44 +8,28 @@ export default function ServicesPage() {
       title: 'Luxury Properties', 
       desc: 'Premium hotels, vacation rentals, and exclusive accommodations in the world\'s most desirable destinations.',
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
       )
     },
     { 
       title: 'Luxury Cars', 
       desc: 'High-end vehicle rentals including sports cars, luxury sedans, and exotic automobiles for any occasion.',
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect>
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-          <circle cx="5.5" cy="18.5" r="2.5"></circle>
-          <circle cx="18.5" cy="18.5" r="2.5"></circle>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>
       )
     },
     { 
       title: 'Yacht Charters', 
       desc: 'Private yacht rentals ranging from intimate vessels to mega-yachts with professional crew and amenities.',
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          <path d="M12 8v8"></path>
-          <path d="M9 11h6"></path>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 22V8"></path><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path><circle cx="12" cy="5" r="3"></circle></svg>
       )
     },
     { 
       title: 'Private Jets', 
       desc: 'Exclusive aviation services with our fleet of modern aircraft for business or leisure travel worldwide.',
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-          <line x1="12" y1="22.08" x2="12" y2="12"></line>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg>
       )
     }
   ];
@@ -54,7 +39,7 @@ export default function ServicesPage() {
       title: 'Expert Team', 
       desc: 'Our experienced professionals are dedicated to providing personalized service and ensuring every detail is perfect.',
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
           <circle cx="9" cy="7" r="4"></circle>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -66,7 +51,7 @@ export default function ServicesPage() {
       title: 'Trusted & Secure', 
       desc: 'All our services are fully insured and we maintain the highest standards of safety and security.',
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
@@ -76,7 +61,7 @@ export default function ServicesPage() {
       title: '24/7 Support', 
       desc: 'Round-the-clock customer support to assist you before, during, and after your experience with us.',
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
@@ -103,7 +88,7 @@ export default function ServicesPage() {
       <section className="services-hero">
         <div className="hero-container">
           <span className="pre-title">Ecosystem</span>
-          <h1 className="massive-heading">Our Premium<br />Services</h1>
+          <h1 className="massive-heading">Our Premium Services</h1>
           <p className="hero-subtitle">
             Discover our comprehensive range of luxury travel and lifestyle services. From exclusive accommodations to private transportation, we provide world-class experiences tailored to your needs.
           </p>
@@ -187,8 +172,12 @@ export default function ServicesPage() {
           <h2>Ready to Experience Luxury?</h2>
           <p>Contact us today to start planning your next extraordinary adventure. Our team is ready to create a personalized experience just for you.</p>
           <div className="cta-actions">
-            <button className="btn-black-pill">Get Started</button>
-            <button className="btn-outline-pill">View Portfolio</button>
+            <Link href="/contact" className="btn-black-pill">
+              Get Started
+            </Link>
+            <Link href="/properties" className="btn-outline-pill">
+              View Portfolio
+            </Link>
           </div>
         </div>
       </section>

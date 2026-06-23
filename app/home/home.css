@@ -67,6 +67,7 @@
   overflow-x: auto; /* Desplazamiento horizontal fluido */
   padding-bottom: 8px;
   scrollbar-width: none;
+  justify-content: center;
 }
 .filter-wrapper::-webkit-scrollbar { display: none; }
 
@@ -141,22 +142,32 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
+/* CORRECCIÓN DE UNIFORMIDAD ABSOLUTA EN CONTENEDORES DE IMÁGENES */
 .prop-image-container {
-  position: relative;
-  aspect-ratio: 1 / 1; 
+  position: relative !important;
+  width: 100% !important;
+  padding-top: 75% !important; /* Ratio 1:1 por defecto para Casas */
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 12px;
+  background-color: #f5f5f7;
 }
 
-/* Conservamos de manera exacta tus ratios asimétricos */
-.prop-image-container.car-ratio { aspect-ratio: 16 / 10; }
-.prop-image-container.yacht-ratio { aspect-ratio: 4 / 3; }
+/* Conservamos de manera exacta tus ratios asimétricos con contención calculada rigurosa */
+.prop-image-container.car-ratio { padding-top: 62.5% !important; }  /* Ratio 16:10 */
+.prop-image-container.yacht-ratio { padding-top: 75% !important; }  /* Ratio 4:3 */
 
 .prop-image-container img {
-  width: 100%; height: 100%; object-fit: cover;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important; 
+  height: 100% !important; 
+  object-fit: cover !important;
+  object-position: center !important;
   transition: transform 0.4s ease;
 }
 
@@ -166,13 +177,37 @@
   cursor: pointer; z-index: 2; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
 }
 
-.prop-info { font-size: 13px; }
-.prop-title-row h4 {
-  font-weight: 600; font-size: 14px; margin-bottom: 2px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.prop-info { 
+  font-size: 13px; 
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
+
+/* CORRECCIÓN CRÍTICA DE ENCAPSULADO CON TRES PUNTOS (...) AL FINAL */
+.prop-title-row h4 {
+  font-weight: 600; 
+  font-size: 14px; 
+  line-height: 1.4;
+  margin-bottom: 2px;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important; /* Fuerza encapsulado estricto a una sola línea */
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important; /* Inserta los tres puntos de forma automática */
+  height: auto !important;
+}
+
 .prop-specs { color: var(--text-muted); margin-bottom: 4px; font-size: 12px; }
-.prop-price-row { display: flex; justify-content: space-between; align-items: center; }
+
+/* Alineamiento magnético del bloque de precios */
+.prop-price-row { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-top: auto; /* Empuja el precio al fondo exacto de manera simétrica */
+}
+
 .price { font-weight: 600; color: var(--text-main); }
 .rating { color: var(--text-main); font-weight: 500; display: flex; align-items: center; font-size: 12px; }
 
@@ -187,7 +222,7 @@
   padding: 0 24px;
   margin-bottom: 32px;
 }
-
+.banner-properties { background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover; }
 .banner-cars { background: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80') center/cover; }
 .banner-yachts { background: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80') center/cover; }
 
@@ -199,17 +234,6 @@
 .mid-banner-content { position: relative; z-index: 2; color: white; max-width: 100%; }
 .mid-banner-content h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
 .mid-banner-content p { font-size: 13px; color: #ddd; line-height: 1.4; }
-
-/* 4. PLATFORMS DISTRIBUTION MARQUEE */
-.platforms-marquee-section {
-  border-top: 1px solid var(--border-light);
-  padding: 40px 20px;
-  background: #fafafa;
-}
-.marquee-wrapper { max-width: var(--max-width); margin: 0 auto; text-align: center; }
-.marquee-title { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; margin-bottom: 24px; }
-.marquee-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
-.marquee-row span { font-size: 16px; font-family: "Georgia", serif; font-weight: 600; color: #111; opacity: 0.35; }
 
 
 /* ==========================================================================
@@ -264,4 +288,48 @@
   .marquee-title { font-size: 11px; margin-bottom: 32px; }
   .marquee-row { gap: 60px; }
   .marquee-row span { font-size: 20px; }
+}
+
+/* ==========================================================================
+   WANDER CALL TO ACTION BUTTONS (MID-BANNERS)
+   ========================================================================= */
+.btn-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #111111;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-banner-cta svg {
+  transition: transform 0.2s ease;
+}
+
+.btn-banner-cta:hover {
+  background-color: #111111;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-banner-cta:hover svg {
+  transform: translateX(3px);
+}
+
+.prop-card-link-wrapper {
+  transition: opacity 0.2s ease;
+}
+.prop-card-link-wrapper:hover {
+  opacity: 0.95;
+}
+
+.categories-filter-section a{
+  text-decoration: none;
 }

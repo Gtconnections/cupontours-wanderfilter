@@ -1,297 +1,659 @@
 /* ==========================================================================
-   ESTILOS BASE / MOBILE-FIRST (ABOUT - OPCIÓN 2: EDITORIAL & VALORES)
+   ESTILOS BASE / MOBILE-FIRST (ABOUT - SCOPE BLINDADO SUTIL WANDER FILTER)
    ========================================================================== */
 .about-page {
-  padding-top: 100px; /* Espacio compacto para el Header fijo en móvil */
+  background-color: #ffffff;
 }
 
-.pre-title {
+.about-page .pre-title {
   display: block;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #888;
-  margin-bottom: 16px;
+  color: #888888;
+  margin-bottom: 12px;
   font-weight: 600;
 }
 
-.massive-heading {
-  font-size: 34px; /* Redimensionado elástico para celulares */
-  font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 24px;
+.about-page .text-center-block {
+  text-align: center;
 }
 
-.section-title {
-  font-size: 26px; /* Adaptación elástica inicial */
-  font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.2;
-}
-
-.bg-gray-light {
+.about-page .bg-gray-light {
   background-color: #fafafa;
 }
 
-/* 1. HERO SECTION */
-.about-hero {
+.about-page .mt-4 {
+  margin-top: 24px;
+}
+
+/* 1. HERO SECTION RENOVADA CON ESPACIADOS CALIBRADOS SUTILES */
+.about-hero-section {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 32px 20px 48px;
+  padding: 60px 20px 32px; /* Reducido para mayor suavidad y sutileza */
 }
 
-.hero-container {
-  max-width: 100%;
-}
-
-.hero-subtitle {
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-
-/* 2. STATEMENT & IMAGE SPLIT (APILADO EN MÓVIL) */
-.about-split {
-  padding: 48px 20px;
-  border-top: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.split-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column; /* Flujo vertical nativo en teléfonos */
-  gap: 32px;
-  align-items: flex-start;
-}
-
-.split-text-side {
-  width: 100%;
-}
-
-.statement-text {
-  font-family: "Georgia", serif;
-  font-style: italic;
-  font-size: 22px; /* Más cómodo para lectura táctil */
-  line-height: 1.4;
-  font-weight: 400;
-  color: var(--text-main);
-  margin-bottom: 20px;
-  letter-spacing: -0.3px;
-}
-
-.body-text {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.split-image-side {
-  width: 100%;
-}
-
-.image-wrapper {
-  width: 100%;
-  aspect-ratio: 4/3;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.02);
-}
-.image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-
-/* 3. EDITORIAL STATS GRID */
-.about-stats-section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 48px 20px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas balanceadas en móvil */
-  gap: 32px 20px;
-}
-
-.stat-card {
+.about-hero-container {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--border-light);
+  gap: 24px;
+}
+
+.about-main-heading {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  color: #111111;
+}
+
+.about-hero-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted, #717171);
+  margin-bottom: 14px;
+}
+
+.about-hero-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.about-hero-badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f4f4f5;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #27272a;
+}
+
+.about-hero-badge-item svg {
+  color: #71717a;
+}
+
+.about-hero-image-box {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.about-hero-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 2. BENEFITS OF STAYING WITH CUPON TOURS */
+.about-benefits-section {
+  padding: 48px 20px; /* Calibración elástica sutil */
+}
+
+.about-benefits-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-benefits-image-block {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.about-benefits-image-block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-benefits-text-block h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+  color: #111111;
+}
+
+.benefits-intro-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4b5563;
+  margin-bottom: 20px;
+}
+
+.benefits-cards-vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefit-minimal-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light, #ebebeb);
+  padding: 20px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+form > div{
+  margin-bottom: 20px;
+}
+
+.benefit-icon-bullet {
+  width: 28px;
+  height: 28px;
+  background-color: #eff6ff;
+  color: #2563eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.benefit-card-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 4px;
+}
+
+.benefit-card-content p {
+  font-size: 12.5px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* 3. THINGS WE BELIEVE SECTION */
+.about-pillars-section {
+  padding: 48px 20px;
+}
+
+.about-pillars-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-pillars-text-side h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: #111111;
+}
+
+.pillars-text-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pillar-text-node {
+  border-left: 2px solid #111111;
   padding-left: 16px;
 }
 
-.stat-value {
-  font-size: 36px; /* Proporciones elásticas móviles */
+.pillar-text-node h4 {
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1;
-  margin-bottom: 8px;
-  color: var(--text-main);
+  color: #111111;
+  margin-bottom: 6px;
 }
 
-.stat-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-/* 4. MISSION & VALUES */
-.about-values-section {
-  padding: 48px 20px;
-  border-top: 1px solid var(--border-light);
-}
-
-.values-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column; /* Apilado vertical por defecto */
-  gap: 32px;
-}
-
-.values-header {
-  width: 100%;
-  position: static; /* Desactivamos el sticky en móvil */
-  height: max-content;
-}
-
-.values-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.value-row {
-  display: flex;
-  gap: 20px;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--border-light);
-}
-.value-row:first-child { padding-top: 0; }
-
-.value-number-col span {
-  font-family: "Georgia", serif;
-  font-size: 20px;
-  font-style: italic;
-  color: #aaa;
-}
-
-.value-content-col { flex: 1; }
-.value-content-col h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
-}
-.value-content-col p {
+.pillar-text-node p {
   font-size: 13px;
   line-height: 1.5;
-  color: var(--text-muted);
+  color: #4b5563;
 }
 
-/* 5. CALL TO ACTION ELÁSTICO */
-.about-cta {
-  text-align: center;
-  max-width: 100%;
+.about-pillars-image-side {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.about-pillars-image-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 4. LUXURY TRAVEL MADE AFFORDABLE (DARK BANNER) */
+.about-dark-banner {
+  background-color: #0c0a09;
+  color: #ffffff;
+  padding: 48px 20px;
+}
+
+.dark-banner-viewport {
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 64px 20px;
 }
 
-.about-cta h2 {
-  font-size: 26px;
+.about-dark-banner h2 {
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
   margin-bottom: 12px;
 }
 
-.about-cta p {
+.about-dark-banner p {
   font-size: 14px;
-  color: var(--text-muted);
+  color: #a8a29e;
   line-height: 1.5;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  max-width: 600px;
 }
 
-.cta-buttons {
+.dark-banner-values-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.dark-value-card-node {
   display: flex;
-  flex-direction: column; /* Botones en bloque vertical de fácil acceso táctil */
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
 }
 
-.btn-black-pill, .btn-outline-pill {
-  width: 100%;
-  max-width: 300px;
+.dark-value-icon-circle {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.dark-value-card-node h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 5. GUEST EXPERIENCES TESTIMONIAL */
+.about-testimonials-section {
+  padding: 48px 20px;
   text-align: center;
-  padding: 14px 32px;
+}
+
+.testimonials-viewport-center {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.testimonial-editorial-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light, #ebebeb);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  margin-top: 16px;
+}
+
+.star-rating-row {
+  color: #fbc02d;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.testimonial-quote-body {
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 500;
+  color: #1c1917;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.testimonial-author-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.testimonial-author-meta strong {
+  font-size: 13.5px;
+  color: #111111;
+}
+
+.testimonial-author-meta span {
+  font-size: 11px;
+  color: #78716c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   6. WANDER STYLE FORMULARIOS - ESTILOS ELEGANTES INTEGRADOS DE LA WEB
+   ========================================================================== */
+.about-contact-grid-block {
+  padding: 48px 20px;
+  background-color: #ffffff;
+}
+
+.about-scoped-split-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.about-split-form-side {
+  width: 100%;
+}
+
+/* Formulario restaurado al diseño Wander original: tarjeta gris suave elegante */
+.about-form-card-wrapper {
+  background: #f5f5f5;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid var(--border-light, #ebebeb);
+}
+
+.about-form-card-wrapper h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #111111;
+  letter-spacing: -0.3px;
+}
+
+.about-form-card-wrapper p {
+  font-size: 13px;
+  color: #57534e;
+  margin-bottom: 24px;
+}
+
+.about-form-row-paired {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-page .wander-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  width: 100%;
+}
+
+.about-page .wander-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #3f3f46;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-page .wander-label svg {
+  color: #a1a1aa;
+}
+
+.about-page .wander-input, 
+.about-page .wander-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e4e4e7;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #18181b;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.about-page .wander-input::placeholder,
+.about-page .wander-textarea::placeholder {
+  color: #a1a1aa;
+}
+
+.about-page .wander-input:focus,
+.about-page .wander-textarea:focus {
+  border-color: #111111;
+  box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.03);
+}
+
+.about-page .wander-textarea {
+  resize: none;
+}
+
+.about-page .btn-booking-primary.override-btn-submit {
+  width: 100%;
+  background: #111111;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.about-page .btn-booking-primary.override-btn-submit:hover {
+  background: #222222;
+}
+
+/* Bloque Informativo de la Derecha */
+.about-split-stats-side {
+  width: 100%;
+}
+
+.about-get-in-touch-node {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.about-touch-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.touch-icon-box {
+  width: 36px;
+  height: 36px;
+  background-color: #f5f5f7;
+  border-radius: 8px;
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--border-light, #ebebeb);
+}
+
+.touch-text-node h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 2px;
+}
+
+.touch-text-node a,
+.touch-text-node span {
+  font-size: 13.5px;
+  color: #4b5563;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Grilla de cifras con escalado masivo Wander */
+.about-editorial-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.about-metric-card-node {
+  border-left: 2px solid #111111;
+  padding-left: 16px;
+}
+
+.about-metric-card-node h3 {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 0.95;
+  color: #111111;
+  margin-bottom: 4px;
+}
+
+.about-metric-card-node p {
+  font-size: 11px;
+  color: #78716c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* 7. EXPERIENCIAL BANNER FINAL */
+.about-experiential-banner {
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1400&q=80') center/cover;
+  padding: 60px 20px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.experiential-banner-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.experiential-banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-experiential-banner h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.about-experiential-banner p {
+  font-size: 14px;
+  color: #d4d4d8;
+  margin-bottom: 24px;
+}
+
+.btn-white-pill {
+  background-color: #ffffff;
+  color: #111111;
+  border: none;
+  padding: 12px 32px;
   border-radius: 40px;
   font-weight: 600;
   font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
   text-decoration: none;
-  transition: all 0.2s;
-  display: block;
 }
-.btn-black-pill { background: var(--text-main); color: white; border: none; }
-.btn-black-pill:hover { background: #222; }
-.btn-outline-pill { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); }
-.btn-outline-pill:hover { background: #f0f0f0; border-color: var(--text-main); }
 
+.btn-white-pill:hover {
+  background-color: #f4f4f5;
+}
 
 /* ==========================================================================
-   MEDIA QUERIES (ESCRITORIO & MONITORES GRANDES)
+   MEDIA QUERIES COMPLEMENTARIAS - SUAVIZADO RESPONSIVO DE ESPACIOS
    ========================================================================== */
+@media (min-width: 576px) {
+  .about-form-row-paired {
+    flex-direction: row;
+    gap: 16px;
+  }
+}
+
 @media (min-width: 768px) {
-  .massive-heading { font-size: 48px; }
-  .section-title { font-size: 34px; }
-  .hero-subtitle { font-size: 18px; }
-  .statement-text { font-size: 26px; }
-  .stat-value { font-size: 46px; }
-  .about-hero { padding: 40px 40px 60px; }
-  .about-split, .about-stats-section, .about-values-section { padding: 64px 40px; }
-  .cta-buttons { flex-direction: row; justify-content: center; gap: 16px; }
-  .btn-black-pill, .btn-outline-pill { width: auto; }
+  .about-main-heading { font-size: 42px; }
+  /* Suavizado sutil de paddings intermedios */
+  .about-hero-section, .about-benefits-section, .about-pillars-section, .about-dark-banner, .about-testimonials-section, .about-contact-grid-block { padding: 60px 40px; }
+  .about-benefits-container { flex-direction: row; gap: 32px; align-items: center; }
+  .about-benefits-image-block, .about-benefits-text-block { flex: 1; }
+  .about-pillars-container { flex-direction: row; gap: 32px; align-items: center; }
+  .about-pillars-text-side, .about-pillars-image-side { flex: 1; }
+  .dark-banner-values-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .about-form-card-wrapper { padding: 32px; }
+  .about-experiential-banner { padding: 80px 40px; }
+  .about-experiential-banner h2 { font-size: 32px; }
 }
 
 @media (min-width: 1024px) {
-  .about-page { padding-top: 140px; }
-  .massive-heading { font-size: 64px; letter-spacing: -2px; margin-bottom: 32px; }
-  .section-title { font-size: 40px; letter-spacing: -1.5px; line-height: 1.1; }
+  /* Calibración proporcional estricta para monitores de alta gama */
+  .about-hero-section { padding: 120px 40px 48px; }
+  .about-hero-container { flex-direction: row; gap: 64px; align-items: center; }
+  .about-hero-text-side { flex: 1.2; }
+  .about-hero-image-side { flex: 1; }
+  .about-main-heading { font-size: 48px; letter-spacing: -1.5px; }
+  .about-hero-description { font-size: 15px; }
+
+  .about-benefits-section { padding: 80px 40px; }
+  .about-benefits-container { gap: 64px; }
+  .about-benefits-text-block h2 { font-size: 32px; letter-spacing: -0.8px; }
   
-  .about-hero { padding: 40px 40px 100px 40px; }
-  .hero-container { max-width: 800px; }
-  .hero-subtitle { font-size: 22px; }
+  .about-pillars-section { padding: 80px 40px; }
+  .about-pillars-container { gap: 64px; }
+  .about-pillars-text-side h2 { font-size: 32px; letter-spacing: -0.8px; }
 
-  /* Restauramos el layout asimétrico Split */
-  .about-split { padding: 100px 40px; }
-  .split-container { flex-direction: row; gap: 80px; align-items: center; }
-  .split-text-side { flex: 1.2; }
-  .statement-text { font-size: 32px; letter-spacing: -0.5px; margin-bottom: 32px; line-height: 1.3; }
-  .body-text { font-size: 16px; }
-  .split-image-side { flex: 1; }
-  .image-wrapper { border-radius: 24px; }
+  .about-dark-banner { padding: 80px 40px; }
+  .about-dark-banner h2 { font-size: 32px; letter-spacing: -0.8px; }
+  .about-dark-banner p { font-size: 15px; }
 
-  /* Ajustes exactos para el Grid de 4 columnas */
-  .about-stats-section { padding: 120px 40px; }
-  .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 40px; }
-  .stat-card { padding-left: 24px; }
-  .stat-value { font-size: 56px; letter-spacing: -2px; margin-bottom: 12px; }
-  .stat-label { font-size: 13px; letter-spacing: 1px; }
+  /* PROTECCIÓN ESTRUCTURAL DE DOS COLUMNAS INDEPENDIENTES PARA EL FORMULARIO */
+  .about-contact-grid-block { padding: 80px 40px; }
+  
+  .about-page .about-scoped-split-container {
+    flex-direction: row !important;
+    gap: 64px !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    display: flex !important;
+  }
+  
+  .about-split-form-side { flex: 1.2 !important; width: auto !important; }
+  .about-split-stats-side { flex: 1 !important; padding-left: 24px !important; width: auto !important; }
+  
+  .about-form-card-wrapper { padding: 36px; border-radius: 20px; }
+  .about-form-card-wrapper h3 { font-size: 24px; }
+  
+  .about-editorial-metrics-grid { gap: 24px; }
+  .about-metric-card-node h3 { font-size: 48px; }
 
-  /* Comportamiento Sticky para la sección de Valores */
-  .about-values-section { padding: 120px 40px; }
-  .values-container { flex-direction: row; gap: 100px; }
-  .values-header { flex: 1; position: sticky; top: 180px; }
-  .values-list { flex: 1.5; }
-  .value-row { gap: 32px; padding: 40px 0; }
-  .value-number-col span { font-size: 24px; }
-  .value-content-col h3 { font-size: 20px; margin-bottom: 12px; }
-  .value-content-col p { font-size: 15px; }
-
-  .about-cta { padding: 140px 40px; max-width: 700px; }
-  .about-cta h2 { font-size: 36px; margin-bottom: 16px; }
-  .about-cta p { font-size: 16px; margin-bottom: 32px; }
-  .btn-black-pill, .btn-outline-pill { font-size: 15px; }
+  .about-experiential-banner { padding: 100px 40px; }
+  .about-experiential-banner h2 { font-size: 36px; letter-spacing: -1px; }
+  .about-experiential-banner p { font-size: 15px; }
 }

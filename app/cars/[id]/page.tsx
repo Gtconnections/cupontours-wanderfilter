@@ -1,39 +1,85 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import './car-detail.css';
 import Link from 'next/link';
+import { getCarById } from '../../lib/api/cars'; 
+import { sendCarBookingRequest } from '../../lib/api'; // Importamos el disparador local
 
-export default function CarDetailPage() {
-  // Estados Interactivos del Widget de Alquiler
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function CarDetailPage({ params }: PageProps) {
+  const { id } = use(params);
+
+  // Estados de datos y carga de la base de datos[cite: 12]
+  const [car, setCar] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  // Estados de control para el envío del formulario
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Arreglo normalizado de strings de imágenes para el carrusel[cite: 12]
+  const [cleanGallery, setCleanGallery] = useState<string[]>([]);
+
+  // Estados Interactivos del Widget de Alquiler (Calendario)[cite: 12]
   const [pickUpDate, setPickUpDate] = useState<number | null>(null);
   const [returnDate, setReturnDate] = useState<number | null>(null);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
-  // NUEVO: Estado para el control del carrusel de imágenes
+  // Estados del Formulario de Contacto Wander Integrado[cite: 12]
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [specialRequests, setSpecialRequests] = useState('');
+
+  // Estado para el control del carrusel de imágenes[cite: 12]
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
-  const pricePerDay = 199;
   const insuranceFee = 45;
 
-  // Galería de imágenes para el carrusel (puedes añadir las 24 reales de tu backend)
-  const carImages = [
-    'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1520050206274-a1ae446cb3cc?auto=format&fit=crop&w=1200&q=80'
-  ];
+  // Carga de datos dinámicos desde Django[cite: 12]
+  useEffect(() => {
+    async function fetchCarData() {
+      try {
+        setIsLoading(true);
+        const data = await getCarById(id);
+        setCar(data);
+        
+        if (data && Array.isArray(data.gallery)) {
+          setCleanGallery(data.gallery);
+        } else {
+          setCleanGallery(data.img ? [data.img] : []);
+        }
+        
+        setCurrentImageIndex(0);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchCarData();
+  }, [id]);
 
-  // Funciones de navegación del carrusel
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev === carImages.length - 1 ? 0 : prev + 1));
+  const nextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (cleanGallery.length <= 1) return;
+    setCurrentImageIndex((prev) => (prev === cleanGallery.length - 1 ? 0 : prev + 1));
   };
 
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? carImages.length - 1 : prev - 1));
+  const prevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (cleanGallery.length <= 1) return;
+    setCurrentImageIndex((prev) => (prev === 0 ? cleanGallery.length - 1 : prev - 1));
   };
 
-  // Simulación de calendario (Mayo y Junio 2026)
+  // Simulación de calendario (Mayo y Junio 2026)[cite: 12]
   const mayDays = Array.from({ length: 31 }, (_, i) => i + 1);
   const juneDays = Array.from({ length: 30 }, (_, i) => i + 1);
 
@@ -60,8 +106,78 @@ export default function CarDetailPage() {
     return `${isJune ? 'June' : 'May'} ${day}, 2026`;
   };
 
+  const calculateDays = () => {
+    if (!pickUpDate || !returnDate) return 1;
+    return returnDate - pickUpDate;
+  };
+
+  const handleBookingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pickUpDate || !returnDate) {
+      setStatusMessage({ type: 'error', text: 'Please select a valid Pick-up and Return date parameter.' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatusMessage(null);
+
+    const payload = {
+      carId: id,
+      carTitle: car?.title,
+      pickUpDate: formatIdToText(pickUpDate),
+      returnDate: formatIdToText(returnDate),
+      totalDays: calculateDays(),
+      client: { fullName, email, phoneNumber, specialRequests }
+    };
+
+    try {
+      const response = await sendCarBookingRequest(payload);
+      setStatusMessage({
+        type: 'success',
+        text: response.message || "Your luxury booking inquiry has been submitted successfully!"
+      });
+      setFullName('');
+      setEmail('');
+      setPhoneNumber('');
+      setSpecialRequests('');
+      setPickUpDate(null);
+      setReturnDate(null);
+    } catch (err: any) {
+      setStatusMessage({
+        type: 'error',
+        text: err.message || "Failed to deliver booking request. Please check your data fields."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="car-detail-page py-20 text-center">
+        <h2 className="text-xl font-bold">Vehicle not found</h2>
+        <p className="text-gray-400 mt-2">The requested asset is unavailable or doesn't exist.</p>
+        <Link href="/cars" className="btn-back-editorial inline-flex mt-6">Go back to fleet</Link>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="car-detail-page py-20 text-center animate-pulse">
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <div style={{ height: '40px', backgroundColor: '#e4e4e7', borderRadius: '6px', width: '40%', marginBottom: '20px' }}></div>
+          <div style={{ height: '450px', backgroundColor: '#e4e4e7', borderRadius: '12px', marginBottom: '40px' }}></div>
+        </div>
+      </div>
+    );
+  }
+
+  const rawPrice = car.price ? parseInt(car.price.replace(/[^0-9]/g, '')) : 199;
+  const totalDays = calculateDays();
+
   const specs = [
-    { label: 'Model Year', value: '2021' },
+    { label: 'Model Year', value: String(car.year) },
     { label: 'Passengers', value: '4-5 seats' },
     { label: 'Fuel Type', value: 'Premium Gasoline' },
     { label: 'Transmission', value: 'Automatic' },
@@ -72,75 +188,87 @@ export default function CarDetailPage() {
   const features = [
     {
       category: 'Performance & Engine',
-      items: ['6.2-liter V8 engine', '420 horsepower', '460 lb-ft of torque', '10-speed automatic transmission']
+      items: ['Powerful V8 configuration', 'High-tier horsepower parameters', 'Optimized transmission control', 'Responsive dynamic drive mode']
     },
     {
       category: 'Interior & Comfort',
-      items: ['Leather seats', 'Heated front seats', 'Ventilated front seats', 'Tri-zone automatic climate control', 'Spacious cabin setup']
+      items: ['Premium leather layout', 'Heated configuration controls', 'Ventilated system support', 'Multi-zone climate balance', 'Spacious cabin setup']
     },
     {
       category: 'Technology & Audio',
-      items: ['Premium Bose audio system', '8-inch infotainment system', 'Rearview camera', 'Apple CarPlay & Android Auto']
+      items: ['Surround audio architecture', 'Smart infotainment integration', 'HD backup camera system', 'Apple CarPlay & Android Auto ready']
     },
     {
       category: 'Safety & Drivers Assistance',
-      items: ['Forward collision alert', 'Smooth adaptive ride control', 'Smart braking parameters', 'Anti-theft tracking system']
+      items: ['Active collision alert protocols', 'Adaptive ride leveling parameter', 'Smart emergency brakes', 'Anti-theft secure link tracking']
     }
   ];
+
+  const activeImageUrl = cleanGallery[currentImageIndex] || car.img || "";
 
   return (
     <main className="car-detail-page">
       <div className="detail-container">
         
-        {/* ENCABEZADO CON BOTÓN DE REGRESO A LA DERECHA */}
+        {/* ENCABEZADO */}
         <header className="car-detail-header">
-        <div className="header-split-row">
+          <div className="header-split-row">
             <div className="header-text-side">
-            <span className="pre-title">Luxury Car Rental • Premium Service</span>
-            <h1 className="massive-heading">2021 Chevrolet Tahoe SRT</h1>
-            <p className="car-location-tag">Miami, Florida, United States</p>
+              <span className="pre-title">Luxury Car Rental • Premium Service</span>
+              <h1 className="massive-heading">{car.title}</h1>
+              <p className="car-location-tag">Miami, Florida, United States</p>
             </div>
             <div className="header-action-side">
-            <Link href="/cars" className="btn-back-editorial">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              <span>Back Cars</span>
-            </Link>
+              <Link href="/cars" className="btn-back-editorial">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                <span>Back Cars</span>
+              </Link>
             </div>
-        </div>
+          </div>
         </header>
 
-        {/* NUEVO: CAROUSEL CINEMÁTICO DE IMÁGENES INTERACTIVO */}
+        {/* CAROUSEL */}
         <section className="car-hero-carousel">
           <div className="carousel-main-viewport">
-            <img src={carImages[currentImageIndex]} alt={`Chevrolet Tahoe View ${currentImageIndex + 1}`} />
+            <img 
+              key={`viewport-image-idx-${currentImageIndex}`}
+              src={activeImageUrl} 
+              alt={`${car.title} View ${currentImageIndex + 1}`} 
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80";
+              }}
+            />
             
-            {/* Controles de Flechas Premium */}
-            <button className="carousel-arrow prev" onClick={prevImage} aria-label="Previous image">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button className="carousel-arrow next" onClick={nextImage} aria-label="Next image">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
+            {cleanGallery.length > 1 && (
+              <>
+                <button className="carousel-arrow prev" onClick={prevImage} aria-label="Previous image" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button className="carousel-arrow next" onClick={nextImage} aria-label="Next image" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </>
+            )}
 
-            {/* Contador Fiel a tu Captura (Ej. 1 / 4) */}
             <div className="carousel-counter-badge">
-              {currentImageIndex + 1} / {carImages.length}
+              {currentImageIndex + 1} / {cleanGallery.length}
             </div>
           </div>
 
-          {/* Fila Inferior de Indicadores en Miniatura */}
           <div className="carousel-dots-indicator">
-            {carImages.map((_, index) => (
+            {cleanGallery.map((_, index: number) => (
               <span 
-                key={index} 
+                key={`dot-${index}`} 
                 className={`indicator-dot ${index === currentImageIndex ? 'active' : ''}`}
-                onClick={() => setCurrentImageIndex(index)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentImageIndex(index);
+                }}
               />
             ))}
           </div>
         </section>
 
-        {/* RESTO DE LA ESTRUCTURA INTACTA */}
         <div className="car-content-layout">
           
           {/* COLUMNA IZQUIERDA */}
@@ -157,9 +285,7 @@ export default function CarDetailPage() {
             <section className="detail-section-block">
               <h2>Description</h2>
               <div className="editorial-text">
-                <p>Looking for a spacious and versatile SUV for your short-term rental needs? Look no further than our 2021 White Tahoe RST. This stylish and capable vehicle combines comfort, technology, and performance to provide an unforgettable driving experience.</p>
-                <p>Under the hood, the 2021 White Tahoe RST boasts a powerful 6.2-liter V8 engine, delivering 420 horsepower and 460 lb-ft of torque. It's paired with a 10-speed automatic transmission and rear-wheel drive, providing a smooth and responsive ride. The 2021 White Tahoe RST also features advanced safety and entertainment technologies, including a rearview camera, forward collision alert, and an 8-inch infotainment display.</p>
-                <p>Inside, the 2021 White Tahoe RST is designed to provide comfort and convenience, with leather seats, heated and ventilated front seats, and an advanced infotainment system. It also features tri-zone automatic climate control and a premium Bose audio system, ensuring a comfortable and enjoyable ride. Renting our 2021 White Tahoe RST is easy and hassle-free. Simply visit our website and book your dates today.</p>
+                <p>{car.description}</p>
               </div>
             </section>
 
@@ -198,17 +324,35 @@ export default function CarDetailPage() {
 
           {/* COLUMNA DERECHA */}
           <div className="content-right-side">
-            <div className="booking-sticky-widget">
+            <form onSubmit={handleBookingSubmit} className="booking-sticky-widget">
+              
+              {/* Capa de Estado Dinámica */}
+              {statusMessage && (
+                <div style={{
+                  padding: '14px 16px',
+                  backgroundColor: statusMessage.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                  border: `1px solid ${statusMessage.type === 'success' ? '#bbf7d0' : '#fee2e2'}`,
+                  borderRadius: '12px',
+                  color: statusMessage.type === 'success' ? '#166534' : '#991b1b',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  lineHeight: 1.5,
+                  marginBottom: '16px'
+                }}>
+                  {statusMessage.text}
+                </div>
+              )}
+
               <div className="widget-price-row">
-                <span className="widget-price"><strong>${pricePerDay}</strong> / day</span>
+                <span className="widget-price"><strong>{car.price?.split(' ')[0] || `$${rawPrice}`}</strong> / day</span>
                 <span className="widget-rating">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  5.0
+                  {car.rating}
                 </span>
               </div>
 
               <div className="widget-date-picker-box">
-                <div className="date-picker-header" onClick={() => setShowDatePicker(!showDatePicker)}>
+                <div className="date-picker-header" onClick={() => !isSubmitting && setShowDatePicker(!showDatePicker)}>
                   <div className="picker-col">
                     <label>Pick-up Date</label>
                     <span className={pickUpDate ? 'selected-value' : ''}>{formatIdToText(pickUpDate)}</span>
@@ -270,10 +414,44 @@ export default function CarDetailPage() {
                 )}
               </div>
 
+              <div className="wander-contact-fields">
+                <div className="wander-input-group">
+                  <label className="wander-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Full Name *
+                  </label>
+                  <input type="text" className="wander-input" placeholder="Enter your full name" required disabled={isSubmitting} value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                </div>
+
+                <div className="wander-input-group">
+                  <label className="wander-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Email Address *
+                  </label>
+                  <input type="email" className="wander-input" placeholder="Enter your email" required disabled={isSubmitting} value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+
+                <div className="wander-input-group">
+                  <label className="wander-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    Phone Number
+                  </label>
+                  <input type="tel" className="wander-input" placeholder="Enter your phone number" disabled={isSubmitting} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                </div>
+
+                <div className="wander-input-group full-width">
+                  <label className="wander-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Special Requests & Additional Information
+                  </label>
+                  <textarea className="wander-textarea" placeholder="Tell us more about your rental needs..." rows={3} disabled={isSubmitting} value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} />
+                </div>
+              </div>
+
               <div className="pricing-breakdown-box">
                 <div className="price-row-item">
-                  <span>${pricePerDay} x 3 days</span>
-                  <span>${pricePerDay * 3}</span>
+                  <span>${rawPrice} x {totalDays} {totalDays === 1 ? 'day' : 'days'}</span>
+                  <span>${rawPrice * totalDays}</span>
                 </div>
                 <div className="price-row-item">
                   <span>Premium Fleet Insurance</span>
@@ -281,13 +459,31 @@ export default function CarDetailPage() {
                 </div>
                 <div className="price-row-item total-row">
                   <span>Total before taxes</span>
-                  <span>${(pricePerDay * 3) + insuranceFee}</span>
+                  <span>${(rawPrice * totalDays) + insuranceFee}</span>
                 </div>
               </div>
 
-              <button type="button" className="btn-booking-primary">Request Rental Availability</button>
-              <p className="booking-disclaimer">No immediate charges will apply. Availability status is verified by concierge within minutes.</p>
-            </div>
+              <button 
+                type="submit" 
+                className="btn-booking-primary"
+                disabled={isSubmitting}
+                style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+              >
+                {isSubmitting ? "Requesting..." : "Request Rental Availability"}
+              </button>
+
+              <div className="wander-info-box">
+                <div className="info-box-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  What happens next?
+                </div>
+                <ul className="info-box-list">
+                  <li>• We'll review your request within 2 hours</li>
+                  <li>• You'll receive a detailed quote with availability</li>
+                  <li>• Our team will contact you to finalize details</li>
+                </ul>
+              </div>
+            </form>
           </div>
 
         </div>

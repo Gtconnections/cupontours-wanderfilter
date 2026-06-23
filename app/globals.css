@@ -80,25 +80,46 @@ body {
   .header-container { padding: 0 40px; gap: 24px; }
 }
 
+/* ==========================================================================
+   HEADER LOGO COLOR TUNING (BICOLOR IMPLEMENTATION)
+   ========================================================================== */
 .logo { 
   font-size: 20px; 
   font-weight: 700; 
   text-decoration: none; 
-  color: #ffffff; 
   transition: opacity 0.2s ease, color 0.3s; 
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  text-transform: lowercase; /* Mantiene la estética limpia y minimalista */
 }
 
 .logo.hide-on-mobile {
   display: none; /* Desaparece en móvil para dar espacio al buscador expandido */
 }
 
-.header-scrolled .logo { 
-  color: var(--text-main); 
+/* Estado transparente inicial (sobre el Hero oscuro) */
+.brand-header-cupon {
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+.brand-header-tours {
+  color: #ffffff;
+  opacity: 0.85;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Estado scrollado activo (Fondo blanco del Header) */
+.header-scrolled .brand-header-cupon {
+  color: #000000;
+}
+.header-scrolled .brand-header-tours {
+  color: #fbc02d; /* El mismo amarillo/dorado corporativo exacto de tu pie de página */
+  opacity: 1;
 }
 
 @media (min-width: 768px) {
-  .logo { font-size: 22px; }
+  .logo { font-size: 26px; }
 }
 
 .header-right { 
@@ -458,14 +479,81 @@ body {
 }
 
 /* ==========================================================================
-   SISTEMA DE CIERRE / FOOTER EDITORIAL
+   SISTEMA DE CIERRE / FOOTER EDITORIAL (CONEXIÓN DE MARQUESINA COMPLETA)
    ========================================================================== */
 .main-footer { 
   background: var(--bg-footer); 
-  font-size: 13px; 
-  border-top: 1px solid var(--border-light);
+  font-size: 13px;
 }
 
+/* ==========================================================================
+   NUEVA MARQUESINA EXCLUSIVA DE SOCIOS (image_4ec09e.png ALIGNMENT)
+   ========================================================================== */
+.platforms-marquee-section {
+  border-bottom: 1px solid var(--border-light);
+  padding: 48px 20px 32px;
+  background: var(--bg-footer); 
+  width: 100%;
+}
+
+.marquee-wrapper {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.marquee-title {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.marquee-row-cards {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+  scrollbar-width: none;
+  justify-content: flex-start;
+}
+.marquee-row-cards::-webkit-scrollbar { display: none; }
+
+/* Tarjetas idénticas a las de tu captura */
+.partner-card-badge {
+  flex: 0 0 160px;
+  height: 94px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.partner-card-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+.partner-card-badge img {
+  max-width: 85%;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.partner-fallback-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* CRÉDITOS E INCLUSIONES TRADICIONALES */
 .footer-top { 
   max-width: var(--max-width); 
   margin: 0 auto; 
@@ -555,7 +643,7 @@ body {
 
 
 /* ==========================================================================
-   RECONEXIÓN ESTRUCTURAL PARA ESCRITORIO ALTA GAMA (DESKTOP RE-ACTIVATION)
+   MEDIA QUERIES MIGRATION RECONEXIÓN ESCENARIO MONITOR
    ========================================================================== */
 @media (min-width: 1024px) {
   .main-header { padding: 20px 0; }
@@ -563,16 +651,9 @@ body {
   
   .logo.hide-on-mobile { display: inline-block; }
 
-  /* Anulamos la píldora elástica móvil y restauramos el formato panorámico fijo */
-  .mobile-search-trigger {
-    display: none;
-  }
+  .mobile-search-trigger { display: none; }
+  .search-wrapper { width: max-content; }
 
-  .search-wrapper {
-    width: max-content;
-  }
-
-  /* CORREGIDO: width: max-content evita que la barra colapse o se estire infinitamente */
   .interactive-search-bar {
     display: flex;
     width: max-content; 
@@ -588,7 +669,6 @@ body {
   .search-divider { height: 24px; }
   .search-btn { height: 40px; padding: 0 24px; font-size: 14px; margin-left: 20px; }
 
-  /* Anclaje exacto de ventanas popover flotantes independientes en PC */
   .search-popover {
     width: 380px;
     left: auto !important;
@@ -611,4 +691,52 @@ body {
   .counter-label { font-size: 16px; }
   .count-value { font-size: 15px; width: 24px; }
   .popover-divider { margin: 16px 0; }
+
+  /* Ajustes de grilla de partners centrados en PC */
+  .platforms-marquee-section { padding: 64px 40px 48px; }
+  .marquee-row-cards { justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .partner-card-badge { flex: 0 0 180px; height: 104px; border-radius: 20px; }
+}
+
+.custom-contact-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer-brand-logo {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.brand-cupon { color: #000000; }
+.brand-tours { color: #fbc02d; } /* Tono amarillo/dorado corporativo */
+.footer-brand-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.footer-contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.contact-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.contact-info-item svg {
+  color: #1e88e5; /* Azul limpio de los iconos */
+  flex-shrink: 0;
+}
+.contact-info-item a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.contact-info-item a:hover {
+  color: var(--text-main);
 }

@@ -7,7 +7,7 @@
 export const serverConfig = {
   // SendGrid Email Configuration
   sendGrid: {
-    apiKey: process.env.SENDGRID_API_KEY || '',
+    apiKey: process.env.SENDGRID_API_KEY || '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',
     fromEmail: process.env.SENDGRID_FROM_EMAIL || 'non-reply@cupontour.com',
     fromName: process.env.SENDGRID_FROM_NAME || 'Cupon Tours',
   },

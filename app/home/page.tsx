@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './home.css';
+import Link from 'next/link';
 
 import { getProperties, PropertyCatalogItem } from '../lib/api/properties';
 import { getCars, CarCatalogItem } from '../lib/api/cars';
@@ -33,7 +34,7 @@ export default function HomePage() {
           getYachts()
         ]);
 
-        setHomes(homesData.slice(0, 4));
+        setHomes(homesData.slice(0, 8));
         setCars(carsData.slice(0, 4));
         setYachts(yachtsData.slice(0, 4));
       } catch (error) {
@@ -46,68 +47,71 @@ export default function HomePage() {
     loadData();
   }, []);
 
-  const RenderRow = ({ title, pretitle, data, type, isLoading }: RenderRowProps) => (
-    <section className="home-row-section">
-      <div className="row-header">
-        <div className="row-title-area">
-          <span className="row-pretitle">{pretitle}</span>
-          <h3>{title}</h3>
-        </div>
-        <div className="carousel-nav">
-          <button aria-label="Previous" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <button aria-label="Next" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></button>
-        </div>
-      </div>
-      
-      <div className="property-carousel">
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="prop-card animate-pulse" style={{ opacity: 0.5 }}>
-              <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`} style={{ backgroundColor: '#e4e4e7', height: '200px' }}></div>
-              <div style={{ height: '16px', backgroundColor: '#e4e4e7', marginTop: '12px', borderRadius: '4px', width: '80%' }}></div>
-              <div style={{ height: '12px', backgroundColor: '#e4e4e7', marginTop: '8px', borderRadius: '4px', width: '50%' }}></div>
-            </div>
-          ))
-        ) : data.length === 0 ? (
-          <div className="w-full text-center py-8 text-gray-400 text-sm">
-            No elements available in this collection at the moment.
+  const RenderRow = ({ title, pretitle, data, type, isLoading }: RenderRowProps) => {
+    const routePrefix = type === 'home' ? 'properties' : type === 'car' ? 'cars' : 'yachts';
+
+    return (
+      <section className="home-row-section">
+        <div className="row-header">
+          <div className="row-title-area">
+            <span className="row-pretitle">{pretitle}</span>
+            <h3>{title}</h3>
           </div>
-        ) : (
-          data.map((item) => (
-            <div key={item.id} className="prop-card">
-              <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`}>
-                <img 
-                  src={item.img} 
-                  alt={item.title} 
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = type === 'car'
-                      ? "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
-                      : "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
-                  }}
-                />
-                <button className="heart-btn" aria-label="Save" type="button">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
+        </div>
+        
+        <div className="property-carousel">
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, idx) => (
+              <div key={idx} className="prop-card animate-pulse" style={{ opacity: 0.5 }}>
+                {/* SKELETONS: Removimos la altura fija artificial de 200px asignando la clase de proporción correspondiente */}
+                <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`} style={{ backgroundColor: '#e4e4e7' }}></div>
+                <div style={{ height: '16px', backgroundColor: '#e4e4e7', marginTop: '12px', borderRadius: '4px', width: '80%' }}></div>
+                <div style={{ height: '12px', backgroundColor: '#e4e4e7', marginTop: '8px', borderRadius: '4px', width: '50%' }}></div>
               </div>
-              <div className="prop-info">
-                <div className="prop-title-row">
-                  <h4>{item.title}</h4>
-                </div>
-                <p className="prop-specs">{item.specs}</p>
-                <div className="prop-price-row">
-                  <span className="price">{item.price}</span>
-                  <span className="rating">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{marginRight: '4px'}}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                    {item.rating}
-                  </span>
-                </div>
-              </div>
+            ))
+          ) : data.length === 0 ? (
+            <div className="w-full text-center py-8 text-gray-400 text-sm">
+              No elements available in this collection at the moment.
             </div>
-          ))
-        )}
-      </div>
-    </section>
-  );
+          ) : (
+            data.map((item) => (
+              <Link href={`/${routePrefix}/${item.id}`} key={item.id} className="prop-card-link-wrapper" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="prop-card">
+                  <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`}>
+                    <img 
+                      src={item.img} 
+                      alt={item.title} 
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = type === 'car'
+                          ? "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
+                          : "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
+                      }}
+                    />
+                    <button className="heart-btn" aria-label="Save to wishlist" type="button" onClick={(e) => e.preventDefault()}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </button>
+                  </div>
+                  <div className="prop-info">
+                    <div className="prop-title-row">
+                      <h4>{item.title}</h4>
+                    </div>
+                    <p className="prop-specs">{item.specs}</p>
+                    <div className="prop-price-row">
+                      <span className="price">{item.price}</span>
+                      <span className="rating">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{marginRight: '4px'}}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        {item.rating}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+      </section>
+    );
+  };
 
   return (
     <main className="home-page-container">
@@ -122,45 +126,59 @@ export default function HomePage() {
 
       <section className="categories-filter-section">
         <div className="filter-wrapper">
-          <button className="filter-pill active" type="button">All Collections</button>
-          <button className="filter-pill" type="button">Vacation Homes</button>
-          <button className="filter-pill" type="button">Premium Fleet</button>
-          <button className="filter-pill" type="button">Yacht Charters</button>
+          <Link href="/properties" className="filter-pill active" type="button">Properties</Link>
+          <Link href="/cars" className="filter-pill" type="button">Luxury Cars</Link>
+          <Link href="/yachts" className="filter-pill" type="button">Yachts Charters</Link>
+          <Link href="/jets" className="filter-pill" type="button">Jets</Link>
         </div>
       </section>
 
       <div className="home-listings-container">
         <RenderRow pretitle="Curation" title="Enjoy your stay inside one of our properties" data={homes} type="home" isLoading={isLoading} />
         
-        <div className="mid-banner banner-cars">
+        {/* INTERMEDIATE BANNER PROPERTIES */}
+        <div className="mid-banner banner-properties">
           <div className="mid-banner-overlay"></div>
           <div className="mid-banner-content">
-            <h2>Drive in Style Through Miami</h2>
-            <p>Access our premium fleet of SUVs, electric models, and sportscars tailored for your trip.</p>
+            <h2>Book Your Dream Vacation Today!</h2>
+            <p>Don't wait to create unforgettable memories. Our luxury properties offer the perfect blend of comfort and elegance for your next getaway. Reserve now and experience hospitality at its finest.</p>
+            <Link href="/properties" className="btn-banner-cta">
+              Explore Properties
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '6px' }}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </Link>
           </div>
         </div>
 
         <RenderRow pretitle="The Premium Fleet" title="Exceptional cars for ultimate performance" data={cars} type="car" isLoading={isLoading} />
 
+        {/* INTERMEDIATE BANNER CARS */}
+        <div className="mid-banner banner-cars">
+          <div className="mid-banner-overlay"></div>
+          <div className="mid-banner-content">
+            <h2>Drive in Style Through Miami</h2>
+            <p>Access our premium fleet of SUVs, electric models, and sportscars tailored for your trip.</p>
+            <Link href="/cars" className="btn-banner-cta">
+              View Fleet
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '6px' }}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </Link>
+          </div>
+        </div>
+
+        <RenderRow pretitle="Yacht Charter Collection" title="Elegance on water, designed for luxury" data={yachts} type="yacht" isLoading={isLoading} />
+      
+        {/* INTERMEDIATE BANNER YACHTS */}
         <div className="mid-banner banner-yachts">
           <div className="mid-banner-overlay"></div>
           <div className="mid-banner-content">
             <h2>Set Sail On Your Next Adventure</h2>
             <p>From private day charters to custom multi-cabin mega yachts on coastal waters.</p>
+            <Link href="/yachts" className="btn-banner-cta">
+              Explore Charters
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '6px' }}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </Link>
           </div>
         </div>
-
-        <RenderRow pretitle="Yacht Charter Collection" title="Elegance on water, designed for luxury" data={yachts} type="yacht" isLoading={isLoading} />
       </div>
-
-      <section className="platforms-marquee-section">
-        <div className="marquee-wrapper">
-          <span className="marquee-title">Platforms & Partnerships</span>
-          <div className="marquee-row">
-            <span>Airbnb</span><span>Vrbo</span><span>Booking.com</span><span>Tripadvisor</span><span>Turo</span><span>BNB Flow</span><span>PriceLabs</span>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

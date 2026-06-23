@@ -20,7 +20,7 @@ export default function Header() {
   const searchRef = useRef(null);
   const pathname = usePathname(); 
   
-  const lightPages = ['/about', '/work-with-us', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login'];
+  const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account'];
   const isLightPage = 
         lightPages.includes(pathname) || 
         (pathname.startsWith('/properties/') && pathname !== '/properties') ||
@@ -68,8 +68,14 @@ export default function Header() {
   return (
     <header className={headerClasses}>
       <div className="header-container">
-        {/* LOGO (Se oculta en móvil cuando el buscador está expandido para no asfixiar el espacio) */}
-        <Link href="/" className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>CuponTours</Link>
+        
+        {/* ==========================================================================
+           LOGOTIPO RE-ESTILIZADO (IGUAL AL DEL FOOTER CON IDENTIDAD BICOLOR)
+           ========================================================================== */}
+        <Link href="/" className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>
+          <span className="brand-header-cupon">cupon</span>
+          <span className="brand-header-tours">tours</span>
+        </Link>
         
         {/* CENTRO: BUSCADOR INTERACTIVO RESPONSIVO */}
         <div className={`search-wrapper ${isSearchExpanded ? 'expanded' : ''}`} ref={searchRef}>
@@ -197,7 +203,7 @@ export default function Header() {
           )}
         </div>
 
-        {/* RIGHT ACTIONS (Se oculta el botón secundario en móvil si el buscador se expande) */}
+        {/* RIGHT ACTIONS */}
         <div className="header-right" ref={menuRef}>
           <Link href="/jets" className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>Luxury Jets</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>

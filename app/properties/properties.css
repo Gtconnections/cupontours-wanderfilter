@@ -5,9 +5,9 @@
   background-color: #ffffff;
 }
 
-/* 1. HERO INMERSIVO ASADAPTATIVO */
+/* 1. HERO INMERSIVO ADAPTATIVO */
 .catalog-hero {
-  height: 45vh; /* Altura elástica controlada en smartphones */
+  height: 45vh;
   min-height: 350px;
   position: relative;
   background: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80') center/cover;
@@ -25,7 +25,7 @@
   position: relative;
   z-index: 2;
   color: white;
-  padding: 0 20px; /* Padding comprimido en móvil */
+  padding: 0 20px;
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
@@ -45,7 +45,7 @@
 }
 
 .catalog-title {
-  font-size: 32px; /* Tipografía elástica calibrada para celulares */
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: -1px;
   line-height: 1.2;
@@ -63,7 +63,7 @@
 .catalog-listings-section {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 40px 20px 60px; /* Respiro lateral adaptado a pantallas móviles */
+  padding: 40px 20px 60px;
 }
 
 .listings-editorial-header {
@@ -87,10 +87,9 @@
   line-height: 1.5;
 }
 
-/* Ajustado y acoplado debajo de la cabecera (Única versión limpia) */
 .catalog-meta-row {
   display: flex;
-  flex-direction: column; /* Apilado en vertical nativo para celulares */
+  flex-direction: column;
   align-items: flex-start;
   gap: 16px;
   margin-bottom: 32px;
@@ -114,28 +113,31 @@
   gap: 8px;
   color: var(--text-main);
   transition: border-color 0.2s;
-  width: 100%; /* Botón amplio de fácil acceso táctil */
+  width: 100%;
   justify-content: space-between;
 }
 .btn-filter-selector:hover { border-color: var(--text-main); }
 
-/* GRID DE PROPIEDADES ELÁSTICO (1 Columna por defecto en teléfonos) */
+/* GRID DE PROPIEDADES ELÁSTICO */
 .catalog-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px 16px;
 }
 
-/* TARJETA INDIVIDUAL (EDITORIAL LOOK) */
+/* TARJETA INDIVIDUAL */
 .catalog-card {
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  height: 100%;
 }
 
+/* Caja contenedora de la imagen proporcional */
 .catalog-image-box {
-  position: relative;
-  aspect-ratio: 1 / 1; /* Formato cuadrado limpio garantizado */
+  position: relative !important;
+  width: 100% !important;
+  padding-top: 70% !important;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 12px;
@@ -143,9 +145,13 @@
 }
 
 .catalog-image-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -163,45 +169,56 @@
 }
 .catalog-heart-btn:hover { transform: scale(1.1); }
 
-/* Puntos de navegación sutiles ocultos en móvil para priorizar rendimiento táctil */
 .catalog-dots-indicator {
   display: none;
 }
 
-/* INFORMACIÓN DE LA PROPIEDAD */
-.catalog-info-box { font-size: 13px; }
-.catalog-location-row { margin-bottom: 2px; }
+/* CONTENEDOR DE INFORMACIÓN */
+.catalog-info-box { 
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.catalog-location-row { margin-bottom: 4px; }
 .location-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; }
 
+/* REAJUSTE DE ENCAPSULADO SEGURO (image_ba4066.png) */
 .catalog-prop-title {
   font-weight: 600;
   font-size: 14px;
-  margin-bottom: 2px;
+  line-height: 1.4;
   color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 4px;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important; /* Forza encapsulado a una sola línea limpia */
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important; /* Agrega automáticamente los tres puntos si se desborda */
+  height: auto !important; /* Se remueve la altura fija artificial para eliminar el espacio vacío */
 }
 
 .catalog-prop-specs {
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   font-size: 12px;
 }
 
+/* El precio se mantendrá perfectamente alineado magnéticamente en el fondo */
 .catalog-price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #f7f7f9;
   padding-top: 8px;
+  margin-top: auto; 
 }
 
 .price-text { color: var(--text-muted); font-size: 12px; }
 .price-text strong { color: var(--text-main); font-size: 14px; font-weight: 700; }
 .rating-text { color: var(--text-main); font-weight: 600; display: flex; align-items: center; font-size: 12px; }
 
-/* BOTÓN DE CARGAR MÁS Adaptativo */
 .catalog-pagination-container {
   text-align: center;
   margin-top: 48px;
@@ -222,7 +239,6 @@
   max-width: 300px;
 }
 .btn-load-more:hover { background: #f5f5f7; border-color: var(--text-main); }
-
 
 /* ==========================================================================
    MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
@@ -268,12 +284,10 @@
   .catalog-meta-row { margin-bottom: 32px; font-size: 14px; }
   .btn-filter-selector { padding: 10px 20px; font-size: 14px; }
 
-  /* Activación estricta del layout panorámico original de 4 columnas */
   .catalog-grid { grid-template-columns: repeat(4, 1fr); gap: 40px 24px; }
   .catalog-image-box { border-radius: 16px; margin-bottom: 14px; }
   .catalog-card:hover .catalog-image-box img { transform: scale(1.03); }
   
-  /* Los indicadores interactivos de la galería se despliegan sutilmente en hover en escritorio */
   .catalog-dots-indicator { display: flex; }
   
   .catalog-pagination-container { margin-top: 80px; }
