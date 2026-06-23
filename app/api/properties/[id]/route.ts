@@ -2,12 +2,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hostawayService } from '@/app/lib/services/hostaway';
 
+// ✅ CORREGIDO: params es una Promesa
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    // ✅ Esperar a que params se resuelva
+    const { id } = await params;
+    
     const listing = await hostawayService.getListing(id);
 
     return NextResponse.json(
@@ -31,12 +34,24 @@ export async function GET(
         success: false,
         error: errorMessage,
       },
-      { status }
+      { 
+        status,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
     );
   }
 }
 
-export async function OPTIONS() {
+// ✅ CORREGIDO: OPTIONS también necesita Promise
+export async function OPTIONS(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  // Esperar a que params se resuelva (aunque no lo usemos)
+  await params;
+  
   return new NextResponse(null, {
     status: 204,
     headers: {
