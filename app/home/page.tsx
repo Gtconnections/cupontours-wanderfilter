@@ -5,7 +5,7 @@ import './home.css';
 import Link from 'next/link';
 
 // IMPORTAMOS LAS RUTAS DE LA API USANDO EL ALIAS GLOBAL (@/) Y EL NUEVO TIPO
-import { getProperties, PropertyCardData } from '../lib/api/properties';
+import { getHomeProperties, PropertyCardData } from '../lib/api/properties';
 import { getCars, CarCatalogItem } from '../lib/api/cars';
 import { getYachts, YachtCatalogItem } from '../lib/api/yachts';
 
@@ -31,7 +31,7 @@ export default function HomePage() {
       try {
         setIsLoading(true);
         const [homesData, carsData, yachtsData] = await Promise.all([
-          getProperties(),
+          getHomeProperties(),
           getCars(),
           getYachts()
         ]);

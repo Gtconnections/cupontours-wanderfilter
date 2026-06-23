@@ -1,24 +1,31 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false); // Estado elástico para buscador móvil
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [availableCities, setAvailableCities] = useState([]);
+  const [isLoadingCities, setIsLoadingCities] = useState(false);
   
   const [activeSearchTab, setActiveSearchTab] = useState(null);
   const [searchData, setSearchData] = useState({
     location: '',
-    dateStr: '',
-    guests: 0,
-    pets: 0
+    checkIn: '',
+    checkOut: '',
+    guests: 0
   });
+
+  // Estado para el calendario
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [nextMonth, setNextMonth] = useState(new Date());
 
   const menuRef = useRef(null);
   const searchRef = useRef(null);
-  const pathname = usePathname(); 
+  const pathname = usePathname();
+  const router = useRouter();
   
   const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account'];
   const isLightPage = 
@@ -26,6 +33,34 @@ export default function Header() {
         (pathname.startsWith('/properties/') && pathname !== '/properties') ||
         (pathname.startsWith('/cars/') && pathname !== '/cars') ||
         (pathname.startsWith('/yachts/') && pathname !== '/yachts');
+
+  // Cargar ciudades disponibles al montar el componente
+  useEffect(() => {
+    const loadCities = async () => {
+      try {
+        setIsLoadingCities(true);
+        const response = await fetch('/api/properties/cities');
+        const data = await response.json();
+        if (data.success) {
+          setAvailableCities(data.data.cities || []);
+        }
+      } catch (error) {
+        console.error('Error loading cities:', error);
+      } finally {
+        setIsLoadingCities(false);
+      }
+    };
+    loadCities();
+  }, []);
+
+  // Inicializar calendario con mes actual y siguiente
+  useEffect(() => {
+    const today = new Date();
+    const current = new Date(today.getFullYear(), today.getMonth(), 1);
+    const next = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    setCurrentMonth(current);
+    setNextMonth(next);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -40,47 +75,208 @@ export default function Header() {
       }
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setActiveSearchTab(null);
-        setIsSearchExpanded(false); // Colapsa el buscador al hacer clic fuera
+        setIsSearchExpanded(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Formateadores para mostrar en el buscador
   const formatWhere = () => searchData.location || "Where";
-  const formatWhen = () => searchData.dateStr || "When";
+  // Formateadores para mostrar en el buscador - CORREGIDO
+  const formatWhen = () => {
+    if (searchData.checkIn && searchData.checkOut) {
+      // ✅ Parsear fechas correctamente sin problemas de zona horaria
+      const checkInParts = searchData.checkIn.split('-').map(Number);
+      const checkOutParts = searchData.checkOut.split('-').map(Number);
+      
+      const checkInDate = new Date(checkInParts[0], checkInParts[1] - 1, checkInParts[2]);
+      const checkOutDate = new Date(checkOutParts[0], checkOutParts[1] - 1, checkOutParts[2]);
+      
+      const options = { month: 'short', day: 'numeric' };
+      return `${checkInDate.toLocaleDateString('en-US', options)} - ${checkOutDate.toLocaleDateString('en-US', options)}`;
+    }
+    return "When";
+  };
   const formatWho = () => {
-    let parts = [];
-    if (searchData.guests > 0) parts.push(`${searchData.guests} guest${searchData.guests > 1 ? 's' : ''}`);
-    if (searchData.pets > 0) parts.push(`${searchData.pets} pet${searchData.pets > 1 ? 's' : ''}`);
-    return parts.length > 0 ? parts.join(', ') : "Who";
+    if (searchData.guests > 0) {
+      return `${searchData.guests} guest${searchData.guests > 1 ? 's' : ''}`;
+    }
+    return "Who";
   };
 
-  const handleGuestChange = (type, operation) => {
+  // Funciones del calendario
+  const getDaysInMonth = (year, month) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (year, month) => {
+    return new Date(year, month, 1).getDay();
+  };
+
+  const isDateDisabled = (year, month, day) => {
+    const today = new Date();
+    const checkDate = new Date(year, month, day);
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return checkDate < todayDate;
+  };
+
+  const isDateSelected = (year, month, day) => {
+    if (!searchData.checkIn) return false;
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return dateStr === searchData.checkIn || dateStr === searchData.checkOut;
+  };
+
+  const isDateInRange = (year, month, day) => {
+    if (!searchData.checkIn || !searchData.checkOut) return false;
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return dateStr > searchData.checkIn && dateStr < searchData.checkOut;
+  };
+
+  // Manejar cambio de fecha - CORREGIDO
+  const handleDateClick = (year, month, day) => {
+  // ✅ Crear fecha en UTC para evitar problemas de zona horaria
+  const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  
+  // ✅ Validar que la fecha no sea anterior a hoy
+  const today = new Date();
+  const selectedDate = new Date(year, month, day);
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  
+  if (selectedDate < todayDate) {
+    return; // No permitir fechas pasadas
+  }
+  
+  if (!searchData.checkIn || (searchData.checkIn && searchData.checkOut)) {
+    // ✅ Iniciar nueva selección
     setSearchData(prev => ({
       ...prev,
-      [type]: operation === 'add' ? prev[type] + 1 : Math.max(0, prev[type] - 1)
+      checkIn: dateStr,
+      checkOut: ''
+    }));
+  } else if (searchData.checkIn && !searchData.checkOut) {
+    // ✅ Completar selección
+    if (dateStr > searchData.checkIn) {
+      setSearchData(prev => ({
+        ...prev,
+        checkOut: dateStr
+      }));
+      // Auto-avanzar a "Who" después de seleccionar
+      setTimeout(() => setActiveSearchTab('who'), 300);
+    } else if (dateStr < searchData.checkIn) {
+      // ✅ Si selecciona una fecha anterior, reiniciar con la nueva fecha como checkIn
+      setSearchData(prev => ({
+        ...prev,
+        checkIn: dateStr,
+        checkOut: ''
+      }));
+    }
+  }
+};
+
+  const renderCalendar = (monthDate) => {
+    const year = monthDate.getFullYear();
+    const month = monthDate.getMonth();
+    const daysInMonth = getDaysInMonth(year, month);
+    const firstDay = getFirstDayOfMonth(year, month);
+    
+    const monthName = monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    
+    const days = [];
+    // Días vacíos al inicio
+    for (let i = 0; i < firstDay; i++) {
+      days.push(<div key={`empty-${i}`} className="cal-day empty"></div>);
+    }
+    
+    // Días del mes
+    for (let day = 1; day <= daysInMonth; day++) {
+      const disabled = isDateDisabled(year, month, day);
+      const selected = isDateSelected(year, month, day);
+      const inRange = isDateInRange(year, month, day);
+      
+      days.push(
+        <div 
+          key={`day-${day}`} 
+          className={`cal-day ${disabled ? 'disabled' : 'selectable'} ${selected ? 'selected' : ''} ${inRange ? 'in-range' : ''}`}
+          onClick={() => !disabled && handleDateClick(year, month, day)}
+        >
+          {day}
+        </div>
+      );
+    }
+    
+    return { monthName, days };
+  };
+
+  // Navegar meses
+  const goToPreviousMonth = () => {
+    const newCurrent = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    const newNext = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+    setCurrentMonth(newCurrent);
+    setNextMonth(newNext);
+  };
+
+  const goToNextMonth = () => {
+    const newCurrent = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+    const newNext = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 2, 1);
+    setCurrentMonth(newCurrent);
+    setNextMonth(newNext);
+  };
+
+  // Manejar cambio de huéspedes
+  const handleGuestChange = (operation) => {
+    setSearchData(prev => ({
+      ...prev,
+      guests: operation === 'add' ? prev.guests + 1 : Math.max(0, prev.guests - 1)
     }));
   };
 
+  // ✅ FUNCIÓN PARA APLICAR (SOLO CIERRA EL POPOVER, NO BUSCA)
+  const handleApply = () => {
+    setActiveSearchTab(null);
+    // NO llamamos a performSearch() aquí
+  };
+
+  // ✅ FUNCIÓN DE BÚSQUEDA PRINCIPAL (SOLO SE EJECUTA CON EL BOTÓN SEARCH)
+  const performSearch = () => {
+    const params = new URLSearchParams();
+    
+    if (searchData.location) params.append('city', searchData.location);
+    if (searchData.checkIn) params.append('checkIn', searchData.checkIn);
+    if (searchData.checkOut) params.append('checkOut', searchData.checkOut);
+    if (searchData.guests > 0) params.append('guests', searchData.guests.toString());
+    
+    const queryString = params.toString();
+    const targetUrl = queryString ? `/properties?${queryString}` : '/properties';
+    
+    router.push(targetUrl);
+    
+    // Cerrar el buscador
+    setActiveSearchTab(null);
+    setIsSearchExpanded(false);
+  };
+
   const headerClasses = `main-header ${isScrolled || activeSearchTab || isSearchExpanded || isLightPage ? 'header-scrolled' : ''}`;
+
+  // Renderizar calendario
+  const currentCalendar = renderCalendar(currentMonth);
+  const nextCalendar = renderCalendar(nextMonth);
 
   return (
     <header className={headerClasses}>
       <div className="header-container">
         
-        {/* ==========================================================================
-           LOGOTIPO RE-ESTILIZADO (IGUAL AL DEL FOOTER CON IDENTIDAD BICOLOR)
-           ========================================================================== */}
+        {/* LOGOTIPO */}
         <Link href="/" className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>
           <span className="brand-header-cupon">cupon</span>
           <span className="brand-header-tours">tours</span>
         </Link>
         
-        {/* CENTRO: BUSCADOR INTERACTIVO RESPONSIVO */}
+        {/* CENTRO: BUSCADOR INTERACTIVO */}
         <div className={`search-wrapper ${isSearchExpanded ? 'expanded' : ''}`} ref={searchRef}>
           
-          {/* GATILLO MÓVIL: Píldora de búsqueda compacta */}
+          {/* GATILLO MÓVIL */}
           {!isSearchExpanded && (
             <button className="mobile-search-trigger" onClick={() => setIsSearchExpanded(true)}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -90,7 +286,7 @@ export default function Header() {
             </button>
           )}
 
-          {/* BARRA COMPLETA (Se controla con la clase expanded en móvil) */}
+          {/* BARRA COMPLETA */}
           <div className={`interactive-search-bar ${activeSearchTab ? 'is-active' : ''} ${isSearchExpanded ? 'show-expanded' : ''}`}>
             
             <div className={`search-segment where-segment ${activeSearchTab === 'where' ? 'active' : ''}`} onClick={() => setActiveSearchTab('where')}>
@@ -108,7 +304,7 @@ export default function Header() {
 
             <div className={`search-segment when-segment ${activeSearchTab === 'when' ? 'active' : ''}`} onClick={() => setActiveSearchTab('when')}>
               <div className="segment-content">
-                <span style={{color: searchData.dateStr ? '#111' : '#717171', fontWeight: searchData.dateStr ? '500' : '400'}}>
+                <span style={{color: (searchData.checkIn && searchData.checkOut) ? '#111' : '#717171', fontWeight: (searchData.checkIn && searchData.checkOut) ? '500' : '400'}}>
                   {activeSearchTab === 'when' ? 'When?' : formatWhen()}
                 </span>
               </div>
@@ -118,86 +314,121 @@ export default function Header() {
 
             <div className={`search-segment who-segment ${activeSearchTab === 'who' ? 'active' : ''}`} onClick={() => setActiveSearchTab('who')}>
               <div className="segment-content">
-                <span style={{color: (searchData.guests || searchData.pets) ? '#111' : '#717171', fontWeight: (searchData.guests || searchData.pets) ? '500' : '400'}}>
+                <span style={{color: searchData.guests > 0 ? '#111' : '#717171', fontWeight: searchData.guests > 0 ? '500' : '400'}}>
                   {activeSearchTab === 'who' ? 'Who?' : formatWho()}
                 </span>
               </div>
-              <button className="search-btn" onClick={(e) => { e.stopPropagation(); setActiveSearchTab(null); setIsSearchExpanded(false); }}>
+              <button className="search-btn" onClick={(e) => { 
+                e.stopPropagation(); 
+                performSearch();
+              }}>
                 Search
               </button>
             </div>
           </div>
 
-          {/* POPOVERS */}
+          {/* POPOVER - WHERE (Ciudades) */}
           {activeSearchTab === 'where' && (
             <div className="search-popover popover-where">
-              <input type="text" className="where-input" placeholder="Search locations..." value={searchData.location} onChange={(e) => setSearchData({...searchData, location: e.target.value})} />
               <div className="popover-section">
-                <p className="popover-subtitle">Recent searches</p>
-                <div className="location-item" onClick={() => {setSearchData({...searchData, location: 'United States'}); setActiveSearchTab('when');}}>
-                  <div className="icon-box"><i className="fas fa-map-marker-alt"></i></div>
-                  <span>United States</span>
-                </div>
-              </div>
-              <div className="popover-section">
-                <p className="popover-subtitle">Suggested regions</p>
-                <div className="location-item" onClick={() => {setSearchData({...searchData, location: 'California'}); setActiveSearchTab('when');}}>
-                  <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=100&q=80" alt="California" className="region-img" />
-                  <span>California</span>
-                </div>
-                <div className="location-item" onClick={() => {setSearchData({...searchData, location: 'Florida'}); setActiveSearchTab('when');}}>
-                  <img src="https://images.unsplash.com/photo-1502672260266-1c1de2d9d00c?auto=format&fit=crop&w=100&q=80" alt="Florida" className="region-img" />
-                  <span>Florida</span>
-                </div>
+                <p className="popover-subtitle">Available Destinations</p>
+                {isLoadingCities ? (
+                  <div className="loading-cities">Loading cities...</div>
+                ) : (
+                  availableCities.map((city) => (
+                    <div 
+                      key={city} 
+                      className="location-item" 
+                      onClick={() => {
+                        setSearchData({...searchData, location: city});
+                        setActiveSearchTab('when');
+                      }}
+                    >
+                      <div className="icon-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                          <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                      </div>
+                      <span>{city}</span>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           )}
 
+          {/* POPOVER - WHEN (Calendario DINÁMICO) */}
           {activeSearchTab === 'when' && (
             <div className="search-popover popover-when">
-              <div className="when-tabs"><button className="when-tab active">Dates</button><button className="when-tab">Flexible</button></div>
+              <div className="when-tabs">
+                <button className="when-tab active">Dates</button>
+                <button className="when-tab">Flexible</button>
+              </div>
               <div className="calendar-container">
                 <div className="calendar-month">
-                  <div className="month-header"><button className="cal-nav"><i className="fas fa-chevron-left"></i></button><strong>May 2026</strong><span></span></div>
+                  <div className="month-header">
+                    <button className="cal-nav" onClick={goToPreviousMonth}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                      </svg>
+                    </button>
+                    <strong>{currentCalendar.monthName}</strong>
+                    <span></span>
+                  </div>
                   <div className="cal-grid">
                     {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => <div key={d} className="cal-day-name">{d}</div>)}
-                    {Array.from({length: 5}).map((_, i) => <div key={`empty-${i}`} className="cal-day empty"></div>)}
-                    {Array.from({length: 31}).map((_, i) => <div key={`may-${i}`} className="cal-day disabled">{i + 1}</div>)}
+                    {currentCalendar.days}
                   </div>
                 </div>
                 <div className="calendar-month">
-                  <div className="month-header"><span></span><strong>June 2026</strong><button className="cal-nav"><i className="fas fa-chevron-right"></i></button></div>
+                  <div className="month-header">
+                    <span></span>
+                    <strong>{nextCalendar.monthName}</strong>
+                    <button className="cal-nav" onClick={goToNextMonth}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="9 18 15 12 9 6"/>
+                      </svg>
+                    </button>
+                  </div>
                   <div className="cal-grid">
                     {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => <div key={d} className="cal-day-name">{d}</div>)}
-                    <div className="cal-day empty"></div>
-                    <div className="cal-day selectable" onClick={() => setSearchData({...searchData, dateStr: 'Jun 1 - 3'})}>1</div>
-                    <div className="cal-day selectable">2</div>
-                    <div className="cal-day selectable" onClick={() => {setSearchData({...searchData, dateStr: 'Jun 1 - 3'}); setActiveSearchTab('who');}}>3</div>
-                    {Array.from({length: 27}).map((_, i) => <div key={`jun-${i}`} className="cal-day">{i + 4}</div>)}
+                    {nextCalendar.days}
                   </div>
                 </div>
               </div>
             </div>
           )}
 
+          {/* ✅ POPOVER - WHO (CORREGIDO: Apply NO ejecuta búsqueda) */}
           {activeSearchTab === 'who' && (
             <div className="search-popover popover-who">
               <div className="counter-row">
                 <span className="counter-label">Guests</span>
                 <div className="counter-controls">
-                  <button onClick={() => handleGuestChange('guests', 'sub')} disabled={searchData.guests === 0}>−</button>
+                  <button 
+                    className="counter-btn" 
+                    onClick={() => handleGuestChange('sub')} 
+                    disabled={searchData.guests === 0}
+                  >
+                    −
+                  </button>
                   <span className="count-value">{searchData.guests === 0 ? 'Any' : searchData.guests}</span>
-                  <button onClick={() => handleGuestChange('guests', 'add')}>+</button>
+                  <button 
+                    className="counter-btn" 
+                    onClick={() => handleGuestChange('add')}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
-              <div className="popover-divider"></div>
-              <div className="counter-row">
-                <span className="counter-label">Pets</span>
-                <div className="counter-controls">
-                  <button onClick={() => handleGuestChange('pets', 'sub')} disabled={searchData.pets === 0}>−</button>
-                  <span className="count-value">{searchData.pets === 0 ? 'Any' : searchData.pets}</span>
-                  <button onClick={() => handleGuestChange('pets', 'add')}>+</button>
-                </div>
+              <div className="popover-actions">
+                <button className="popover-clear" onClick={() => {
+                  setSearchData(prev => ({...prev, guests: 0}));
+                }}>Clear</button>
+                <button className="popover-apply" onClick={handleApply}>
+                  Apply
+                </button>
               </div>
             </div>
           )}

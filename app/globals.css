@@ -676,10 +676,10 @@ body {
     margin: 0 !important;
     transform: none !important;
   }
-  .popover-where { left: 0 !important; width: 380px; }
+  .popover-where { left: 110px !important; width: 320px; }
   .where-input { padding: 24px 24px 16px; font-size: 16px; }
   .popover-section { padding: 16px 24px; }
-  .location-item .icon-box, .location-item .region-img { width: 48px; height: 48px; }
+  .location-item .icon-box, .location-item .region-img { width: 36px; height: 36px; }
   .location-item span { font-size: 15px; }
 
   .popover-when { left: 50% !important; transform: translateX(-50%) !important; width: 720px; padding: 32px; }
@@ -687,7 +687,7 @@ body {
   .when-tab { padding: 8px 24px; font-size: 14px; }
   .cal-day { height: 40px; font-size: 14px; }
 
-  .popover-who { right: 0 !important; width: 340px; padding: 24px; }
+  .popover-who { right: 145px !important; width: 340px; padding: 24px; }
   .counter-label { font-size: 16px; }
   .count-value { font-size: 15px; width: 24px; }
   .popover-divider { margin: 16px 0; }
@@ -739,4 +739,364 @@ body {
 }
 .contact-info-item a:hover {
   color: var(--text-main);
+}
+
+/* ============================================
+   POPOVER - WHO (GUESTS)
+   ============================================ */
+
+.popover-who {
+  min-width: 320px !important;
+  padding: 24px !important;
+}
+
+/* Fila de contador */
+.counter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.counter-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+}
+
+/* Controles del contador */
+.counter-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.counter-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #d0d0d0;
+  background: white;
+  color: #222;
+  font-size: 20px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  line-height: 1;
+}
+
+.counter-btn:hover:not(:disabled) {
+  border-color: #222;
+  background: #f5f5f5;
+  transform: scale(1.05);
+}
+
+.counter-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.counter-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.count-value {
+  min-width: 44px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+}
+
+/* Divisor */
+.popover-divider {
+  height: 1px;
+  background: #e8e8e8;
+  margin: 16px 0;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN (APPLY & CLEAR)
+   ============================================ */
+
+.popover-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e8e8e8;
+}
+
+/* Botón Clear */
+.popover-clear {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: #717171;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.popover-clear:hover {
+  color: #222;
+  background: #f5f5f5;
+}
+
+/* Botón Apply */
+.popover-apply {
+  padding: 10px 24px;
+  background: #222;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+}
+
+.popover-apply:hover {
+  background: #000;
+  transform: scale(1.02);
+}
+
+.popover-apply:active {
+  transform: scale(0.97);
+}
+
+/* ============================================
+   ESTILOS PARA EL CALENDARIO (complemento)
+   ============================================ */
+
+.calendar-container {
+  display: flex;
+  gap: 32px;
+  padding: 8px 0;
+}
+
+.calendar-month {
+  flex: 1;
+  min-width: 200px;
+}
+
+.month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px 16px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+}
+
+.month-header span {
+  width: 28px;
+}
+
+.cal-nav {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #222;
+}
+
+.cal-nav:hover {
+  background: #f5f5f5;
+}
+
+.cal-nav:active {
+  transform: scale(0.9);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-day-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #717171;
+  text-align: center;
+  padding: 6px 0;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #222;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  cursor: default;
+}
+
+.cal-day.empty {
+  visibility: hidden;
+}
+
+.cal-day.disabled {
+  color: #d0d0d0;
+  cursor: not-allowed;
+}
+
+.cal-day.selectable {
+  cursor: pointer;
+}
+
+.cal-day.selectable:hover:not(.selected) {
+  background: #f0f0f0;
+  border-radius: 50%;
+}
+
+.cal-day.selected {
+  background: #222 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.cal-day.in-range {
+  background: #f0f0f0 !important;
+  border-radius: 0;
+}
+
+.cal-day.in-range:first-of-type {
+  border-radius: 50% 0 0 50%;
+}
+
+.cal-day.in-range:last-of-type {
+  border-radius: 0 50% 50% 0;
+}
+
+/* Tabs de fecha */
+.when-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.when-tab {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #717171;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.when-tab.active {
+  background: white;
+  color: #222;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.when-tab:hover:not(.active) {
+  color: #222;
+}
+
+/* ============================================
+   POPOVER GENERAL
+   ============================================ */
+
+.search-popover {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  padding: 24px;
+  z-index: 1000;
+  min-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Popover Where - ciudades */
+.popover-where {
+  min-width: 320px !important;
+  padding: 16px 20px !important;
+}
+
+.popover-where .popover-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #717171;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.location-item:hover {
+  background-color: #f5f5f5;
+}
+
+.location-item .icon-box {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #717171;
+}
+
+.location-item span {
+  font-size: 14px;
+  color: #222;
+}
+
+.location-item .region-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.popover-section {
+  margin-bottom: 12px;
+}
+
+.popover-section:last-child {
+  margin-bottom: 0;
 }
