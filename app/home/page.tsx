@@ -97,7 +97,7 @@ export default function HomePage() {
                 : (item as CarCatalogItem | YachtCatalogItem).rating;
 
               return (
-                <Link href={`/${routePrefix}/${item.id}`} key={item.id} className="prop-card-link-wrapper" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <a href={`/${routePrefix}/${item.id}`} key={item.id} className="prop-card-link-wrapper" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <div className="prop-card">
                     <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`}>
                       <img 
@@ -127,7 +127,7 @@ export default function HomePage() {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </a>
               );
             })
           )}

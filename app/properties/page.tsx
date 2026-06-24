@@ -5,15 +5,43 @@ import { useSearchParams } from 'next/navigation';
 import './properties.css';
 import Link from 'next/link';
 
-// CORRECCIÓN: Importamos el tipo correcto PropertyCardData usando rutas absolutas (@/)
 import { getProperties, searchProperties, PropertyCardData } from '../lib/api/properties';
 
 function PropertiesCatalogContent() {
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>([]);
+  const [filteredProperties, setFilteredProperties] = useState<PropertyCardData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasSearched, setHasSearched] = useState(false);
+  const [sortOption, setSortOption] = useState('featured');
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
   
   const searchParams = useSearchParams();
+
+  // Función para ordenar propiedades
+  const sortProperties = (properties: PropertyCardData[], sortType: string) => {
+    const sorted = [...properties];
+    
+    switch (sortType) {
+      case 'price-asc':
+        return sorted.sort((a, b) => (a.price?.amount || 0) - (b.price?.amount || 0));
+      case 'price-desc':
+        return sorted.sort((a, b) => (b.price?.amount || 0) - (a.price?.amount || 0));
+      case 'rating':
+        return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      case 'featured':
+      default:
+        // Mantener el orden original (el que viene de la API)
+        return sorted;
+    }
+  };
+
+  // Aplicar ordenamiento cuando cambian las propiedades o el sort
+  useEffect(() => {
+    if (allProperties.length > 0) {
+      const sorted = sortProperties(allProperties, sortOption);
+      setFilteredProperties(sorted);
+    }
+  }, [allProperties, sortOption]);
 
   useEffect(() => {
     async function loadPropertiesData() {
@@ -42,7 +70,8 @@ function PropertiesCatalogContent() {
         }
       } catch (error) {
         console.error("Error loading properties data:", error);
-        setAllProperties([]); 
+        setAllProperties([]);
+        setFilteredProperties([]);
       } finally {
         setIsLoading(false);
       }
@@ -51,11 +80,22 @@ function PropertiesCatalogContent() {
     loadPropertiesData();
   }, [searchParams]);
 
+  // Obtener el label del sort actual
+  const getSortLabel = () => {
+    switch (sortOption) {
+      case 'featured': return 'Featured';
+      case 'price-asc': return 'Price: Low to High';
+      case 'price-desc': return 'Price: High to Low';
+      case 'rating': return 'Top Rated';
+      default: return 'Featured';
+    }
+  };
+
   const getDynamicTitle = () => {
-    if (hasSearched && allProperties.length > 0) {
+    if (hasSearched && filteredProperties.length > 0) {
       const cityParam = searchParams.get('city');
       return cityParam ? `Properties in ${cityParam}` : "Search Results";
-    } else if (hasSearched && allProperties.length === 0) {
+    } else if (hasSearched && filteredProperties.length === 0) {
       return "No Properties Found";
     } else {
       return "Luxury Properties for Rent";
@@ -63,9 +103,9 @@ function PropertiesCatalogContent() {
   };
 
   const getDynamicSubtitle = () => {
-    if (hasSearched && allProperties.length > 0) {
-      return `Found ${allProperties.length} spaces matching your travel criteria. Discover unmatched style below.`;
-    } else if (hasSearched && allProperties.length === 0) {
+    if (hasSearched && filteredProperties.length > 0) {
+      return `Found ${filteredProperties.length} spaces matching your travel criteria. Discover unmatched style below.`;
+    } else if (hasSearched && filteredProperties.length === 0) {
       return "We couldn't find matches for your search criteria. Try adjusting your dates or choose a alternative location.";
     } else {
       return "Discover exceptional vacation rentals and luxury properties. From cozy retreats to grand estates, find your perfect home.";
@@ -96,13 +136,93 @@ function PropertiesCatalogContent() {
 
         <div className="catalog-meta-row">
           <span className="properties-count">
-            Showing <strong>{isLoading ? "..." : allProperties.length}</strong> extraordinary spaces
+            Showing <strong>{isLoading ? "..." : filteredProperties.length}</strong> extraordinary spaces
           </span>
+          
+          {/* SORT DROPDOWN MEJORADO */}
           <div className="catalog-sort-filter">
-            <button className="btn-filter-selector" type="button">
-              <span>Sort by: Featured</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <button 
+              className="btn-filter-selector" 
+              type="button"
+              onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+            >
+              <span>Sort by: {getSortLabel()}</span>
+              <svg 
+                width="12" 
+                height="12" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                style={{ transform: isSortDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}
+              >
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
             </button>
+            
+            {isSortDropdownOpen && (
+              <div className="sort-dropdown-menu">
+                <button 
+                  className={`sort-option ${sortOption === 'featured' ? 'active' : ''}`}
+                  onClick={() => {
+                    setSortOption('featured');
+                    setIsSortDropdownOpen(false);
+                  }}
+                >
+                  <span>Featured</span>
+                  {sortOption === 'featured' && (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  )}
+                </button>
+                
+                <button 
+                  className={`sort-option ${sortOption === 'price-asc' ? 'active' : ''}`}
+                  onClick={() => {
+                    setSortOption('price-asc');
+                    setIsSortDropdownOpen(false);
+                  }}
+                >
+                  <span>Price: Low to High</span>
+                  {sortOption === 'price-asc' && (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  )}
+                </button>
+                
+                <button 
+                  className={`sort-option ${sortOption === 'price-desc' ? 'active' : ''}`}
+                  onClick={() => {
+                    setSortOption('price-desc');
+                    setIsSortDropdownOpen(false);
+                  }}
+                >
+                  <span>Price: High to Low</span>
+                  {sortOption === 'price-desc' && (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  )}
+                </button>
+                
+                <button 
+                  className={`sort-option ${sortOption === 'rating' ? 'active' : ''}`}
+                  onClick={() => {
+                    setSortOption('rating');
+                    setIsSortDropdownOpen(false);
+                  }}
+                >
+                  <span>Top Rated</span>
+                  {sortOption === 'rating' && (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -120,13 +240,13 @@ function PropertiesCatalogContent() {
                 </div>
               </div>
             ))
-          ) : allProperties.length === 0 ? (
+          ) : filteredProperties.length === 0 ? (
             <div className="w-full text-center py-12 text-gray-400 text-sm" style={{ gridColumn: '1 / -1' }}>
               No properties available at the moment matching this horizon.
             </div>
           ) : (
-            allProperties.map((prop) => (
-              <Link href={`/properties/${prop.id}`} key={prop.id} className="link-dinamic" style={{ textDecoration: 'none' }}>
+            filteredProperties.map((prop) => (
+              <a href={`/properties/${prop.id}`} key={prop.id} className="link-dinamic" style={{ textDecoration: 'none' }}>
                 <div className="catalog-card">
                   <div className="catalog-image-box">
                     <img 
@@ -162,7 +282,7 @@ function PropertiesCatalogContent() {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </a>
             ))
           )}
         </div>
@@ -176,7 +296,6 @@ function PropertiesCatalogContent() {
   );
 }
 
-// Envuelto en Suspense por requerimiento estricto de Next.js al usar useSearchParams() fuera de componentes estáticos
 export default function PropertiesPage() {
   return (
     <Suspense fallback={

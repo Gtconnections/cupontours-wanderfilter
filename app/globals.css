@@ -678,7 +678,7 @@ body {
   }
   .popover-where { left: 110px !important; width: 320px; }
   .where-input { padding: 24px 24px 16px; font-size: 16px; }
-  .popover-section { padding: 16px 24px; }
+  .popover-section { padding: 16px 0px; }
   .location-item .icon-box, .location-item .region-img { width: 36px; height: 36px; }
   .location-item span { font-size: 15px; }
 
@@ -1040,7 +1040,7 @@ body {
   z-index: 1000;
   min-width: 500px;
   max-height: 80vh;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 /* Popover Where - ciudades */
