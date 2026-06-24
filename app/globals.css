@@ -16,7 +16,7 @@
   /* Variables de escala elástica añadidas para Responsive */
   --header-padding: 15px 20px;
   --search-width: 100%;
-  --popover-width: calc(100vw - 32px); /* Calibrado para dar un respiro simétrico exacto */
+  --popover-width: calc(100vw - 32px);
 }
 
 @media (min-width: 1024px) {
@@ -38,7 +38,7 @@ body {
   color: var(--text-main); 
   background-color: var(--bg-main); 
   -webkit-font-smoothing: antialiased; 
-  overflow-x: hidden; /* Evita cualquier desborde lateral inesperado en móvil */
+  overflow-x: hidden;
 }
 
 .link-dinamic {
@@ -69,7 +69,7 @@ body {
 .header-container { 
   max-width: var(--max-width); 
   margin: 0 auto; 
-  padding: 0 16px; /* Reducido en móvil para ganar espacio de pantalla */
+  padding: 0 16px;
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
@@ -91,14 +91,13 @@ body {
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  text-transform: lowercase; /* Mantiene la estética limpia y minimalista */
+  text-transform: lowercase;
 }
 
 .logo.hide-on-mobile {
-  display: none; /* Desaparece en móvil para dar espacio al buscador expandido */
+  display: none;
 }
 
-/* Estado transparente inicial (sobre el Hero oscuro) */
 .brand-header-cupon {
   color: #ffffff;
   transition: color 0.3s ease;
@@ -109,12 +108,11 @@ body {
   transition: color 0.3s ease, opacity 0.3s ease;
 }
 
-/* Estado scrollado activo (Fondo blanco del Header) */
 .header-scrolled .brand-header-cupon {
   color: #000000;
 }
 .header-scrolled .brand-header-tours {
-  color: #fbc02d; /* El mismo amarillo/dorado corporativo exacto de tu pie de página */
+  color: #fbc02d;
   opacity: 1;
 }
 
@@ -126,7 +124,7 @@ body {
   display: flex; 
   align-items: center; 
   gap: 8px; 
-  position: relative; /* Crítico para el correcto anclaje del dropdown */
+  position: relative;
 }
 
 @media (min-width: 768px) {
@@ -134,7 +132,7 @@ body {
 }
 
 .btn-host { 
-  display: none; /* Oculto en móviles para ahorrar espacio */
+  display: none;
   background: rgba(255,255,255,0.15); 
   backdrop-filter: blur(10px); 
   color: #ffffff; 
@@ -159,7 +157,7 @@ body {
 
 @media (min-width: 768px) {
   .btn-host {
-    display: inline-flex; /* Reaparece el botón de jets a partir de tabletas */
+    display: inline-flex;
     padding: 20px 20px;
     font-size: 14px;
     line-height: 0;
@@ -209,7 +207,6 @@ body {
   justify-content: center;
 }
 
-/* Gatillo táctil en móvil */
 .mobile-search-trigger {
   display: flex;
   align-items: center;
@@ -239,7 +236,6 @@ body {
   .mobile-search-trigger { max-width: 280px; font-size: 14px; }
 }
 
-/* El buscador interactivo completo está oculto en móvil por defecto */
 .interactive-search-bar {
   display: none;
   align-items: center;
@@ -252,12 +248,11 @@ body {
   padding: 0;
   width: 100%;
   max-width: 100%;
-  overflow-x: auto; /* Evita rupturas táctiles en pantallas compactas */
+  overflow-x: auto;
   scrollbar-width: none;
 }
 .interactive-search-bar::-webkit-scrollbar { display: none; }
 
-/* Se despliega en móvil solo al interactuar */
 .interactive-search-bar.show-expanded {
   display: flex;
 }
@@ -352,14 +347,11 @@ body {
   box-shadow: 0 12px 36px rgba(0,0,0,0.15);
   padding: 16px;
   z-index: 1001;
-  width: var(--popover-width); /* Toma el ancho controlado elástico de la variable */
-  
-  /* ARREGLADO: Alineación simétrica perfecta para smartphones */
+  width: var(--popover-width);
   left: 0 !important;
   right: 0 !important;
   margin: 0 auto !important;
   transform: none !important;
-  
   animation: popFade 0.2s ease forwards;
 }
 
@@ -396,10 +388,6 @@ body {
 .cal-day.selectable { cursor: pointer; transition: background 0.2s; }
 .cal-day.selectable:hover { background: #f0f0f0; }
 
-.exact-dates-footer { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 12px; }
-.exact-btn { padding: 6px 12px; border-radius: 30px; border: none; background: transparent; color: #aaa; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s;}
-.exact-btn.active { background: #f5f5f5; color: var(--text-main); }
-
 /* 3. WHO POPOVER */
 .counter-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
 .counter-label { font-size: 14px; font-weight: 500; }
@@ -409,18 +397,6 @@ body {
 .counter-controls button:disabled { opacity: 0.3; cursor: not-allowed; }
 .count-value { font-size: 13px; width: 16px; text-align: center; color: var(--text-muted);}
 .popover-divider { height: 1px; background: var(--border-light); margin: 8px 0; }
-
-@media (min-width: 768px) {
-  .popover-when { width: 680px; padding: 32px; }
-  .calendar-container { flex-direction: row; gap: 32px; }
-  .when-tab { padding: 8px 24px; font-size: 14px; }
-  .exact-btn { padding: 8px 16px; font-size: 13px; }
-  .cal-day { height: 40px; font-size: 14px; }
-  .popover-who { width: 340px; padding: 24px; }
-  .counter-label { font-size: 16px; }
-  .count-value { font-size: 15px; width: 24px; }
-  .popover-divider { margin: 16px 0; }
-}
 
 /* ==========================================================================
    DROPDOWN MENU NATIVO (PIXEL PERFECT)
@@ -479,16 +455,14 @@ body {
 }
 
 /* ==========================================================================
-   SISTEMA DE CIERRE / FOOTER EDITORIAL (CONEXIÓN DE MARQUESINA COMPLETA)
+   SISTEMA DE CIERRE / FOOTER EDITORIAL
    ========================================================================== */
 .main-footer { 
   background: var(--bg-footer); 
   font-size: 13px;
 }
 
-/* ==========================================================================
-   NUEVA MARQUESINA EXCLUSIVA DE SOCIOS (image_4ec09e.png ALIGNMENT)
-   ========================================================================== */
+/* MARQUESINA EXCLUSIVA DE SOCIOS */
 .platforms-marquee-section {
   border-bottom: 1px solid var(--border-light);
   padding: 48px 20px 32px;
@@ -522,7 +496,6 @@ body {
 }
 .marquee-row-cards::-webkit-scrollbar { display: none; }
 
-/* Tarjetas idénticas a las de tu captura */
 .partner-card-badge {
   flex: 0 0 160px;
   height: 94px;
@@ -641,63 +614,6 @@ body {
 }
 .btn-circle:hover { background: #eaeaea; }
 
-
-/* ==========================================================================
-   MEDIA QUERIES MIGRATION RECONEXIÓN ESCENARIO MONITOR
-   ========================================================================== */
-@media (min-width: 1024px) {
-  .main-header { padding: 20px 0; }
-  .main-header.header-scrolled { padding: 15px 0; }
-  
-  .logo.hide-on-mobile { display: inline-block; }
-
-  .mobile-search-trigger { display: none; }
-  .search-wrapper { width: max-content; }
-
-  .interactive-search-bar {
-    display: flex;
-    width: max-content; 
-    max-width: max-content;
-    height: 50px;
-  }
-
-  .search-segment { padding: 0 32px; flex: initial; min-width: auto; }
-  .where-segment { padding-left: 32px; }
-  .who-segment { padding-right: 8px; }
-  .segment-content { font-size: 14px; }
-  .search-icon-small { margin-right: 8px; }
-  .search-divider { height: 24px; }
-  .search-btn { height: 40px; padding: 0 24px; font-size: 14px; margin-left: 20px; }
-
-  .search-popover {
-    width: 380px;
-    left: auto !important;
-    right: auto !important;
-    margin: 0 !important;
-    transform: none !important;
-  }
-  .popover-where { left: 110px !important; width: 320px; }
-  .where-input { padding: 24px 24px 16px; font-size: 16px; }
-  .popover-section { padding: 16px 0px; }
-  .location-item .icon-box, .location-item .region-img { width: 36px; height: 36px; }
-  .location-item span { font-size: 15px; }
-
-  .popover-when { left: 50% !important; transform: translateX(-50%) !important; width: 720px; padding: 32px; }
-  .calendar-container { flex-direction: row; gap: 40px; }
-  .when-tab { padding: 8px 24px; font-size: 14px; }
-  .cal-day { height: 40px; font-size: 14px; }
-
-  .popover-who { right: 145px !important; width: 340px; padding: 24px; }
-  .counter-label { font-size: 16px; }
-  .count-value { font-size: 15px; width: 24px; }
-  .popover-divider { margin: 16px 0; }
-
-  /* Ajustes de grilla de partners centrados en PC */
-  .platforms-marquee-section { padding: 64px 40px 48px; }
-  .marquee-row-cards { justify-content: center; gap: 24px; flex-wrap: wrap; }
-  .partner-card-badge { flex: 0 0 180px; height: 104px; border-radius: 20px; }
-}
-
 .custom-contact-col {
   display: flex;
   flex-direction: column;
@@ -709,7 +625,7 @@ body {
   letter-spacing: -0.5px;
 }
 .brand-cupon { color: #000000; }
-.brand-tours { color: #fbc02d; } /* Tono amarillo/dorado corporativo */
+.brand-tours { color: #fbc02d; }
 .footer-brand-desc {
   font-size: 14px;
   line-height: 1.5;
@@ -729,7 +645,7 @@ body {
   color: var(--text-muted);
 }
 .contact-info-item svg {
-  color: #1e88e5; /* Azul limpio de los iconos */
+  color: #1e88e5;
   flex-shrink: 0;
 }
 .contact-info-item a {
@@ -744,13 +660,11 @@ body {
 /* ============================================
    POPOVER - WHO (GUESTS)
    ============================================ */
-
 .popover-who {
   min-width: 320px !important;
   padding: 24px !important;
 }
 
-/* Fila de contador */
 .counter-row {
   display: flex;
   align-items: center;
@@ -764,7 +678,6 @@ body {
   color: #222;
 }
 
-/* Controles del contador */
 .counter-controls {
   display: flex;
   align-items: center;
@@ -813,16 +726,11 @@ body {
   color: #222;
 }
 
-/* Divisor */
 .popover-divider {
   height: 1px;
   background: #e8e8e8;
   margin: 16px 0;
 }
-
-/* ============================================
-   BOTONES DE ACCIÓN (APPLY & CLEAR)
-   ============================================ */
 
 .popover-actions {
   display: flex;
@@ -834,7 +742,6 @@ body {
   border-top: 1px solid #e8e8e8;
 }
 
-/* Botón Clear */
 .popover-clear {
   padding: 8px 16px;
   background: transparent;
@@ -854,7 +761,6 @@ body {
   background: #f5f5f5;
 }
 
-/* Botón Apply */
 .popover-apply {
   padding: 10px 24px;
   background: #222;
@@ -878,9 +784,8 @@ body {
 }
 
 /* ============================================
-   ESTILOS PARA EL CALENDARIO (complemento)
+   ESTILOS PARA EL CALENDARIO
    ============================================ */
-
 .calendar-container {
   display: flex;
   gap: 32px;
@@ -1027,7 +932,6 @@ body {
 /* ============================================
    POPOVER GENERAL
    ============================================ */
-
 .search-popover {
   position: absolute;
   top: calc(100% + 12px);
@@ -1099,4 +1003,196 @@ body {
 
 .popover-section:last-child {
   margin-bottom: 0;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES - ESCRITORIO (≥ 1024px)
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .main-header { padding: 20px 0; }
+  .main-header.header-scrolled { padding: 15px 0; }
+  
+  .logo.hide-on-mobile { display: inline-block; }
+
+  .mobile-search-trigger { display: none; }
+  .search-wrapper { width: max-content; }
+
+  .interactive-search-bar {
+    display: flex;
+    width: max-content; 
+    max-width: max-content;
+    height: 50px;
+  }
+
+  .search-segment { padding: 0 32px; flex: initial; min-width: auto; }
+  .where-segment { padding-left: 32px; }
+  .who-segment { padding-right: 8px; }
+  .segment-content { font-size: 14px; }
+  .search-icon-small { margin-right: 8px; }
+  .search-divider { height: 24px; }
+  .search-btn { height: 40px; padding: 0 24px; font-size: 14px; margin-left: 20px; }
+
+  .search-popover {
+    width: 380px;
+    left: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+  .popover-where { left: 110px !important; width: 320px; }
+  .where-input { padding: 24px 24px 16px; font-size: 16px; }
+  .popover-section { padding: 16px 0px; }
+  .location-item .icon-box, .location-item .region-img { width: 36px; height: 36px; }
+  .location-item span { font-size: 15px; }
+
+  .popover-when { left: 50% !important; transform: translateX(-50%) !important; width: 720px; padding: 32px; }
+  .calendar-container { flex-direction: row; gap: 40px; }
+  .when-tab { padding: 8px 24px; font-size: 14px; }
+  .cal-day { height: 40px; font-size: 14px; }
+
+  .popover-who { right: 145px !important; width: 340px; padding: 24px; }
+  .counter-label { font-size: 16px; }
+  .count-value { font-size: 15px; width: 24px; }
+  .popover-divider { margin: 16px 0; }
+
+  .platforms-marquee-section { padding: 64px 40px 48px; }
+  .marquee-row-cards { justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .partner-card-badge { flex: 0 0 180px; height: 104px; border-radius: 20px; }
+}
+
+/* ==========================================================================
+   MEDIA QUERIES - TABLET (≥ 768px)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .popover-when { width: 680px; padding: 32px; }
+  .calendar-container { flex-direction: row; gap: 32px; }
+  .when-tab { padding: 8px 24px; font-size: 14px; }
+  .cal-day { height: 40px; font-size: 14px; }
+  .popover-who { width: 340px; padding: 24px; }
+  .counter-label { font-size: 16px; }
+  .count-value { font-size: 15px; width: 24px; }
+  .popover-divider { margin: 16px 0; }
+}
+
+/* ==========================================================================
+   CALENDARIO - VERSIÓN COMPACTA PARA MÓVIL (NO SE DESBORDA)
+   ========================================================================== */
+@media (max-width: 767px) {
+  .search-popover.popover-when {
+    min-width: 0 !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 400px !important;
+    padding: 12px !important;
+    border-radius: 16px !important;
+    left: 57% !important;
+    transform: translateX(-50%) !important;
+    overflow: hidden !important;
+  }
+
+  .popover-when .when-tabs {
+    gap: 4px;
+    padding: 3px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+
+  .popover-when .when-tab {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  .popover-when .calendar-container {
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 0 !important;
+  }
+
+  .popover-when .calendar-month {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .popover-when .month-header {
+    padding: 4px 2px 8px 2px !important;
+    font-size: 12px !important;
+  }
+
+  .popover-when .month-header strong {
+    font-size: 12px !important;
+  }
+
+  .popover-when .cal-nav {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .popover-when .cal-nav svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .popover-when .cal-day-name {
+    font-size: 9px !important;
+    padding: 3px 0 !important;
+  }
+
+  .popover-when .cal-grid {
+    gap: 1px !important;
+  }
+
+  .popover-when .cal-day {
+    height: 28px !important;
+    font-size: 11px !important;
+    border-radius: 50% !important;
+  }
+
+  .popover-when .cal-day.selected {
+    border-radius: 50% !important;
+  }
+
+  .popover-when .cal-day.in-range {
+    border-radius: 0 !important;
+  }
+
+  .popover-when .cal-day.in-range:first-of-type {
+    border-radius: 50% 0 0 50% !important;
+  }
+
+  .popover-when .cal-day.in-range:last-of-type {
+    border-radius: 0 50% 50% 0 !important;
+  }
+
+  .popover-when .calendar-month:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+  }
+}
+
+/* ==========================================================================
+   CALENDARIO - MÓVILES MUY PEQUEÑOS (≤ 400px)
+   ========================================================================== */
+@media (max-width: 400px) {
+  .search-popover.popover-when {
+    padding: 10px !important;
+    width: calc(100vw - 20px) !important;
+  }
+
+  .popover-when .cal-day {
+    height: 24px !important;
+    font-size: 10px !important;
+  }
+
+  .popover-when .month-header strong {
+    font-size: 11px !important;
+  }
+
+  .popover-when .cal-day-name {
+    font-size: 8px !important;
+  }
+
+  .popover-when .when-tab {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
 }
