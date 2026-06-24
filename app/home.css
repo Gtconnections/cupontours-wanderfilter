@@ -189,7 +189,7 @@
   color: inherit;
   transition: opacity 0.25s ease;
   display: block;
-  min-width: 0;
+  min-width: 240px;
 }
 
 .prop-card-link-wrapper:hover {
