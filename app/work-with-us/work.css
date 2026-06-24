@@ -314,8 +314,12 @@
 
 .revenue-card.highlight {
   background: #111111;
-  color: white;
+  color: white !important;
   border-color: #111;
+}
+
+.revenue-card.highlight .price{
+  color: white !important;
 }
 
 .revenue-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: var(--text-muted); }
@@ -389,7 +393,7 @@
 }
 
 .img-logo{
-  height: 54px;
+  height: 46px;
 }
 
 @media (min-width: 1024px) {
