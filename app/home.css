@@ -452,7 +452,7 @@
   .prop-card-link-wrapper {
     min-width: 240px !important;
   }
-  
+
   .prop-card {
     flex: 0 0 240px;
   }
@@ -553,6 +553,10 @@
 
 /* --- TABLET (≥ 768px) --- */
 @media (min-width: 768px) {
+  .prop-card-link-wrapper {
+    min-width: 240px !important;
+  }
+  
   .property-carousel {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
