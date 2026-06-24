@@ -1,335 +1,842 @@
 /* ==========================================================================
-   ESTILOS BASE / MOBILE-FIRST (HOME - OPCIÓN 2: ASIMÉTRICA & GRID)
+   ESTILOS BASE / MOBILE-FIRST (HOME)
    ========================================================================= */
+
+/* ============================================
+   1. HERO - PADDING REDUCIDO EN MÓVIL
+   ============================================ */
 .home-hero {
-  height: 60vh; /* Altura elástica balanceada para smartphones */
-  min-height: 420px;
+  height: 50vh;
+  min-height: 320px;
   position: relative;
-  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover;
+  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
   display: flex;
   align-items: center;
 }
 
 .hero-overlay {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.7) 100%);
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
   color: white;
-  padding: 0 20px;
-  max-width: var(--max-width);
+  padding: 0 16px;
+  max-width: 1280px;
   margin: 0 auto;
   width: 100%;
 }
 
 .hero-badge {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 4px 12px;
   border-radius: 20px;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .hero-title {
-  font-size: 32px; /* Proporciones tipográficas controladas en pantallas chicas */
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.2;
-  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.hero-title br {
+  display: none;
 }
 
 .hero-subtitle {
-  font-size: 14px;
-  color: #e2e2e2;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
   max-width: 100%;
   line-height: 1.5;
 }
 
-/* 2. CATEGORIES FILTER PILLS BAR */
+/* ============================================
+   2. CATEGORIES FILTER PILLS
+   ============================================ */
 .categories-filter-section {
-  max-width: var(--max-width);
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 20px 12px;
+  padding: 14px 12px 6px;
 }
 
 .filter-wrapper {
   display: flex;
-  gap: 12px;
-  overflow-x: auto; /* Desplazamiento horizontal fluido */
-  padding-bottom: 8px;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 10px;
   scrollbar-width: none;
-  justify-content: center;
+  -webkit-overflow-scrolling: touch;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
-.filter-wrapper::-webkit-scrollbar { display: none; }
+
+.filter-wrapper::-webkit-scrollbar {
+  display: none;
+}
 
 .filter-pill {
+  flex-shrink: 0;
   background: #f5f5f7;
   border: 1px solid transparent;
-  color: var(--text-main);
-  padding: 8px 20px;
+  color: #222;
+  padding: 6px 14px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
-}
-.filter-pill.active, .filter-pill:hover {
-  background: var(--text-main);
-  color: white;
+  transition: all 0.25s ease;
+  text-decoration: none;
 }
 
-/* 3. COLLECTIONS LISTINGS CONTENEUR */
+.filter-pill.active,
+.filter-pill:hover {
+  background: #111;
+  color: white;
+  border-color: #111;
+}
+
+/* ============================================
+   3. LISTINGS CONTAINER
+   ============================================ */
 .home-listings-container {
-  max-width: var(--max-width);
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 20px 60px;
+  padding: 10px 12px 30px;
 }
 
 .home-row-section {
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .row-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .row-pretitle {
   display: block;
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #888;
-  margin-bottom: 4px;
+  color: #999;
+  margin-bottom: 1px;
   font-weight: 600;
 }
 
 .row-header h3 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
+  color: #111;
+  line-height: 1.3;
 }
 
-/* Desactivamos flechas de navegación rígidas en interfaces móviles */
-.carousel-nav { 
-  display: none; 
+.carousel-nav {
+  display: none;
 }
 
-/* Transformación elástica a riel horizontal con scroll de resorte */
+/* ============================================
+   4. PROPERTY CARDS - MOBILE FIRST
+   ============================================ */
 .property-carousel {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 0 6px;
+  scroll-snap-type: x mandatory;
 }
-.property-carousel::-webkit-scrollbar { display: none; }
+
+.property-carousel::-webkit-scrollbar {
+  display: none;
+}
 
 .prop-card {
-  flex: 0 0 280px; /* Ancho modular de tarjeta para el carrusel táctil */
+  flex: 0 0 220px;
+  max-width: 280px;
+  scroll-snap-align: start;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-width: 0;
 }
 
-/* CORRECCIÓN DE UNIFORMIDAD ABSOLUTA EN CONTENEDORES DE IMÁGENES */
+.prop-card-link-wrapper {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.25s ease;
+  display: block;
+  min-width: 0;
+}
+
+.prop-card-link-wrapper:hover {
+  opacity: 0.9;
+}
+
+/* ============================================
+   5. IMAGE CONTAINER
+   ============================================ */
 .prop-image-container {
-  position: relative !important;
-  width: 100% !important;
-  padding-top: 75% !important; /* Ratio 1:1 por defecto para Casas */
-  border-radius: 12px;
+  position: relative;
+  width: 100%;
+  padding-top: 75%;
+  border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 12px;
-  background-color: #f5f5f7;
+  background-color: #f0f0f2;
+  flex-shrink: 0;
 }
 
-/* Conservamos de manera exacta tus ratios asimétricos con contención calculada rigurosa */
-.prop-image-container.car-ratio { padding-top: 62.5% !important; }  /* Ratio 16:10 */
-.prop-image-container.yacht-ratio { padding-top: 75% !important; }  /* Ratio 4:3 */
+.prop-image-container.car-ratio {
+  padding-top: 62.5%;
+}
+
+.prop-image-container.yacht-ratio {
+  padding-top: 75%;
+}
 
 .prop-image-container img {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important; 
-  height: 100% !important; 
-  object-fit: cover !important;
-  object-position: center !important;
-  transition: transform 0.4s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.prop-card:hover .prop-image-container img {
+  transform: scale(1.04);
 }
 
 .heart-btn {
-  position: absolute; top: 12px; right: 12px;
-  background: transparent; border: none; color: white;
-  cursor: pointer; z-index: 2; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
 }
 
-.prop-info { 
-  font-size: 13px; 
+.heart-btn:hover {
+  background: rgba(0, 0, 0, 0.45);
+  transform: scale(1.05);
+}
+
+.heart-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ============================================
+   6. PROPERTY INFO - CORREGIDO PARA MÓVIL
+   ============================================ */
+.prop-info {
+  font-size: 12px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding: 6px 2px 0;
+  min-width: 0;
+  width: 100%;
 }
 
-/* CORRECCIÓN CRÍTICA DE ENCAPSULADO CON TRES PUNTOS (...) AL FINAL */
 .prop-title-row h4 {
-  font-weight: 600; 
-  font-size: 14px; 
-  line-height: 1.4;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.3;
+  margin-bottom: 1px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #111;
+  word-break: break-word;
+}
+
+.prop-specs {
+  color: #999;
   margin-bottom: 2px;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 1 !important; /* Fuerza encapsulado estricto a una sola línea */
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important; /* Inserta los tres puntos de forma automática */
-  height: auto !important;
+  font-size: 11px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.prop-specs { color: var(--text-muted); margin-bottom: 4px; font-size: 12px; }
-
-/* Alineamiento magnético del bloque de precios */
-.prop-price-row { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-top: auto; /* Empuja el precio al fondo exacto de manera simétrica */
+.prop-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 2px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
-.price { font-weight: 600; color: var(--text-main); }
-.rating { color: var(--text-main); font-weight: 500; display: flex; align-items: center; font-size: 12px; }
+.price {
+  font-weight: 600;
+  color: #111;
+  font-size: 12px;
+  white-space: nowrap;
+}
 
-/* BANNERS INTERMEDIOS CINEMATOGRÁFICOS ELÁSTICOS */
+.rating {
+  color: #111;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.rating svg {
+  margin-right: 3px;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+}
+
+/* ============================================
+   7. MID BANNERS
+   ============================================ */
 .mid-banner {
-  height: 240px;
-  border-radius: 16px;
+  height: 180px;
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  margin-bottom: 32px;
+  padding: 0 16px;
+  margin-bottom: 20px;
+  background-size: cover;
+  background-position: center;
 }
-.banner-properties { background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover; }
-.banner-cars { background: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80') center/cover; }
-.banner-yachts { background: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80') center/cover; }
+
+.banner-properties {
+  background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80');
+}
+
+.banner-cars {
+  background-image: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80');
+}
+
+.banner-yachts {
+  background-image: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80');
+}
 
 .mid-banner-overlay {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.35) 100%);
 }
 
-.mid-banner-content { position: relative; z-index: 2; color: white; max-width: 100%; }
-.mid-banner-content h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
-.mid-banner-content p { font-size: 13px; color: #ddd; line-height: 1.4; }
-
-
-/* ==========================================================================
-   MEDIA QUERIES (TABLETAS, ESCRITORIO Y PANTALLAS ULTRA-WIDE)
-   ========================================================================= */
-@media (min-width: 768px) {
-  .hero-title { font-size: 48px; }
-  .hero-subtitle { font-size: 15px; }
-  .categories-filter-section { padding: 40px 40px 20px; }
-  .filter-pill { padding: 10px 24px; font-size: 14px; }
-  .home-listings-container { padding: 40px 40px 60px; }
-  .row-header h3 { font-size: 22px; }
-  
-  /* Retorno progresivo a distribución en rejilla elástica */
-  .property-carousel { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; overflow-x: hidden; }
-  .prop-card { flex: none; width: 100%; }
-  .mid-banner { height: 300px; padding: 0 40px; margin-bottom: 48px; }
-  .mid-banner-content h2 { font-size: 30px; }
-  .marquee-row { gap: 40px; }
+.mid-banner-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  max-width: 100%;
 }
 
-@media (min-width: 1024px) {
-  .home-hero { height: 85vh; min-height: 650px; }
-  .hero-overlay { background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%); }
-  .hero-content { padding: 0 40px; }
-  .hero-badge { padding: 6px 16px; font-size: 11px; margin-bottom: 24px; }
-  .hero-title { font-size: 64px; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
-  .hero-subtitle { font-size: 16px; max-width: 550px; }
-
-  .home-listings-container { padding-bottom: 100px; }
-  .home-row-section { margin-bottom: 80px; }
-  .row-header { margin-bottom: 28px; }
-  .row-pretitle { font-size: 11px; margin-bottom: 8px; }
-  .row-header h3 { font-size: 24px; letter-spacing: -0.5px; }
-  
-  /* Activamos controles multimedia y fijamos el Grid de 4 columnas original */
-  .carousel-nav { display: flex; }
-  .property-carousel { grid-template-columns: repeat(4, 1fr); gap: 24px; }
-  .prop-image-container { border-radius: 16px; margin-bottom: 14px; }
-  .prop-card:hover .prop-image-container img { transform: scale(1.04); }
-  .prop-info { font-size: 14px; }
-  .prop-title-row h4 { font-size: 15px; }
-  .prop-specs { font-size: 13px; margin-bottom: 6px; }
-  .rating { font-size: 13px; }
-
-  .mid-banner { height: 350px; padding: 0 60px; margin-bottom: 60px; border-radius: 24px; }
-  .mid-banner-overlay { background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, transparent 100%); }
-  .mid-banner-content h2 { font-size: 36px; letter-spacing: -1px; margin-bottom: 12px; }
-  .mid-banner-content p { font-size: 15px; line-height: 1.5; }
-
-  .platforms-marquee-section { padding: 60px 40px; }
-  .marquee-title { font-size: 11px; margin-bottom: 32px; }
-  .marquee-row { gap: 60px; }
-  .marquee-row span { font-size: 20px; }
+.mid-banner-content h2 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
 }
 
-/* ==========================================================================
-   WANDER CALL TO ACTION BUTTONS (MID-BANNERS)
-   ========================================================================= */
+.mid-banner-content p {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .btn-banner-cta {
   display: inline-flex;
   align-items: center;
-  background-color: #ffffff;
-  color: #111111;
-  padding: 10px 22px;
+  background: white;
+  color: #111;
+  padding: 6px 14px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   text-decoration: none;
-  margin-top: 16px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 8px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border: none;
 }
 
 .btn-banner-cta svg {
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
+  margin-left: 4px;
+  width: 12px;
+  height: 12px;
 }
 
 .btn-banner-cta:hover {
-  background-color: #111111;
-  color: #ffffff;
+  background: #111;
+  color: white;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .btn-banner-cta:hover svg {
   transform: translateX(3px);
 }
 
-.prop-card-link-wrapper {
-  transition: opacity 0.2s ease;
-}
-.prop-card-link-wrapper:hover {
-  opacity: 0.95;
+/* ============================================
+   8. LOADING STATE
+   ============================================ */
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
-.categories-filter-section a{
-  text-decoration: none;
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+/* ============================================
+   MEDIA QUERIES
+   ============================================ */
+
+/* --- MÓVIL GRANDE (≥ 400px) --- */
+@media (min-width: 400px) {
+  .prop-card-link-wrapper {
+    min-width: 240px !important;
+  }
+  
+  .prop-card {
+    flex: 0 0 240px;
+  }
+
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .hero-subtitle {
+    font-size: 13px;
+  }
+}
+
+/* --- TABLET PEQUEÑA (≥ 600px) --- */
+@media (min-width: 600px) {
+  .home-hero {
+    height: 55vh;
+    min-height: 380px;
+  }
+
+  .hero-content {
+    padding: 0 24px;
+  }
+
+  .hero-title {
+    font-size: 34px;
+  }
+
+  .hero-title br {
+    display: inline;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    max-width: 80%;
+  }
+
+  .hero-badge {
+    font-size: 10px;
+    padding: 5px 16px;
+  }
+
+  .categories-filter-section {
+    padding: 18px 24px 10px;
+  }
+
+  .filter-wrapper {
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .filter-pill {
+    padding: 8px 20px;
+    font-size: 13px;
+  }
+
+  .home-listings-container {
+    padding: 16px 24px 40px;
+  }
+
+  .property-carousel {
+    gap: 16px;
+  }
+
+  .prop-card {
+    flex: 0 0 260px;
+  }
+
+  .mid-banner {
+    height: 220px;
+    padding: 0 24px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+  }
+
+  .mid-banner-content h2 {
+    font-size: 20px;
+  }
+
+  .mid-banner-content p {
+    font-size: 12px;
+    max-width: 80%;
+  }
+
+  .btn-banner-cta {
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+
+  .row-header h3 {
+    font-size: 18px;
+  }
+
+  .row-pretitle {
+    font-size: 10px;
+  }
+}
+
+/* --- TABLET (≥ 768px) --- */
+@media (min-width: 768px) {
+  .property-carousel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+
+  .prop-card {
+    flex: none;
+    max-width: 100%;
+    scroll-snap-align: none;
+  }
+
+  .prop-image-container {
+    border-radius: 12px;
+  }
+
+  .home-row-section {
+    margin-bottom: 36px;
+  }
+
+  .row-header {
+    margin-bottom: 14px;
+  }
+
+  .row-header h3 {
+    font-size: 20px;
+  }
+
+  .mid-banner {
+    height: 250px;
+    padding: 0 32px;
+    margin-bottom: 36px;
+    border-radius: 16px;
+  }
+
+  .mid-banner-content h2 {
+    font-size: 24px;
+  }
+
+  .mid-banner-content p {
+    font-size: 13px;
+    max-width: 60%;
+  }
+
+  .prop-info {
+    font-size: 13px;
+  }
+
+  .prop-title-row h4 {
+    font-size: 14px;
+  }
+
+  .prop-specs {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 13px;
+  }
+
+  .rating {
+    font-size: 12px;
+  }
+}
+
+/* --- DESKTOP (≥ 1024px) --- */
+@media (min-width: 1024px) {
+  .home-hero {
+    height: 75vh;
+    min-height: 550px;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.1) 100%);
+  }
+
+  .hero-content {
+    padding: 0 40px;
+  }
+
+  .hero-badge {
+    font-size: 11px;
+    padding: 6px 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+    max-width: 480px;
+  }
+
+  .categories-filter-section {
+    padding: 28px 40px 16px;
+  }
+
+  .filter-wrapper {
+    gap: 16px;
+  }
+
+  .filter-pill {
+    padding: 10px 28px;
+    font-size: 14px;
+  }
+
+  .home-listings-container {
+    padding: 28px 40px 60px;
+  }
+
+  .property-carousel {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .carousel-nav {
+    display: flex;
+  }
+
+  .prop-card:hover .prop-image-container img {
+    transform: scale(1.06);
+  }
+
+  .prop-image-container {
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+
+  .prop-info {
+    font-size: 14px;
+  }
+
+  .prop-title-row h4 {
+    font-size: 15px;
+  }
+
+  .prop-specs {
+    font-size: 13px;
+  }
+
+  .price {
+    font-size: 14px;
+  }
+
+  .rating {
+    font-size: 13px;
+  }
+
+  .mid-banner {
+    height: 300px;
+    padding: 0 50px;
+    margin-bottom: 48px;
+    border-radius: 20px;
+  }
+
+  .mid-banner-overlay {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  }
+
+  .mid-banner-content h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  .mid-banner-content p {
+    font-size: 14px;
+    max-width: 450px;
+    -webkit-line-clamp: 2;
+  }
+
+  .btn-banner-cta {
+    padding: 10px 24px;
+    font-size: 13px;
+    margin-top: 14px;
+  }
+
+  .home-row-section {
+    margin-bottom: 56px;
+  }
+}
+
+/* --- PANTALLA GRANDE (≥ 1280px) --- */
+@media (min-width: 1280px) {
+  .property-carousel {
+    gap: 28px;
+  }
+
+  .mid-banner {
+    height: 340px;
+    padding: 0 70px;
+  }
+
+  .mid-banner-content h2 {
+    font-size: 38px;
+  }
+
+  .mid-banner-content p {
+    font-size: 15px;
+    max-width: 500px;
+  }
+
+  .hero-title {
+    font-size: 56px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE AJUSTES PARA MÓVIL MUY PEQUEÑO
+   ============================================ */
+@media (max-width: 360px) {
+  .home-hero {
+    min-height: 280px;
+    height: 45vh;
+  }
+
+  .hero-title {
+    font-size: 20px;
+  }
+
+  .hero-badge {
+    font-size: 8px;
+    padding: 3px 10px;
+    margin-bottom: 6px;
+  }
+
+  .hero-subtitle {
+    font-size: 11px;
+  }
+
+  .prop-card {
+    flex: 0 0 180px;
+  }
+
+  .prop-title-row h4 {
+    font-size: 12px;
+  }
+
+  .prop-specs {
+    font-size: 10px;
+  }
+
+  .price {
+    font-size: 11px;
+  }
+
+  .rating {
+    font-size: 10px;
+  }
+
+  .mid-banner {
+    height: 150px;
+    padding: 0 12px;
+  }
+
+  .mid-banner-content h2 {
+    font-size: 14px;
+  }
+
+  .mid-banner-content p {
+    font-size: 10px;
+    -webkit-line-clamp: 1;
+  }
+
+  .btn-banner-cta {
+    padding: 4px 12px;
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  .filter-pill {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  .row-header h3 {
+    font-size: 14px;
+  }
+
+  .row-pretitle {
+    font-size: 8px;
+  }
 }

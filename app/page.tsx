@@ -103,6 +103,7 @@ export default function HomePage() {
                       <img 
                         src={imgUrl} 
                         alt={item.title} 
+                        loading="lazy"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = type === 'car'
                             ? "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
@@ -121,7 +122,7 @@ export default function HomePage() {
                       <div className="prop-price-row">
                         <span className="price">{displayPrice}</span>
                         <span className="rating">
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{marginRight: '4px'}}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                           {displayRating}
                         </span>
                       </div>
@@ -167,7 +168,7 @@ export default function HomePage() {
             <p>Don't wait to create unforgettable memories. Our luxury properties offer the perfect blend of comfort and elegance for your next getaway. Reserve now and experience hospitality at its finest.</p>
             <Link href="/properties" className="btn-banner-cta">
               Explore Properties
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '6px' }}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </Link>
           </div>
         </div>
@@ -182,7 +183,7 @@ export default function HomePage() {
             <p>Access our premium fleet of SUVs, electric models, and sportscars tailored for your trip.</p>
             <Link href="/cars" className="btn-banner-cta">
               View Fleet
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '6px' }}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </Link>
           </div>
         </div>
@@ -197,7 +198,7 @@ export default function HomePage() {
             <p>From private day charters to custom multi-cabin mega yachts on coastal waters.</p>
             <Link href="/yachts" className="btn-banner-cta">
               Explore Charters
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '6px' }}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </Link>
           </div>
         </div>
