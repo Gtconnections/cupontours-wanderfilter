@@ -447,7 +447,7 @@ export default function Header() {
           
           <nav className={`dropdown-menu ${isMenuOpen ? 'open' : ''}`}>
             <ul>
-              <li><Link href="/home" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
+              <li><Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
               <li className="menu-divider"></li>
               <li><Link href="/about-us" onClick={() => setIsMenuOpen(false)}>About</Link></li>
               <li><Link href="/services" onClick={() => setIsMenuOpen(false)}>Services</Link></li>

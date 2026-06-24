@@ -1,253 +1,335 @@
 /* ==========================================================================
-   ESTILOS BASE / MOBILE-FIRST (PÁGINA DE INICIO)
-   ========================================================================== */
-.home-hero { 
-  height: 60vh; 
-  min-height: 420px; 
-  position: relative; 
-  background: url('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80') center/cover; 
-  display: flex; 
-  align-items: center; 
+   ESTILOS BASE / MOBILE-FIRST (HOME - OPCIÓN 2: ASIMÉTRICA & GRID)
+   ========================================================================= */
+.home-hero {
+  height: 60vh; /* Altura elástica balanceada para smartphones */
+  min-height: 420px;
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover;
+  display: flex;
+  align-items: center;
 }
 
-.hero-overlay { 
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: 100%; 
-  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%); 
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
 }
 
-.hero-content { 
-  position: relative; 
-  z-index: 2; 
-  color: white; 
-  padding: 0 24px; 
-  max-width: var(--max-width); 
-  margin: 0 auto; 
-  width: 100%; 
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 0 20px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
 }
 
-.hero-badge { 
-  display: inline-block; 
-  background: rgba(255, 255, 255, 0.2); 
-  backdrop-filter: blur(8px); 
-  padding: 6px 14px; 
-  border-radius: 20px; 
-  font-size: 10px; 
-  font-weight: 600; 
-  margin-bottom: 16px; 
-  text-transform: uppercase;
+.hero-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
 }
 
-.hero-title { 
-  font-size: 32px; 
-  font-weight: 700; 
-  letter-spacing: -1px; 
-  line-height: 1.2; 
-  margin-bottom: 12px; 
+.hero-title {
+  font-size: 32px; /* Proporciones tipográficas controladas en pantallas chicas */
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 12px;
 }
 
-.hero-subtitle { 
-  font-size: 14px; 
-  color: #eeeeee; 
+.hero-subtitle {
+  font-size: 14px;
+  color: #e2e2e2;
+  max-width: 100%;
   line-height: 1.5;
 }
-.hero-subtitle strong { font-weight: 700; color: white; }
 
-/* CONTENEDOR DE CATÁLOGOS */
-.properties-container { 
-  max-width: var(--max-width); 
-  margin: 0 auto; 
-  padding: 48px 24px; 
+/* 2. CATEGORIES FILTER PILLS BAR */
+.categories-filter-section {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 24px 20px 12px;
 }
 
-.property-row-section { 
-  margin-bottom: 40px; 
+.filter-wrapper {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto; /* Desplazamiento horizontal fluido */
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  justify-content: center;
+}
+.filter-wrapper::-webkit-scrollbar { display: none; }
+
+.filter-pill {
+  background: #f5f5f7;
+  border: 1px solid transparent;
+  color: var(--text-main);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.filter-pill.active, .filter-pill:hover {
+  background: var(--text-main);
+  color: white;
 }
 
-.row-header { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 16px; 
-}
-.row-header h3 { 
-  font-size: 18px; 
-  font-weight: 600; 
-  letter-spacing: -0.3px; 
+/* 3. COLLECTIONS LISTINGS CONTENEUR */
+.home-listings-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 24px 20px 60px;
 }
 
-/* Ocultamos navegación rígida en móvil para usar deslizamiento táctil natural */
+.home-row-section {
+  margin-bottom: 40px;
+}
+
+.row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.row-pretitle {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.row-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+/* Desactivamos flechas de navegación rígidas en interfaces móviles */
 .carousel-nav { 
   display: none; 
 }
 
-/* Riel elástico con scroll horizontal en móviles */
-.property-carousel { 
-  display: flex; 
-  gap: 16px; 
-  overflow-x: auto; 
-  scrollbar-width: none; /* Oculta barra en Firefox */
-  padding-bottom: 8px;
+/* Transformación elástica a riel horizontal con scroll de resorte */
+.property-carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
 }
-.property-carousel::-webkit-scrollbar { 
-  display: none; /* Oculta barra en Chrome/Safari */
+.property-carousel::-webkit-scrollbar { display: none; }
+
+.prop-card {
+  flex: 0 0 280px; /* Ancho modular de tarjeta para el carrusel táctil */
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.prop-card { 
-  flex: 0 0 280px; /* Tamaño fijo de tarjeta para el riel móvil */
-  cursor: pointer; 
+/* CORRECCIÓN DE UNIFORMIDAD ABSOLUTA EN CONTENEDORES DE IMÁGENES */
+.prop-image-container {
+  position: relative !important;
+  width: 100% !important;
+  padding-top: 75% !important; /* Ratio 1:1 por defecto para Casas */
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  background-color: #f5f5f7;
 }
 
-.prop-image-container { 
-  position: relative; 
-  aspect-ratio: 1/1; 
-  border-radius: 12px; 
-  overflow: hidden; 
-  margin-bottom: 12px; 
-}
-.prop-image-container img { 
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-  transition: transform 0.4s ease; 
-}
+/* Conservamos de manera exacta tus ratios asimétricos con contención calculada rigurosa */
+.prop-image-container.car-ratio { padding-top: 62.5% !important; }  /* Ratio 16:10 */
+.prop-image-container.yacht-ratio { padding-top: 75% !important; }  /* Ratio 4:3 */
 
-.heart-btn { 
-  position: absolute; 
-  top: 12px; 
-  right: 12px; 
-  background: transparent; 
-  border: none; 
-  color: white; 
-  cursor: pointer; 
-  z-index: 2; 
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
+.prop-image-container img {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important; 
+  height: 100% !important; 
+  object-fit: cover !important;
+  object-position: center !important;
+  transition: transform 0.4s ease;
 }
 
-.carousel-dots { 
-  position: absolute; 
-  bottom: 12px; 
-  left: 0; 
-  width: 100%; 
-  display: flex; 
-  justify-content: center; 
-  gap: 4px; 
-  z-index: 2; 
+.heart-btn {
+  position: absolute; top: 12px; right: 12px;
+  background: transparent; border: none; color: white;
+  cursor: pointer; z-index: 2; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
 }
-.dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; }
-.dot.active { background: white; }
 
-.prop-info { font-size: 13px; }
-.prop-title-row h4 { font-weight: 600; font-size: 14px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.prop-specs { color: var(--text-muted); margin-bottom: 2px; }
-.prop-price-row { display: flex; gap: 8px; color: var(--text-muted); align-items: center; }
-.rating { color: var(--text-main); font-weight: 500; display: flex; align-items: center;}
-
-.see-more-container { text-align: center; margin-top: 24px; }
-.btn-outline-pill { 
-  background: white; 
-  border: 1px solid var(--border-light); 
-  padding: 10px 20px; 
-  border-radius: 30px; 
+.prop-info { 
   font-size: 13px; 
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* CORRECCIÓN CRÍTICA DE ENCAPSULADO CON TRES PUNTOS (...) AL FINAL */
+.prop-title-row h4 {
   font-weight: 600; 
-  cursor: pointer; 
-  transition: background 0.2s; 
+  font-size: 14px; 
+  line-height: 1.4;
+  margin-bottom: 2px;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important; /* Fuerza encapsulado estricto a una sola línea */
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important; /* Inserta los tres puntos de forma automática */
+  height: auto !important;
 }
-.btn-outline-pill:hover { background: #f5f5f5; }
 
-/* THE WANDER DIFFERENCE (APILADO EN MÓVIL) */
-.wander-difference-section { 
-  background-color: var(--bg-dark); 
-  color: white; 
-  padding: 60px 24px; 
-}
+.prop-specs { color: var(--text-muted); margin-bottom: 4px; font-size: 12px; }
 
-.difference-container { 
-  max-width: var(--max-width); 
-  margin: 0 auto; 
+/* Alineamiento magnético del bloque de precios */
+.prop-price-row { 
   display: flex; 
-  flex-direction: column; /* Apilado por defecto */
-  gap: 40px; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-top: auto; /* Empuja el precio al fondo exacto de manera simétrica */
 }
 
-.difference-left { width: 100%; }
-.difference-pre-title { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 16px; font-weight: 600; }
-.difference-title { font-size: 28px; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 32px; }
-.difference-title .text-gray { color: #666; }
-.difference-image { border-radius: 12px; overflow: hidden; aspect-ratio: 16/10; }
-.difference-image img { width: 100%; height: 100%; object-fit: cover; }
+.price { font-weight: 600; color: var(--text-main); }
+.rating { color: var(--text-main); font-weight: 500; display: flex; align-items: center; font-size: 12px; }
 
-.difference-right { width: 100%; display: flex; align-items: center; }
-.features-grid { 
-  display: grid; 
-  grid-template-columns: 1fr; /* Una sola columna en teléfonos */
-  gap: 32px; 
+/* BANNERS INTERMEDIOS CINEMATOGRÁFICOS ELÁSTICOS */
+.mid-banner {
+  height: 240px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  margin-bottom: 32px;
 }
-.feature-item { max-width: 100%; }
-.feature-icon { width: 40px; height: 40px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: white; }
-.feature-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-.feature-item p { font-size: 13px; color: #888; line-height: 1.5; }
+.banner-properties { background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover; }
+.banner-cars { background: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80') center/cover; }
+.banner-yachts { background: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80') center/cover; }
+
+.mid-banner-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+}
+
+.mid-banner-content { position: relative; z-index: 2; color: white; max-width: 100%; }
+.mid-banner-content h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+.mid-banner-content p { font-size: 13px; color: #ddd; line-height: 1.4; }
 
 
 /* ==========================================================================
-   MEDIA QUERIES (ESCRITORIO & PANTALLAS GRANDES)
-   ========================================================================== */
+   MEDIA QUERIES (TABLETAS, ESCRITORIO Y PANTALLAS ULTRA-WIDE)
+   ========================================================================= */
 @media (min-width: 768px) {
   .hero-title { font-size: 48px; }
   .hero-subtitle { font-size: 15px; }
-  .properties-container { padding: 60px 40px; }
-  .row-header h3 { font-size: 20px; }
-  .features-grid { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+  .categories-filter-section { padding: 40px 40px 20px; }
+  .filter-pill { padding: 10px 24px; font-size: 14px; }
+  .home-listings-container { padding: 40px 40px 60px; }
+  .row-header h3 { font-size: 22px; }
+  
+  /* Retorno progresivo a distribución en rejilla elástica */
+  .property-carousel { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; overflow-x: hidden; }
+  .prop-card { flex: none; width: 100%; }
+  .mid-banner { height: 300px; padding: 0 40px; margin-bottom: 48px; }
+  .mid-banner-content h2 { font-size: 30px; }
+  .marquee-row { gap: 40px; }
 }
 
 @media (min-width: 1024px) {
-  .home-hero { height: 85vh; min-height: 600px; }
-  .hero-overlay { background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
+  .home-hero { height: 85vh; min-height: 650px; }
+  .hero-overlay { background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%); }
   .hero-content { padding: 0 40px; }
-  .hero-badge { font-size: 11px; margin-bottom: 24px; padding: 6px 16px; }
-  .hero-title { font-size: 64px; letter-spacing: -2px; line-height: 1.1; margin-bottom: 16px; }
-  .hero-subtitle { font-size: 16px; }
-  
-  .properties-container { padding: 80px 40px; }
-  .property-row-section { margin-bottom: 60px; }
-  .row-header { margin-bottom: 24px; }
-  
-  /* Activamos navegación premium y congelamos el scroll elástico en escritorio */
-  .carousel-nav { display: flex; gap: 8px; }
-  .property-carousel { overflow-x: hidden; gap: 20px; }
-  .prop-card { flex: 0 0 calc(25% - 15px); min-width: auto; } /* Grid fluido de 4 columnas */
-  .prop-card:hover .prop-image-container img { transform: scale(1.05); }
-  .prop-image-container { border-radius: 16px; }
-  
-  .prop-info { font-size: 14px; }
-  .prop-title-row h4 { font-size: 15px; margin-bottom: 4px; }
-  .prop-specs, .prop-title-row h4 { margin-bottom: 4px; }
-  .see-more-container { margin-top: 40px; }
-  .btn-outline-pill { padding: 12px 24px; font-size: 14px; }
+  .hero-badge { padding: 6px 16px; font-size: 11px; margin-bottom: 24px; }
+  .hero-title { font-size: 64px; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
+  .hero-subtitle { font-size: 16px; max-width: 550px; }
 
-  /* Restauramos layout asimétrico de dos columnas */
-  .wander-difference-section { padding: 120px 40px; }
-  .difference-container { flex-direction: row; gap: 80px; }
-  .difference-left { flex: 1; }
-  .difference-pre-title { font-size: 11px; margin-bottom: 24px; }
-  .difference-title { font-size: 40px; letter-spacing: -1px; line-height: 1.1; margin-bottom: 60px; }
-  .difference-image { border-radius: 20px; aspect-ratio: 16/9; }
+  .home-listings-container { padding-bottom: 100px; }
+  .home-row-section { margin-bottom: 80px; }
+  .row-header { margin-bottom: 28px; }
+  .row-pretitle { font-size: 11px; margin-bottom: 8px; }
+  .row-header h3 { font-size: 24px; letter-spacing: -0.5px; }
   
-  .difference-right { flex: 1.2; }
-  .features-grid { gap: 60px 40px; }
-  .feature-item { max-width: 300px; }
-  .feature-icon { margin-bottom: 20px; }
-  .feature-item h4 { font-size: 15px; margin-bottom: 12px; }
-  .feature-item p { font-size: 14px; line-height: 1.6; }
+  /* Activamos controles multimedia y fijamos el Grid de 4 columnas original */
+  .carousel-nav { display: flex; }
+  .property-carousel { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .prop-image-container { border-radius: 16px; margin-bottom: 14px; }
+  .prop-card:hover .prop-image-container img { transform: scale(1.04); }
+  .prop-info { font-size: 14px; }
+  .prop-title-row h4 { font-size: 15px; }
+  .prop-specs { font-size: 13px; margin-bottom: 6px; }
+  .rating { font-size: 13px; }
+
+  .mid-banner { height: 350px; padding: 0 60px; margin-bottom: 60px; border-radius: 24px; }
+  .mid-banner-overlay { background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, transparent 100%); }
+  .mid-banner-content h2 { font-size: 36px; letter-spacing: -1px; margin-bottom: 12px; }
+  .mid-banner-content p { font-size: 15px; line-height: 1.5; }
+
+  .platforms-marquee-section { padding: 60px 40px; }
+  .marquee-title { font-size: 11px; margin-bottom: 32px; }
+  .marquee-row { gap: 60px; }
+  .marquee-row span { font-size: 20px; }
 }
 
-@media (min-width: 1440px) {
-  /* Si la pantalla es ultra-wide, expandimos el grid a 5 columnas como el layout original */
-  .property-carousel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-  .prop-card { flex: none; width: 100%; }
+/* ==========================================================================
+   WANDER CALL TO ACTION BUTTONS (MID-BANNERS)
+   ========================================================================= */
+.btn-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #111111;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-banner-cta svg {
+  transition: transform 0.2s ease;
+}
+
+.btn-banner-cta:hover {
+  background-color: #111111;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-banner-cta:hover svg {
+  transform: translateX(3px);
+}
+
+.prop-card-link-wrapper {
+  transition: opacity 0.2s ease;
+}
+.prop-card-link-wrapper:hover {
+  opacity: 0.95;
+}
+
+.categories-filter-section a{
+  text-decoration: none;
 }
