@@ -15,9 +15,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // ✅ Formatear el remitente con nombre: "CuponTours <info@cupontours.com>"
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com';
+    const fromName = process.env.SENDGRID_FROM_NAME || 'Cupon Tours';
+    const from = `${fromName} <${fromEmail}>`;
+
+    // Estructura del correo electrónico editorial de Wander
     const msg = {
-      to: 'jimenito.2014.mj@gmail.com', 
-      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
+      to: 'jimenito.2014.mj@gmail.com',
+      from: from, // ✅ Ahora es "CuponTours <info@cupontours.com>"
       replyTo: email,
       subject: `[Property Management] ${interestType} Request - ${firstName} ${lastName}`,
       text: `New property management/investment request received:\n\nInterest: ${interestType}\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber || 'Not provided'}\n\nMessage:\n${message}`,

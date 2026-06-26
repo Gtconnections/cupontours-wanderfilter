@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data"
 import './home.css';
 import Link from 'next/link';
 
@@ -8,6 +9,19 @@ import Link from 'next/link';
 import { getHomeProperties, PropertyCardData } from './lib/api/properties';
 import { getCars, CarCatalogItem } from './lib/api/cars';
 import { getYachts, YachtCatalogItem } from './lib/api/yachts';
+
+// Page-specific structured data for home page
+const homePageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Luxury Travel Deals - Vacation Rentals, Car & Yacht Rentals",
+  "description": "Find exclusive deals on luxury vacation rentals, premium car rentals, and yacht charters worldwide",
+  "mainEntity": {
+    "@type": "TravelAgency",
+    "name": "Cupon Tours",
+    "serviceType": ["Vacation Rental", "Car Rental", "Yacht Charter"]
+  }
+}
 
 // Definimos la unión de tipos admitida en el carrusel
 type GenericCatalogItem = PropertyCardData | CarCatalogItem | YachtCatalogItem;
@@ -203,6 +217,12 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Page-specific structured data for SEO */}
+      <StructuredData 
+        type="Product" 
+        data={homePageStructuredData} 
+      />
     </main>
   );
 }

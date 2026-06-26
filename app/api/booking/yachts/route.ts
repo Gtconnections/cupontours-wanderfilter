@@ -15,9 +15,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // ✅ Formatear el remitente con nombre: "CuponTours <info@cupontours.com>"
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com';
+    const fromName = process.env.SENDGRID_FROM_NAME || 'Cupon Tours';
+    const from = `${fromName} <${fromEmail}>`;
+
+    // Estructura del correo electrónico editorial de Wander
     const msg = {
-      to: 'jimenito.2014.mj@gmail.com', 
-      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
+      to: 'jimenito.2014.mj@gmail.com',
+      from: from, // ✅ Ahora es "CuponTours <info@cupontours.com>"
       replyTo: client.email,
       subject: `[Yacht Charter Booking] Request for ${yachtName} - ${client.fullName}`,
       text: `New luxury yacht charter inquiry received:\n\nVESSEL DETAILS:\nID: ${yachtId}\nName: ${yachtName}\n\nCHARTER CRITERIA:\nStart: ${charterStart}\nEnd: ${charterEnd}\nTotal Days: ${totalDays}\n\nCLIENT INFO:\nName: ${client.fullName}\nEmail: ${client.email}\nPhone: ${client.phoneNumber || 'Not provided'}\nSpecial Requests:\n${client.specialRequests || 'None'}`,
