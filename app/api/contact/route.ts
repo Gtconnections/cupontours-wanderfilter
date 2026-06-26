@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
 // Inicializamos SendGrid con tu API Key alojada de forma segura en las variables de entorno (.env.local)
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: Request) {
   try {
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     // Estructura del correo electrónico editorial de Wander
     const msg = {
       to: 'jimenito.2014.mj@gmail.com', 
-      from: 'martin@gtconnections.com', // Un correo verificado dentro de tu cuenta de SendGrid
+      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
       replyTo: email,
       subject: `New Contact Request: ${firstName} ${lastName}`,
       text: `New contact request received from your website:\n\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber || 'Not provided'}\n\nMessage:\n${message}`,

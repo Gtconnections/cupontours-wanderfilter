@@ -434,7 +434,7 @@ export default function InvestPage() {
                 </div>
                 <div className="wander-contact-text-node">
                   <span className="contact-node-title">Email</span>
-                  <a href="mailto:info@cupontours.com" className="contact-node-value">info@cupontours.com</a>
+                  <a href={`mailto:${process.env.NEXT_PUBLIC_COMPANY_EMAIL || ''}`} className="contact-node-value">{process.env.NEXT_PUBLIC_COMPANY_EMAIL || ''}</a>
                   <span className="contact-node-caption">We'll respond within 24 hours</span>
                 </div>
               </div>
@@ -445,7 +445,7 @@ export default function InvestPage() {
                 </div>
                 <div className="wander-contact-text-node">
                   <span className="contact-node-title">Phone</span>
-                  <a href="tel:+17866866582" className="contact-node-value">+1 (786) 686-6582</a>
+                  <a href={`tel:${process.env.NEXT_PUBLIC_COMPANY_CALL || ''}`} className="contact-node-value">{process.env.NEXT_PUBLIC_COMPANY_PHONE || ''}</a>
                   <span className="contact-node-caption">Monday - Friday, 9AM - 6PM EST</span>
                 </div>
               </div>
@@ -456,7 +456,7 @@ export default function InvestPage() {
                 </div>
                 <div className="wander-contact-text-node">
                   <span className="contact-node-title">Office</span>
-                  <span className="contact-node-value">Miami, Florida</span>
+                  <span className="contact-node-value">{ process.env.NEXT_PUBLIC_COMPANY_ADDRESS || '' }</span>
                   <span className="contact-node-caption">Serving South Florida</span>
                 </div>
               </div>

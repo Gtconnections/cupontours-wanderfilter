@@ -25,8 +25,8 @@ export default function ContactPage() {
       ),
       title: 'Email us:',
       desc: 'Email us for general queries, including marketing and partnership opportunities.',
-      action: 'info@cupontours.com',
-      isLink: true
+      action: `${process.env.NEXT_PUBLIC_COMPANY_EMAIL || ''}`,
+      isLink: false
     },
     {
       icon: (
@@ -36,7 +36,7 @@ export default function ContactPage() {
       ),
       title: 'Call us:',
       desc: 'Call us to speak to a member of our team. We are always happy to help.',
-      action: '+1 (786) 686-6582',
+      action: `${process.env.NEXT_PUBLIC_COMPANY_PHONE || ''}`,
       isLink: false
     },
     {
@@ -49,7 +49,7 @@ export default function ContactPage() {
       title: 'Support',
       desc: 'Email us for general queries, including marketing and partnership opportunities.',
       action: 'Support Center',
-      isLink: true
+      isLink: false
     }
   ];
   

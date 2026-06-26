@@ -363,7 +363,6 @@ export default function Header() {
             <div className="search-popover popover-when">
               <div className="when-tabs">
                 <button className="when-tab active">Dates</button>
-                <button className="when-tab">Flexible</button>
               </div>
               <div className="calendar-container">
                 <div className="calendar-month">

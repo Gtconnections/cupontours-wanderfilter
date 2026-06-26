@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: Request) {
   try {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const msg = {
       to: 'jimenito.2014.mj@gmail.com', 
-      from: 'martin@gtconnections.com', // Remitente verificado en tu cuenta de SendGrid
+      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
       replyTo: contact.email,
       subject: `[Private Aviation] Charter Quote Request - ${contact.firstName} ${contact.lastName}`,
       text: `New private charter inquiry received:\n\nFLIGHT CRITERIA:\nDeparture: ${flightCriteria.departureCity}\nDestination: ${flightCriteria.destinationCity}\nPassengers: ${flightCriteria.passengers}\nTrip Type: ${flightCriteria.tripType}\nTime: ${flightCriteria.departureTime}\nDates: ${flightCriteria.departureDate} -> ${flightCriteria.returnDate || 'N/A'}\n\nCONTACT INFO:\nName: ${contact.firstName} ${contact.lastName}\nEmail: ${contact.email}\nPhone: ${contact.phone}\nInstagram: ${contact.instagram || 'Not provided'}`,

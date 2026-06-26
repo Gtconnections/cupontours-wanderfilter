@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: Request) {
   try {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const msg = {
       to: 'jimenito.2014.mj@gmail.com', 
-      from: 'martin@gtconnections.com',  // Remitente verificado en tu cuenta de SendGrid
+      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
       replyTo: client.email,
       subject: `[Car Rental Booking] Request for ${carTitle} - ${client.fullName}`,
       text: `New luxury vehicle booking inquiry received:\n\nVEHICLE DETAILS:\nID: ${carId}\nTitle: ${carTitle}\n\nRENTAL CRITERIA:\nPick-up: ${pickUpDate}\nReturn: ${returnDate}\nTotal Days: ${totalDays}\n\nCLIENT INFO:\nName: ${client.fullName}\nEmail: ${client.email}\nPhone: ${client.phoneNumber || 'Not provided'}\nSpecial Requests:\n${client.specialRequests || 'None'}`,

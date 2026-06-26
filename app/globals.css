@@ -1196,3 +1196,8 @@ body {
     font-size: 10px;
   }
 }
+
+.link-footer{
+  color: #7a7878;
+  font-weight: 600;
+}

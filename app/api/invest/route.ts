@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: Request) {
   try {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const msg = {
       to: 'jimenito.2014.mj@gmail.com', 
-      from: 'martin@gtconnections.com', // Remitente verificado en tu cuenta de SendGrid
+      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
       replyTo: email,
       subject: `[Property Management] ${interestType} Request - ${firstName} ${lastName}`,
       text: `New property management/investment request received:\n\nInterest: ${interestType}\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber || 'Not provided'}\n\nMessage:\n${message}`,

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: Request) {
   try {
@@ -16,8 +16,8 @@ export async function POST(request: Request) {
     }
 
     const msg = {
-      to: 'jimenito.2014.mj@gmail.com', 
-      from: 'martin@gtconnections.com', // Recuerda que este remitente debe estar verificado en tu SendGrid
+      to: 'jimenito.2014.mj@gmail.com',
+      from: process.env.SENDGRID_FROM_EMAIL || 'martin@gtconnections.com', // ✅ Usa variable de entorno o fallback
       replyTo: email,
       subject: `Work With Us Request: ${firstName} ${lastName}`,
       text: `New alliance request received from your website:\n\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber || 'Not provided'}\n\nMessage:\n${message}`,
