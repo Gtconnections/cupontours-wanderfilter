@@ -1,0 +1,250 @@
+/* ==========================================================================
+   ESTILOS BASE / MOBILE-FIRST (PÁGINA DE INICIO DE SESIÓN)[cite: 6]
+   ========================================================================== */
+.login-split-page {
+  display: block; /* Flujo en bloque vertical nativo para smartphones[cite: 6] */
+  min-height: auto; /* ARREGLADO: En móvil NO fuerza el 100vh para evitar el espacio vacío[cite: 6] */
+  height: auto;     /* El contenedor medirá exactamente lo que mida el formulario[cite: 6] */
+  background-color: #ffffff;
+  padding-top: 80px; /* Despeja el header de Next[cite: 6] */
+  box-sizing: border-box;
+}
+
+/* COLUMNA: FORMULARIO[cite: 6] */
+.login-form-side {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px; /* Respiro optimizado para accesos táctiles móviles[cite: 6] */
+}
+
+.login-box-container {
+  width: 100%;
+  max-width: 420px; 
+}
+
+.login-header-text {
+  margin-bottom: 24px;
+}
+
+.pre-title {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888888;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.login-main-title {
+  font-size: 26px; 
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* COMPONENTES DEL FORMULARIO[cite: 6] */
+.wander-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+
+.form-group-clean {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group-clean label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #444444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-link {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.forgot-link:hover {
+  color: var(--text-main);
+  text-decoration: underline;
+}
+
+/* INPUTS CON ICONOGRAFÍA INTEGRADA[cite: 6] */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  left: 16px;
+  color: #999999;
+  transition: color 0.2s ease;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 14px 14px 14px 44px; 
+  background-color: #fafafa;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  color: var(--text-main);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.input-with-icon input:focus {
+  border-color: var(--text-main);
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.input-with-icon input:focus + svg {
+  color: var(--text-main);
+}
+
+/* BOTÓN DE ENVÍO DE ALTA GAMA[cite: 6] */
+.btn-login-submit {
+  width: 100%;
+  background-color: var(--text-main);
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s ease;
+}
+.btn-login-submit:hover {
+  background-color: #222222;
+}
+
+.login-footer-redirect {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.login-footer-redirect a {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: none;
+}
+.login-footer-redirect a:hover {
+  text-decoration: underline;
+}
+
+/* COLUMNA GRÁFICA (Oculta por defecto en dispositivos móviles por usabilidad)[cite: 6] */
+.login-image-side {
+  display: none;
+}
+
+
+/* ==========================================================================
+   MEDIA QUERIES (PANTALLAS MEDIANAS, ESCRITORIO Y ADAPTACIONES)[cite: 6]
+   ========================================================================== */
+@media (min-width: 768px) {
+  .login-main-title { font-size: 32px; }
+  .login-form-side { padding: 40px; }
+}
+
+@media (min-width: 1024px) {
+  /* Se activa la elegante estructura dividida en dos columnas paralelas[cite: 6] */
+  .login-split-page {
+    display: flex;
+    min-height: 100vh; /* RESTAURADO EN DESKTOP: Fuerza la pantalla completa[cite: 6] */
+    padding-top: 100px;
+  }
+  
+  .login-form-side {
+    flex: 1;
+    padding: 40px 60px;
+  }
+  
+  .login-header-text { margin-bottom: 40px; }
+  .pre-title { font-size: 11px; margin-bottom: 12px; }
+  .login-main-title { font-size: 30px; letter-spacing: -1.5px; margin-bottom: 12px; }
+  .login-subtitle { font-size: 14px; }
+  
+  .wander-login-form { gap: 24px; }
+  .form-group-clean { gap: 8px; }
+  .form-group-clean label { font-size: 12px; }
+  .forgot-link { font-size: 13px; }
+  
+  .input-with-icon input { padding: 16px 16px 16px 48px; font-size: 14px; }
+  .btn-login-submit { padding: 16px; font-size: 15px; margin-top: 10px; }
+  .login-footer-redirect { margin-top: 32px; font-size: 14px; }
+
+  /* Activación cinemática del bloque fotográfico derecho[cite: 6] */
+  .login-image-side {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 60px;
+  }
+
+  .login-bg-img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .login-image-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+    z-index: 2;
+  }
+
+  .image-side-caption {
+    position: relative;
+    z-index: 3;
+    color: #ffffff;
+  }
+
+  .caption-tagline {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 24px;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  .caption-location {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    font-weight: 600;
+  }
+}

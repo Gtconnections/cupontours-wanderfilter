@@ -1,0 +1,181 @@
+/* ==========================================================================
+   WANDER SYSTEM - DASHBOARD EDITORIAL LOOK (dashboard.css)
+   ========================================================================== */
+
+/* Cabecera del Dashboard con miga de pan sutil */
+.wander-dashboard-header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-light, #ebebeb);
+  padding-bottom: 24px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted, #717171);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.wander-dashboard-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-main, #000000);
+}
+
+/* GRID DE METRICAS PRINCIPALES (4 Columnas Exactas de tus imágenes) */
+.wander-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Tarjeta Editorial Minimalista */
+.wander-metric-card {
+  background-color: var(--bg-main, #ffffff);
+  border: 1px solid var(--border-light, #ebebeb);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: var(--transition, all 0.3s ease);
+}
+
+.wander-metric-card:hover {
+  border-color: var(--text-main, #000000);
+}
+
+.wander-metric-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wander-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: var(--text-muted, #717171);
+}
+
+.wander-metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-main, #000000);
+  margin-top: 4px;
+}
+
+/* Iconos integrados en escala de grises premium */
+.wander-metric-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light, #ebebeb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main, #000000);
+  background-color: #fafafa;
+}
+
+/* ==========================================================================
+   SECCIÓN DE INFORMACIÓN DE RESERVAS
+   ========================================================================== */
+.wander-section-card {
+  background-color: var(--bg-main, #ffffff);
+  border: 1px solid var(--border-light, #ebebeb);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.wander-section-title-box {
+  margin-bottom: 24px;
+}
+
+.wander-section-title-box h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--text-main, #000000);
+}
+
+/* Fila de Filtros de Reserva (Pills Bar) */
+.wander-reservation-filters {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-light, #ebebeb);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.wander-reservation-filters::-webkit-scrollbar { display: none; }
+
+.wander-filter-btn {
+  background: transparent;
+  border: 1px solid var(--border-light, #ebebeb);
+  color: var(--text-muted, #717171);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.wander-filter-btn:hover {
+  border-color: var(--text-main, #000000);
+  color: var(--text-main, #000000);
+}
+
+.wander-filter-btn.active {
+  background-color: var(--text-main, #000000);
+  border-color: var(--text-main, #000000);
+  color: #ffffff;
+}
+
+/* Área de Contenido Central Vacio (Placeholder Editorial) */
+.wander-empty-state-viewport {
+  border: 1px dashed var(--border-light, #ebebeb);
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #fafafa;
+}
+
+.wander-empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main, #000000);
+}
+
+.wander-empty-desc {
+  font-size: 13px;
+  color: var(--text-muted, #717171);
+}
+
+/* Media Queries Responsivas */
+@media (min-width: 576px) {
+  .wander-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1200px) {
+  .wander-metrics-grid { grid-template-columns: repeat(4, 1fr); }
+  .wander-dashboard-header h2 { font-size: 32px; }
+}
