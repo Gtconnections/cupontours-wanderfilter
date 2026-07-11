@@ -1,0 +1,524 @@
+/* ==========================================================================
+   WANDER SYSTEM - CARS LIST (cars-list.css)
+   ========================================================================== */
+
+.wander-cars-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Cabecera */
+.wander-cars-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-cars-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-cars-subtitle {
+  font-size: 14px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+.wander-cars-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Filtros */
+.wander-cars-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.wander-search-box {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  background-color: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  padding: 0 12px;
+  transition: all 0.2s ease;
+}
+
+.wander-search-box:focus-within {
+  border-color: #000000;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.wander-search-box svg {
+  color: #717171;
+  flex-shrink: 0;
+}
+
+.wander-search-input {
+  border: none;
+  background: transparent;
+  padding: 10px 8px;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  color: #000000;
+}
+
+.wander-search-input::placeholder {
+  color: #999999;
+}
+
+.wander-clear-search {
+  background: none;
+  border: none;
+  color: #717171;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.wander-clear-search:hover {
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
+.wander-status-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.wander-filter-pill {
+  padding: 6px 14px;
+  border: 1px solid #ebebeb;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #717171;
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+}
+
+.wander-filter-pill:hover {
+  border-color: #000000;
+  color: #000000;
+}
+
+.wander-filter-pill.active {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.wander-page-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #717171;
+  margin-left: auto;
+}
+
+.wander-select {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: #fafafa;
+  font-size: 13px;
+  color: #000000;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+/* Grid de autos */
+.wander-cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.wander-car-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-car-card:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.wander-car-image {
+  position: relative;
+  height: 180px;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.wander-car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wander-car-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #cccccc;
+}
+
+.wander-car-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.wander-car-info {
+  padding: 16px 20px;
+}
+
+.wander-car-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.wander-car-owner {
+  font-size: 13px;
+  color: #717171;
+  margin: 0 0 8px 0;
+}
+
+.wander-car-details {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #999999;
+  margin-bottom: 12px;
+}
+
+.wander-car-details span {
+  background: #f5f5f5;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+.wander-car-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wander-car-actions {
+  display: flex;
+  border-top: 1px solid #ebebeb;
+  background: #fafafa;
+}
+
+.wander-car-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  color: #717171;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.wander-car-btn:hover {
+  background: #f0f0f0;
+  color: #000000;
+}
+
+.wander-car-btn-details:hover {
+  color: #2563eb;
+}
+
+.wander-car-btn-reservations:hover {
+  color: #f59e0b;
+}
+
+.wander-car-btn-calendar:hover {
+  color: #8b5cf6;
+}
+
+.wander-car-btn-invoices:hover {
+  color: #16a34a;
+}
+
+/* Estados vacíos */
+.wander-cars-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px dashed #ebebeb;
+}
+
+.wander-empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.wander-cars-empty p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-empty-desc {
+  font-size: 13px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+/* Loading */
+.wander-cars-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Paginación */
+.wander-cars-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-pagination-info {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.wander-pagination-btn {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  text-align: center;
+}
+
+.wander-pagination-btn:hover:not(:disabled) {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+.wander-pagination-btn.active {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.wander-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wander-cars-container {
+    padding: 16px;
+  }
+  
+  .wander-cars-header {
+    flex-direction: column;
+  }
+  
+  .wander-cars-actions {
+    width: 100%;
+  }
+  
+  .wander-cars-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .wander-search-box {
+    min-width: 100%;
+  }
+  
+  .wander-status-filters {
+    justify-content: center;
+  }
+  
+  .wander-page-size {
+    margin-left: 0;
+    justify-content: center;
+  }
+  
+  .wander-cars-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .wander-cars-pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-cars-container {
+    padding: 12px;
+  }
+  
+  .wander-cars-header h2 {
+    font-size: 18px;
+  }
+  
+  .wander-car-actions {
+    flex-wrap: wrap;
+  }
+  
+  .wander-car-btn {
+    flex: 1 1 50%;
+    padding: 8px 4px;
+    font-size: 10px;
+  }
+}

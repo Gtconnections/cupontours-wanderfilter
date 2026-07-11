@@ -44,7 +44,7 @@ export function Sidebar() {
       id: "cars",
       label: "Cars Business",
       subitems: [
-        { name: "All the Cars", href: "/admin/cars/all" },
+        { name: "All the Cars", href: "/admin/cars/list" },
         { name: "Profit and Loss", href: "/admin/cars/profit-loss" },
         { name: "Create an Invoice", href: "/admin/cars/create-invoice" },
         { name: "Create a Reservation", href: "/admin/cars/create-reservation" },
