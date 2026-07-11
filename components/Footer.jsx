@@ -112,7 +112,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Operators</h4>
             <ul>
-              <li><Link href="https://app.cupontours.com/sign-in">Owner Dashboard <span className="new-badge">VIP</span></Link></li>
+              <li><Link href="/login">Owner Dashboard <span className="new-badge">VIP</span></Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/terms">Terms of Service</Link></li>
               <li><Link href="/privacy">Privacy Policy</Link></li>
