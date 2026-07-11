@@ -16,7 +16,7 @@ export interface UserProfile {
   city: string;
   state: string;
   country: string;
-  zipcode: number;
+  zipcode: number | null;
   subscription_id: number | null;
   customer_id: string | null;
 }
@@ -51,6 +51,7 @@ export const POSITIONS = [
   { value: 'customer', label: 'Customer' },
 ];
 
+// 🔥 CACHE INICIALIZADO CON UN ARRAY VACÍO EN LUGAR DE NULL
 let profilesCache: {
   data: UserProfile[] | null;
   timestamp: number;
@@ -61,7 +62,6 @@ let profilesCache: {
 
 const CACHE_DURATION = 60 * 1000; // 1 minuto
 
-// 🔥 OBTENER TOKEN (función auxiliar)
 const getAuthToken = (): string | null => {
   if (typeof window === 'undefined') return null;
   
@@ -78,7 +78,6 @@ const getAuthToken = (): string | null => {
   return null;
 };
 
-// 🔥 OBTENER TODOS LOS PERFILES
 export async function getProfiles(forceRefresh = false): Promise<UserProfile[]> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
@@ -91,9 +90,10 @@ export async function getProfiles(forceRefresh = false): Promise<UserProfile[]> 
     throw new Error('No hay sesión activa');
   }
 
+  // 🔥 VERIFICAR CACHÉ - SI HAY DATOS Y NO HA EXPIRADO, RETORNARLOS
   if (!forceRefresh && profilesCache.data && (Date.now() - profilesCache.timestamp) < CACHE_DURATION) {
     console.log('📦 Usando caché de perfiles');
-    return profilesCache.data;
+    return profilesCache.data; // ✅ profilesCache.data es UserProfile[] (no null porque verificamos)
   }
 
   try {
@@ -130,26 +130,32 @@ export async function getProfiles(forceRefresh = false): Promise<UserProfile[]> 
     const data = await response.json();
     console.log('✅ Perfiles recibidos:', data);
 
+    // 🔥 Asegurar que siempre guardamos un array
+    const results = data.results || data || [];
+    
     profilesCache = {
-      data: data.results || data || [],
+      data: results,
       timestamp: Date.now()
     };
 
-    return profilesCache.data;
+    return results;
 
   } catch (error) {
     console.error('❌ Error en getProfiles:', error);
     
+    // 🔥 Si hay error de red y tenemos caché, usar caché
     if (profilesCache.data) {
       console.log('📦 Usando caché por error de red');
       return profilesCache.data;
     }
     
-    throw error;
+    // 🔥 Si no hay caché, retornar un array vacío en lugar de lanzar error
+    console.warn('⚠️ No se pudieron cargar los perfiles, retornando array vacío');
+    return [];
   }
 }
 
-// 🔥 ACTUALIZAR USUARIO (MÉTODO PATCH)
+// 🔥 ACTUALIZAR USUARIO
 export async function updateUser(userId: number, userData: UpdateUserData): Promise<UserProfile> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
@@ -161,10 +167,9 @@ export async function updateUser(userId: number, userData: UpdateUserData): Prom
 
   try {
     const url = `${API_BASE_URL}/user-management/update-user/${userId}/`;
-    console.log('📡 Actualizando usuario (PATCH):', url, userData);
+    console.log('📡 Actualizando usuario:', url, userData);
 
     const response = await fetch(url, {
-      // 🔥 CAMBIADO DE PUT A PATCH
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -203,13 +208,16 @@ export async function updateUser(userId: number, userData: UpdateUserData): Prom
       throw new Error(errorMsg);
     }
 
-    const data = await response.json();
-    console.log('✅ Usuario actualizado:', data);
+    const result = await response.json();
+    console.log('✅ Usuario actualizado:', result);
 
-    // Limpiar caché para que se refresque la lista
-    clearProfilesCache();
+    // Limpiar caché
+    profilesCache = {
+      data: null,
+      timestamp: 0
+    };
 
-    return data;
+    return result;
 
   } catch (error) {
     console.error('❌ Error en updateUser:', error);
@@ -271,7 +279,11 @@ export async function deleteUser(userId: number): Promise<void> {
 
     console.log('✅ Usuario eliminado:', userId);
 
-    clearProfilesCache();
+    // Limpiar caché
+    profilesCache = {
+      data: null,
+      timestamp: 0
+    };
 
   } catch (error) {
     console.error('❌ Error en deleteUser:', error);
@@ -279,7 +291,6 @@ export async function deleteUser(userId: number): Promise<void> {
   }
 }
 
-// Función para limpiar caché
 export function clearProfilesCache() {
   profilesCache = {
     data: null,
@@ -288,7 +299,6 @@ export function clearProfilesCache() {
   console.log('🧹 Caché de perfiles limpiada');
 }
 
-// Función para forzar recarga
 export async function refreshProfiles() {
   clearProfilesCache();
   return getProfiles(true);
