@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -23,7 +23,7 @@ const PLATFORM_OPTIONS = [
   { value: 'cupon', label: 'Cupon Tours' },
 ];
 
-export default function CreateReservationPage() {
+function CreateReservationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const listingIdParam = searchParams.get('listing_id');
@@ -479,5 +479,13 @@ export default function CreateReservationPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function CreateReservationPage() {
+  return (
+    <Suspense fallback={null}>
+      <CreateReservationContent />
+    </Suspense>
   );
 }

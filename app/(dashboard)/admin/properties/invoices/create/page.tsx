@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -33,7 +33,7 @@ interface InvoiceItem {
   amount: number;
 }
 
-export default function CreateInvoicePage() {
+function CreateInvoiceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const listingIdParam = searchParams.get('listing_id');
@@ -542,5 +542,13 @@ export default function CreateInvoicePage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function CreateInvoicePage() {
+  return (
+    <Suspense fallback={null}>
+      <CreateInvoiceContent />
+    </Suspense>
   );
 }

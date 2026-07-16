@@ -2,14 +2,14 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { 
-  getListingsNamesAndIds, 
-  ListingSimple, 
-  getInvoiceDetail, 
+import {
+  getListingsNamesAndIds,
+  ListingSimple,
+  getInvoiceDetail,
   InvoiceDetail,
   updateInvoice
 } from '@/app/lib/api/propertiesAdmin';
@@ -40,7 +40,7 @@ interface InvoiceItem {
   amount: number;
 }
 
-export default function EditInvoicePage() {
+function EditInvoiceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const invoiceId = searchParams.get('id');
@@ -576,5 +576,13 @@ export default function EditInvoicePage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function EditInvoicePage() {
+  return (
+    <Suspense fallback={null}>
+      <EditInvoiceContent />
+    </Suspense>
   );
 }

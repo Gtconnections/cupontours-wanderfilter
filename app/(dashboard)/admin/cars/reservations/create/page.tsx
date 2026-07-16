@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import { getAllCars, Car, createReservation, CreateReservationData } from '@/app/lib/api/carsAdmin';
@@ -31,7 +31,7 @@ const GAS_LEVEL_OPTIONS = [
   { value: 'full', label: 'Full' },
 ];
 
-export default function CreateReservationPage() {
+function CreateReservationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
@@ -527,5 +527,13 @@ export default function CreateReservationPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function CreateReservationPage() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <CreateReservationContent />
+    </Suspense>
   );
 }

@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -22,7 +22,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function ProfitAndLossPage() {
+function ProfitAndLossContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -362,5 +362,13 @@ export default function ProfitAndLossPage() {
         onSuccess={handleCreateSuccess}
       />
     </div>
+  );
+}
+
+export default function ProfitAndLossPage() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <ProfitAndLossContent />
+    </Suspense>
   );
 }

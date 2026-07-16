@@ -1,9 +1,6 @@
 'use client';
 
-// 🔥 FUERZA QUE SEA SOLO CLIENTE - Deshabilita el prerenderizado
-export const dynamic = 'force-dynamic';
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import { getAllCars, Car, createInvoice } from '@/app/lib/api/carsAdmin';
@@ -25,7 +22,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function CreateInvoicePage() {
+function CreateInvoiceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
@@ -58,12 +55,6 @@ export default function CreateInvoicePage() {
 
   // Cargar autos
   useEffect(() => {
-    // 🔥 VERIFICAR SI ESTAMOS EN EL CLIENTE
-    if (typeof window === 'undefined') {
-      setIsLoading(true);
-      return;
-    }
-    
     if (isChecking) return;
     
     const hasAuth = checkAuth();
@@ -135,28 +126,28 @@ export default function CreateInvoicePage() {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const updateItem = (index: number, field: keyof InvoiceItem, value: string | number) => {
-    const newItems = [...items];
-    
-    // Convertir a número si es necesario
-    const numValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
-    
-    // Asignar el valor según el campo
-    if (field === 'item') {
-      newItems[index].item = value as string;
-    } else if (field === 'quantity') {
-      newItems[index].quantity = numValue;
-      newItems[index].amount = newItems[index].quantity * newItems[index].rate;
-    } else if (field === 'rate') {
-      newItems[index].rate = numValue;
-      newItems[index].amount = newItems[index].quantity * newItems[index].rate;
-    } else if (field === 'amount') {
-      // Amount es calculado, pero si se quiere setear manualmente
-      newItems[index].amount = numValue;
-    }
-    
-    setItems(newItems);
-  };
+ const updateItem = (index: number, field: keyof InvoiceItem, value: string | number) => {
+  const newItems = [...items];
+  
+  // Convertir a número si es necesario
+  const numValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
+  
+  // Asignar el valor según el campo
+  if (field === 'item') {
+    newItems[index].item = value as string;
+  } else if (field === 'quantity') {
+    newItems[index].quantity = numValue;
+    newItems[index].amount = newItems[index].quantity * newItems[index].rate;
+  } else if (field === 'rate') {
+    newItems[index].rate = numValue;
+    newItems[index].amount = newItems[index].quantity * newItems[index].rate;
+  } else if (field === 'amount') {
+    // Amount es calculado, pero si se quiere setear manualmente
+    newItems[index].amount = numValue;
+  }
+  
+  setItems(newItems);
+};
 
   // Manejar cambios en el formulario principal
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -254,12 +245,10 @@ export default function CreateInvoicePage() {
   // 🔥 Verificar si el campo car_id debe estar deshabilitado (si viene de la URL)
   const isCarDisabled = !!carIdFromUrl;
 
-  // 🔥 Si está verificando o cargando, mostrar skeleton
   if (isChecking || !isAuthVerified || isLoading) {
     return <LoadingSkeleton />;
   }
 
-  // 🔥 Si no está autenticado, no renderizar nada (ya redirige el useEffect)
   if (!isAuthenticated) {
     return null;
   }
@@ -513,5 +502,13 @@ export default function CreateInvoicePage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function CreateInvoicePage() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <CreateInvoiceContent />
+    </Suspense>
   );
 }

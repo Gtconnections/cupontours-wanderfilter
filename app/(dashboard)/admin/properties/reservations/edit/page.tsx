@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -33,7 +33,7 @@ const PLATFORM_OPTIONS = [
   { value: 'other', label: 'Other' },
 ];
 
-export default function EditReservationPage() {
+function EditReservationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const reservationId = searchParams.get('id');
@@ -551,5 +551,13 @@ export default function EditReservationPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function EditReservationPage() {
+  return (
+    <Suspense fallback={null}>
+      <EditReservationContent />
+    </Suspense>
   );
 }
