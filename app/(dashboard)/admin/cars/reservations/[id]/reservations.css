@@ -1,0 +1,685 @@
+/* ==========================================================================
+   WANDER SYSTEM - CAR RESERVATIONS (reservations.css)
+   ========================================================================== */
+
+.wander-reservations-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Cabecera */
+.wander-reservations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-reservations-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-reservations-subtitle {
+  font-size: 14px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+.wander-reservations-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Tabla */
+.wander-reservations-table-container {
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-reservations-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.wander-reservations-table thead {
+  background-color: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-reservations-table thead th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+  white-space: nowrap;
+}
+
+.wander-reservations-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.wander-reservations-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wander-reservations-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+/* Estilos de celdas */
+.wander-reservation-id {
+  font-weight: 600;
+  color: #000000;
+  font-family: monospace;
+}
+
+.wander-reservation-driver {
+  font-weight: 500;
+  color: #333333;
+}
+
+.wander-reservation-phone {
+  color: #717171;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.wander-reservation-date {
+  color: #333333;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.wander-reservation-amount {
+  color: #333333;
+  font-size: 13px;
+}
+
+.wander-reservation-total {
+  font-weight: 600;
+  color: #000000;
+  font-size: 14px;
+}
+
+/* Estados vacíos */
+.wander-empty-cell {
+  padding: 60px 20px !important;
+  text-align: center;
+}
+
+.wander-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-empty-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.wander-empty-state p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-empty-desc {
+  font-size: 13px;
+  color: #717171;
+}
+
+/* Loading */
+.wander-reservations-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.wander-reservations-loading p {
+  color: #717171;
+  font-size: 14px;
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Paginación */
+.wander-reservations-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-pagination-info {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.wander-pagination-btn {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  text-align: center;
+}
+
+.wander-pagination-btn:hover:not(:disabled) {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+.wander-pagination-btn.active {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.wander-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Scrollbar */
+.wander-reservations-table-container::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.wander-reservations-table-container::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.wander-reservations-table-container::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 10px;
+}
+
+.wander-reservations-table-container::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wander-reservations-container {
+    padding: 16px;
+  }
+  
+  .wander-reservations-table {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-reservations-header {
+    flex-direction: column;
+  }
+  
+  .wander-reservations-actions {
+    width: 100%;
+  }
+  
+  .wander-reservations-table-container {
+    overflow-x: auto;
+  }
+  
+  .wander-reservations-table {
+    min-width: 800px;
+  }
+  
+  .wander-reservations-pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .wander-reservations-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-reservations-container {
+    padding: 12px;
+  }
+  
+  .wander-reservations-header h2 {
+    font-size: 18px;
+  }
+}
+/* ==========================================================================
+   ACCIONES
+   ========================================================================== */
+
+.wander-action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #717171;
+}
+
+.wander-action-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.wander-action-view:hover {
+  color: #2563eb;
+  background-color: #eff6ff;
+}
+
+/* Responsive para la columna de acciones */
+@media (max-width: 768px) {
+  .wander-reservations-table th:last-child,
+  .wander-reservations-table td:last-child {
+    min-width: 50px;
+  }
+}
+
+/* ==========================================================================
+   CONTROLES DE TABLA
+   ========================================================================== */
+
+.wander-reservations-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.wander-page-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-select {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: #fafafa;
+  font-size: 13px;
+  color: #000000;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.wander-select:hover {
+  border-color: #000000;
+}
+
+.wander-select:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wander-reservations-controls {
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   MODAL DE DETALLE DE RESERVACIÓN
+   ========================================================================== */
+
+.wander-modal-detail {
+  max-width: 700px;
+}
+
+/* Loading dentro del modal */
+.wander-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+
+.wander-detail-loading p {
+  color: #717171;
+  font-size: 14px;
+}
+
+/* Contenido del detalle */
+.wander-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header card */
+.wander-detail-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #ebebeb;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wander-detail-id {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.wander-detail-id .wander-detail-label {
+  font-size: 12px;
+  color: #717171;
+}
+
+.wander-detail-id .wander-detail-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.wander-detail-car {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.wander-detail-car .wander-detail-label {
+  font-size: 11px;
+  color: #717171;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wander-detail-car .wander-detail-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wander-detail-car .wander-detail-sub {
+  font-size: 12px;
+  color: #999999;
+}
+
+/* Grid de detalles */
+.wander-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.wander-detail-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wander-detail-section-card {
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.wander-detail-section-card h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.wander-detail-item .wander-detail-label {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-detail-item .wander-detail-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.wander-detail-total .wander-detail-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* Sección financiera */
+.wander-detail-financial {
+  margin-top: 4px;
+}
+
+.wander-detail-financial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.wander-detail-financial-grid .wander-detail-item {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 4px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.wander-detail-financial-grid .wander-detail-item .wander-detail-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #999999;
+}
+
+.wander-detail-financial-grid .wander-detail-item .wander-detail-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+  margin-top: 2px;
+}
+
+.wander-detail-financial-grid .wander-detail-total {
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+.wander-detail-financial-grid .wander-detail-total .wander-detail-value {
+  color: #000000;
+}
+
+/* Observaciones */
+.wander-detail-observation {
+  padding: 4px 0;
+}
+
+.wander-detail-observation p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333333;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.wander-detail-empty {
+  font-size: 13px;
+  color: #999999;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .wander-modal-detail {
+    max-width: 100%;
+    margin: 10px;
+    border-radius: 12px;
+  }
+
+  .wander-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .wander-detail-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wander-detail-car {
+    align-items: flex-start;
+  }
+
+  .wander-detail-financial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wander-detail-financial-grid .wander-detail-item {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 12px;
+  }
+}

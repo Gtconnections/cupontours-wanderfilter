@@ -1,0 +1,212 @@
+/* app/admin/properties/components/ModalDeleteProperty.css */
+
+/* ==========================================================================
+   DELETE PROPERTY MODAL
+   ========================================================================== */
+
+/* Overlay */
+.wander-delete-property-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10003;
+  animation: wanderDeletePropertyFadeIn 0.2s ease;
+}
+
+@keyframes wanderDeletePropertyFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Container */
+.wander-delete-property-container {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 440px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: wanderDeletePropertySlideUp 0.3s ease;
+}
+
+@keyframes wanderDeletePropertySlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.wander-delete-property-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-delete-property-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-delete-property-close {
+  background: none;
+  border: none;
+  color: #717171;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-delete-property-close:hover {
+  background: #f5f5f5;
+  color: #000000;
+}
+
+.wander-delete-property-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Body */
+.wander-delete-property-body {
+  text-align: center;
+  padding: 24px 24px 16px;
+}
+
+.wander-delete-property-icon {
+  color: #dc2626;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.wander-delete-property-message {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+}
+
+.wander-delete-property-message strong {
+  color: #dc2626;
+}
+
+.wander-delete-property-warning {
+  font-size: 13px;
+  color: #717171;
+  margin: 0;
+}
+
+/* Footer */
+.wander-delete-property-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px 20px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+  border-radius: 0 0 16px 16px;
+}
+
+.wander-delete-property-btn-cancel {
+  padding: 8px 24px;
+  background: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-delete-property-btn-cancel:hover {
+  background: #f5f5f5;
+  border-color: #b0b0b0;
+}
+
+.wander-delete-property-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wander-delete-property-btn-delete {
+  padding: 8px 28px;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.wander-delete-property-btn-delete:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.wander-delete-property-btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .wander-delete-property-container {
+    margin: 16px;
+    max-height: 95vh;
+  }
+
+  .wander-delete-property-header {
+    padding: 16px 20px;
+  }
+
+  .wander-delete-property-body {
+    padding: 20px 20px 12px;
+  }
+
+  .wander-delete-property-footer {
+    padding: 12px 20px 16px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .wander-delete-property-btn-cancel,
+  .wander-delete-property-btn-delete {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .wander-delete-property-message {
+    font-size: 15px;
+  }
+}

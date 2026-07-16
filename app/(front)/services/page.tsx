@@ -3,37 +3,23 @@ import './services.css';
 import Link from 'next/link';
 
 export default function ServicesPage() {
-  const coreOffers = [
-    { 
-      title: 'Luxury Properties', 
-      desc: 'Premium hotels, vacation rentals, and exclusive accommodations in the world\'s most desirable destinations.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
-      )
-    },
-    { 
-      title: 'Luxury Cars', 
-      desc: 'High-end vehicle rentals including sports cars, luxury sedans, and exotic automobiles for any occasion.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>
-      )
-    },
-    { 
-      title: 'Yacht Charters', 
-      desc: 'Private yacht rentals ranging from intimate vessels to mega-yachts with professional crew and amenities.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 22V8"></path><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path><circle cx="12" cy="5" r="3"></circle></svg>
-      )
-    },
-    { 
-      title: 'Private Jets', 
-      desc: 'Exclusive aviation services with our fleet of modern aircraft for business or leisure travel worldwide.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg>
-      )
-    }
+  // 1. CATÁLOGO ACTUALIZADO (Con Properties, Luxury Properties y enlace reparado)
+  const categories = [
+    { title: 'Properties', link: '/properties', img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Luxury Properties', link: '/luxury-properties', img: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Cars', link: '/cars', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Yachts', link: '/yachts', img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Private Jet', link: '/jets', img: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Private Transport', link: '/services/transport', img: 'https://images.unsplash.com/photo-1627042633145-b780d842ba45?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Experiences', link: '/services/experiences', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Real Estate', link: '/services/real-estate', img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80' }, // Enlace reparado
+    { title: 'Servicios', link: '/services/general', img: 'https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Wellness', link: '/services/wellness', img: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Health', link: '/services/health', img: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Events', link: '/services/events', img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80' }
   ];
 
+  // 2. TUS VARIABLES ORIGINALES INTACTAS
   const whyChooseUs = [
     { 
       title: 'Expert Team', 
@@ -84,38 +70,57 @@ export default function ServicesPage() {
   return (
     <main className="services-page">
       
-      {/* 1. HERO INTRODUCTORIO */}
+      {/* 1. HERO INTRODUCTORIO ORIGINAL */}
       <section className="services-hero">
         <div className="hero-container">
           <span className="pre-title">Ecosystem</span>
           <h1 className="massive-heading">Our Premium Services</h1>
-          <p className="hero-subtitle">
-            Discover our comprehensive range of luxury travel and lifestyle services. From exclusive accommodations to private transportation, we provide world-class experiences tailored to your needs.
-          </p>
         </div>
       </section>
 
-      {/* 2. WHAT WE OFFER (Con Iconos y Efecto Hover) */}
+      {/* 2. NUEVO CATÁLOGO DE SERVICIOS (Centrado y con más padding) */}
       <section className="offer-section bg-gray-light">
         <div className="inner-container">
+          
           <div className="section-header">
             <span className="pre-title">Portfolio</span>
-            <h2>What We Offer</h2>
-            <p>Choose from our premium selection of services designed to make your travel dreams come true.</p>
+            <h2>Explora nuestras <span style={{ color: '#d4af37', fontStyle: 'italic' }}>categorías.</span></h2>
+            <p>Selecciona una categoría para ver todo el catálogo disponible en Miami. Reserva en segundos.</p>
           </div>
-          <div className="offer-grid">
-            {coreOffers.map((offer, i) => (
-              <div key={i} className="offer-card">
-                <div className="offer-icon-wrapper">{offer.icon}</div>
-                <h3>{offer.title}</h3>
-                <p>{offer.desc}</p>
-              </div>
+
+          <div className="catalog-grid">
+            {categories.map((cat, i) => (
+              <Link href={cat.link} key={i} className="catalog-card">
+                
+                <img src={cat.img} alt={cat.title} className="catalog-bg-img" />
+                <div className="catalog-overlay"></div>
+                
+                <div className="catalog-arrow-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </div>
+
+                <div className="catalog-content">
+                  <h3>{cat.title}</h3>
+                  <div className="catalog-link-wrapper">
+                    <span className="gold-line"></span>
+                    <span className="link-text">Ver Catálogo</span>
+                  </div>
+                  <div className="dashed-decor">
+                    <span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+
+              </Link>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* 3. WHY CHOOSE CUPONTOURS (Con Iconos Dinámicos) */}
+      {/* 3. WHY CHOOSE CUPONTOURS ORIGINAL */}
       <section className="why-section">
         <div className="inner-container">
           <div className="section-header">
@@ -135,7 +140,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 4. TRAVEL & LIFESTYLE SERVICES (Listas Interactivas) */}
+      {/* 4. TRAVEL & LIFESTYLE SERVICES ORIGINAL */}
       <section className="split-services-section bg-gray-light">
         <div className="split-services-container">
           
@@ -166,7 +171,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 5. CALL TO ACTION */}
+      {/* 5. CALL TO ACTION ORIGINAL */}
       <section className="services-cta">
         <div className="cta-container">
           <h2>Ready to Experience Luxury?</h2>

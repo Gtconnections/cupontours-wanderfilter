@@ -1,0 +1,413 @@
+/* app/admin/yachts/create/create.css */
+
+/* ==========================================================================
+   CREATE YACHT PAGE
+   ========================================================================== */
+
+.wander-create-yacht-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Toast */
+.wander-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: #000000;
+  color: #ffffff;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: wanderToastSlide 0.3s ease;
+  max-width: 400px;
+}
+
+@keyframes wanderToastSlide {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Header */
+.wander-create-yacht-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-create-yacht-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-create-yacht-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Loading */
+.wander-create-yacht-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.wander-create-yacht-loading p {
+  color: #717171;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Form Container */
+.wander-create-yacht-form-container {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 32px 36px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-create-yacht-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Fields */
+.wander-create-yacht-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.wander-create-yacht-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #444444;
+  margin-bottom: 4px;
+}
+
+.wander-create-yacht-label svg {
+  color: #999999;
+}
+
+.wander-create-yacht-input,
+.wander-create-yacht-select,
+.wander-create-yacht-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #000000;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.wander-create-yacht-input:focus,
+.wander-create-yacht-select:focus,
+.wander-create-yacht-textarea:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.wander-create-yacht-input:disabled,
+.wander-create-yacht-select:disabled,
+.wander-create-yacht-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9f9f9;
+}
+
+.wander-create-yacht-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23717171' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.wander-create-yacht-textarea {
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.6;
+}
+
+/* Row */
+.wander-create-yacht-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Section */
+.wander-create-yacht-section {
+  margin-top: 4px;
+}
+
+.wander-create-yacht-section h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0 0 10px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Amenities grid */
+.wander-create-yacht-amenities-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+
+.wander-create-yacht-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #444444;
+  cursor: pointer;
+}
+
+.wander-create-yacht-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #000000;
+}
+
+.wander-create-yacht-checkbox input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Error */
+.wander-create-yacht-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #991b1b;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.wander-create-yacht-error svg {
+  flex-shrink: 0;
+}
+
+/* Footer */
+.wander-create-yacht-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.wander-create-yacht-btn-cancel {
+  padding: 8px 24px;
+  background: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-create-yacht-btn-cancel:hover {
+  background: #f5f5f5;
+  border-color: #b0b0b0;
+}
+
+.wander-create-yacht-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wander-create-yacht-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 28px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.wander-create-yacht-btn-submit:hover {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-create-yacht-btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .wander-create-yacht-container {
+    padding: 16px;
+  }
+
+  .wander-create-yacht-header {
+    flex-direction: column;
+  }
+
+  .wander-create-yacht-actions {
+    width: 100%;
+  }
+
+  .wander-create-yacht-actions .wander-btn-secondary {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .wander-create-yacht-header h2 {
+    font-size: 22px;
+  }
+
+  .wander-create-yacht-form-container {
+    padding: 20px;
+  }
+
+  .wander-create-yacht-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .wander-create-yacht-amenities-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .wander-create-yacht-footer {
+    flex-direction: column;
+  }
+
+  .wander-create-yacht-btn-cancel,
+  .wander-create-yacht-btn-submit {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .wander-toast {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-create-yacht-container {
+    padding: 12px;
+  }
+
+  .wander-create-yacht-header h2 {
+    font-size: 18px;
+  }
+
+  .wander-breadcrumb {
+    font-size: 10px;
+  }
+
+  .wander-create-yacht-form-container {
+    padding: 16px;
+  }
+
+  .wander-create-yacht-input,
+  .wander-create-yacht-select,
+  .wander-create-yacht-textarea {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}

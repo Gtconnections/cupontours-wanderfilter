@@ -1,0 +1,591 @@
+/* ==========================================================================
+   WANDER SYSTEM - PROFIT AND LOSS DETAIL (pl-detail.css)
+   ========================================================================== */
+
+.wander-pl-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Cabecera */
+.wander-pl-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-pl-detail-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-pl-detail-subtitle {
+  font-size: 15px;
+  color: #333333;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.wander-pl-detail-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Card del auto */
+.wander-pl-detail-car-card {
+  display: flex;
+  gap: 24px;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  align-items: center;
+}
+
+.wander-pl-detail-car-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-pl-detail-car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wander-pl-detail-car-placeholder {
+  font-size: 48px;
+  color: #cccccc;
+}
+
+.wander-pl-detail-car-info {
+  flex: 1;
+}
+
+.wander-pl-detail-car-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 8px 0;
+}
+
+.wander-pl-detail-car-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 14px;
+  color: #717171;
+}
+
+.wander-pl-detail-car-details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.wander-status-badge.available {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.wander-status-badge.business {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.wander-status-badge.rented {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.wander-status-badge.maintenance {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Summary Grid */
+.wander-pl-detail-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.wander-pl-detail-summary-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.wander-pl-detail-summary-card:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.wander-pl-detail-summary-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: #717171;
+}
+
+.wander-pl-detail-summary-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  margin-top: 4px;
+}
+
+.wander-pl-detail-summary-value.positive {
+  color: #16a34a;
+}
+
+.wander-pl-detail-summary-value.negative {
+  color: #dc2626;
+}
+
+.wander-pl-detail-summary-sub {
+  font-size: 12px;
+  color: #717171;
+  margin-top: 8px;
+}
+
+.wander-pl-detail-summary-card.income .wander-pl-detail-summary-value {
+  color: #16a34a;
+}
+
+.wander-pl-detail-summary-card.expense .wander-pl-detail-summary-value {
+  color: #dc2626;
+}
+
+.wander-pl-detail-summary-card.profit .wander-pl-detail-summary-value {
+  color: #16a34a;
+}
+
+.wander-pl-detail-summary-card.fee .wander-pl-detail-summary-value {
+  color: #f59e0b;
+}
+
+/* Sections */
+.wander-pl-detail-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.wander-pl-detail-section {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-pl-detail-section-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wander-pl-detail-section-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wander-pl-detail-section-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.wander-pl-detail-section-item:last-child {
+  border-bottom: none;
+}
+
+.wander-pl-detail-section-label {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pl-detail-section-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.wander-pl-detail-section-value.income {
+  color: #16a34a;
+}
+
+.wander-pl-detail-section-value.expense {
+  color: #dc2626;
+}
+
+.wander-pl-detail-section-item.total {
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 2px solid #ebebeb;
+}
+
+.wander-pl-detail-section-item.total .wander-pl-detail-section-label {
+  font-weight: 700;
+  color: #000000;
+}
+
+.wander-pl-detail-section-item.total .wander-pl-detail-section-value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Total Card */
+.wander-pl-detail-total-card {
+  background: #f8f9fa;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.wander-pl-detail-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-pl-detail-total-row:last-child {
+  border-bottom: none;
+}
+
+.wander-pl-detail-total-label {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pl-detail-total-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wander-pl-detail-total-row.highlight {
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.wander-pl-detail-total-row.highlight .wander-pl-detail-total-label {
+  font-weight: 700;
+  color: #000000;
+}
+
+.wander-pl-detail-total-row.highlight .wander-pl-detail-total-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+/* Invoices Table */
+.wander-pl-detail-invoices {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-pl-detail-invoices-table-container {
+  overflow-x: auto;
+}
+
+.wander-pl-detail-invoices-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.wander-pl-detail-invoices-table thead {
+  background: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-pl-detail-invoices-table thead th {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+}
+
+.wander-pl-detail-invoices-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.wander-pl-detail-invoices-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wander-pl-detail-invoices-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.wander-pl-detail-invoice-id {
+  font-weight: 600;
+  color: #000000;
+  font-family: monospace;
+}
+
+.wander-pl-detail-invoices-table td.income {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.wander-pl-detail-invoices-table td.expense {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Actions */
+.wander-action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #717171;
+}
+
+.wander-action-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.wander-action-view:hover {
+  color: #2563eb;
+  background-color: #eff6ff;
+}
+
+/* Empty state */
+.wander-pl-detail-empty {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.wander-empty-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-pl-detail-empty p {
+  font-size: 14px;
+  color: #999999;
+  margin: 0;
+}
+
+/* Loading */
+.wander-pl-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wander-pl-detail-container {
+    padding: 16px;
+  }
+
+  .wander-pl-detail-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wander-pl-detail-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-pl-detail-car-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .wander-pl-detail-car-details {
+    justify-content: center;
+  }
+
+  .wander-pl-detail-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .wander-pl-detail-header {
+    flex-direction: column;
+  }
+
+  .wander-pl-detail-actions {
+    width: 100%;
+  }
+
+  .wander-pl-detail-total-card {
+    grid-template-columns: 1fr;
+  }
+
+  .wander-pl-detail-invoices-table {
+    min-width: 700px;
+  }
+
+  .wander-pl-detail-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-pl-detail-container {
+    padding: 12px;
+  }
+
+  .wander-pl-detail-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wander-pl-detail-header h2 {
+    font-size: 18px;
+  }
+
+  .wander-pl-detail-car-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .wander-pl-detail-car-name {
+    font-size: 18px;
+  }
+
+  .wander-pl-detail-summary-value {
+    font-size: 22px;
+  }
+}

@@ -301,6 +301,575 @@
   margin-bottom: 20px;
 }
 
+/* ==========================================================================
+   GALERÍA DE IMÁGENES
+   ========================================================================== */
+
+.wander-car-detail-gallery {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ebebeb;
+  background: #f5f5f5;
+}
+
+.wander-car-detail-main-image {
+  width: 100%;
+  max-height: 450px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.wander-car-detail-main-image img {
+  width: 100%;
+  height: 100%;
+  max-height: 450px;
+  object-fit: contain;
+}
+
+.wander-car-detail-thumbnails {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px;
+  border-top: 1px solid #ebebeb;
+  overflow-x: auto;
+  background: #fafafa;
+  scrollbar-width: thin;
+}
+
+.wander-car-detail-thumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.wander-car-detail-thumbnails::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.wander-car-detail-thumbnails::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 10px;
+}
+
+.wander-thumbnail-btn {
+  flex-shrink: 0;
+  width: 70px;
+  height: 50px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  padding: 0;
+  background: transparent;
+}
+
+.wander-thumbnail-btn:hover {
+  border-color: #999999;
+}
+
+.wander-thumbnail-btn.active {
+  border-color: #000000;
+}
+
+.wander-thumbnail-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wander-thumbnail-more {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #717171;
+  background: #f0f0f0;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   ACCIONES DEL AUTO
+   ========================================================================== */
+
+.wander-car-actions-bar {
+  display: flex;
+  gap: 8px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+}
+
+.wander-car-actions-bar .wander-action-btn {
+  padding: 10px 20px;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.wander-car-actions-bar .wander-action-btn:hover {
+  background: #f5f5f5;
+  border-color: #d0d0d0;
+}
+
+.wander-car-actions-bar .wander-action-add-images:hover {
+  color: #2563eb;
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.wander-car-actions-bar .wander-action-edit:hover {
+  color: #f59e0b;
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.wander-car-actions-bar .wander-action-delete:hover {
+  color: #dc2626;
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+/* ==========================================================================
+   MODAL - ESTILOS GLOBALES
+   ========================================================================== */
+
+/* Overlay del modal */
+.wander-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Contenedor del modal */
+.wander-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Header del modal */
+.wander-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-modal-close {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  color: #717171;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-modal-close:hover {
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
+/* Body del modal */
+.wander-modal-body {
+  padding: 24px 28px;
+}
+
+/* Formulario del modal */
+.wander-modal-form {
+  padding: 24px 28px 28px;
+}
+
+/* Grupos de formulario */
+.wander-form-group {
+  margin-bottom: 18px;
+}
+
+.wander-form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 6px;
+}
+
+.wander-form-group input,
+.wander-form-group select,
+.wander-form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #000000;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.wander-form-group input:focus,
+.wander-form-group select:focus,
+.wander-form-group textarea:focus {
+  border-color: #000000;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.wander-form-group input:disabled,
+.wander-form-group select:disabled,
+.wander-form-group textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wander-form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23717171'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.wander-form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* Error del modal */
+.wander-modal-error {
+  padding: 12px 16px;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* Acciones del modal */
+.wander-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 28px 24px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-btn-cancel {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #717171;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wander-btn-cancel:hover {
+  background: #f5f5f5;
+  border-color: #b0b0b0;
+}
+
+.wander-btn-save {
+  padding: 10px 28px;
+  background: #000000;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-save:hover:not(:disabled) {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.wander-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ==========================================================================
+   MODAL DE IMÁGENES
+   ========================================================================== */
+
+.wander-modal-images {
+  max-width: 560px;
+}
+
+.wander-drop-zone {
+  border: 2px dashed #d0d0d0;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  cursor: pointer;
+  position: relative;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-drop-zone.drag-over {
+  border-color: #000000;
+  background: #f0f0f0;
+}
+
+.wander-drop-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.wander-drop-zone p {
+  font-size: 14px;
+  color: #333333;
+  margin: 4px 0;
+}
+
+.wander-drop-hint {
+  font-size: 12px;
+  color: #999999;
+}
+
+.wander-drop-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.wander-image-previews {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.wander-image-preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ebebeb;
+  background: #f5f5f5;
+}
+
+.wander-image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wander-preview-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(220, 38, 38, 0.9);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.wander-preview-remove:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.wander-images-note {
+  font-size: 13px;
+  color: #717171;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* ==========================================================================
+   MODAL DE ELIMINACIÓN
+   ========================================================================== */
+
+.wander-modal-delete {
+  max-width: 440px;
+}
+
+.wander-modal-delete .wander-modal-body {
+  padding: 24px 28px;
+}
+
+.wander-delete-confirm {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.wander-delete-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.wander-delete-confirm p {
+  font-size: 15px;
+  color: #333333;
+  margin: 8px 0;
+}
+
+.wander-delete-warning {
+  font-size: 13px !important;
+  color: #717171 !important;
+  margin-top: 4px !important;
+}
+
+.wander-btn-delete {
+  padding: 10px 24px;
+  background: #dc2626;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-delete:hover:not(:disabled) {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.wander-btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   MODAL DE EDICIÓN
+   ========================================================================== */
+
+.wander-modal-edit-car {
+  max-width: 680px;
+}
+
+.wander-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+
+.wander-form-full {
+  grid-column: 1 / -1;
+}
+
+.wander-success-message {
+  padding: 12px 16px;
+  background-color: #dcfce7;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  color: #166534;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .wander-car-detail-container {
@@ -334,6 +903,38 @@
   .wander-car-detail-section {
     padding: 16px 20px;
   }
+
+  .wander-modal-edit-car {
+    max-width: 100%;
+    margin: 10px;
+    border-radius: 12px;
+  }
+
+  .wander-edit-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .wander-image-previews {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wander-car-actions-bar {
+    flex-direction: column;
+  }
+
+  .wander-car-actions-bar .wander-action-btn {
+    justify-content: center;
+  }
+
+  .wander-modal-actions {
+    flex-direction: column;
+  }
+
+  .wander-modal-actions button {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -355,5 +956,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+  }
+
+  .wander-modal-overlay {
+    padding: 10px;
+    align-items: flex-end;
+  }
+
+  .wander-modal {
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
   }
 }

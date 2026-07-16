@@ -1,0 +1,694 @@
+/* app/admin/properties/invoice-detail/invoice-detail.css */
+
+/* ==========================================================================
+   INVOICE DETAIL PAGE
+   ========================================================================== */
+
+.wander-invoice-detail-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Header */
+.wander-invoice-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-invoice-detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wander-invoice-detail-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-invoice-detail-subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: #717171;
+}
+
+.wander-invoice-detail-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Loading */
+.wander-invoice-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Summary Cards */
+.wander-invoice-detail-summary {
+  margin-bottom: 32px;
+}
+
+.wander-invoice-detail-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.wander-invoice-detail-summary-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-invoice-detail-summary-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+  margin-bottom: 4px;
+}
+
+.wander-invoice-detail-summary-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wander-invoice-detail-summary-value.total {
+  color: #16a34a;
+}
+
+/* Type badge */
+.wander-invoice-detail-type {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.wander-invoice-detail-type.expense {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.wander-invoice-detail-type.income {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* Secciones */
+.wander-invoice-detail-section {
+  margin-top: 32px;
+}
+
+.wander-invoice-detail-section h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Tabla de items */
+.wander-invoice-detail-table-container {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-invoice-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.wander-invoice-detail-table thead {
+  background: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-invoice-detail-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+}
+
+.wander-invoice-detail-table tbody td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wander-invoice-detail-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wander-invoice-detail-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.wander-invoice-detail-item-name {
+  font-weight: 500;
+  color: #000000;
+}
+
+.wander-invoice-detail-amount {
+  font-weight: 600;
+  color: #000000;
+}
+
+/* Footer de la tabla */
+.wander-invoice-detail-table tfoot td {
+  padding: 12px 16px;
+  font-weight: 700;
+  border-top: 2px solid #ebebeb;
+}
+
+.wander-invoice-detail-total-label {
+  text-align: right;
+  font-size: 14px;
+  color: #000000;
+}
+
+.wander-invoice-detail-total-amount {
+  font-size: 16px;
+  color: #16a34a;
+}
+
+.wander-invoice-detail-empty {
+  text-align: center;
+  padding: 30px 20px;
+  color: #717171;
+}
+
+/* Comment */
+.wander-invoice-detail-comment {
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: #444444;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Files */
+.wander-invoice-detail-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wander-invoice-detail-file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+}
+
+.wander-invoice-detail-file-item svg {
+  color: #717171;
+}
+
+.wander-invoice-detail-file-item span {
+  flex: 1;
+  font-size: 13px;
+  color: #444444;
+}
+
+.wander-invoice-detail-file-link {
+  padding: 4px 14px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-invoice-detail-file-link:hover {
+  background: #333333;
+}
+
+/* 🔥 Acciones de la factura - paleta neutra */
+.wander-invoice-detail-actions-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #ebebeb;
+  flex-wrap: wrap;
+}
+
+.wander-invoice-detail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #444444;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-invoice-detail-action-btn:hover {
+  background: #f5f5f5;
+  border-color: #999999;
+  color: #000000;
+}
+
+.wander-invoice-detail-action-btn:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .wander-invoice-detail-container {
+    padding: 16px;
+  }
+
+  .wander-invoice-detail-summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-invoice-detail-container {
+    padding: 12px;
+  }
+
+  .wander-invoice-detail-header {
+    flex-direction: column;
+  }
+
+  .wander-invoice-detail-actions {
+    width: 100%;
+  }
+
+  .wander-invoice-detail-actions .wander-btn-secondary {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .wander-invoice-detail-header h2 {
+    font-size: 22px;
+  }
+
+  .wander-invoice-detail-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .wander-invoice-detail-subtitle {
+    font-size: 14px;
+  }
+
+  .wander-invoice-detail-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .wander-invoice-detail-table-container {
+    overflow-x: auto;
+  }
+
+  .wander-invoice-detail-table {
+    font-size: 12px;
+    min-width: 500px;
+  }
+
+  .wander-invoice-detail-table thead th,
+  .wander-invoice-detail-table tbody td {
+    padding: 8px 12px;
+  }
+
+  .wander-invoice-detail-actions-bar {
+    flex-direction: column;
+  }
+
+  .wander-invoice-detail-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-invoice-detail-container {
+    padding: 10px;
+  }
+
+  .wander-invoice-detail-header h2 {
+    font-size: 18px;
+  }
+
+  .wander-invoice-detail-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wander-invoice-detail-table {
+    font-size: 11px;
+    min-width: 400px;
+  }
+
+  .wander-invoice-detail-table thead th,
+  .wander-invoice-detail-table tbody td {
+    padding: 6px 10px;
+  }
+}
+
+/* app/admin/properties/invoice-detail/invoice-detail.css */
+
+/* ... todos los estilos anteriores ... */
+
+/* 🔥 Toast - añadir al principio del archivo */
+.wander-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: #000000;
+  color: #ffffff;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: wanderToastSlide 0.3s ease;
+  max-width: 400px;
+}
+
+@keyframes wanderToastSlide {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ... resto de estilos ... */
+
+/* Responsive */
+@media (max-width: 768px) {
+  /* ... */
+  
+  .wander-toast {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+}
+
+/* app/admin/properties/invoice-detail/invoice-detail.css */
+
+/* ... todos los estilos anteriores ... */
+
+/* 🔥 Botón Add Files */
+.wander-btn-add-files {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.wander-btn-add-files:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+/* Files section header */
+.wander-invoice-detail-files-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.wander-invoice-detail-files-header h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  flex: 1;
+}
+
+.wander-invoice-detail-files-count {
+  font-size: 12px;
+  color: #717171;
+  background: #f5f5f5;
+  padding: 2px 12px;
+  border-radius: 12px;
+}
+
+/* Files list */
+.wander-invoice-detail-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wander-invoice-detail-file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+}
+
+.wander-invoice-detail-file-item svg {
+  color: #717171;
+  flex-shrink: 0;
+}
+
+.wander-invoice-detail-file-item span {
+  flex: 1;
+  font-size: 13px;
+  color: #444444;
+}
+
+.wander-invoice-detail-file-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-invoice-detail-file-link {
+  padding: 4px 14px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-invoice-detail-file-link:hover {
+  background: #333333;
+}
+
+.wander-invoice-detail-file-delete {
+  background: none;
+  border: none;
+  color: #dc2626;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-invoice-detail-file-delete:hover {
+  background: #fef2f2;
+}
+
+.wander-invoice-detail-files-empty {
+  text-align: center;
+  padding: 20px;
+  color: #717171;
+  font-size: 13px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px dashed #ebebeb;
+}
+
+/* ... resto de estilos ... */
+
+/* Responsive */
+@media (max-width: 768px) {
+  /* ... */
+
+  .wander-invoice-detail-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .wander-invoice-detail-actions .wander-btn-secondary,
+  .wander-invoice-detail-actions .wander-btn-add-files {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .wander-invoice-detail-file-item {
+    flex-wrap: wrap;
+  }
+
+  .wander-invoice-detail-file-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .wander-invoice-detail-files-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* ... */
+}

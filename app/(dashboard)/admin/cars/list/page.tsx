@@ -309,13 +309,13 @@ export default function CarsListPage() {
                 <button className="wander-car-btn wander-car-btn-details"  onClick={() => router.push(`/admin/cars/${car.id}`)}>
                   Details
                 </button>
-                <button className="wander-car-btn wander-car-btn-reservations">
+                <button className="wander-car-btn wander-car-btn-reservations" onClick={() => router.push(`/admin/cars/reservations/${car.id}`)}>
                   Reservations
                 </button>
-                <button className="wander-car-btn wander-car-btn-calendar">
+                <button className="wander-car-btn wander-car-btn-calendar" onClick={() => router.push(`/admin/cars/calendar/${car.id}`)}>
                   Calendar
                 </button>
-                <button className="wander-car-btn wander-car-btn-invoices">
+                <button className="wander-car-btn wander-car-btn-invoices" onClick={() => router.push(`/admin/cars/invoices/${car.id}`)}>
                   Invoices
                 </button>
               </div>

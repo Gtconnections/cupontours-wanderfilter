@@ -1,0 +1,522 @@
+/* app/admin/yachts/list/yachts-list.css */
+
+/* ==========================================================================
+   YACHTS LIST PAGE
+   ========================================================================== */
+
+.wander-yachts-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Header */
+.wander-yachts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-yachts-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-yachts-subtitle {
+  font-size: 14px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+.wander-yachts-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Grid - 3 columnas */
+.wander-yachts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.wander-yacht-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.wander-yacht-card:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Imagen */
+.wander-yacht-image {
+  position: relative;
+  height: 200px;
+  background: #f5f5f5;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.wander-yacht-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wander-yacht-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cccccc;
+}
+
+/* Información */
+.wander-yacht-info {
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.wander-yacht-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.wander-yacht-owner {
+  font-size: 13px;
+  color: #717171;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.wander-yacht-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 12px;
+  color: #666666;
+  margin-bottom: 10px;
+}
+
+.wander-yacht-details span {
+  display: inline-flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+/* Amenities */
+.wander-yacht-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.wander-yacht-amenity-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+/* Precios */
+.wander-yacht-prices {
+  display: flex;
+  gap: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.wander-yacht-price {
+  display: flex;
+  flex-direction: column;
+}
+
+.wander-yacht-price-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #717171;
+}
+
+.wander-yacht-price-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* 🔥 4 Links de acción */
+.wander-yacht-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid #ebebeb;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.wander-yacht-action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500;
+  color: #717171;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border-right: 1px solid #ebebeb;
+}
+
+.wander-yacht-action-link:last-child {
+  border-right: none;
+}
+
+.wander-yacht-action-link:hover {
+  background: #f0f0f0;
+  color: #000000;
+}
+
+.wander-yacht-action-link.details:hover {
+  color: #2563eb;
+}
+
+.wander-yacht-action-link.reservations:hover {
+  color: #f59e0b;
+}
+
+.wander-yacht-action-link.calendar:hover {
+  color: #8b5cf6;
+}
+
+.wander-yacht-action-link.invoices:hover {
+  color: #16a34a;
+}
+
+.wander-yacht-action-link svg {
+  flex-shrink: 0;
+}
+
+/* Estados vacíos */
+.wander-yachts-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px dashed #ebebeb;
+}
+
+.wander-empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.wander-yachts-empty p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+/* Loading */
+.wander-yachts-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Paginación */
+.wander-yachts-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-pagination-info {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.wander-pagination-btn {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-pagination-btn:hover:not(:disabled) {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+.wander-pagination-btn.active {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.wander-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .wander-yachts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .wander-yachts-container {
+    padding: 16px;
+  }
+  
+  .wander-yachts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-yachts-header {
+    flex-direction: column;
+  }
+  
+  .wander-yachts-actions {
+    width: 100%;
+  }
+  
+  .wander-yachts-actions .wander-btn-primary,
+  .wander-yachts-actions .wander-btn-secondary {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .wander-yachts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .wander-yachts-pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .wander-yachts-header h2 {
+    font-size: 22px;
+  }
+
+  .wander-yacht-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wander-yacht-action-link {
+    padding: 10px 4px;
+    font-size: 9px;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .wander-yacht-action-link:nth-child(2) {
+    border-right: none;
+  }
+
+  .wander-yacht-action-link:nth-child(3) {
+    border-bottom: none;
+  }
+
+  .wander-yacht-action-link:nth-child(4) {
+    border-right: none;
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-yachts-container {
+    padding: 12px;
+  }
+  
+  .wander-yachts-header h2 {
+    font-size: 18px;
+  }
+  
+  .wander-yacht-image {
+    height: 180px;
+  }
+  
+  .wander-yacht-details {
+    gap: 4px 8px;
+    font-size: 11px;
+  }
+  
+  .wander-yacht-details span {
+    padding: 2px 8px;
+  }
+  
+  .wander-yacht-price-value {
+    font-size: 14px;
+  }
+
+  .wander-yacht-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wander-yacht-action-link {
+    font-size: 8px;
+    padding: 8px 2px;
+  }
+
+  .wander-yacht-action-link svg {
+    width: 12px;
+    height: 12px;
+  }
+}

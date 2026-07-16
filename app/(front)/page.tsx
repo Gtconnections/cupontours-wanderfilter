@@ -151,6 +151,13 @@ export default function HomePage() {
     );
   };
 
+  // Reusable Check Icon for Membership lists
+  const CheckIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  );
+
   return (
     <main className="home-page-container">
       <section className="home-hero">
@@ -217,6 +224,77 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* NEW MEMBERSHIP CLUB SECTION */}
+      <section className="membership-section">
+        <div className="membership-container">
+          <div className="membership-header">
+            <span className="membership-pretitle">Membresías</span>
+            <h2 className="membership-title">Únete <span>al Club.</span></h2>
+            <p className="membership-subtitle">
+              Disfrute de los beneficios de formar parte del primer club en Miami que le ofrece una variedad de beneficios en restaurantes exclusivos, spa, compras, eventos y mucho más.
+            </p>
+          </div>
+
+          <div className="membership-grid">
+            {/* ELITE CARD */}
+            <div className="membership-card">
+              <h3 className="card-tier">Elite</h3>
+              <div className="card-price">$95<span>/ MENSUAL</span></div>
+              <ul className="card-benefits">
+                <li><CheckIcon /> Acceso completo a todos los servicios del club y partners exclusivos con 15% de descuento</li>
+                <li><CheckIcon /> Servicios y cuidado personal</li>
+                <li><CheckIcon /> Spa y salón a domicilio</li>
+                <li><CheckIcon /> Reservas en restaurantes</li>
+                <li><CheckIcon /> Planificación y reservas de eventos</li>
+                <li><CheckIcon /> Vida nocturna VIP y arreglos a medida</li>
+                <li><CheckIcon /> Inyección mensual gratuita de B12 IV</li>
+                <li><CheckIcon /> Acceso a las instalaciones del club e invitaciones a eventos privados de networking</li>
+              </ul>
+              <button className="btn-membership">Solicitar Información</button>
+            </div>
+
+            {/* PLATINUM CARD (HIGHLIGHTED) */}
+            <div className="membership-card highlight">
+              <div className="membership-badge">Más Completo</div>
+              <h3 className="card-tier">Platinum</h3>
+              <div className="card-price">$300<span>/ MENSUAL</span></div>
+              <ul className="card-benefits">
+                <li><CheckIcon /> Acceso completo a todos los servicios y partners con 20% de descuento</li>
+                <li><CheckIcon /> Servicio completo de inspección residencial</li>
+                <li><CheckIcon /> Transporte privado</li>
+                <li><CheckIcon /> Servicios y cuidado personal</li>
+                <li><CheckIcon /> Housekeeping y servicios a domicilio</li>
+                <li><CheckIcon /> Reservas en restaurantes</li>
+                <li><CheckIcon /> Viajes y arreglos privados</li>
+                <li><CheckIcon /> Experiencia de chef privado y dining</li>
+                <li><CheckIcon /> Spa y salón a domicilio</li>
+                <li><CheckIcon /> Planificación y reservas de eventos</li>
+                <li><CheckIcon /> Inyección mensual gratuita de B12 IV</li>
+              </ul>
+              <button className="btn-membership">Solicitar Información</button>
+            </div>
+
+            {/* CORPORATE CARD */}
+            <div className="membership-card">
+              <h3 className="card-tier">Corporate</h3>
+              <div className="card-price">$200<span>/ MENSUAL</span></div>
+              <ul className="card-benefits">
+                <li><CheckIcon /> Acceso completo a todos los servicios y partners exclusivos con 15% de descuento</li>
+                <li><CheckIcon /> Búsqueda de propiedades corporativas o ejecutivas</li>
+                <li><CheckIcon /> Chef privado y catering gourmet para eventos privados</li>
+                <li><CheckIcon /> Producción de eventos corporativos, lanzamientos y after-office</li>
+                <li><CheckIcon /> Logística para delegaciones o clientes VIP</li>
+                <li><CheckIcon /> Transporte privado con chofer</li>
+                <li><CheckIcon /> Reserva de jets privados y helicópteros</li>
+                <li><CheckIcon /> Reservas ejecutivas y coordinación de viajes VIP</li>
+                <li><CheckIcon /> Alquiler de coches premium</li>
+              </ul>
+              <button className="btn-membership">Solicitar Información</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Page-specific structured data for SEO */}
       <StructuredData 

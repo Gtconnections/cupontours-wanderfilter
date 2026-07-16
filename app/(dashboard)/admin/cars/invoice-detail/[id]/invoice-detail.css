@@ -1,0 +1,577 @@
+/* ==========================================================================
+   WANDER SYSTEM - INVOICE DETAIL (invoice-detail.css)
+   ========================================================================== */
+
+.wander-invoice-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Cabecera */
+.wander-invoice-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-invoice-detail-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-invoice-detail-subtitle {
+  font-size: 15px;
+  color: #333333;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Acciones */
+.wander-invoice-detail-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wander-btn-edit {
+  padding: 8px 16px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-btn-edit:hover {
+  background: #333333;
+}
+
+.wander-btn-add-files {
+  padding: 8px 16px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-btn-add-files:hover {
+  background: #1d4ed8;
+}
+
+.wander-btn-delete {
+  padding: 8px 16px;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-btn-delete:hover {
+  background: #b91c1c;
+}
+
+.wander-btn-pdf {
+  padding: 8px 16px;
+  background: #f59e0b;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-btn-pdf:hover {
+  background: #d97706;
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background: transparent;
+  color: #000000;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background: #f5f5f5;
+}
+
+/* Contenido */
+.wander-invoice-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Card */
+.wander-invoice-detail-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-invoice-detail-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wander-invoice-detail-card-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-invoice-detail-car-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-invoice-car-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.wander-invoice-car-plate {
+  font-size: 13px;
+  color: #999999;
+}
+
+/* Grid de información */
+.wander-invoice-detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px 24px;
+}
+
+.wander-invoice-detail-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wander-invoice-detail-comment {
+  grid-column: 1 / -1;
+}
+
+.wander-invoice-detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #717171;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wander-invoice-detail-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.wander-invoice-total {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.wander-invoice-total.income {
+  color: #16a34a;
+}
+
+.wander-invoice-total.expense {
+  color: #dc2626;
+}
+
+/* Type badge */
+.wander-invoice-type-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.wander-invoice-type-badge.income {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.wander-invoice-type-badge.expense {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Tabla de items */
+.wander-invoice-detail-section-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wander-invoice-detail-table-container {
+  overflow-x: auto;
+}
+
+.wander-invoice-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.wander-invoice-detail-table thead {
+  background: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-invoice-detail-table thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+}
+
+.wander-invoice-detail-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333333;
+}
+
+.wander-invoice-detail-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wander-invoice-detail-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.wander-empty-cell {
+  text-align: center !important;
+  padding: 20px !important;
+}
+
+.wander-empty-text {
+  color: #999999;
+  font-style: italic;
+}
+
+/* Files */
+.wander-invoice-detail-files {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.wander-invoice-detail-file-item {
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.wander-invoice-detail-file-item:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.wander-invoice-detail-file-preview {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-invoice-detail-file-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wander-invoice-detail-file-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #ffffff;
+}
+
+.wander-invoice-detail-file-id {
+  font-size: 12px;
+  font-weight: 500;
+  color: #717171;
+}
+
+.wander-invoice-detail-file-view {
+  padding: 4px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  color: #333333;
+  transition: all 0.2s ease;
+}
+
+.wander-invoice-detail-file-view:hover {
+  border-color: #000000;
+  background: #f5f5f5;
+}
+
+.wander-invoice-detail-files-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 8px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px dashed #ebebeb;
+}
+
+.wander-empty-icon {
+  font-size: 32px;
+}
+
+.wander-invoice-detail-files-empty p {
+  font-size: 14px;
+  color: #999999;
+  margin: 0;
+}
+
+/* Loading */
+.wander-invoice-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.wander-invoice-detail-loading p {
+  color: #717171;
+  font-size: 14px;
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wander-invoice-detail-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-invoice-detail-header {
+    flex-direction: column;
+  }
+  
+  .wander-invoice-detail-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .wander-invoice-detail-actions button {
+    flex: 1;
+    justify-content: center;
+    min-width: 100px;
+  }
+  
+  .wander-invoice-detail-info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .wander-invoice-detail-card {
+    padding: 16px 20px;
+  }
+  
+  .wander-invoice-detail-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .wander-invoice-detail-files {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .wander-invoice-detail-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-invoice-detail-container {
+    padding: 12px;
+  }
+  
+  .wander-invoice-detail-actions {
+    flex-direction: column;
+  }
+  
+  .wander-invoice-detail-actions button {
+    width: 100%;
+  }
+  
+  .wander-invoice-detail-files {
+    grid-template-columns: 1fr;
+  }
+  
+  .wander-invoice-detail-header h2 {
+    font-size: 18px;
+  }
+  
+  .wander-invoice-detail-table {
+    font-size: 13px;
+  }
+  
+  .wander-invoice-detail-table thead th,
+  .wander-invoice-detail-table tbody td {
+    padding: 8px 10px;
+  }
+}
+
+/* ==========================================================================
+   ACCIONES DE ARCHIVOS
+   ========================================================================== */
+
+.wander-invoice-detail-file-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.wander-file-action-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #717171;
+}
+
+.wander-file-action-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.wander-file-action-view:hover {
+  color: #2563eb;
+  background-color: #eff6ff;
+}
+
+.wander-file-action-delete:hover {
+  color: #dc2626;
+  background-color: #fef2f2;
+}

@@ -24,18 +24,18 @@ export function Sidebar() {
       label: "Students",
       subitems: [
         { name: "BNB Calculator", href: "/admin/students/bnb-calculator" },
-        { name: "Furniture Standard", href: "/admin/students/furniture-standard" },
-        { name: "Cleaning Standard", href: "/admin/students/cleaning-standard" },
+        { name: "Furniture Standard", href: "/admin/students/furnish" },
+        { name: "Cleaning Standard", href: "/admin/students/cleaning" },
       ]
     },
     {
       id: "properties",
       label: "Properties Business",
       subitems: [
-        { name: "All Properties", href: "/admin/properties/all" },
-        { name: "Profit and Loss", href: "/admin/properties/profit-loss" },
-        { name: "Create an Invoice", href: "/admin/properties/create-invoice" },
-        { name: "Create a Reservation", href: "/admin/properties/create-reservation" },
+        { name: "All Properties", href: "/admin/properties/list" },
+        { name: "Profit and Loss", href: "/admin/properties/profit-and-loss" },
+        { name: "Create an Invoice", href: "/admin/properties/invoices/create" },
+        { name: "Create a Reservation", href: "/admin/properties/reservations/create" },
         { name: "Agreements", href: "/admin/properties/agreements" },
         { name: "Create masses", href: "/admin/properties/create-masses" },
       ]
@@ -45,9 +45,9 @@ export function Sidebar() {
       label: "Cars Business",
       subitems: [
         { name: "All the Cars", href: "/admin/cars/list" },
-        { name: "Profit and Loss", href: "/admin/cars/profit-loss" },
-        { name: "Create an Invoice", href: "/admin/cars/create-invoice" },
-        { name: "Create a Reservation", href: "/admin/cars/create-reservation" },
+        { name: "Profit and Loss", href: "/admin/cars/profit-and-loss" },
+        { name: "Create an Invoice", href: "/admin/cars/invoices/create" },
+        { name: "Create a Reservation", href: "/admin/cars/reservations/create" },
         { name: "Create masses", href: "/admin/cars/create-masses" },
       ]
     },
@@ -56,9 +56,9 @@ export function Sidebar() {
       id: "yachts",
       label: "Yachts Business",
       subitems: [
-        { name: "All the Yachts", href: "/admin/yachts/all" },
-        { name: "Create an Invoice", href: "/admin/yachts/create-invoice" },
-        { name: "Create a Reservation", href: "/admin/yachts/create-reservation" },
+        { name: "All the Yachts", href: "/admin/yachts/list" },
+        { name: "Create an Invoice", href: "/admin/yachts/invoices/create" },
+        { name: "Create a Reservation", href: "/admin/yachts/reservations/create" },
       ]
     }
   ];

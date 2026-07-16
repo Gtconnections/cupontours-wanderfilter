@@ -1,0 +1,494 @@
+/* ==========================================================================
+   WANDER SYSTEM - PROFIT AND LOSS (profit-and-loss.css)
+   ========================================================================== */
+
+.wander-pl-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Cabecera */
+.wander-pl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-pl-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-pl-subtitle {
+  font-size: 14px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+.wander-pl-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* Filtros */
+.wander-pl-filters {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-filters-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.wander-filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wander-filter-item label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #717171;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wander-filter-input {
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #000000;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  outline: none;
+  width: 200px;
+}
+
+.wander-filter-input:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.wander-filter-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  align-items: center;
+}
+
+/* Tabla */
+.wander-pl-table-container {
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-pl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.wander-pl-table thead {
+  background-color: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-pl-table thead th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+  white-space: nowrap;
+}
+
+.wander-pl-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.wander-pl-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wander-pl-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+/* Estilos de celdas */
+.wander-pl-id {
+  font-weight: 600;
+  color: #000000;
+  font-family: monospace;
+}
+
+.wander-pl-car {
+  display: flex;
+  flex-direction: column;
+}
+
+.wander-pl-car-name {
+  font-weight: 500;
+  color: #333333;
+}
+
+.wander-pl-car-year {
+  font-size: 12px;
+  color: #717171;
+}
+
+.wander-pl-car-plate {
+  font-size: 11px;
+  color: #999999;
+}
+
+.wander-pl-date {
+  color: #333333;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.wander-pl-income {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.wander-pl-expenses {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.wander-pl-profit {
+  font-weight: 600;
+}
+
+.wander-pl-profit.positive {
+  color: #16a34a;
+}
+
+.wander-pl-profit.negative {
+  color: #dc2626;
+}
+
+.wander-pl-fee {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* Estados vacíos */
+.wander-empty-cell {
+  padding: 60px 20px !important;
+  text-align: center;
+}
+
+.wander-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-empty-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.wander-empty-state p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-empty-desc {
+  font-size: 13px;
+  color: #717171;
+}
+
+/* Loading */
+.wander-pl-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.wander-pl-loading p {
+  color: #717171;
+  font-size: 14px;
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Paginación */
+.wander-pl-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-pagination-info {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.wander-pagination-btn {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  text-align: center;
+}
+
+.wander-pagination-btn:hover:not(:disabled) {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+.wander-pagination-btn.active {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.wander-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Acciones */
+.wander-action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #717171;
+}
+
+.wander-action-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.wander-action-view:hover {
+  color: #2563eb;
+  background-color: #eff6ff;
+}
+
+/* Scrollbar */
+.wander-pl-table-container::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.wander-pl-table-container::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.wander-pl-table-container::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 10px;
+}
+
+.wander-pl-table-container::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wander-pl-container {
+    padding: 16px;
+  }
+  
+  .wander-pl-table {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-pl-header {
+    flex-direction: column;
+  }
+  
+  .wander-pl-actions {
+    width: 100%;
+  }
+  
+  .wander-pl-table-container {
+    overflow-x: auto;
+  }
+  
+  .wander-pl-table {
+    min-width: 900px;
+  }
+  
+  .wander-pl-pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .wander-pl-header h2 {
+    font-size: 22px;
+  }
+  
+  .wander-filters-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .wander-filter-input {
+    width: 100%;
+  }
+  
+  .wander-filter-actions {
+    margin-left: 0;
+    justify-content: stretch;
+  }
+  
+  .wander-filter-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-pl-container {
+    padding: 12px;
+  }
+  
+  .wander-pl-header h2 {
+    font-size: 18px;
+  }
+}
+

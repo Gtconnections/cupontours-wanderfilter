@@ -1,0 +1,764 @@
+/* app/admin/properties/profit-and-loss/detail.css */
+
+/* ==========================================================================
+   PROFIT AND LOSS DETAIL
+   ========================================================================== */
+
+.wander-pl-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION
+   ========================================================================== */
+
+.wander-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: #000000;
+  color: #ffffff;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  animation: wanderToastSlide 0.3s ease;
+  max-width: 400px;
+}
+
+@keyframes wanderToastSlide {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Loading */
+.wander-pl-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+/* Actions / Botones */
+.wander-pl-detail-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.wander-pl-detail-actions-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wander-pl-detail-actions-right {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wander-pl-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-pl-back-btn:hover {
+  background: #f5f5f5;
+  border-color: #000000;
+}
+
+.wander-pl-view-property-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-pl-view-property-btn:hover {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+/* Botones Delete y PDF */
+.wander-pl-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-pl-delete-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.wander-pl-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-pl-pdf-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Header */
+.wander-pl-detail-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-pl-detail-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.wander-pl-detail-subtitle {
+  font-size: 14px;
+  color: #717171;
+  margin: 0;
+}
+
+/* Summary */
+.wander-pl-detail-summary {
+  margin-bottom: 32px;
+}
+
+.wander-pl-detail-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.wander-pl-detail-summary-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-pl-detail-summary-card h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wander-pl-detail-summary-card.stats h3 {
+  border-bottom-color: #e0e0e0;
+}
+
+.wander-pl-detail-summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+  color: #444444;
+}
+
+.wander-pl-detail-summary-item span:first-child {
+  color: #717171;
+}
+
+.wander-pl-detail-summary-item.total {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 8px;
+  margin-top: 4px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.wander-pl-detail-summary-item .income {
+  color: #16a34a;
+}
+
+.wander-pl-detail-summary-item .expense {
+  color: #dc2626;
+}
+
+.wander-pl-detail-summary-item .positive {
+  color: #16a34a;
+}
+
+.wander-pl-detail-summary-item .negative {
+  color: #dc2626;
+}
+
+/* Secciones */
+.wander-pl-detail-section {
+  margin-top: 32px;
+}
+
+.wander-pl-detail-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 16px 0;
+}
+
+/* Tablas */
+.wander-pl-detail-table-container {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.wander-pl-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.wander-pl-detail-table thead {
+  background: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-pl-detail-table thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+  white-space: nowrap;
+}
+
+.wander-pl-detail-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.wander-pl-detail-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.wander-pl-detail-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.wander-pl-detail-table .income {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.wander-pl-detail-table .expense {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* Status badge */
+.wander-pl-detail-status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.wander-pl-detail-status.confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.wander-pl-detail-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.wander-pl-detail-status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Invoice type */
+.wander-pl-detail-type {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.wander-pl-detail-type.expenses {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.wander-pl-detail-type.incomes {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Refund */
+.refund-yes {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.refund-no {
+  color: #717171;
+}
+
+/* Invoice title with items */
+.wander-pl-detail-invoice-title {
+  max-width: 200px;
+}
+
+.wander-pl-detail-invoice-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #717171;
+}
+
+/* Show details button */
+.wander-pl-detail-show-details {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 14px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.wander-pl-detail-show-details:hover {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .wander-pl-detail-container {
+    padding: 16px;
+  }
+
+  .wander-pl-detail-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-pl-detail-container {
+    padding: 12px;
+  }
+
+  .wander-pl-detail-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wander-pl-detail-actions-left,
+  .wander-pl-detail-actions-right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wander-pl-back-btn,
+  .wander-pl-view-property-btn,
+  .wander-pl-delete-btn,
+  .wander-pl-pdf-btn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .wander-pl-detail-header h1 {
+    font-size: 22px;
+  }
+
+  .wander-pl-detail-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wander-pl-detail-table-container {
+    overflow-x: auto;
+  }
+
+  .wander-pl-detail-table {
+    font-size: 12px;
+    min-width: 600px;
+  }
+
+  .wander-pl-detail-table thead th,
+  .wander-pl-detail-table tbody td {
+    padding: 8px 10px;
+  }
+
+  .wander-toast {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-pl-detail-container {
+    padding: 10px;
+  }
+
+  .wander-pl-detail-header h1 {
+    font-size: 18px;
+  }
+
+  .wander-pl-detail-summary-card {
+    padding: 16px;
+  }
+
+  .wander-pl-detail-table {
+    font-size: 11px;
+    min-width: 500px;
+  }
+
+  .wander-pl-detail-table thead th,
+  .wander-pl-detail-table tbody td {
+    padding: 6px 8px;
+  }
+}
+
+/* app/admin/properties/components/DeletePropertyModal.css */
+
+/* ==========================================================================
+   DELETE PROPERTY MODAL
+   ========================================================================== */
+
+/* Overlay */
+.wander-delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  animation: wanderDeleteFadeIn 0.2s ease;
+}
+
+@keyframes wanderDeleteFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Container */
+.wander-delete-modal-container {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 440px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: wanderDeleteSlideUp 0.3s ease;
+}
+
+@keyframes wanderDeleteSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.wander-delete-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.wander-delete-modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-delete-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #717171;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.wander-delete-modal-close:hover {
+  background: #f5f5f5;
+  color: #000000;
+}
+
+.wander-delete-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Body */
+.wander-delete-modal-body {
+  text-align: center;
+  padding: 24px 24px 16px;
+}
+
+.wander-delete-modal-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.wander-delete-modal-message {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+}
+
+.wander-delete-modal-message strong {
+  color: #dc2626;
+}
+
+.wander-delete-modal-warning {
+  font-size: 13px;
+  color: #717171;
+  margin: 0;
+}
+
+/* Footer */
+.wander-delete-modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px 20px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+  border-radius: 0 0 16px 16px;
+}
+
+.wander-delete-modal-btn-cancel {
+  padding: 8px 24px;
+  background: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wander-delete-modal-btn-cancel:hover {
+  background: #f5f5f5;
+  border-color: #b0b0b0;
+}
+
+.wander-delete-modal-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wander-delete-modal-btn-delete {
+  padding: 8px 28px;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.wander-delete-modal-btn-delete:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.wander-delete-modal-btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .wander-delete-modal-container {
+    margin: 16px;
+    max-height: 95vh;
+  }
+
+  .wander-delete-modal-header {
+    padding: 16px 20px;
+  }
+
+  .wander-delete-modal-body {
+    padding: 20px 20px 12px;
+  }
+
+  .wander-delete-modal-footer {
+    padding: 12px 20px 16px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .wander-delete-modal-btn-cancel,
+  .wander-delete-modal-btn-delete {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .wander-delete-modal-message {
+    font-size: 15px;
+  }
+}

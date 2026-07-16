@@ -1,0 +1,534 @@
+{
+    "list": [
+      {
+        "section": "Entrance",
+        "name": "mirror or",
+        "quantity": "1"
+      },
+      {
+        "section": "Entrance",
+        "name": "framed art",
+        "quantity": ""
+      },
+      {
+        "section": "Living Room",
+        "name": "3 seater sofabeds",
+        "quantity": "1"
+      },
+      {
+        "section": "Living Room",
+        "name": "lounge chair",
+        "quantity": "2"
+      },
+      {
+        "section": "Living Room",
+        "name": "coffee table",
+        "quantity": "1"
+      },
+      {
+        "section": "Living Room",
+        "name": "tv stand",
+        "quantity": "1"
+      },
+      {
+        "section": "Living Room",
+        "name": "side table",
+        "quantity": "1"
+      },
+      {
+        "section": "Living Room",
+        "name": "rug",
+        "quantity": "1"
+      },
+      {
+        "section": "Living Room",
+        "name": "framed art",
+        "quantity": "1"
+      },
+      {
+        "section": "Living Room",
+        "name": "floor lamp",
+        "quantity": "1"
+      },
+      {
+        "section": "Dinning Room",
+        "name": "dining table",
+        "quantity": "1"
+      },
+      {
+        "section": "Dinning Room",
+        "name": "dining chair",
+        "quantity": "4"
+      },
+      {
+        "section": "Dinning Room",
+        "name": "pendant lamp",
+        "quantity": "1"
+      },
+      {
+        "section": "Dinning Room",
+        "name": "artwork",
+        "quantity": "1"
+      },
+      {
+        "section": "Dinning Room",
+        "name": "bar stools",
+        "quantity": "2"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "queen bed w headboard",
+        "quantity": "1"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "nightstand",
+        "quantity": "2"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "bedside lamp",
+        "quantity": "2"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "dresser or desk",
+        "quantity": "1"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "framed art",
+        "quantity": "1"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "full length mirror",
+        "quantity": "1"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "coat/hat rack",
+        "quantity": "1"
+      },
+      {
+        "section": "Master Bedroom",
+        "name": "chair/bag table",
+        "quantity": "1"
+      },
+      {
+        "section": "Den",
+        "name": "TBD",
+        "quantity": ""
+      },
+      {
+        "section": "Guest Bedroom 1",
+        "name": "n/a",
+        "quantity": ""
+      },
+      {
+        "section": "Guest Bedroom 2",
+        "name": "n/a",
+        "quantity": ""
+      },
+      {
+        "section": "Guest Bedroom 3",
+        "name": "n/a",
+        "quantity": ""
+      },
+      {
+        "section": "Guest Bedroom 4",
+        "name": "n/a",
+        "quantity": ""
+      },
+      {
+        "section": "Balcony",
+        "name": "table",
+        "quantity": "1"
+      },
+      {
+        "section": "Balcony",
+        "name": "table chairs",
+        "quantity": "2"
+      },
+      {
+        "section": "Balcony",
+        "name": "chairs",
+        "quantity": "2"
+      },
+      {
+        "section": "Appliances",
+        "name": "min 42\" Smart TV",
+        "quantity": "1"
+      },
+      {
+        "section": "Appliances",
+        "name": "Hair Dryer",
+        "quantity": "1"
+      },
+      {
+        "section": "Appliances",
+        "name": "Iron w board",
+        "quantity": "1"
+      },
+      {
+        "section": "Appliances",
+        "name": "WIFI router",
+        "quantity": "1"
+      },
+      {
+        "section": "Appliances",
+        "name": "Coffee maker",
+        "quantity": "1"
+      },
+      {
+        "section": "Appliances",
+        "name": "toaster",
+        "quantity": "1"
+      },
+      {
+        "section": "Appliances",
+        "name": "blender",
+        "quantity": "1"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "Large plates",
+        "quantity": "6"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "Medium plates",
+        "quantity": "6"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "Small plates",
+        "quantity": "6"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "Glass salad bowls",
+        "quantity": "1"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "Glass bowls w lids",
+        "quantity": "3"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "cereal bowls",
+        "quantity": "6"
+      },
+      {
+        "section": "plates and bowls",
+        "name": "Mixing bowls",
+        "quantity": "2"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "Knifes",
+        "quantity": "6"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "salad forks",
+        "quantity": "6"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "dinner forks",
+        "quantity": "6"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "table spoons",
+        "quantity": "6"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "teaspoons",
+        "quantity": "6"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "steak knives",
+        "quantity": "6"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "cutting board",
+        "quantity": "1"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "3 piece cutlery set",
+        "quantity": "3"
+      },
+      {
+        "section": "cutlery/silverware",
+        "name": "serving silverware",
+        "quantity": "4"
+      },
+      {
+        "section": "Glassware",
+        "name": "coffee mugs",
+        "quantity": "4"
+      },
+      {
+        "section": "Glassware",
+        "name": "short glasses",
+        "quantity": "4"
+      },
+      {
+        "section": "Glassware",
+        "name": "tall glasses",
+        "quantity": "8"
+      },
+      {
+        "section": "Glassware",
+        "name": "wine glasses",
+        "quantity": "4"
+      },
+      {
+        "section": "Glassware",
+        "name": "plastic cups",
+        "quantity": "4"
+      },
+      {
+        "section": "Glassware",
+        "name": "pitcher",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "Large spatula",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "Measuring cup",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "can opener",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "bottle opener",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "whisk",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "large spoon",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "slotted spoon",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "meat fork",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "cork screw",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "peeler",
+        "quantity": "1"
+      },
+      {
+        "section": "Utensils",
+        "name": "ladle",
+        "quantity": "1"
+      },
+      {
+        "section": "Cookware",
+        "name": "Casserole Dish w lid",
+        "quantity": "1"
+      },
+      {
+        "section": "Cookware",
+        "name": "Frying pan",
+        "quantity": "1"
+      },
+      {
+        "section": "Cookware",
+        "name": "Small pot w lid",
+        "quantity": "1"
+      },
+      {
+        "section": "Cookware",
+        "name": "Medium pot w lid",
+        "quantity": "1"
+      },
+      {
+        "section": "Cookware",
+        "name": "large pot w lid",
+        "quantity": "1"
+      },
+      {
+        "section": "Cookware",
+        "name": "non-stick skillets",
+        "quantity": "1"
+      },
+      {
+        "section": "linen",
+        "name": "Potholder",
+        "quantity": "2"
+      },
+      {
+        "section": "linen",
+        "name": "Kitchen towels",
+        "quantity": "2"
+      },
+      {
+        "section": "linen",
+        "name": "Hand towels",
+        "quantity": "8"
+      },
+      {
+        "section": "linen",
+        "name": "Bath towels",
+        "quantity": "8"
+      },
+      {
+        "section": "linen",
+        "name": "facecloths",
+        "quantity": "8"
+      },
+      {
+        "section": "linen",
+        "name": "Pillows",
+        "quantity": "4"
+      },
+      {
+        "section": "linen",
+        "name": "Queen comforters",
+        "quantity": "2"
+      },
+      {
+        "section": "linen",
+        "name": "Bed Skirts",
+        "quantity": "1"
+      },
+      {
+        "section": "linen",
+        "name": "Queen Duvets",
+        "quantity": "4"
+      },
+      {
+        "section": "linen",
+        "name": "Mattress bed bug protection",
+        "quantity": "1"
+      },
+      {
+        "section": "linen",
+        "name": "Queen set of sheets",
+        "quantity": "4"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Books / Magazines",
+        "quantity": "2"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Broom and dust pan",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Colander/strainer",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Salt & pepper shakers",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Sugar packet container",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "plastic dish drainer",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "TV remote",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Paper towel holder",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Hangers",
+        "quantity": "24"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Toothbrush holder",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Cushions",
+        "quantity": "8"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Sofa Throw",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Décor",
+        "quantity": "15"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Bathroom curtains",
+        "quantity": "2"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "curtain rod",
+        "quantity": "1"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "curtain hangers",
+        "quantity": "12"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Bathroom trash cans",
+        "quantity": "2"
+      },
+      {
+        "section": "Miscellaneous",
+        "name": "Kitchen big trash can",
+        "quantity": "1"
+      }
+    ]
+}
