@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { StructuredData } from "@/components/seo/structured-data";
 import './events-detail.css';
 import { getEventById, EventItem } from '@/app/lib/api/services';
 import Membership from '@/components/Membership';
@@ -250,6 +251,28 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
             {currentImgIndex + 1} / {allImages.length}
           </div>
         </div>
+      )}
+
+      {eventData && (
+        <StructuredData
+          type="Product"
+          data={{
+            "@type": "Event",
+            "name": eventData.name,
+            "description": eventData.descripcion,
+            "image": eventData.principal_image,
+            "startDate": eventData.fecha_hora,
+            "location": {
+              "@type": "Place",
+              "name": eventData.location
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": eventData.price,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
       )}
     </main>
   );

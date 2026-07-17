@@ -5,7 +5,7 @@
 .wander-invoice-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -452,7 +452,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .wander-invoice-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 
@@ -497,7 +497,7 @@
 
 @media (max-width: 480px) {
   .wander-invoice-detail-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-invoice-detail-actions {

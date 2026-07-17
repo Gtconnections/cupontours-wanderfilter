@@ -5,7 +5,7 @@
 .wander-profile-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -287,7 +287,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .wander-profile-container {
-    padding: 16px;
+    padding: 0;
   }
   
   .wander-profile-header {
@@ -318,7 +318,7 @@
 
 @media (max-width: 480px) {
   .wander-profile-container {
-    padding: 12px;
+    padding: 0;
   }
   
   .wander-profile-actions {

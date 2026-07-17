@@ -8,7 +8,7 @@
 .wander-detail-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Loading */
@@ -492,7 +492,7 @@
 
 @media (max-width: 768px) {
   .wander-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-detail-header {
@@ -568,7 +568,7 @@
 
 @media (max-width: 480px) {
   .wander-detail-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-detail-title {

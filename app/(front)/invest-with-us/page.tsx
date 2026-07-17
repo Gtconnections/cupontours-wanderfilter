@@ -1,7 +1,15 @@
 "use client";
 import React, { useState } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import { sendInvestRequest } from '../../lib/api';
 import './invest.css';
+
+const investPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Invest With Us",
+  "description": "Explore investment opportunities with Cupontours."
+};
 
 export default function InvestPage() {
   const [interestType, setInterestType] = useState('I want to rent');
@@ -486,6 +494,7 @@ export default function InvestPage() {
         </div>
       </section>
 
+      <StructuredData type="Organization" data={investPageStructuredData} />
     </main>
   );
 }

@@ -2,6 +2,11 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+export const metadata = {
+  title: "Cupontours | Luxury Vacation Rentals, Car & Yacht Charters",
+  description: "Book exclusive luxury vacation rentals, premium car rentals, and yacht charters worldwide with Cupontours.",
+};
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }

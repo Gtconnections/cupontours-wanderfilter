@@ -7,7 +7,7 @@
 .wander-invoice-detail-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Header */
@@ -394,7 +394,7 @@
 
 @media (max-width: 1024px) {
   .wander-invoice-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-invoice-detail-summary-grid {
@@ -404,7 +404,7 @@
 
 @media (max-width: 768px) {
   .wander-invoice-detail-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-invoice-detail-header {
@@ -464,7 +464,7 @@
 
 @media (max-width: 480px) {
   .wander-invoice-detail-container {
-    padding: 10px;
+    padding: 0;
   }
 
   .wander-invoice-detail-header h2 {

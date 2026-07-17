@@ -1,0 +1,558 @@
+/* app/(dashboard)/admin/suscripciones/suscripciones.css */
+
+/* ==========================================================================
+   SUBSCRIPTIONS LIST PAGE
+   ========================================================================== */
+
+.wander-wellness-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Header */
+.wander-wellness-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wander-breadcrumb {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #717171;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.wander-wellness-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-wellness-subtitle {
+  font-size: 14px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+.wander-wellness-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* Botones */
+.wander-btn-primary {
+  padding: 10px 24px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.wander-btn-primary:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+.wander-btn-secondary {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.wander-btn-secondary:hover {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+/* ==========================================================================
+   ACCOUNTING SUMMARY (mirrors the dashboard's metric-card component)
+   ========================================================================== */
+
+.wander-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.wander-metric-card {
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.wander-metric-card:hover {
+  border-color: #000000;
+}
+
+.wander-metric-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wander-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #717171;
+}
+
+.wander-metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #000000;
+  margin-top: 4px;
+}
+
+.wander-metric-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #ebebeb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  flex-shrink: 0;
+}
+
+@media (min-width: 576px) {
+  .wander-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 992px) {
+  .wander-metrics-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ==========================================================================
+   FILTERS
+   ========================================================================== */
+
+.wander-subs-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wander-filter-wrapper,
+.wander-date-filter-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wander-date-filter-wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.wander-date-filter-wrapper label {
+  font-size: 11px;
+  color: #717171;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wander-filter-wrapper .wander-form-select,
+.wander-date-filter-wrapper .wander-form-input {
+  min-width: 160px;
+}
+
+.wander-form-select,
+.wander-form-input {
+  padding: 8px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #000000;
+  background: #ffffff;
+}
+
+.wander-filter-clear {
+  background: transparent;
+  border: none;
+  color: #999999;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.wander-filter-clear:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+/* Grid */
+.wander-wellness-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* ==========================================================================
+   TARJETA DE SUSCRIPCIÓN
+   ========================================================================== */
+
+.wander-wellness-card {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wander-wellness-card:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.wander-subs-card .wander-wellness-info {
+  padding: 20px;
+}
+
+.wander-subs-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.wander-wellness-info {
+  padding: 16px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wander-wellness-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-wellness-meta {
+  font-size: 13px;
+  color: #717171;
+  margin: 0;
+}
+
+.wander-wellness-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  font-size: 12px;
+  color: #666666;
+  margin: 2px 0;
+}
+
+.wander-wellness-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin-top: 4px;
+}
+
+/* Acciones - 2 columnas */
+.wander-wellness-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid #ebebeb;
+  background: #fafafa;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.wander-wellness-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500;
+  color: #717171;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border-right: 1px solid #ebebeb;
+}
+
+.wander-wellness-action-btn:last-child {
+  border-right: none;
+}
+
+.wander-wellness-action-btn:hover {
+  background: #f0f0f0;
+  color: #000000;
+}
+
+.wander-wellness-action-btn.details:hover {
+  color: #2563eb;
+}
+
+.wander-wellness-action-btn.delete:hover {
+  color: #dc2626;
+}
+
+/* Estados vacíos */
+.wander-wellness-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px dashed #ebebeb;
+}
+
+.wander-empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+  color: #cccccc;
+}
+
+.wander-wellness-empty p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.wander-empty-desc {
+  font-size: 13px;
+  color: #717171;
+  margin-top: 4px;
+}
+
+/* Loading */
+.wander-wellness-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #ebebeb;
+}
+
+.wander-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error state */
+.wander-error-state {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.wander-error-state h3 {
+  color: #991b1b;
+  margin-bottom: 12px;
+}
+
+.wander-error-state p {
+  color: #7f1d1d;
+  margin-bottom: 20px;
+}
+
+/* Paginación */
+.wander-wellness-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-pagination-info {
+  font-size: 13px;
+  color: #717171;
+}
+
+.wander-pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.wander-pagination-btn {
+  padding: 6px 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wander-pagination-btn:hover:not(:disabled) {
+  border-color: #000000;
+  background-color: #f5f5f5;
+}
+
+.wander-pagination-btn.active {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.wander-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .wander-wellness-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .wander-wellness-container {
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .wander-wellness-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wander-wellness-actions {
+    width: 100%;
+    justify-content: stretch;
+    flex-wrap: wrap;
+  }
+
+  .wander-wellness-actions .wander-btn-primary,
+  .wander-wellness-actions .wander-btn-secondary {
+    flex: 1;
+    justify-content: center;
+    min-width: 120px;
+  }
+
+  .wander-subs-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wander-filter-wrapper .wander-form-select,
+  .wander-date-filter-wrapper .wander-form-input {
+    width: 100%;
+  }
+
+  .wander-wellness-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .wander-wellness-pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wander-wellness-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wander-wellness-container {
+    padding: 0;
+  }
+
+  .wander-wellness-header h2 {
+    font-size: 18px;
+  }
+}

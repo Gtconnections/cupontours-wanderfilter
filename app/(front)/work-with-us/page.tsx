@@ -1,7 +1,15 @@
 "use client";
 import React, { useState } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import { sendAllianceRequest } from '../../lib/api';
 import './work.css';
+
+const workWithUsPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Work With Us",
+  "description": "Partner with Cupontours as a luxury service provider."
+};
 
 export default function WorkWithUsPage() {
   // Estados para controlar los campos del formulario de aliados
@@ -301,6 +309,7 @@ export default function WorkWithUsPage() {
         </div>
       </section>
 
+      <StructuredData type="Organization" data={workWithUsPageStructuredData} />
     </main>
   );
 }

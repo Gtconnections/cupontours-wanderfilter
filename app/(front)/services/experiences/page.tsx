@@ -1,9 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './experiences.css';
 import Link from 'next/link';
 import { getExperiences, ExperienceItem } from '@/app/lib/api/services';
+
+const experiencesPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Experiences",
+  "description": "Explore Cupontours' curated luxury experiences.",
+  "mainEntity": { "@type": "ItemList", "name": "Experiences" }
+};
 
 export default function ExperiencesPage() {
   const [experiences, setExperiences] = useState<ExperienceItem[]>([]);
@@ -152,6 +161,8 @@ export default function ExperiencesPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={experiencesPageStructuredData} />
     </main>
   );
 }

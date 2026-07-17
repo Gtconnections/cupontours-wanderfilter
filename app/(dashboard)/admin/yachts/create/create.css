@@ -7,7 +7,7 @@
 .wander-create-yacht-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Toast */
@@ -333,7 +333,7 @@
 
 @media (max-width: 768px) {
   .wander-create-yacht-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-create-yacht-header {
@@ -354,7 +354,7 @@
   }
 
   .wander-create-yacht-form-container {
-    padding: 20px;
+    padding: 0;
   }
 
   .wander-create-yacht-row {
@@ -389,7 +389,7 @@
 
 @media (max-width: 480px) {
   .wander-create-yacht-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-create-yacht-header h2 {
@@ -401,7 +401,7 @@
   }
 
   .wander-create-yacht-form-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-create-yacht-input,

@@ -5,7 +5,7 @@
 .wander-invoices-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -426,7 +426,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .wander-invoices-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-invoices-table {
@@ -477,7 +477,7 @@
 
 @media (max-width: 480px) {
   .wander-invoices-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-invoices-header h2 {

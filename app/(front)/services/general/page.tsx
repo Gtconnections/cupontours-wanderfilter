@@ -1,9 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './general.css';
 import Link from 'next/link';
 import { getGeneralServices, GeneralServiceItem } from '@/app/lib/api/services';
+
+const generalServicesPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "General Services",
+  "description": "Explore Cupontours' general concierge services.",
+  "mainEntity": { "@type": "ItemList", "name": "General Services" }
+};
 
 export default function GeneralServicesPage() {
   const [services, setServices] = useState<GeneralServiceItem[]>([]);
@@ -136,6 +145,8 @@ export default function GeneralServicesPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={generalServicesPageStructuredData} />
     </main>
   );
 }

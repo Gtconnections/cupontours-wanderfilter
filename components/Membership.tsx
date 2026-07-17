@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import './Membership.css';
+import { getMembresias, MembershipPlan } from '@/app/lib/api/membership';
 
 function CheckIcon() {
   return (
@@ -36,7 +38,39 @@ function BriefcaseTierIcon() {
   );
 }
 
+function tierIcon(name: string) {
+  switch (name.toLowerCase()) {
+    case 'platinum':
+      return <CrownTierIcon />;
+    case 'corporate':
+      return <BriefcaseTierIcon />;
+    default:
+      return <StarTierIcon />;
+  }
+}
+
 export default function Membership() {
+  const [plans, setPlans] = useState<MembershipPlan[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPlans() {
+      try {
+        setIsLoading(true);
+        const data = await getMembresias();
+        setPlans(data);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchPlans();
+  }, []);
+
+  if (!isLoading && plans.length === 0) {
+    return null;
+  }
+
   return (
     <section className="membership-section">
       <div className="membership-glow"></div>
@@ -51,73 +85,37 @@ export default function Membership() {
         </div>
 
         <div className="membership-grid">
-          {/* ELITE CARD */}
-          <div className="membership-card">
-            <div className="card-tier-row">
-              <span className="tier-icon"><StarTierIcon /></span>
-              <h3 className="card-tier">Elite</h3>
-            </div>
-            <div className="card-price">$95<span>/ MENSUAL</span></div>
-            <span className="card-tier-divider"></span>
-            <ul className="card-benefits">
-              <li><CheckIcon /> Acceso completo a todos los servicios del club y partners exclusivos con 15% de descuento</li>
-              <li><CheckIcon /> Servicios y cuidado personal</li>
-              <li><CheckIcon /> Spa y salón a domicilio</li>
-              <li><CheckIcon /> Reservas en restaurantes</li>
-              <li><CheckIcon /> Planificación y reservas de eventos</li>
-              <li><CheckIcon /> Vida nocturna VIP y arreglos a medida</li>
-              <li><CheckIcon /> Inyección mensual gratuita de B12 IV</li>
-              <li><CheckIcon /> Acceso a las instalaciones del club e invitaciones a eventos privados de networking</li>
-            </ul>
-            <button className="btn-membership">Solicitar Información</button>
-          </div>
-
-          {/* PLATINUM CARD (HIGHLIGHTED) */}
-          <div className="membership-card highlight">
-            <div className="membership-badge">Más Completo</div>
-            <div className="card-tier-row">
-              <span className="tier-icon"><CrownTierIcon /></span>
-              <h3 className="card-tier">Platinum</h3>
-            </div>
-            <div className="card-price">$300<span>/ MENSUAL</span></div>
-            <span className="card-tier-divider"></span>
-            <ul className="card-benefits">
-              <li><CheckIcon /> Acceso completo a todos los servicios y partners con 20% de descuento</li>
-              <li><CheckIcon /> Servicio completo de inspección residencial</li>
-              <li><CheckIcon /> Transporte privado</li>
-              <li><CheckIcon /> Servicios y cuidado personal</li>
-              <li><CheckIcon /> Housekeeping y servicios a domicilio</li>
-              <li><CheckIcon /> Reservas en restaurantes</li>
-              <li><CheckIcon /> Viajes y arreglos privados</li>
-              <li><CheckIcon /> Experiencia de chef privado y dining</li>
-              <li><CheckIcon /> Spa y salón a domicilio</li>
-              <li><CheckIcon /> Planificación y reservas de eventos</li>
-              <li><CheckIcon /> Inyección mensual gratuita de B12 IV</li>
-            </ul>
-            <button className="btn-membership">Solicitar Información</button>
-          </div>
-
-          {/* CORPORATE CARD */}
-          <div className="membership-card">
-            <div className="card-tier-row">
-              <span className="tier-icon"><BriefcaseTierIcon /></span>
-              <h3 className="card-tier">Corporate</h3>
-            </div>
-            <div className="card-price">$200<span>/ MENSUAL</span></div>
-            <span className="card-tier-divider"></span>
-            <ul className="card-benefits">
-              <li><CheckIcon /> Acceso completo a todos los servicios y partners exclusivos con 15% de descuento</li>
-              <li><CheckIcon /> Búsqueda de propiedades corporativas o ejecutivas</li>
-              <li><CheckIcon /> Chef privado y catering gourmet para eventos privados</li>
-              <li><CheckIcon /> Producción de eventos corporativos, lanzamientos y after-office</li>
-              <li><CheckIcon /> Logística para delegaciones o clientes VIP</li>
-              <li><CheckIcon /> Transporte privado con chofer</li>
-              <li><CheckIcon /> Reserva de jets privados y helicópteros</li>
-              <li><CheckIcon /> Reservas ejecutivas y coordinación de viajes VIP</li>
-              <li><CheckIcon /> Alquiler de coches premium</li>
-            </ul>
-            <button className="btn-membership">Solicitar Información</button>
-          </div>
+          {isLoading ? (
+            <>
+              <div className="membership-card membership-skeleton"></div>
+              <div className="membership-card membership-skeleton"></div>
+              <div className="membership-card membership-skeleton"></div>
+            </>
+          ) : (
+            plans.map((plan) => {
+              const isFeatured = Number(plan.featured) === 1;
+              return (
+                <div key={plan.id} className={`membership-card${isFeatured ? ' highlight' : ''}`}>
+                  {isFeatured && <div className="membership-badge">Más Completo</div>}
+                  <div className="card-tier-row">
+                    <span className="tier-icon">{tierIcon(plan.name)}</span>
+                    <h3 className="card-tier">{plan.name}</h3>
+                  </div>
+                  <div className="card-price">
+                    ${parseFloat(plan.price).toFixed(0)}
+                    <span>/ {plan.period.toUpperCase()}</span>
+                  </div>
+                  <span className="card-tier-divider"></span>
+                  <ul className="card-benefits">
+                    {plan.benefits.map((benefit, idx) => (
+                      <li key={idx}><CheckIcon /> {benefit}</li>
+                    ))}
+                  </ul>
+                  <button className="btn-membership">Solicitar Información</button>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </section>

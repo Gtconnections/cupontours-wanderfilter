@@ -91,6 +91,25 @@
   gap: 28px;
 }
 
+.membership-skeleton {
+  min-height: 420px;
+  position: relative;
+  overflow: hidden;
+}
+
+.membership-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.06), transparent);
+  animation: membership-shimmer 1.6s infinite;
+}
+
+@keyframes membership-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
 .membership-card {
   background: linear-gradient(180deg, #141414 0%, #0f0f0f 100%);
   border: 1px solid #262626;

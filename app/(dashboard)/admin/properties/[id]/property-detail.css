@@ -5,7 +5,7 @@
 .wander-property-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -1593,7 +1593,7 @@
   }
 
   .wander-lightbox-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-lightbox-image-wrapper {
@@ -1671,7 +1671,7 @@
   }
 
   .wander-lightbox-container {
-    padding: 10px;
+    padding: 0;
   }
 
   .wander-lightbox-image-wrapper {

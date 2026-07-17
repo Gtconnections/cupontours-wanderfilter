@@ -65,7 +65,9 @@ export function Sidebar() {
         { name: "Health", href: "/admin/health" },
         { name: "Events", href: "/admin/events" },
         { name: "Reservations", href: "/admin/services-reservations" },
-        { name: "Accounting", href: "/admin/accounting" }
+        { name: "Accounting", href: "/admin/accounting" },
+        { name: "Membership Plans", href: "/admin/membresias" },
+        { name: "Subscriptions", href: "/admin/suscripciones" }
       ]
     },
     {
@@ -112,6 +114,7 @@ export function Sidebar() {
   const mainMenuItems = [
     { name: "Dashboard", href: "/admin/dashboard" },
     { name: "Users management", href: "/admin/users-list" },
+    { name: "Luxury Access", href: "/admin/luxury-access" },
     { name: "Processes", href: "/admin/processes" },
     { name: "Emergency contacts", href: "/admin/emergency-contacts" },
     { name: "My profile", href: "/admin/profile" },

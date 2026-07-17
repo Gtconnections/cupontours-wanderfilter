@@ -2,10 +2,22 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { StructuredData } from "@/components/seo/structured-data";
 import './properties.css';
 import Link from 'next/link';
 
 import { getProperties, searchProperties, PropertyCardData } from '../../lib/api/properties';
+
+const propertiesPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Luxury Vacation Rentals",
+  "description": "Book exclusive luxury vacation rental properties worldwide.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Luxury Vacation Rental Properties"
+  }
+};
 
 function PropertiesCatalogContent() {
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>([]);
@@ -294,6 +306,7 @@ function PropertiesCatalogContent() {
         </div>
       </section>
 
+      <StructuredData type="Product" data={propertiesPageStructuredData} />
     </main>
   );
 }

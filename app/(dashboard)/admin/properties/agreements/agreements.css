@@ -7,7 +7,7 @@
 .wander-agreements-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Toast */
@@ -426,7 +426,7 @@
 
 @media (max-width: 1024px) {
   .wander-agreements-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-toast {
@@ -498,7 +498,7 @@
 
 @media (max-width: 480px) {
   .wander-agreements-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-agreements-header h1 {

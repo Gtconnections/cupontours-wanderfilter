@@ -7,7 +7,7 @@
 .wander-pl-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* ==========================================================================
@@ -464,7 +464,7 @@
 
 @media (max-width: 1024px) {
   .wander-pl-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-pl-detail-summary-grid {
@@ -474,7 +474,7 @@
 
 @media (max-width: 768px) {
   .wander-pl-detail-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-pl-detail-actions {
@@ -530,7 +530,7 @@
 
 @media (max-width: 480px) {
   .wander-pl-detail-container {
-    padding: 10px;
+    padding: 0;
   }
 
   .wander-pl-detail-header h1 {

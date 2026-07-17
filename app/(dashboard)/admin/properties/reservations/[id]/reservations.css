@@ -7,7 +7,7 @@
 .wander-reservations-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Toast */
@@ -590,7 +590,7 @@
 
 @media (max-width: 1024px) {
   .wander-reservations-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-reservations-filter-row {
@@ -684,7 +684,7 @@
 
 @media (max-width: 480px) {
   .wander-reservations-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-reservations-header-content h1 {

@@ -1,6 +1,18 @@
 import React from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './services.css';
 import Link from 'next/link';
+
+const servicesPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Cupontours Services",
+  "description": "Explore our full range of luxury concierge services: properties, cars, yachts, jets, transport, real estate, experiences, wellness, health and events.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Cupontours Services"
+  }
+};
 
 // Íconos decorativos por categoría — puramente visuales, no alteran ninguna info del catálogo.
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -277,6 +289,8 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={servicesPageStructuredData} />
     </main>
   );
 }

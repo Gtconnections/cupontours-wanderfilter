@@ -7,7 +7,7 @@
 .wander-reservation-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Header */
@@ -603,7 +603,7 @@
 
 @media (max-width: 992px) {
   .wander-reservation-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 
@@ -700,7 +700,7 @@
 
 @media (max-width: 480px) {
   .wander-reservation-container {
-    padding: 12px;
+    padding: 0;
   }
   
   .wander-reservation-header h2 {

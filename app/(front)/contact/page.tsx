@@ -1,7 +1,15 @@
 "use client";
 import React, { useState } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import { sendContactRequest } from '../../lib/api';
 import './contact.css';
+
+const contactPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Cupontours",
+  "description": "Get in touch with the Cupontours team."
+};
 
 export default function ContactPage() {
   // Estados para controlar los campos nativos del formulario de contacto
@@ -246,6 +254,7 @@ export default function ContactPage() {
         </div>
       </section>
 
+      <StructuredData type="Organization" data={contactPageStructuredData} />
     </main>
   );
 }

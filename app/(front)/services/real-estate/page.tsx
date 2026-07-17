@@ -1,9 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './real-estate.css';
 import Link from 'next/link';
 import { getRealEstate, RealEstateItem } from '@/app/lib/api/services';
+
+const realEstatePageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Real Estate Services",
+  "description": "Explore Cupontours' luxury real estate services.",
+  "mainEntity": { "@type": "ItemList", "name": "Real Estate Services" }
+};
 
 export default function RealEstatePage() {
   const [properties, setProperties] = useState<RealEstateItem[]>([]);
@@ -169,6 +178,8 @@ export default function RealEstatePage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={realEstatePageStructuredData} />
     </main>
   );
 }

@@ -1,9 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './wellness.css';
 import Link from 'next/link';
 import { getWellness, WellnessItem } from '@/app/lib/api/services';
+
+const wellnessPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Wellness Services",
+  "description": "Explore Cupontours' luxury wellness services.",
+  "mainEntity": { "@type": "ItemList", "name": "Wellness Services" }
+};
 
 export default function WellnessPage() {
   const [wellnessServices, setWellnessServices] = useState<WellnessItem[]>([]);
@@ -142,6 +151,8 @@ export default function WellnessPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={wellnessPageStructuredData} />
     </main>
   );
 }

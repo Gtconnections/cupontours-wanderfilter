@@ -7,7 +7,7 @@
 .wander-pl-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Header con botón Create */
@@ -432,7 +432,7 @@
 
 @media (max-width: 1024px) {
   .wander-pl-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 
@@ -490,7 +490,7 @@
 
 @media (max-width: 480px) {
   .wander-pl-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-pl-header h1 {

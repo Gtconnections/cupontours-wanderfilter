@@ -7,7 +7,7 @@
 .wander-yacht-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -711,7 +711,7 @@
 
 @media (max-width: 1024px) {
   .wander-yacht-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-yacht-detail-info-grid {
@@ -767,7 +767,7 @@
   }
 
   .wander-yacht-lightbox-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-yacht-lightbox-image-wrapper {
@@ -829,7 +829,7 @@
 
 @media (max-width: 480px) {
   .wander-yacht-detail-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-yacht-detail-header h2 {
@@ -863,7 +863,7 @@
   }
 
   .wander-yacht-lightbox-container {
-    padding: 10px;
+    padding: 0;
   }
 
   .wander-yacht-lightbox-image-wrapper {

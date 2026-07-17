@@ -1,9 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './health.css';
 import Link from 'next/link';
 import { getHealth, HealthItem } from '@/app/lib/api/services';
+
+const healthPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Health Services",
+  "description": "Explore Cupontours' luxury health services.",
+  "mainEntity": { "@type": "ItemList", "name": "Health Services" }
+};
 
 export default function HealthPage() {
   const [healthServices, setHealthServices] = useState<HealthItem[]>([]);
@@ -142,6 +151,8 @@ export default function HealthPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={healthPageStructuredData} />
     </main>
   );
 }

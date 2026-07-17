@@ -7,7 +7,7 @@
 .wander-event-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Header */
@@ -448,7 +448,7 @@
 
 @media (max-width: 992px) {
   .wander-event-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 
@@ -501,7 +501,7 @@
 
 @media (max-width: 480px) {
   .wander-event-container {
-    padding: 12px;
+    padding: 0;
   }
   
   .wander-event-header h2 {

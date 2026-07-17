@@ -1,11 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './yachts.css';
 import Link from 'next/link';
 
 // IMPORTAMOS LA FUNCIÓN DE LA API Y SU INTERFAZ CORREGIDA
 import { getYachts, YachtCatalogItem } from '../../lib/api/yachts';
+
+const yachtsPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Luxury Yacht Charters in Miami",
+  "description": "Set sail with our exclusive fleet of luxury yachts, from private sailing to grand oceanic tours.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Luxury Yacht Fleet"
+  }
+};
 
 export default function YachtsPage() {
   const [fleet, setFleet] = useState<YachtCatalogItem[]>([]);
@@ -139,6 +151,7 @@ export default function YachtsPage() {
         </div>
       </section>
 
+      <StructuredData type="Product" data={yachtsPageStructuredData} />
     </main>
   );
 }

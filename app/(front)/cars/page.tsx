@@ -1,11 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './cars.css';
 import Link from 'next/link';
 
 // IMPORTAMOS LA FUNCIÓN DE LA API Y SU INTERFAZ CORREGIDA
 import { getCars, CarCatalogItem } from '../../lib/api/cars';
+
+const carsPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Luxury Car Rentals in Miami",
+  "description": "Discover our premium fleet of luxury vehicles, from elegant sedans to exotic sports cars.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Luxury Car Fleet"
+  }
+};
 
 export default function CarsPage() {
   const [fleet, setFleet] = useState<CarCatalogItem[]>([]);
@@ -126,6 +138,7 @@ export default function CarsPage() {
         </div>
       </section>
 
+      <StructuredData type="Product" data={carsPageStructuredData} />
     </main>
   );
 }

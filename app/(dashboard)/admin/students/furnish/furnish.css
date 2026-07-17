@@ -5,7 +5,7 @@
 .wander-furnish-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -289,7 +289,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .wander-furnish-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-type-grid {
@@ -299,7 +299,7 @@
 
 @media (max-width: 768px) {
   .wander-furnish-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-furnish-header h2 {
@@ -339,7 +339,7 @@
 
 @media (max-width: 480px) {
   .wander-furnish-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-furnish-header h2 {

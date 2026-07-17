@@ -9,7 +9,7 @@
 .wander-edit-invoice-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Toast */
@@ -482,7 +482,7 @@
 
 @media (max-width: 1024px) {
   .wander-edit-invoice-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-edit-invoice-grid {
@@ -492,7 +492,7 @@
 
 @media (max-width: 768px) {
   .wander-edit-invoice-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-edit-invoice-header-content {
@@ -550,7 +550,7 @@
 
 @media (max-width: 480px) {
   .wander-edit-invoice-container {
-    padding: 10px;
+    padding: 0;
   }
 
   .wander-edit-invoice-header-content h1 {

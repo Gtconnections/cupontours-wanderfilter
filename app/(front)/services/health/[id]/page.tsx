@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { StructuredData } from "@/components/seo/structured-data";
 import './health-detail.css';
 import { getHealthById, HealthItem } from '@/app/lib/api/services';
 import Membership from '@/components/Membership';
@@ -231,6 +232,23 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
             {currentImgIndex + 1} / {allImages.length}
           </div>
         </div>
+      )}
+
+      {healthService && (
+        <StructuredData
+          type="Product"
+          data={{
+            "name": healthService.name,
+            "description": healthService.descripcion,
+            "image": healthService.principal_image,
+            "category": healthService.category,
+            "offers": {
+              "@type": "Offer",
+              "price": healthService.price,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
       )}
     </main>
   );

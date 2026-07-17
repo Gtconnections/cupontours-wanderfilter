@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './yacht-detail.css';
 import Link from 'next/link';
 
@@ -488,6 +489,23 @@ export default function YachtDetailPage({ params }: PageProps) {
         </div>
 
       </div>
+
+      {yacht && (
+        <StructuredData
+          type="Product"
+          data={{
+            "@type": "Product",
+            "name": yacht.title,
+            "description": yacht.description,
+            "image": yacht.img,
+            "offers": {
+              "@type": "Offer",
+              "price": yacht.price_full_day?.replace(/[^0-9.]/g, ''),
+              "priceCurrency": "USD"
+            }
+          }}
+        />
+      )}
     </main>
   );
 }

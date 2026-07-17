@@ -1,9 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './transport.css';
 import Link from 'next/link';
 import { getPrivateTransport, TransportItem } from '@/app/lib/api/services';
+
+const transportPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Transport Services",
+  "description": "Explore Cupontours' private luxury transport services.",
+  "mainEntity": { "@type": "ItemList", "name": "Transport Services" }
+};
 
 export default function PrivateTransportPage() {
   const [transports, setTransports] = useState<TransportItem[]>([]);
@@ -135,6 +144,8 @@ export default function PrivateTransportPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData type="Product" data={transportPageStructuredData} />
     </main>
   );
 }

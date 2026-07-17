@@ -5,7 +5,7 @@
 .wander-cars-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -464,7 +464,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .wander-cars-container {
-    padding: 16px;
+    padding: 0;
   }
   
   .wander-cars-header {
@@ -505,7 +505,7 @@
 
 @media (max-width: 480px) {
   .wander-cars-container {
-    padding: 12px;
+    padding: 0;
   }
   
   .wander-cars-header h2 {

@@ -3,7 +3,7 @@
 .wander-accounting-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Header */
@@ -510,7 +510,7 @@
 
 @media (max-width: 600px) {
   .wander-accounting-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-accounting-header {

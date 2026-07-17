@@ -5,7 +5,7 @@
 .wander-car-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -884,7 +884,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .wander-car-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 
@@ -950,7 +950,7 @@
 
 @media (max-width: 480px) {
   .wander-car-detail-container {
-    padding: 12px;
+    padding: 0;
   }
   
   .wander-car-detail-header h2 {
@@ -1393,7 +1393,7 @@
   }
 
   .wander-lightbox-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-lightbox-image-wrapper {
@@ -1468,7 +1468,7 @@
   }
 
   .wander-lightbox-container {
-    padding: 10px;
+    padding: 0;
   }
 
   .wander-lightbox-image-wrapper {

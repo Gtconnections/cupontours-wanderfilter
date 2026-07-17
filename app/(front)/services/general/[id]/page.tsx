@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { StructuredData } from "@/components/seo/structured-data";
 import './general-detail.css';
 import { getGeneralServiceById, GeneralServiceItem } from '@/app/lib/api/services';
 import Membership from '@/components/Membership';
@@ -237,6 +238,23 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
             {currentImgIndex + 1} / {allImages.length}
           </div>
         </div>
+      )}
+
+      {service && (
+        <StructuredData
+          type="Product"
+          data={{
+            "name": service.name,
+            "description": service.descripcion,
+            "image": service.principal_image,
+            "category": service.category,
+            "offers": service.price ? {
+              "@type": "Offer",
+              "price": service.price,
+              "priceCurrency": "USD"
+            } : undefined
+          }}
+        />
       )}
     </main>
   );

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { StructuredData } from "@/components/seo/structured-data";
 import './experiences-detail.css';
 import { getExperienceById, ExperienceItem } from '@/app/lib/api/services';
 import Membership from '@/components/Membership';
@@ -232,6 +233,23 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
             {currentImgIndex + 1} / {allImages.length}
           </div>
         </div>
+      )}
+
+      {experience && (
+        <StructuredData
+          type="Product"
+          data={{
+            "name": experience.name,
+            "description": experience.descripcion,
+            "image": experience.principal_image,
+            "category": experience.category,
+            "offers": {
+              "@type": "Offer",
+              "price": experience.price,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
       )}
     </main>
   );

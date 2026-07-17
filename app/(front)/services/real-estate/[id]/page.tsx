@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { StructuredData } from "@/components/seo/structured-data";
 import './real-estate-detail.css';
 import { getRealEstateById, RealEstateItem } from '@/app/lib/api/services';
 import Membership from '@/components/Membership';
@@ -252,6 +253,26 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
             {currentImgIndex + 1} / {allImages.length}
           </div>
         </div>
+      )}
+
+      {property && (
+        <StructuredData
+          type="RentalProperty"
+          data={{
+            "name": property.name,
+            "description": property.descripcion,
+            "image": property.principal_image,
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": property.location
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": property.price,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
       )}
     </main>
   );

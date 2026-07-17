@@ -1,8 +1,17 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import { sendJetQuoteRequest } from '../../lib/api';
 import './jets.css';
 import Link from 'next/link';
+
+const jetsPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Private Jet Charters",
+  "description": "Book private jet charters with Cupontours.",
+  "mainEntity": { "@type": "Service", "name": "Private Jet Charter", "serviceType": "Private Aviation" }
+};
 
 export default function JetsPage() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -421,6 +430,7 @@ export default function JetsPage() {
         </div>
       </section>
 
+      <StructuredData type="Product" data={jetsPageStructuredData} />
     </main>
   );
 }

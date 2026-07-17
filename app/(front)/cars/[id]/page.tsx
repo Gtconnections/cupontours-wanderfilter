@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './car-detail.css';
 import Link from 'next/link';
 import { getCarById, CarDetail } from '../../../lib/api/cars';
@@ -493,6 +494,23 @@ export default function CarDetailPage({ params }: PageProps) {
         </div>
 
       </div>
+
+      {car && (
+        <StructuredData
+          type="Vehicle"
+          data={{
+            "name": car.title,
+            "description": car.description,
+            "image": car.img,
+            "vehicleModelDate": car.year,
+            "offers": {
+              "@type": "Offer",
+              "price": car.price,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
+      )}
     </main>
   );
 }

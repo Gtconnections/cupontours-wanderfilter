@@ -5,7 +5,7 @@
 .wander-pl-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -314,7 +314,7 @@
   background: #f8f9fa;
   border: 1px solid #ebebeb;
   border-radius: 12px;
-  padding: 24px 32px;
+  padding: 0;
   margin-bottom: 32px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -515,7 +515,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .wander-pl-detail-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-pl-detail-summary-grid {
@@ -565,7 +565,7 @@
 
 @media (max-width: 480px) {
   .wander-pl-detail-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-pl-detail-summary-grid {

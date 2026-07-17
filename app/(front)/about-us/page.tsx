@@ -1,8 +1,16 @@
 "use client";
 import React, { useState } from 'react';
+import { StructuredData } from "@/components/seo/structured-data";
 import './about.css';
 import Link from 'next/link';
 import { sendAboutContactRequest } from '../../lib/api'; // Importación desacoplada local
+
+const aboutPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Cupontours",
+  "description": "Learn about Cupontours, a luxury travel and concierge company."
+};
 
 export default function AboutPage() {
   const [firstName, setFirstName] = useState('');
@@ -349,6 +357,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <StructuredData type="Organization" data={aboutPageStructuredData} />
     </main>
   );
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { StructuredData } from "@/components/seo/structured-data";
 import './transport-detail.css';
 import { getPrivateTransportById, TransportItem } from '@/app/lib/api/services';
 import Membership from '@/components/Membership';
@@ -232,6 +233,23 @@ export default function TransportDetailPage({ params }: { params: Promise<{ id: 
             {currentImgIndex + 1} / {allImages.length}
           </div>
         </div>
+      )}
+
+      {vehicle && (
+        <StructuredData
+          type="Product"
+          data={{
+            "name": vehicle.name,
+            "description": vehicle.descripcion,
+            "image": vehicle.principal_image,
+            "category": vehicle.category,
+            "offers": {
+              "@type": "Offer",
+              "price": vehicle.price_hour,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
       )}
     </main>
   );

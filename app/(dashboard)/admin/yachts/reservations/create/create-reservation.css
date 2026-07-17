@@ -5,7 +5,7 @@
 .wander-create-reservation-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -254,7 +254,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .wander-create-reservation-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-form-grid {
@@ -287,7 +287,7 @@
 
 @media (max-width: 480px) {
   .wander-create-reservation-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-create-reservation-header h2 {

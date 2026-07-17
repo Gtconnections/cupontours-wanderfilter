@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { StructuredData } from "@/components/seo/structured-data";
 import './property-detail.css';
 import Link from 'next/link';
 import { ContactBookingCard } from "@/components/ui/contact-booking-card"
@@ -615,6 +616,27 @@ const displayAmenities = amenityCategories.length > 0 ? amenityCategories : [
         </div>
 
       </div>
+
+      {property && (
+        <StructuredData
+          type="RentalProperty"
+          data={{
+            "name": property.name,
+            "description": property.description,
+            "image": property.thumbnailUrl,
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": property.city,
+              "addressCountry": property.country
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": property.price,
+              "priceCurrency": "USD"
+            }
+          }}
+        />
+      )}
     </main>
   );
 }

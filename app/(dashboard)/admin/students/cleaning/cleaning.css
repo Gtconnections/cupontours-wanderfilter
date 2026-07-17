@@ -5,7 +5,7 @@
 .wander-cleaning-container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 /* Cabecera */
@@ -152,7 +152,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .wander-cleaning-container {
-    padding: 16px;
+    padding: 0;
   }
 
   .wander-cleaning-header h2 {
@@ -182,7 +182,7 @@
 
 @media (max-width: 480px) {
   .wander-cleaning-container {
-    padding: 12px;
+    padding: 0;
   }
 
   .wander-cleaning-header h2 {
