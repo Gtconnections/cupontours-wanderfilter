@@ -3,16 +3,31 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { 
-  getProfiles, 
-  UserProfile, 
-  refreshProfiles, 
-  updateUser, 
+import {
+  getProfiles,
+  UserProfile,
+  refreshProfiles,
+  updateUser,
   deleteUser,
-  UpdateUserData 
+  createUser,
+  updateUserStatus,
+  UpdateUserData,
+  CreateUserData
 } from '@/app/lib/api/profiles';
 import EditUserModal from '../components/EditUserModal';
 import DeleteUserModal from '../components/DeleteUserModal';
+import CreateUserModal from '../components/CreateUserModal';
+import {
+  FiRefreshCw,
+  FiPlus,
+  FiX,
+  FiAlertTriangle,
+  FiUser,
+  FiUserCheck,
+  FiUserX,
+  FiChevronLeft,
+  FiChevronRight
+} from 'react-icons/fi';
 import './users-list.css';
 
 // Componente de carga
@@ -41,7 +56,16 @@ export default function UsersListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAuthVerified, setIsAuthVerified] = useState(false);
-  
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [togglingUserId, setTogglingUserId] = useState<number | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage(message);
+    setToastType(type);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   // Estados para DataTable
   const [searchTerm, setSearchTerm] = useState('');
   const [positionFilter, setPositionFilter] = useState<string>('all');
@@ -52,6 +76,7 @@ export default function UsersListPage() {
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // Cargar datos
   const loadProfiles = useCallback(async (forceRefresh = false) => {
@@ -67,7 +92,7 @@ export default function UsersListPage() {
       const data = await getProfiles(forceRefresh);
       setAllProfiles(data);
     } catch (err) {
-      console.error('❌ Error cargando usuarios:', err);
+      console.error('Error cargando usuarios:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los usuarios');
       
       if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
@@ -89,7 +114,7 @@ export default function UsersListPage() {
     setIsAuthVerified(true);
 
     if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
+      console.log('No autenticado, redirigiendo a login');
       router.push('/login');
       return;
     }
@@ -118,6 +143,34 @@ export default function UsersListPage() {
     } catch (error) {
       console.error('Error al eliminar usuario:', error);
       throw error;
+    }
+  };
+
+  // 🔥 MANEJAR CREACIÓN DE USUARIO
+  const handleCreateUser = async (userData: CreateUserData) => {
+    try {
+      await createUser(userData);
+      // Recargar la lista después de crear
+      await loadProfiles(true);
+    } catch (error) {
+      console.error('Error al crear usuario:', error);
+      throw error;
+    }
+  };
+
+  // 🔥 ACTIVAR / DESACTIVAR USUARIO
+  const handleToggleStatus = async (profile: UserProfile) => {
+    const nextActive = !profile.user.is_active;
+    setTogglingUserId(profile.user.id);
+    try {
+      await updateUserStatus(profile.user.id, nextActive);
+      showToast(nextActive ? 'Usuario activado' : 'Usuario desactivado');
+      await loadProfiles(true);
+    } catch (err) {
+      console.error('Error al cambiar el estado del usuario:', err);
+      showToast((err instanceof Error ? err.message : undefined) || 'Error al cambiar el estado del usuario', 'error');
+    } finally {
+      setTogglingUserId(null);
     }
   };
 
@@ -234,7 +287,7 @@ export default function UsersListPage() {
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar usuarios</h3>
+          <h3><FiAlertTriangle size={18} /> Error al cargar usuarios</h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             Reintentar
@@ -250,6 +303,12 @@ export default function UsersListPage() {
 
   return (
     <div className="wander-users-container">
+      {toastMessage && (
+        <div className={`wander-toast ${toastType === 'error' ? 'error' : ''}`}>
+          {toastMessage}
+        </div>
+      )}
+
       {/* Cabecera */}
       <header className="wander-users-header">
         <div>
@@ -260,11 +319,17 @@ export default function UsersListPage() {
           </p>
         </div>
         <div className="wander-users-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
-            🔄 Actualizar
+            <FiRefreshCw size={16} /> Actualizar
+          </button>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="wander-btn-primary"
+          >
+            <FiPlus size={16} /> Crear Usuario
           </button>
         </div>
       </header>
@@ -288,7 +353,7 @@ export default function UsersListPage() {
               onClick={() => setSearchTerm('')}
               className="wander-clear-search"
             >
-              ✕
+              <FiX size={14} />
             </button>
           )}
         </div>
@@ -359,15 +424,16 @@ export default function UsersListPage() {
               <th>Posición</th>
               <th>Teléfono</th>
               <th>Ubicación</th>
-              <th style={{ width: '140px' }}>Acciones</th>
+              <th>Estado</th>
+              <th style={{ width: '170px' }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {currentProfiles.length === 0 ? (
               <tr>
-                <td colSpan={7} className="wander-empty-cell">
+                <td colSpan={8} className="wander-empty-cell">
                   <div className="wander-empty-state">
-                    <span className="wander-empty-icon">👤</span>
+                    <span className="wander-empty-icon"><FiUser size={32} /></span>
                     <p>No se encontraron usuarios</p>
                     <span className="wander-empty-desc">
                       {searchTerm || positionFilter !== 'all' 
@@ -418,14 +484,33 @@ export default function UsersListPage() {
                   </td>
                   <td>
                     <span className="wander-user-location">
-                      {profile.city && profile.state 
+                      {profile.city && profile.state
                         ? `${profile.city}, ${profile.state}`
                         : profile.country || '—'
                       }
                     </span>
                   </td>
                   <td>
+                    <span
+                      className="wander-user-status"
+                      style={{
+                        backgroundColor: profile.user.is_active ? '#dcfce715' : '#f3f4f6',
+                        color: profile.user.is_active ? '#166534' : '#6b7280'
+                      }}
+                    >
+                      {profile.user.is_active ? 'Activo' : 'Inactivo'}
+                    </span>
+                  </td>
+                  <td>
                     <div className="wander-user-actions">
+                      <button
+                        onClick={() => handleToggleStatus(profile)}
+                        className={`wander-action-btn ${profile.user.is_active ? 'wander-action-deactivate' : 'wander-action-activate'}`}
+                        title={profile.user.is_active ? 'Desactivar usuario' : 'Activar usuario'}
+                        disabled={togglingUserId === profile.user.id}
+                      >
+                        {profile.user.is_active ? <FiUserX size={16} /> : <FiUserCheck size={16} />}
+                      </button>
                       <button
                         onClick={() => openEditModal(profile)}
                         className="wander-action-btn wander-action-edit"
@@ -470,7 +555,7 @@ export default function UsersListPage() {
               disabled={currentPage === 1}
               className="wander-pagination-btn"
             >
-              ◀
+              <FiChevronLeft size={14} />
             </button>
             
             {(() => {
@@ -513,7 +598,7 @@ export default function UsersListPage() {
               disabled={currentPage === totalPages}
               className="wander-pagination-btn"
             >
-              ▶
+              <FiChevronRight size={14} />
             </button>
           </div>
         </div>
@@ -532,6 +617,12 @@ export default function UsersListPage() {
         user={selectedUser}
         onClose={closeModals}
         onDelete={handleDeleteUser}
+      />
+
+      <CreateUserModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onCreate={handleCreateUser}
       />
     </div>
   );

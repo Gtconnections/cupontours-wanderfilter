@@ -8,6 +8,7 @@ export interface UserProfile {
     username: string;
     first_name: string;
     last_name: string;
+    is_active: boolean;
   };
   photo: string | null;
   position: string;
@@ -225,6 +226,77 @@ export async function updateUser(userId: number, userData: UpdateUserData): Prom
   }
 }
 
+// 🔥 ACTIVAR / DESACTIVAR USUARIO
+export async function updateUserStatus(userId: number, isActive: boolean): Promise<UserProfile> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/user-management/update-user/${userId}/`;
+    console.log('📡 Cambiando estado de usuario:', url, isActive);
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      // El backend interpreta el string 'approved' como activar; cualquier otro valor desactiva.
+      body: JSON.stringify({ is_active: isActive ? 'approved' : 'rejected' }),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error('El usuario no existe');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+
+      let errorMsg = `Error ${response.status}: No se pudo cambiar el estado del usuario`;
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMsg = errorData.message || errorData.detail || errorMsg;
+      } catch {
+        errorMsg = errorText || errorMsg;
+      }
+      throw new Error(errorMsg);
+    }
+
+    const result = await response.json();
+    console.log('✅ Estado de usuario actualizado:', result);
+
+    // Limpiar caché
+    profilesCache = {
+      data: null,
+      timestamp: 0
+    };
+
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en updateUserStatus:', error);
+    throw error;
+  }
+}
+
 // 🔥 ELIMINAR USUARIO
 export async function deleteUser(userId: number): Promise<void> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
@@ -287,6 +359,100 @@ export async function deleteUser(userId: number): Promise<void> {
 
   } catch (error) {
     console.error('❌ Error en deleteUser:', error);
+    throw error;
+  }
+}
+
+export interface CreateUserData {
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+  password: string;
+  position: string;
+  phone: string;
+}
+
+// Extrae un mensaje legible de las distintas formas de error que devuelve authenticate/register/
+function parseRegisterError(errorText: string, fallback: string): string {
+  try {
+    const errorData = JSON.parse(errorText);
+    if (Array.isArray(errorData?.error) && errorData.error.length > 0) {
+      return String(errorData.error[0]);
+    }
+    if (typeof errorData === 'object' && errorData !== null) {
+      const firstKey = Object.keys(errorData)[0];
+      const firstValue = firstKey ? errorData[firstKey] : undefined;
+      if (Array.isArray(firstValue) && firstValue.length > 0) {
+        return `${firstKey}: ${firstValue[0]}`;
+      }
+      if (errorData.message || errorData.detail) {
+        return errorData.message || errorData.detail;
+      }
+    }
+  } catch {
+    // no era JSON, se usa el fallback
+  }
+  return errorText || fallback;
+}
+
+// 🔥 CREAR USUARIO
+export async function createUser(userData: CreateUserData): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/authenticate/register/`;
+    console.log('📡 Creando usuario:', url);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify({
+        ...userData,
+        repeat_password: userData.password,
+      }),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(parseRegisterError(errorText, 'No se pudo crear el usuario'));
+    }
+
+    const result = await response.json();
+    console.log('✅ Usuario creado:', result);
+
+    // Limpiar caché
+    profilesCache = {
+      data: null,
+      timestamp: 0
+    };
+
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en createUser:', error);
     throw error;
   }
 }

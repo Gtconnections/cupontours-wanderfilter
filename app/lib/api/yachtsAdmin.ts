@@ -727,3 +727,806 @@ export async function deleteYachtImage(imageId: number): Promise<{ message: stri
     throw error;
   }
 }
+
+// 🔥 OBTENER TODOS LOS YATES SIN PAGINAR (para selectores de formulario)
+export async function getAllYachts(): Promise<Yacht[]> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts/`;
+    console.log('📡 Fetching all yachts:', url);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      cache: 'no-store'
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar los yates'}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Yates recibidos:', data);
+
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en getAllYachts:', error);
+    throw error;
+  }
+}
+
+// ==========================================================================
+// RESERVACIONES (fuente de datos del Calendario)
+// ==========================================================================
+
+export interface YachtReservation {
+  id: number;
+  yacht_id: number;
+  phone: string;
+  first_name: string;
+  last_name: string;
+  earnings: number;
+  date: string;
+  duration: 'full_day' | 'half_day_in_the_morning' | 'half_day_in_the_afternoon';
+  occasion: 'birthday' | 'family_trip' | 'fun_day_at_sea' | 'bachelorette' | 'business_lunch' | 'other';
+  observation: string | null;
+  order: number;
+}
+
+export interface YachtReservationsResponse {
+  reservations: YachtReservation[];
+  total_earnings: { earnings__sum: number | null };
+}
+
+// GET /yachts-reservation/?yacht_id={yachtId}
+export async function getYachtReservations(yachtId: number): Promise<YachtReservationsResponse> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-reservation/?yacht_id=${yachtId}`;
+    console.log('📡 Obteniendo reservaciones del yate:', url);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      cache: 'no-store'
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Reservaciones para el yate ${yachtId} no encontradas`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar las reservaciones'}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en getYachtReservations:', error);
+    throw error;
+  }
+}
+
+// ==========================================================================
+// FACTURAS (INVOICES)
+// ==========================================================================
+
+export interface YachtInvoiceDetailItem {
+  item: string;
+  quantity: number;
+  rate: string;
+  amount: string;
+}
+
+export interface YachtInvoiceImage {
+  id: number;
+  image: string;
+}
+
+// Forma común devuelta tanto por el listado como por el detalle de una factura
+export interface YachtInvoiceRecord {
+  id: number;
+  title: string;
+  price: string;
+  invoice_type: 'incomes' | 'expenses';
+  date: string;
+  yacht_id: number;
+  yacht_name: string;
+  lenght: number; // nombre del campo tal como lo devuelve el backend (typo original)
+  list_details: YachtInvoiceDetailItem[];
+  list_images: YachtInvoiceImage[];
+  partner_refund: boolean;
+  comment: string;
+}
+
+export interface YachtInvoicesResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: YachtInvoiceRecord[];
+}
+
+export interface CreateYachtInvoiceData {
+  title: string;
+  date: string;
+  invoice_type: 'incomes' | 'expenses';
+  yacht_id: number;
+  list_details: { item: string; quantity: number; rate: number; amount: number }[];
+  partner_refund: boolean;
+  comment: string;
+  price: string;
+}
+
+// GET /yachts-invoices-by-yacht_id/{yachtId}/?page=1&initial_date=...&final_date=...
+export async function getYachtInvoices(
+  yachtId: number, page: number = 1, initialDate?: string, finalDate?: string
+): Promise<YachtInvoicesResponse> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    if (initialDate) params.append('initial_date', initialDate);
+    if (finalDate) params.append('final_date', finalDate);
+
+    const url = `${API_BASE_URL}/yachts-invoices-by-yacht_id/${yachtId}/?${params.toString()}`;
+    console.log('📡 Obteniendo facturas del yate:', url);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      cache: 'no-store'
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Facturas para el yate ${yachtId} no encontradas`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar las facturas'}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en getYachtInvoices:', error);
+    throw error;
+  }
+}
+
+// GET /yachts-invoices/{invoiceId}/
+export async function getYachtInvoiceDetail(invoiceId: number): Promise<YachtInvoiceRecord> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-invoices/${invoiceId}/`;
+    console.log('📡 Obteniendo detalle de factura:', url);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      cache: 'no-store'
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Factura ${invoiceId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar la factura'}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en getYachtInvoiceDetail:', error);
+    throw error;
+  }
+}
+
+// POST /yachts-invoices/
+export async function createYachtInvoice(data: CreateYachtInvoiceData): Promise<YachtInvoiceRecord> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-invoices/`;
+    console.log('📡 Creando factura:', url, data);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+
+      let errorMsg = `Error ${response.status}: No se pudo crear la factura`;
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMsg = errorData.message || errorData.detail || errorMsg;
+      } catch {
+        errorMsg = errorText || errorMsg;
+      }
+      throw new Error(errorMsg);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en createYachtInvoice:', error);
+    throw error;
+  }
+}
+
+// PATCH /yachts-invoices/{invoiceId}/
+export async function updateYachtInvoice(invoiceId: number, data: Partial<CreateYachtInvoiceData>): Promise<YachtInvoiceRecord> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-invoices/${invoiceId}/`;
+    console.log('📡 Actualizando factura:', url, data);
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Factura ${invoiceId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al actualizar la factura'}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en updateYachtInvoice:', error);
+    throw error;
+  }
+}
+
+// DELETE /yachts-invoices/{invoiceId}/?detail={comment}
+export async function deleteYachtInvoice(invoiceId: number, comment: string): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-invoices/${invoiceId}/?detail=${encodeURIComponent(comment)}`;
+    console.log('📡 Eliminando factura:', url);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Factura ${invoiceId} no encontrada`);
+    }
+
+    if (response.status === 400) {
+      throw new Error('Se requiere un motivo para eliminar la factura');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al eliminar la factura'}`);
+    }
+
+  } catch (error) {
+    console.error('❌ Error en deleteYachtInvoice:', error);
+    throw error;
+  }
+}
+
+// POST /yachts-invoices/invoice_image/  (FormData: invoice_id, image×N)
+export async function uploadYachtInvoiceImages(invoiceId: number, files: File[]): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-invoices/invoice_image/`;
+    console.log('📡 Subiendo imágenes de factura:', url);
+
+    const formData = new FormData();
+    formData.append('invoice_id', invoiceId.toString());
+    files.forEach(file => formData.append('image', file));
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Factura ${invoiceId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al subir las imágenes'}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en uploadYachtInvoiceImages:', error);
+    throw error;
+  }
+}
+
+// DELETE /yachts-invoices/invoice_image/  (FormData: image_id)
+export async function deleteYachtInvoiceImage(imageId: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-invoices/invoice_image/`;
+    console.log('📡 Eliminando imagen de factura:', url, imageId);
+
+    const formData = new FormData();
+    formData.append('image_id', imageId.toString());
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Imagen ${imageId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al eliminar la imagen'}`);
+    }
+
+  } catch (error) {
+    console.error('❌ Error en deleteYachtInvoiceImage:', error);
+    throw error;
+  }
+}
+
+// ==========================================================================
+// RESERVACIONES - CRUD
+// ==========================================================================
+
+export interface CreateYachtReservationData {
+  yacht_id: number;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  date: string;
+  duration: 'full_day' | 'half_day_in_the_morning' | 'half_day_in_the_afternoon';
+  occasion: 'birthday' | 'family_trip' | 'fun_day_at_sea' | 'bachelorette' | 'business_lunch' | 'other';
+  earnings: number;
+  observation?: string;
+  order: number;
+}
+
+// GET /yachts-reservation/{reservationId}/
+export async function getYachtReservationDetail(reservationId: number): Promise<YachtReservation> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-reservation/${reservationId}/`;
+    console.log('📡 Obteniendo detalle de reservación:', url);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      cache: 'no-store'
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Reservación ${reservationId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar la reservación'}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en getYachtReservationDetail:', error);
+    throw error;
+  }
+}
+
+// POST /yachts-reservation/
+export async function createYachtReservation(data: CreateYachtReservationData): Promise<YachtReservation> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-reservation/`;
+    console.log('📡 Creando reservación:', url, data);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+
+      let errorMsg = `Error ${response.status}: No se pudo crear la reservación`;
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMsg = errorData.Error || errorData.message || errorData.detail || errorMsg;
+      } catch {
+        errorMsg = errorText || errorMsg;
+      }
+      throw new Error(errorMsg);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en createYachtReservation:', error);
+    throw error;
+  }
+}
+
+// PATCH /yachts-reservation/{reservationId}/
+export async function updateYachtReservation(reservationId: number, data: Partial<CreateYachtReservationData>): Promise<YachtReservation> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-reservation/${reservationId}/`;
+    console.log('📡 Actualizando reservación:', url, data);
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Reservación ${reservationId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+
+      let errorMsg = `Error ${response.status}: No se pudo actualizar la reservación`;
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMsg = errorData.Error || errorData.message || errorData.detail || errorMsg;
+      } catch {
+        errorMsg = errorText || errorMsg;
+      }
+      throw new Error(errorMsg);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('❌ Error en updateYachtReservation:', error);
+    throw error;
+  }
+}
+
+// DELETE /yachts-reservation/{reservationId}/
+export async function deleteYachtReservation(reservationId: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts-reservation/${reservationId}/`;
+    console.log('📡 Eliminando reservación:', url);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Reservación ${reservationId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al eliminar la reservación'}`);
+    }
+
+  } catch (error) {
+    console.error('❌ Error en deleteYachtReservation:', error);
+    throw error;
+  }
+}

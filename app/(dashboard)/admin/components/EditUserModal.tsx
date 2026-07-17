@@ -80,7 +80,8 @@ export default function EditUserModal({ isOpen, user, onClose, onSave }: EditUse
     setError(null);
 
     try {
-      await onSave(user.id, formData);
+      // update-user/{id}/ espera el id del User de Django, no el id del Profile
+      await onSave(user.user.id, formData);
       onClose();
     } catch (err) {
       console.error('Error al guardar:', err);
