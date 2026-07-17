@@ -1,0 +1,192 @@
+/* ==========================================================================
+   VERIFY MEMBER - MEMBERSHIP VERIFICATION SCREEN
+   ========================================================================== */
+.verify-page {
+  min-height: 100vh;
+  background-color: #0a0a0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.verify-card {
+  width: 100%;
+  max-width: 380px;
+  background: linear-gradient(180deg, #141414 0%, #0f0f0f 100%);
+  border: 1px solid #262626;
+  border-radius: 6px;
+  padding: 40px 28px;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.verify-card::before,
+.verify-card::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+
+.verify-card::before {
+  top: 14px;
+  left: 14px;
+  border-top: 1.5px solid #d4af37;
+  border-left: 1.5px solid #d4af37;
+}
+
+.verify-card::after {
+  bottom: 14px;
+  right: 14px;
+  border-bottom: 1.5px solid #d4af37;
+  border-right: 1.5px solid #d4af37;
+}
+
+.verify-pretitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #d4af37;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.verify-pretitle::before,
+.verify-pretitle::after {
+  content: '';
+  width: 18px;
+  height: 1px;
+  background: #d4af37;
+}
+
+.verify-tier-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.verify-tier-icon {
+  display: flex;
+  color: #d4af37;
+}
+
+.verify-tier-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.verify-tier-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 26px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.verify-status-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 28px;
+}
+
+.status-active {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+}
+
+.status-expired {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.status-cancelled {
+  background: rgba(156, 163, 175, 0.12);
+  color: #9ca3af;
+  border: 1px solid rgba(156, 163, 175, 0.35);
+}
+
+.verify-divider {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.35);
+  margin: 0 auto 24px;
+}
+
+.verify-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.verify-field:last-of-type {
+  margin-bottom: 0;
+}
+
+.verify-field-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888888;
+  margin-bottom: 4px;
+}
+
+.verify-field-value {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.verify-footer-note {
+  margin-top: 28px;
+  font-size: 11px;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.verify-card-error {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.verify-error-text {
+  color: #999999;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.verify-skeleton {
+  height: 440px;
+  background: #141414;
+  position: relative;
+  overflow: hidden;
+}
+
+.verify-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.06), transparent);
+  animation: verify-shimmer 1.6s infinite;
+}
+
+@keyframes verify-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
