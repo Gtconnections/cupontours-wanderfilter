@@ -64,6 +64,9 @@ function CreateInvoiceContent() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -71,13 +74,6 @@ function CreateInvoiceContent() {
       return;
     }
   }, [isAuthenticated, isChecking, checkAuth, router]);
-
-  // Cargar listings
-  useEffect(() => {
-    if (isAuthVerified && isAuthenticated) {
-      loadListings();
-    }
-  }, [isAuthVerified, isAuthenticated]);
 
   const loadListings = async () => {
     setIsLoadingListings(true);
@@ -94,13 +90,22 @@ function CreateInvoiceContent() {
           setIsListingLocked(true);
         }
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar listings:', err);
       setError('Error loading listings');
     } finally {
       setIsLoadingListings(false);
     }
   };
+
+  // Cargar listings
+  useEffect(() => {
+    if (isAuthVerified && isAuthenticated) {
+      // Fetches data once auth is confirmed.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadListings();
+    }
+  }, [isAuthVerified, isAuthenticated]);
 
   // Manejar selección de listings
   const toggleListing = (id: number) => {
@@ -235,9 +240,9 @@ function CreateInvoiceContent() {
         }
       }
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear factura:', err);
-      setError(err.message || 'Error creating invoice');
+      setError((err instanceof Error ? err.message : undefined) || 'Error creating invoice');
     } finally {
       setIsLoading(false);
     }

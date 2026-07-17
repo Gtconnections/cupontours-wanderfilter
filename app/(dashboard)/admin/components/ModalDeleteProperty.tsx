@@ -48,7 +48,7 @@ export default function ModalDeleteProperty({
             <FiAlertTriangle size={48} />
           </div>
           <p className="wander-delete-property-message">
-            Are you sure you want to delete the property <strong>"{propertyName}"</strong>?
+            Are you sure you want to delete the property <strong>&quot;{propertyName}&quot;</strong>?
           </p>
           <p className="wander-delete-property-warning">
             This action cannot be undone.

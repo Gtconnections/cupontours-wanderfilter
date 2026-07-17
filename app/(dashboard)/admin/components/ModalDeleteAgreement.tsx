@@ -47,7 +47,7 @@ export default function ModalDeleteAgreement({
             <FiAlertTriangle size={48} />
           </div>
           <p className="wander-delete-agreement-message">
-            Are you sure you want to delete the agreement <strong>"{agreementTitle}"</strong>?
+            Are you sure you want to delete the agreement <strong>&quot;{agreementTitle}&quot;</strong>?
           </p>
           <p className="wander-delete-agreement-warning">
             This action cannot be undone.

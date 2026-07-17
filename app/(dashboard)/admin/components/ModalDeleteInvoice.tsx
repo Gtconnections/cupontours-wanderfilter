@@ -55,7 +55,7 @@ export default function ModalDeleteInvoice({
             <FiAlertTriangle size={48} />
           </div>
           <p className="wander-delete-invoice-message">
-            Are you sure you want to delete the invoice <strong>"{invoiceTitle}"</strong>?
+            Are you sure you want to delete the invoice <strong>&quot;{invoiceTitle}&quot;</strong>?
           </p>
           <p className="wander-delete-invoice-warning">
             This action cannot be undone.

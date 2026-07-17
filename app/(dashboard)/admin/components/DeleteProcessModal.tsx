@@ -29,9 +29,9 @@ export default function DeleteProcessModal({
     try {
       await onDelete(process.id);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar:', err);
-      setError(err.message || 'Error al eliminar el proceso');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar el proceso');
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +59,7 @@ export default function DeleteProcessModal({
           <div className="wander-delete-confirm">
             <span className="wander-delete-icon">⚠️</span>
             <p>
-              ¿Estás seguro que deseas eliminar el proceso <strong>"{process.name}"</strong>?
+              ¿Estás seguro que deseas eliminar el proceso <strong>&quot;{process.name}&quot;</strong>?
             </p>
             <p className="wander-delete-warning">
               Esta acción no se puede deshacer.

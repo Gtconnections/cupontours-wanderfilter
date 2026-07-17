@@ -29,9 +29,9 @@ export default function DeleteContactModal({
     try {
       await onDelete(contact.id);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar:', err);
-      setError(err.message || 'Error al eliminar el contacto');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar el contacto');
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +59,7 @@ export default function DeleteContactModal({
           <div className="wander-delete-confirm">
             <span className="wander-delete-icon">⚠️</span>
             <p>
-              ¿Estás seguro que deseas eliminar el contacto <strong>"{contact.name}"</strong>?
+              ¿Estás seguro que deseas eliminar el contacto <strong>&quot;{contact.name}&quot;</strong>?
             </p>
             <p className="wander-delete-warning">
               Esta acción no se puede deshacer.

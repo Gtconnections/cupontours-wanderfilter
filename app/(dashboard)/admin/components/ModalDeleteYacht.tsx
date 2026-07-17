@@ -50,7 +50,7 @@ export default function ModalDeleteYacht({
             <FiAlertTriangle size={48} />
           </div>
           <p className="wander-delete-yacht-message">
-            Are you sure you want to delete the yacht <strong>"{yachtName}"</strong>?
+            Are you sure you want to delete the yacht <strong>&quot;{yachtName}&quot;</strong>?
           </p>
           <p className="wander-delete-yacht-warning">
             This action cannot be undone.

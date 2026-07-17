@@ -56,9 +56,9 @@ export default function CarsListPage() {
       setCars(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / (filters.page_size || 10)));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando autos:', err);
-      setError(err.message || 'Error al cargar los autos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los autos');
     } finally {
       setIsLoading(false);
     }
@@ -68,6 +68,9 @@ export default function CarsListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

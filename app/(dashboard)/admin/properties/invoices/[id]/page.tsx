@@ -6,7 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getInvoicesByListing, Invoice, InvoicesResponse } from '@/app/lib/api/propertiesAdmin';
+import { getInvoicesByListing, Invoice, InvoicesResponse, InvoicesFilters } from '@/app/lib/api/propertiesAdmin';
 import { 
   FiArrowLeft, 
   FiSearch, 
@@ -71,10 +71,10 @@ export default function InvoicesPage() {
     setError(null);
 
     try {
-      const filters: any = {
+      const filters: InvoicesFilters = {
         page: page,
       };
-      
+
       if (start) {
         filters.initial_date = start;
       }
@@ -100,9 +100,9 @@ export default function InvoicesPage() {
       setTotalCount(result.count || 0);
       setTotalPages(Math.ceil((result.count || 0) / 20));
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando facturas:', err);
-      setError(err.message || 'Error al cargar las facturas');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las facturas');
     } finally {
       setIsLoading(false);
     }
@@ -112,6 +112,9 @@ export default function InvoicesPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

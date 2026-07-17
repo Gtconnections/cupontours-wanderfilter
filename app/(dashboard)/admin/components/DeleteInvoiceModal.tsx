@@ -104,7 +104,7 @@ export default function DeleteInvoiceModal({
               {invoiceTitle && (
                 <>
                   <br />
-                  <strong style={{ color: '#000000' }}>"{invoiceTitle}"</strong>
+                  <strong style={{ color: '#000000' }}>&quot;{invoiceTitle}&quot;</strong>
                 </>
               )}
             </p>

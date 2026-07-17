@@ -59,9 +59,9 @@ export default function ProfitAndLossPage() {
       setTotalPages(Math.ceil((response.count || 0) / pageSize));
       
       console.log('📊 Total de registros:', response.count);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando datos:', err);
-      setError(err.message || 'Error al cargar los datos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');
     } finally {
       setIsLoading(false);
     }
@@ -71,6 +71,9 @@ export default function ProfitAndLossPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -106,7 +109,7 @@ export default function ProfitAndLossPage() {
       
       // Verificar si hubo errores
       if (result.list_errors && result.list_errors.length > 0) {
-        setError(`Errores: ${result.list_errors.map((e: any) => e.detail).join(', ')}`);
+        setError(`Errores: ${result.list_errors.map((e) => e.detail).join(', ')}`);
       } else {
         setSuccessMessage(`✅ Profit and Loss creado exitosamente para ${result.list_success.length} auto(s)`);
         setIsModalOpen(false);
@@ -114,9 +117,9 @@ export default function ProfitAndLossPage() {
         await loadData(currentPage);
         setTimeout(() => setSuccessMessage(null), 5000);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al crear PL:', err);
-      setError(err.message || 'Error al crear Profit and Loss');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear Profit and Loss');
     } finally {
       setIsSubmitting(false);
     }

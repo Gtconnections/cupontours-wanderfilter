@@ -4,6 +4,7 @@ import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import './general-detail.css';
 import { getGeneralServiceById, GeneralServiceItem } from '@/app/lib/api/services';
+import Membership from '@/components/Membership';
 
 // Extendemos la interfaz localmente para incluir la galería
 interface GeneralServiceDetail extends GeneralServiceItem {
@@ -207,6 +208,9 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
 
         </div>
       </div>
+
+      {/* MEMBERSHIP CLUB SECTION */}
+      <Membership />
 
       {/* LIGHTBOX MODAL */}
       {lightboxOpen && (

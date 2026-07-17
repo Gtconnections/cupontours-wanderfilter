@@ -11,7 +11,7 @@ export interface EmailTemplate {
   html?: string
   text?: string
   templateId?: string
-  dynamicTemplateData?: Record<string, any>
+  dynamicTemplateData?: Record<string, unknown>
   attachments?: Array<{
     content: string
     filename: string

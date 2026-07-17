@@ -25,9 +25,9 @@ export default function AdminDashboardPage() {
         const data = await getDashboardData();
         console.log('📊 Datos completos del dashboard:', data);
         setDashboardData(data);
-      } catch (err: any) {
+      } catch (err) {
         console.error('Error al cargar datos del dashboard:', err);
-        setError(`Error al cargar datos: ${err.message}`);
+        setError(`Error al cargar datos: ${(err instanceof Error ? err.message : undefined)}`);
       } finally {
         setIsLoading(false);
       }

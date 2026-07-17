@@ -35,6 +35,8 @@ export default function ModalAddImages({
     if (!isOpen) {
       // Limpiar URLs de preview para evitar memory leaks
       previews.forEach(url => URL.revokeObjectURL(url));
+      // Resets the form when the modal opens/closes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFiles([]);
       setPreviews([]);
       setError(null);
@@ -138,9 +140,9 @@ export default function ModalAddImages({
       // Cerrar modal
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al subir imágenes:', err);
-      setError(err.message || 'Error al subir las imágenes. Por favor, intenta de nuevo.');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al subir las imágenes. Por favor, intenta de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -172,7 +174,7 @@ export default function ModalAddImages({
             </p>
 
             <div className="wander-modal-listing-info">
-              The last listing uploaded was <strong>"{listingName}"</strong> with id: <strong>{listingIdDisplay}</strong>.
+              The last listing uploaded was <strong>&quot;{listingName}&quot;</strong> with id: <strong>{listingIdDisplay}</strong>.
             </div>
 
             <div className="wander-upload-section">
@@ -232,7 +234,7 @@ export default function ModalAddImages({
               )}
 
               <p className="wander-upload-help">
-                If you don't want to upload photos press the <strong>CANCEL</strong> button below.
+                If you don&apos;t want to upload photos press the <strong>CANCEL</strong> button below.
               </p>
             </div>
           </div>

@@ -5,6 +5,25 @@ import { Star, Calendar, Phone, Mail } from "lucide-react"
 import { Button } from "./button"
 import { Card, CardContent, CardHeader, CardTitle } from "./card"
 
+interface HostawayWidgetProps {
+  baseUrl?: string
+  listingId?: string | number
+  numberOfMonths?: number
+  openInNewTab?: boolean
+  font?: string
+  rounded?: boolean
+  button?: {
+    action?: string
+    text?: string
+  }
+  clearButtonText?: string
+  color?: {
+    mainColor?: string
+    frameColor?: string
+    textColor?: string
+  }
+}
+
 interface ContactBookingCardProps {
   price: string
   priceLabel?: string
@@ -41,7 +60,7 @@ export function ContactBookingCard({
   itemType,
   className = "",
   hostawayWidgetProps
-}: ContactBookingCardProps & { hostawayWidgetProps?: any }) {
+}: ContactBookingCardProps & { hostawayWidgetProps?: HostawayWidgetProps }) {
 
   // Initialize Hostaway widget exactly as shown in official documentation
   useEffect(() => {
@@ -52,8 +71,8 @@ export function ContactBookingCard({
     script.src = 'https://d2q3n06xhbi0am.cloudfront.net/calendar.js'
     script.onload = () => {
       // Call the function exactly as shown in documentation
-      if ((window as any).hostawayCalendarWidget) {
-        ;(window as any).hostawayCalendarWidget({
+      if ((window as unknown as { hostawayCalendarWidget?: (config: unknown) => void }).hostawayCalendarWidget) {
+        ;(window as unknown as { hostawayCalendarWidget?: (config: unknown) => void }).hostawayCalendarWidget!({
           baseUrl: hostawayWidgetProps.baseUrl || 'https://www.cupontours.com/',
           listingId: hostawayWidgetProps.listingId,
           numberOfMonths: hostawayWidgetProps.numberOfMonths || 2,
@@ -81,8 +100,8 @@ export function ContactBookingCard({
     } else {
       // Script exists, try to initialize
       setTimeout(() => {
-        if ((window as any).hostawayCalendarWidget) {
-          ;(window as any).hostawayCalendarWidget({
+        if ((window as unknown as { hostawayCalendarWidget?: (config: unknown) => void }).hostawayCalendarWidget) {
+          ;(window as unknown as { hostawayCalendarWidget?: (config: unknown) => void }).hostawayCalendarWidget!({
             baseUrl: hostawayWidgetProps.baseUrl || 'https://www.cupontours.com/',
             listingId: hostawayWidgetProps.listingId,
             numberOfMonths: hostawayWidgetProps.numberOfMonths || 2,

@@ -53,21 +53,6 @@ function CreateInvoiceContent() {
     { item: '', quantity: 1, rate: 0, amount: 0 }
   ]);
 
-  // Cargar autos
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      router.push('/login');
-      return;
-    }
-
-    loadCars();
-  }, [isChecking, checkAuth, router]);
-
   const loadCars = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -87,13 +72,31 @@ function CreateInvoiceContent() {
           setError('El auto seleccionado no existe');
         }
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando autos:', err);
-      setError(err.message || 'Error al cargar los autos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los autos');
     } finally {
       setIsLoading(false);
     }
   }, [carIdFromUrl]);
+
+  // Cargar autos
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      router.push('/login');
+      return;
+    }
+
+    loadCars();
+  }, [isChecking, checkAuth, router]);
 
   // Calcular monto de un item
   const calculateItemAmount = (quantity: number, rate: number): number => {
@@ -109,6 +112,8 @@ function CreateInvoiceContent() {
   // Actualizar el precio total cuando cambian los items
   useEffect(() => {
     const total = calculateTotal();
+    // Derived total kept in sync with its own inputs inside the same form state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(prev => ({ ...prev, price: total.toFixed(2) }));
   }, [items]);
 
@@ -225,9 +230,9 @@ function CreateInvoiceContent() {
         router.push(`/admin/cars/invoice-detail/${result.id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al crear factura:', err);
-      setError(err.message || 'Error al crear la factura');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear la factura');
     } finally {
       setIsSubmitting(false);
     }

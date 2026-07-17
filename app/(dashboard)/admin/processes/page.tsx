@@ -239,22 +239,6 @@ export default function ProcessesPage() {
 
   const [isCreateTypeModalOpen, setIsCreateTypeModalOpen] = useState(false);
 
-  // Verificar autenticación
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
-      router.push('/login');
-      return;
-    }
-    
-    loadData();
-  }, [isChecking, checkAuth, router]);
-
   // Cargar datos
   const loadData = useCallback(async (forceRefresh = false) => {
     if (!checkAuth()) {
@@ -272,17 +256,36 @@ export default function ProcessesPage() {
       ]);
       setProcesses(processesData);
       setProcessTypes(typesData);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando datos:', err);
-      setError(err.message || 'Error al cargar los procesos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los procesos');
       
-      if (err.message?.includes('sesión') || err.message?.includes('autenticación')) {
+      if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
         router.push('/login');
       }
     } finally {
       setIsLoading(false);
     }
   }, [checkAuth, router]);
+
+  // Verificar autenticación
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      console.log('🔒 No autenticado, redirigiendo a login');
+      router.push('/login');
+      return;
+    }
+
+    loadData();
+  }, [isChecking, checkAuth, router]);
 
   // 🔥 MANEJAR ACTUALIZACIÓN DE PROCESO
   const handleUpdateProcess = async (data: ProcessFormData) => {
@@ -365,7 +368,7 @@ export default function ProcessesPage() {
       await deleteProcess(processId);
       await loadData(true);
       closeDeleteModal();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar proceso:', err);
       throw err;
     }

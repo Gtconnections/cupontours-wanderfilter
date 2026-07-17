@@ -37,9 +37,9 @@ export default function CreateProfitAndLossModal({
       try {
         const data = await getAllCars();
         setCars(data);
-      } catch (err: any) {
+      } catch (err) {
         console.error('Error cargando autos:', err);
-        setError(err.message || 'Error al cargar los autos');
+        setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los autos');
       } finally {
         setIsLoading(false);
       }

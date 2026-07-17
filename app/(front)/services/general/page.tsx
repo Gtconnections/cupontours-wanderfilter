@@ -32,7 +32,7 @@ export default function GeneralServicesPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   return (
@@ -41,6 +41,7 @@ export default function GeneralServicesPage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Comprehensive Solutions</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Premium Services</h1>
           <p className="hero-subtitle">
             From technical support to event organization and specialized care. Discover our network of trusted professionals ready to elevate your daily life.
@@ -52,7 +53,7 @@ export default function GeneralServicesPage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Collection</span>
-            <h2>Select your <span style={{ color: '#d4af37', fontStyle: 'italic' }}>service.</span></h2>
+            <h2>Select your <span className="accent-word">service.</span></h2>
             <p>Browse our curated selection of essential and lifestyle services.</p>
           </div>
 

@@ -32,7 +32,7 @@ export default function PrivateTransportPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   return (
@@ -41,6 +41,7 @@ export default function PrivateTransportPage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Luxury Fleet</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Private Transport</h1>
           <p className="hero-subtitle">
             Experience ultimate comfort and prestige. Our exclusive fleet of premium vehicles and professional chauffeurs ensures you arrive at your destination in absolute style.
@@ -52,7 +53,7 @@ export default function PrivateTransportPage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Collection</span>
-            <h2>Select your <span style={{ color: '#d4af37', fontStyle: 'italic' }}>vehicle.</span></h2>
+            <h2>Select your <span className="accent-word">vehicle.</span></h2>
             <p>Browse our curated selection of high-end SUVs, elegant sedans, and exotic models.</p>
           </div>
 

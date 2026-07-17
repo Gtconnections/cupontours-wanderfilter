@@ -110,6 +110,42 @@
   background: #fef2f2;
 }
 
+/* Filtro de fechas */
+.wander-date-filter-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 0 4px 0 10px;
+  transition: border-color 0.2s ease;
+}
+
+.wander-date-filter-wrapper:focus-within {
+  border-color: #000000;
+}
+
+.wander-date-filter-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #717171;
+  white-space: nowrap;
+}
+
+.wander-filter-date {
+  border: none;
+  background: transparent;
+  padding: 8px 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+  cursor: pointer;
+  outline: none;
+  min-width: 130px;
+}
+
 /* Botones */
 .wander-btn-primary {
   padding: 10px 24px;
@@ -598,6 +634,16 @@
   .wander-filter-select {
     flex: 1;
     min-width: 100px;
+  }
+
+  .wander-date-filter-wrapper {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .wander-filter-date {
+    flex: 1;
+    min-width: 90px;
   }
 
   .wander-reservation-grid {

@@ -57,9 +57,9 @@ export default function InvoiceDetailPage() {
     try {
       const data = await getInvoiceDetail(invoiceId);
       setInvoice(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando factura:', err);
-      setError(err.message || 'Error al cargar los detalles de la factura');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los detalles de la factura');
     } finally {
       setIsLoading(false);
     }
@@ -69,6 +69,9 @@ export default function InvoiceDetailPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -95,9 +98,9 @@ export default function InvoiceDetailPage() {
       } else {
         router.push('/admin/cars/list');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar factura:', err);
-      setError(err.message || 'Error al eliminar la factura');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar la factura');
       setIsDeleting(false);
     }
   };
@@ -111,7 +114,7 @@ export default function InvoiceDetailPage() {
       setShowAddImagesModal(false);
       setSuccessMessage('✅ Imágenes subidas exitosamente');
       setTimeout(() => setSuccessMessage(null), 3000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al subir imágenes:', err);
       throw err;
     } finally {
@@ -126,9 +129,9 @@ export default function InvoiceDetailPage() {
     setIsGeneratingPDF(true);
     try {
       await generateInvoicePDF(invoice);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al generar PDF:', err);
-      setError(err.message || 'Error al generar el PDF');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al generar el PDF');
     } finally {
       setIsGeneratingPDF(false);
     }
@@ -154,9 +157,9 @@ export default function InvoiceDetailPage() {
       await loadInvoiceDetail();
       setSuccessMessage('✅ Imagen eliminada exitosamente');
       setTimeout(() => setSuccessMessage(null), 3000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar imagen:', err);
-      setError(err.message || 'Error al eliminar la imagen');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar la imagen');
     } finally {
       setIsDeletingImage(false);
       setSelectedImageId(null);

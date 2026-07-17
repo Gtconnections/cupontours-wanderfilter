@@ -15,6 +15,16 @@ export interface Health {
   updated_at: string;
 }
 
+export interface UpdateHealthData {
+  name: string;
+  price?: number;
+  duration_minutes?: number;
+  category?: string;
+  location?: string;
+  descripcion?: string;
+  status?: string;
+}
+
 export interface HealthResponse {
   count: number;
   next: string | null;
@@ -70,7 +80,6 @@ export async function getHealthServices(): Promise<HealthResponse> {
     const data = await response.json();
     console.log('✅ Servicios de salud obtenidos:', data);
     
-    // 🔥 Manejar ambos casos: array directo o objeto con results
     if (Array.isArray(data)) {
       return {
         count: data.length,
@@ -143,6 +152,110 @@ export async function getHealthDetail(id: number): Promise<Health> {
   }
 }
 
+// 🔥 CREAR SERVICIO DE SALUD
+export async function createHealthService(data: unknown): Promise<Health> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/health/`;
+    console.log('📡 Creando servicio de salud:', url);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const dataResponse = await response.json();
+    console.log('✅ Servicio de salud creado:', dataResponse);
+    return dataResponse;
+
+  } catch (error) {
+    console.error('❌ Error en createHealthService:', error);
+    throw error;
+  }
+}
+
+// 🔥 ACTUALIZAR SERVICIO DE SALUD
+export async function updateHealthService(id: number, data: UpdateHealthData): Promise<Health> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/health/${id}`;
+    console.log('📡 Actualizando servicio de salud:', url);
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const result = await response.json();
+    console.log('✅ Servicio de salud actualizado:', result);
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en updateHealthService:', error);
+    throw error;
+  }
+}
+
 // Función auxiliar para obtener token
 const getAuthToken = (): string | null => {
   if (typeof window === 'undefined') return null;
@@ -159,3 +272,168 @@ const getAuthToken = (): string | null => {
   
   return null;
 };
+
+// app/lib/api/healthAdmin.ts - AÑADIR AL FINAL DEL ARCHIVO
+
+// 🔥 ELIMINAR SERVICIO DE SALUD
+export async function deleteHealthService(id: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/health/${id}/`;
+    console.log('📡 Eliminando servicio de salud:', url);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Servicio de salud ${id} no encontrado`);
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    console.log('✅ Servicio de salud eliminado:', id);
+
+  } catch (error) {
+    console.error('❌ Error en deleteHealthService:', error);
+    throw error;
+  }
+}
+
+// 🔥 SUBIR IMÁGENES A LA GALERÍA (agrega, no reemplaza)
+export async function uploadGallery(id: number, files: File[]): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/health/${id}/galeria`;
+    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
+
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('imagenes[]', file);
+    });
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log('✅ Imágenes subidas a la galería:', data);
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en uploadGallery:', error);
+    throw error;
+  }
+}
+
+// 🔥 CAMBIAR IMAGEN PRINCIPAL (reemplaza principal_image)
+export async function changePrincipalImage(id: number, file: File): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/health/${id}/imagen`;
+    console.log('📡 Actualizando imagen principal:', url);
+
+    const formData = new FormData();
+    formData.append('imagen', file);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log('✅ Imagen principal actualizada:', data);
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en changePrincipalImage:', error);
+    throw error;
+  }
+}

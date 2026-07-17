@@ -13,7 +13,7 @@ export interface AuthResponse {
   email?: string;
   position: string;
   fullName?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export async function loginUser(credentials: LoginCredentials): Promise<AuthResponse> {
@@ -41,9 +41,13 @@ export async function loginUser(credentials: LoginCredentials): Promise<AuthResp
     throw new Error(errorMsg);
   }
 
-  let data = JSON.parse(responseText);
+  const data = JSON.parse(responseText);
 
-  const normalizeResponse = (rawData: any): AuthResponse => {
+  // Shape of the backend response varies (array/object, wrapped in .data/.user/.profile), so it's
+  // handled as a loosely-typed record rather than forcing a rigid interface onto it.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const normalizeResponse = (input: any): AuthResponse => {
+    let rawData = input;
     if (Array.isArray(rawData)) {
       rawData = rawData[0] || {};
     }
@@ -52,7 +56,7 @@ export async function loginUser(credentials: LoginCredentials): Promise<AuthResp
       rawData = rawData.data;
     }
 
-    let userData = rawData.user || rawData.profile || rawData.userData || rawData;
+    const userData = rawData.user || rawData.profile || rawData.userData || rawData;
 
     const token = rawData.token || 
                   rawData.access_token || 

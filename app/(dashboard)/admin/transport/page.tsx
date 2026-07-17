@@ -1,4 +1,4 @@
-// app/admin/transport/page.tsx
+// app/(dashboard)/admin/transport/page.tsx
 
 'use client';
 
@@ -6,12 +6,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getTransports, Transport } from '@/app/lib/api/transportAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiEye, 
-  FiEdit2, 
+import { getTransports, Transport, createTransport, deleteTransport } from '@/app/lib/api/transportAdmin';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiEye,
+  FiEdit2,
   FiTrash2,
   FiDollarSign,
   FiUsers,
@@ -20,8 +20,13 @@ import {
   FiMapPin,
   FiChevronLeft,
   FiChevronRight,
-  FiGift
+  FiGift,
+  FiBarChart2
 } from 'react-icons/fi';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { CreateTransportForm } from '@/app/(dashboard)/admin/components/CreateTransportForm';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './transport.css';
 
 const LoadingSkeleton = () => (
@@ -54,6 +59,26 @@ export default function TransportListPage() {
   const [itemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
+
   const loadTransports = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -70,9 +95,9 @@ export default function TransportListPage() {
       setTransports(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando transportes:', err);
-      setError(err.message || 'Error loading transports');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading transports');
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +107,9 @@ export default function TransportListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -143,6 +171,76 @@ export default function TransportListPage() {
     );
   };
 
+  // Create transport handler
+  const handleCreateTransport = async (data: { name: string }) => {
+    setIsSubmitting(true);
+    try {
+      const response = await createTransport(data);
+      console.log('✅ Transporte creado:', response);
+      
+      setToast({
+        message: `Transport "${data.name}" created successfully!`,
+        type: 'success'
+      });
+      
+      setIsModalOpen(false);
+      await loadTransports(true);
+    } catch (err) {
+      console.error('❌ Error creando transporte:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error creating transport',
+        type: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Delete transport handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteTransport(confirmDialog.id);
+      console.log('✅ Transporte eliminado:', confirmDialog.id);
+      
+      setToast({
+        message: `Transport "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadTransports(true);
+    } catch (err) {
+      console.error('❌ Error eliminando transporte:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting transport',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;
   }
@@ -180,6 +278,28 @@ export default function TransportListPage() {
 
   return (
     <div className="wander-transport-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Transport"
+        message={`Are you sure you want to delete "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-transport-header">
         <div>
@@ -190,16 +310,23 @@ export default function TransportListPage() {
           </p>
         </div>
         <div className="wander-transport-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Refresh
           </button>
-          <button 
+          <Link
+            href="/admin/accounting?servicio_tipo=transporte_privado"
+            className="wander-btn-secondary"
+          >
+            <FiBarChart2 size={16} />
+            Transactions
+          </Link>
+          <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/transport/create')}
+            onClick={() => setIsModalOpen(true)}
           >
             <FiPlus size={16} />
             Create Transport
@@ -277,7 +404,7 @@ export default function TransportListPage() {
                   Details
                 </Link>
                 <button 
-                  onClick={() => alert(`Delete ${vehicle.name} - Feature in development`)}
+                  onClick={() => handleDeleteClick(vehicle.id, vehicle.name)}
                   className="wander-transport-action-btn delete"
                 >
                   <FiTrash2 size={14} />
@@ -341,6 +468,20 @@ export default function TransportListPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Creación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Transport"
+        maxWidth="640px"
+      >
+        <CreateTransportForm
+          onSubmit={handleCreateTransport}
+          onCancel={() => setIsModalOpen(false)}
+          isSubmitting={isSubmitting}
+        />
+      </Modal>
     </div>
   );
 }

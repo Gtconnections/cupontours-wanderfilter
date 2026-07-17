@@ -5,7 +5,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getAgreements, Agreement, AgreementsResponse, deleteAgreement } from '@/app/lib/api/propertiesAdmin';
+import { getAgreements, Agreement, AgreementsResponse, AgreementsFilters, deleteAgreement } from '@/app/lib/api/propertiesAdmin';
 import ModalDeleteAgreement from '../../components/ModalDeleteAgreement';
 import ModalCreateAgreement from '../../components/ModalCreateAgreement';
 import { 
@@ -64,7 +64,7 @@ export default function AgreementsPage() {
     setError(null);
 
     try {
-      const filters: any = {
+      const filters: AgreementsFilters = {
         page: page,
         page_size: 20,
       };
@@ -83,9 +83,9 @@ export default function AgreementsPage() {
       const pageSize = 20;
       setTotalPages(Math.ceil(total / pageSize));
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando Agreements:', err);
-      setError(err.message || 'Error al cargar los datos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');
     } finally {
       setIsLoading(false);
     }
@@ -96,6 +96,9 @@ export default function AgreementsPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -143,9 +146,9 @@ export default function AgreementsPage() {
       setAgreementToDelete(null);
       loadAgreements(currentPage, searchTerm);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al eliminar:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete'}`);
+      setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to delete'}`);
       setTimeout(() => setToastMessage(null), 3000);
       setIsDeleteModalOpen(false);
     } finally {

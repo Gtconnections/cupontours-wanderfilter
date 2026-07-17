@@ -2,6 +2,92 @@ import React from 'react';
 import './services.css';
 import Link from 'next/link';
 
+// Íconos decorativos por categoría — puramente visuales, no alteran ninguna info del catálogo.
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  'Properties': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 11.5L12 4l8 7.5" />
+      <path d="M6 10v9h12v-9" />
+      <path d="M10 19v-5h4v5" />
+    </svg>
+  ),
+  'Luxury Properties': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3,17 3,8 8,12 12,6 16,12 21,8 21,17" />
+      <line x1="3" y1="20" x2="21" y2="20" />
+    </svg>
+  ),
+  'Cars': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="11" width="18" height="6" rx="2" />
+      <circle cx="7.5" cy="17.5" r="1.5" />
+      <circle cx="16.5" cy="17.5" r="1.5" />
+      <path d="M5 11l2-4h10l2 4" />
+    </svg>
+  ),
+  'Yachts': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 15h18l-2 5H5z" />
+      <path d="M12 15V4" />
+      <path d="M12 4l5 6H8z" />
+    </svg>
+  ),
+  'Private Jet': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="22" y1="2" x2="11" y2="13" />
+      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>
+  ),
+  'Private Transport': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="10" width="14" height="7" rx="1" />
+      <path d="M16 12h4l2 3v2h-6z" />
+      <circle cx="7" cy="19.5" r="1.5" />
+      <circle cx="17" cy="19.5" r="1.5" />
+    </svg>
+  ),
+  'Experiences': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <polygon points="15.5 8.5 13 13 8.5 15.5 11 11 15.5 8.5" />
+    </svg>
+  ),
+  'Real Estate': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="3" width="14" height="18" rx="1" />
+      <line x1="9" y1="7.5" x2="9" y2="7.5" strokeWidth="2" />
+      <path d="M8.5 7.5h1M14.5 7.5h1M8.5 11.5h1M14.5 11.5h1M8.5 15.5h1M14.5 15.5h1" />
+    </svg>
+  ),
+  'Servicios': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+    </svg>
+  ),
+  'Wellness': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3c-4 3-6 7-6 11a6 6 0 0 0 12 0c0-4-2-8-6-11z" />
+      <path d="M12 8v13" />
+    </svg>
+  ),
+  'Health': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12h4l2-7 4 14 2-7h6" />
+    </svg>
+  ),
+  'Events': (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8" y1="3" x2="8" y2="7" />
+      <line x1="16" y1="3" x2="16" y2="7" />
+    </svg>
+  ),
+};
+
 export default function ServicesPage() {
   // 1. CATÁLOGO ACTUALIZADO (Con Properties, Luxury Properties y enlace reparado)
   const categories = [
@@ -70,8 +156,9 @@ export default function ServicesPage() {
   return (
     <main className="services-page">
       
-      {/* 1. HERO INTRODUCTORIO ORIGINAL */}
+      {/* 1. HERO INTRODUCTORIO ORIGINAL (con banner de fondo) */}
       <section className="services-hero">
+        <div className="services-hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Ecosystem</span>
           <h1 className="massive-heading">Our Premium Services</h1>
@@ -91,10 +178,14 @@ export default function ServicesPage() {
           <div className="catalog-grid">
             {categories.map((cat, i) => (
               <Link href={cat.link} key={i} className="catalog-card">
-                
+
                 <img src={cat.img} alt={cat.title} className="catalog-bg-img" />
                 <div className="catalog-overlay"></div>
-                
+
+                <div className="catalog-icon-badge">
+                  {CATEGORY_ICONS[cat.title]}
+                </div>
+
                 <div className="catalog-arrow-icon">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="7" y1="17" x2="17" y2="7"></line>

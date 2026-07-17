@@ -40,6 +40,8 @@ export default function ModalCreateAccessLink({
   // Resetear estado al abrir/cerrar el modal
   useEffect(() => {
     if (!isOpen) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setName('');
       setLink('');
       setDescription('');
@@ -113,9 +115,9 @@ export default function ModalCreateAccessLink({
       onSuccess();
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear access link:', err);
-      setError(err.message || 'Error creating access link');
+      setError((err instanceof Error ? err.message : undefined) || 'Error creating access link');
     } finally {
       setIsLoading(false);
     }

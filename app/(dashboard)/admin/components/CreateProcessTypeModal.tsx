@@ -63,9 +63,9 @@ export default function CreateProcessTypeModal({
         user_position: '',
       });
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al crear tipo de proceso:', err);
-      setError(err.message || 'Error al crear el tipo de proceso');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear el tipo de proceso');
     } finally {
       setIsLoading(false);
     }

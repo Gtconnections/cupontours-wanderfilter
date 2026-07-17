@@ -6,7 +6,22 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getPropertyDetail, PropertyDetailResponse, refreshPropertyDetail, deleteListingImage, deleteListing } from '@/app/lib/api/propertiesAdmin';
+import { getPropertyDetail, PropertyDetailResponse, refreshPropertyDetail, deleteListingImage, deleteListing, updatePrincipalPhoto } from '@/app/lib/api/propertiesAdmin';
+import {
+  FiCamera,
+  FiEdit2,
+  FiTrash2,
+  FiWifi,
+  FiCalendar,
+  FiFileText,
+  FiSearch,
+  FiX,
+  FiChevronLeft,
+  FiChevronRight,
+  FiAlertTriangle,
+  FiEye,
+  FiCopy,
+} from 'react-icons/fi';
 import ModalAddWiFi from '../../components/ModalAddWiFi';
 import ModalAddImages from '../../components/ModalAddImages';
 import ModalConfirmDelete from '../../components/ModalConfirmDelete';
@@ -52,6 +67,13 @@ export default function PropertyDetailPage() {
   const [isWiFiModalOpen, setIsWiFiModalOpen] = useState(false);
   const [isImagesModalOpen, setIsImagesModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage(message);
+    setToastType(type);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
 
   // Estado para modal de confirmación de eliminación de imagen
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -79,7 +101,7 @@ export default function PropertyDetailPage() {
 
     try {
       const result = await getPropertyDetail(propertyId, forceRefresh);
-      console.log('📦 Datos de la propiedad:', result);
+      console.log('Datos de la propiedad:', result);
       setData(result);
       
       // Actualizar lista de imágenes para el lightbox
@@ -98,9 +120,9 @@ export default function PropertyDetailPage() {
         setImages(imageList);
       }
       
-    } catch (err: any) {
-      console.error('❌ Error cargando propiedad:', err);
-      setError(err.message || 'Error al cargar los detalles de la propiedad');
+    } catch (err) {
+      console.error('Error cargando propiedad:', err);
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los detalles de la propiedad');
     } finally {
       setIsLoading(false);
     }
@@ -110,6 +132,9 @@ export default function PropertyDetailPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -142,29 +167,25 @@ export default function PropertyDetailPage() {
       };
     });
 
-    setToastMessage('✅ WiFi added successfully!');
-    setTimeout(() => setToastMessage(null), 3000);
+    showToast('WiFi added successfully!');
   };
 
   // Manejador de éxito al subir imágenes
   const handleImagesSuccess = async () => {
     await loadPropertyDetail(true);
-    setToastMessage('✅ Images uploaded successfully!');
-    setTimeout(() => setToastMessage(null), 3000);
+    showToast('Images uploaded successfully!');
   };
 
   // Manejador de éxito al cambiar imagen principal
   const handlePrincipalImageSuccess = async () => {
     await loadPropertyDetail(true);
-    setToastMessage('✅ Principal image updated successfully!');
-    setTimeout(() => setToastMessage(null), 3000);
+    showToast('Principal image updated successfully!');
   };
 
   // Manejador de éxito al editar propiedad
   const handleEditSuccess = async () => {
     await loadPropertyDetail(true);
-    setToastMessage('✅ Property updated successfully!');
-    setTimeout(() => setToastMessage(null), 3000);
+    showToast('Property updated successfully!');
   };
 
   // Funciones del Lightbox
@@ -225,43 +246,39 @@ export default function PropertyDetailPage() {
         closeLightbox();
       }
       
-      setToastMessage('🗑️ Image deleted successfully!');
-      setTimeout(() => setToastMessage(null), 3000);
-      
+      showToast('Image deleted successfully!');
+
       setIsDeleteModalOpen(false);
       setImageToDelete(null);
-      
+
       await loadPropertyDetail(true);
-      
-    } catch (err: any) {
-      console.error('❌ Error al eliminar imagen:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete image'}`);
-      setTimeout(() => setToastMessage(null), 3000);
+
+    } catch (err) {
+      console.error('Error al eliminar imagen:', err);
+      showToast((err instanceof Error ? err.message : undefined) || 'Failed to delete image', 'error');
     } finally {
       setIsDeleting(false);
     }
   };
 
-  // 🔥 Manejar eliminación de propiedad
+  // Manejar eliminación de propiedad
   const handleDeleteProperty = async () => {
     setIsDeletingProperty(true);
     try {
       await deleteListing(propertyId);
-      
-      setToastMessage('🗑️ Property deleted successfully!');
-      setTimeout(() => setToastMessage(null), 3000);
-      
+
+      showToast('Property deleted successfully!');
+
       setIsDeletePropertyModalOpen(false);
-      
+
       // Redirigir a la lista de propiedades después de un breve delay
       setTimeout(() => {
         router.push('/admin/properties/list');
       }, 1500);
-      
-    } catch (err: any) {
-      console.error('❌ Error al eliminar propiedad:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete property'}`);
-      setTimeout(() => setToastMessage(null), 3000);
+
+    } catch (err) {
+      console.error('Error al eliminar propiedad:', err);
+      showToast((err instanceof Error ? err.message : undefined) || 'Failed to delete property', 'error');
       setIsDeletePropertyModalOpen(false);
     } finally {
       setIsDeletingProperty(false);
@@ -274,8 +291,8 @@ export default function PropertyDetailPage() {
     if (typeof data.network === 'string') return { name: data.network, password: '' };
     if (typeof data.network === 'object' && data.network !== null) {
       return {
-        name: (data.network as any).network || 'Not configured',
-        password: (data.network as any).password || ''
+        name: data.network.network || 'Not configured',
+        password: data.network.password || ''
       };
     }
     return { name: 'Not configured', password: '' };
@@ -305,7 +322,7 @@ export default function PropertyDetailPage() {
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar la propiedad</h3>
+          <h3><FiAlertTriangle size={18} /> Error al cargar la propiedad</h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             Reintentar
@@ -345,7 +362,7 @@ export default function PropertyDetailPage() {
     <div className="wander-property-detail-container">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="wander-toast">
+        <div className={`wander-toast ${toastType === 'error' ? 'error' : ''}`}>
           {toastMessage}
         </div>
       )}
@@ -360,37 +377,37 @@ export default function PropertyDetailPage() {
           </p>
         </div>
         <div className="wander-property-detail-actions-top">
-          <button 
+          <button
             onClick={() => setIsImagesModalOpen(true)}
             className="wander-btn-add-images"
           >
-            📸 Add Images
+            <FiCamera size={16} /> Add Images
           </button>
-          <button 
+          <button
             onClick={() => setIsEditModalOpen(true)}
             className="wander-btn-edit"
           >
-            ✏️ Edit Property
+            <FiEdit2 size={16} /> Edit Property
           </button>
-          <button 
+          <button
             onClick={() => setIsDeletePropertyModalOpen(true)}
             className="wander-btn-delete"
           >
-            🗑️ Delete
+            <FiTrash2 size={16} /> Delete
           </button>
         </div>
       </header>
 
       {/* Acciones secundarias */}
       <div className="wander-property-detail-actions-bottom">
-        <button 
-          onClick={() => setIsWiFiModalOpen(true)} 
+        <button
+          onClick={() => setIsWiFiModalOpen(true)}
           className="wander-action-link"
         >
-          📶 Add WiFi
+          <FiWifi size={15} /> Add WiFi
         </button>
-        <button onClick={() => router.push(`/admin/properties/reservations/${listing.listing_id}`)} className="wander-action-link">📅 Reservations</button>
-        <button onClick={() => router.push(`/admin/properties/invoices/${listing.listing_id}`)} className="wander-action-link">📄 Invoices</button>
+        <button onClick={() => router.push(`/admin/properties/reservations/${listing.listing_id}`)} className="wander-action-link"><FiCalendar size={15} /> Reservations</button>
+        <button onClick={() => router.push(`/admin/properties/invoices/${listing.listing_id}`)} className="wander-action-link"><FiFileText size={15} /> Invoices</button>
       </div>
 
       {/* Contenido principal */}
@@ -406,7 +423,7 @@ export default function PropertyDetailPage() {
               <img src={images[0].url} alt={listing.public_name || listing.name} />
               
               {/* Botón para cambiar imagen principal */}
-              <button 
+              <button
                 className="wander-gallery-upload-principal"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -414,25 +431,25 @@ export default function PropertyDetailPage() {
                 }}
                 title="Change principal image"
               >
-                📸
+                <FiCamera size={16} />
               </button>
-              
+
               <div className="wander-gallery-overlay">
-                <span>Click to view gallery • 📸 to change principal</span>
+                <span>Click to view gallery, camera icon to change principal</span>
               </div>
             </div>
 
             {/* Grid de imágenes pequeñas */}
             <div className="wander-gallery-thumbnails">
               {images.slice(1, 5).map((img, index) => (
-                <div 
+                <div
                   key={img.id}
                   className="wander-gallery-thumb"
                   onClick={() => openLightbox(index + 1)}
                 >
                   <img src={img.url} alt={`Thumbnail ${index + 1}`} />
                   <div className="wander-gallery-thumb-overlay">
-                    <span>🔍</span>
+                    <FiSearch size={18} />
                   </div>
                 </div>
               ))}
@@ -459,17 +476,17 @@ export default function PropertyDetailPage() {
             <div className="wander-lightbox-container" onClick={(e) => e.stopPropagation()}>
               {/* Botón cerrar */}
               <button className="wander-lightbox-close" onClick={closeLightbox}>
-                ✕
+                <FiX size={22} />
               </button>
 
               {/* Navegación */}
               {images.length > 1 && (
                 <>
                   <button className="wander-lightbox-prev" onClick={goToPrevious}>
-                    ❮
+                    <FiChevronLeft size={26} />
                   </button>
                   <button className="wander-lightbox-next" onClick={goToNext}>
-                    ❯
+                    <FiChevronRight size={26} />
                   </button>
                 </>
               )}
@@ -489,15 +506,15 @@ export default function PropertyDetailPage() {
                 
                 {/* Botón eliminar en la imagen - solo para imágenes que no son la principal */}
                 {images[currentImageIndex].id !== -1 ? (
-                  <button 
+                  <button
                     className="wander-lightbox-delete"
                     onClick={(e) => confirmDeleteImage(images[currentImageIndex].id, e)}
                     title="Delete this image"
                   >
-                    🗑️
+                    <FiTrash2 size={18} />
                   </button>
                 ) : (
-                  <button 
+                  <button
                     className="wander-lightbox-upload"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -505,7 +522,7 @@ export default function PropertyDetailPage() {
                     }}
                     title="Change principal image"
                   >
-                    📸
+                    <FiCamera size={20} />
                   </button>
                 )}
               </div>
@@ -723,7 +740,7 @@ export default function PropertyDetailPage() {
           <div className="wander-property-detail-agreements">
             <h3>Agreements</h3>
             <div className="wander-agreements-list">
-              {listing.agreements.map((agreement: any, index: number) => (
+              {listing.agreements.map((agreement, index: number) => (
                 <div key={index} className="wander-agreement-item">
                   <span className="wander-agreement-title">{agreement.agreements_title}</span>
                   <span className="wander-agreement-date">Expires: {new Date(agreement.expiration_date).toLocaleDateString('en-US', {
@@ -733,7 +750,7 @@ export default function PropertyDetailPage() {
                   })}</span>
                   {agreement.agreement && (
                     <a href={agreement.agreement} target="_blank" rel="noopener noreferrer" className="wander-agreement-link">
-                      📄 View Document
+                      <FiFileText size={14} /> View Document
                     </a>
                   )}
                 </div>
@@ -784,11 +801,11 @@ export default function PropertyDetailPage() {
                         }).format(item.net_income)}
                       </td>
                       <td>
-                        <Link 
+                        <Link
                           href={`/admin/properties/profit-and-loss/${item.id}`}
                           className="wander-pl-view-link"
                         >
-                          👁️ View
+                          <FiEye size={14} /> View
                         </Link>
                       </td>
                     </tr>
@@ -828,15 +845,14 @@ export default function PropertyDetailPage() {
             <div className="wander-detail-item">
               <span className="wander-detail-label"></span>
               <span className="wander-detail-value">
-                <button 
+                <button
                   className="wander-share-wifi-btn"
                   onClick={() => {
                     navigator.clipboard.writeText(`Network: ${networkInfo.name} | Password: ${networkInfo.password}`);
-                    setToastMessage('📋 WiFi info copied to clipboard!');
-                    setTimeout(() => setToastMessage(null), 3000);
+                    showToast('WiFi info copied to clipboard!');
                   }}
                 >
-                  📋 SHARE WIFI LINK
+                  <FiCopy size={14} /> SHARE WIFI LINK
                 </button>
               </span>
             </div>
@@ -882,9 +898,10 @@ export default function PropertyDetailPage() {
       <ModalChangePrincipalImage
         isOpen={isPrincipalModalOpen}
         onClose={() => setIsPrincipalModalOpen(false)}
-        listingId={listing.listing_id}
-        listingName={listing.public_name || listing.name}
+        itemId={listing.listing_id}
+        itemName={listing.public_name || listing.name}
         currentImage={images.length > 0 ? images[0].url : ''}
+        uploadFn={updatePrincipalPhoto}
         onSuccess={handlePrincipalImageSuccess}
       />
 

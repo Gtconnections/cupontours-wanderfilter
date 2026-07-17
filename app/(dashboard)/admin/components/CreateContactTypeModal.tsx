@@ -33,9 +33,9 @@ export default function CreateContactTypeModal({
       await onCreate({ contact_type: contactType });
       setContactType('');
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al crear tipo de contacto:', err);
-      setError(err.message || 'Error al crear el tipo de contacto');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear el tipo de contacto');
     } finally {
       setIsLoading(false);
     }

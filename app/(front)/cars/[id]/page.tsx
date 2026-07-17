@@ -3,7 +3,7 @@
 import React, { useState, useEffect, use } from 'react';
 import './car-detail.css';
 import Link from 'next/link';
-import { getCarById } from '../../../lib/api/cars'; 
+import { getCarById, CarDetail } from '../../../lib/api/cars';
 import { sendCarBookingRequest } from '../../../lib/api'; // Importamos el disparador local
 
 interface PageProps {
@@ -14,7 +14,7 @@ export default function CarDetailPage({ params }: PageProps) {
   const { id } = use(params);
 
   // Estados de datos y carga de la base de datos[cite: 12]
-  const [car, setCar] = useState<any>(null);
+  const [car, setCar] = useState<CarDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -123,7 +123,7 @@ export default function CarDetailPage({ params }: PageProps) {
 
     const payload = {
       carId: id,
-      carTitle: car?.title,
+      carTitle: car?.title || '',
       pickUpDate: formatIdToText(pickUpDate),
       returnDate: formatIdToText(returnDate),
       totalDays: calculateDays(),
@@ -142,10 +142,10 @@ export default function CarDetailPage({ params }: PageProps) {
       setSpecialRequests('');
       setPickUpDate(null);
       setReturnDate(null);
-    } catch (err: any) {
+    } catch (err) {
       setStatusMessage({
         type: 'error',
-        text: err.message || "Failed to deliver booking request. Please check your data fields."
+        text: (err instanceof Error ? err.message : undefined) || "Failed to deliver booking request. Please check your data fields."
       });
     } finally {
       setIsSubmitting(false);
@@ -156,7 +156,7 @@ export default function CarDetailPage({ params }: PageProps) {
     return (
       <div className="car-detail-page py-20 text-center">
         <h2 className="text-xl font-bold">Vehicle not found</h2>
-        <p className="text-gray-400 mt-2">The requested asset is unavailable or doesn't exist.</p>
+        <p className="text-gray-400 mt-2">The requested asset is unavailable or doesn&apos;t exist.</p>
         <Link href="/cars" className="btn-back-editorial inline-flex mt-6">Go back to fleet</Link>
       </div>
     );
@@ -171,6 +171,10 @@ export default function CarDetailPage({ params }: PageProps) {
         </div>
       </div>
     );
+  }
+
+  if (!car) {
+    return null;
   }
 
   const rawPrice = car.price ? parseInt(car.price.replace(/[^0-9]/g, '')) : 199;
@@ -313,7 +317,7 @@ export default function CarDetailPage({ params }: PageProps) {
               <div className="editorial-text rules-box">
                 <p>To maintain our fleet standards and ensure an exceptional rental journey, please review the following active parameters:</p>
                 <ul>
-                  <li><strong>Driver's License:</strong> A valid, unexpired domestic or international driver's license is mandatory.</li>
+                  <li><strong>Driver&apos;s License:</strong> A valid, unexpired domestic or international driver&apos;s license is mandatory.</li>
                   <li><strong>Security Deposit:</strong> A hold parameter will be executed under verified token protocols during hand-off.</li>
                   <li><strong>Fuel Policy:</strong> Return with the same level of premium gasoline provided at delivery.</li>
                   <li><strong>Prohibitions:</strong> Strictly no smoking, track racing, or unauthorized additional operators allowed.</li>
@@ -478,8 +482,8 @@ export default function CarDetailPage({ params }: PageProps) {
                   What happens next?
                 </div>
                 <ul className="info-box-list">
-                  <li>• We'll review your request within 2 hours</li>
-                  <li>• You'll receive a detailed quote with availability</li>
+                  <li>• We&apos;ll review your request within 2 hours</li>
+                  <li>• You&apos;ll receive a detailed quote with availability</li>
                   <li>• Our team will contact you to finalize details</li>
                 </ul>
               </div>

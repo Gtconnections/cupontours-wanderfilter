@@ -50,7 +50,7 @@ export default function ModalDeleteReservation({
             <FiAlertTriangle size={48} />
           </div>
           <p className="wander-delete-reservation-message">
-            Are you sure you want to delete the reservation for <strong>"{guestName}"</strong>?
+            Are you sure you want to delete the reservation for <strong>&quot;{guestName}&quot;</strong>?
           </p>
           <p className="wander-delete-reservation-warning">
             This action cannot be undone.

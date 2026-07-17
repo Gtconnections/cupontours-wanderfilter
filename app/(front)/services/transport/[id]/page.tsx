@@ -4,6 +4,7 @@ import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import './transport-detail.css';
 import { getPrivateTransportById, TransportItem } from '@/app/lib/api/services';
+import Membership from '@/components/Membership';
 
 // Extendemos la interfaz localmente para incluir la galería
 interface TransportDetail extends TransportItem {
@@ -202,6 +203,9 @@ export default function TransportDetailPage({ params }: { params: Promise<{ id: 
 
         </div>
       </div>
+
+      {/* MEMBERSHIP CLUB SECTION */}
+      <Membership />
 
       {/* LIGHTBOX MODAL */}
       {lightboxOpen && (

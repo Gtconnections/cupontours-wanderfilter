@@ -100,10 +100,10 @@ export default function LoginPage() {
       
       window.location.href = '/admin/dashboard';
       
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error en el login:', error);
       let errorMsg = 'Error al iniciar sesión. Por favor, intenta de nuevo.';
-      if (error.message) {
+      if (error instanceof Error && error.message) {
         errorMsg = error.message;
       }
       setErrorMessage(errorMsg);
@@ -121,7 +121,7 @@ export default function LoginPage() {
             <h1 className="login-main-title">Welcome back to our platform!</h1>
             <p className="login-subtitle">
               Please enter your credentials to access your data and continue with your activities. 
-              If you don't have an account yet, sign up now and start enjoying the benefits of our platform. 
+              If you don&apos;t have an account yet, sign up now and start enjoying the benefits of our platform.
               Thank you for choosing us!
             </p>
           </div>

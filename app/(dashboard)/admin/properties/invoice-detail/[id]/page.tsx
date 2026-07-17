@@ -78,9 +78,9 @@ export default function InvoiceDetailPage() {
       const data = await getInvoiceDetail(invoiceId);
       console.log('📦 Detalle de factura:', data);
       setInvoice(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando factura:', err);
-      setError(err.message || 'Error loading invoice details');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading invoice details');
     } finally {
       setIsLoading(false);
     }
@@ -90,6 +90,9 @@ export default function InvoiceDetailPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -123,9 +126,9 @@ export default function InvoiceDetailPage() {
           }
         }, 1500);
       })
-      .catch((err: any) => {
+      .catch((err) => {
         console.error('❌ Error al eliminar factura:', err);
-        setToastMessage(`❌ Error: ${err.message || 'Failed to delete invoice'}`);
+        setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to delete invoice'}`);
         setTimeout(() => setToastMessage(null), 3000);
         setIsDeleteModalOpen(false);
       })
@@ -147,9 +150,9 @@ export default function InvoiceDetailPage() {
         setFileToDelete(null);
         loadInvoiceDetail();
       })
-      .catch((err: any) => {
+      .catch((err) => {
         console.error('❌ Error al eliminar archivo:', err);
-        setToastMessage(`❌ Error: ${err.message || 'Failed to delete file'}`);
+        setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to delete file'}`);
         setTimeout(() => setToastMessage(null), 3000);
         setIsDeleteFileModalOpen(false);
       })
@@ -283,7 +286,7 @@ export default function InvoiceDetailPage() {
         },
       });
 
-      const finalY = (doc as any).lastAutoTable?.finalY || yPos + 20;
+      const finalY = (doc as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY || yPos + 20;
       yPos = finalY + 6;
 
       doc.setDrawColor(colors.border);

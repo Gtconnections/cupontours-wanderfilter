@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FiX, FiSave, FiUser, FiAnchor, FiMaximize, FiUsers, FiHome, FiDroplet, FiDollarSign, FiTag, FiFileText } from 'react-icons/fi';
-import { updateYacht, UpdateYachtData, getFullYacht } from '@/app/lib/api/yachtsAdmin';
+import { updateYacht, UpdateYachtData, getFullYacht, YachtOwner } from '@/app/lib/api/yachtsAdmin';
 import './ModalEditYacht.css';
 
 interface ModalEditYachtProps {
@@ -12,7 +12,7 @@ interface ModalEditYachtProps {
   onClose: () => void;
   onSuccess: () => void;
   yachtId: number;
-  owners: any[]; // 🔥 Recibir owners desde el padre
+  owners: YachtOwner[]; // 🔥 Recibir owners desde el padre
 }
 
 export default function ModalEditYacht({
@@ -48,12 +48,6 @@ export default function ModalEditYacht({
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Cargar datos al abrir el modal
-  useEffect(() => {
-    if (isOpen) {
-      loadYachtData();
-    }
-  }, [isOpen]);
 
   const loadYachtData = async () => {
     setIsLoadingData(true);
@@ -72,7 +66,7 @@ export default function ModalEditYacht({
         console.log('🔑 owner_id seleccionado:', ownerId);
         
         // Verificar si el owner existe en la lista
-        const ownerExists = owners.some((owner: any) => owner.id === ownerId);
+        const ownerExists = owners.some((owner) => owner.id === ownerId);
         console.log('✅ Owner existe en la lista:', ownerExists);
         
         setFormData({
@@ -98,13 +92,22 @@ export default function ModalEditYacht({
         });
       }
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar datos:', err);
-      setError(err.message || 'Error loading data');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading data');
     } finally {
       setIsLoadingData(false);
     }
   };
+
+  // Cargar datos al abrir el modal
+  useEffect(() => {
+    if (isOpen) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadYachtData();
+    }
+  }, [isOpen]);
 
   // Manejar cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -147,9 +150,9 @@ export default function ModalEditYacht({
       console.log('✅ Yate actualizado');
       onSuccess();
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al actualizar yate:', err);
-      setError(err.message || 'Error updating yacht');
+      setError((err instanceof Error ? err.message : undefined) || 'Error updating yacht');
     } finally {
       setIsLoading(false);
     }

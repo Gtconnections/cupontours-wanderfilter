@@ -60,6 +60,13 @@
   display: none;
 }
 
+.hero-accent {
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #d4af37;
+}
+
 .hero-subtitle {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.8);
@@ -106,11 +113,15 @@
   text-decoration: none;
 }
 
-.filter-pill.active,
-.filter-pill:hover {
+.filter-pill.active {
   background: #111;
   color: white;
   border-color: #111;
+}
+
+.filter-pill:hover:not(.active) {
+  border-color: #d4af37;
+  color: #111;
 }
 
 /* ============================================
@@ -139,10 +150,10 @@
   display: block;
   font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #999;
+  letter-spacing: 1.5px;
+  color: #d4af37;
   margin-bottom: 1px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .row-header h3 {
@@ -187,13 +198,16 @@
 .prop-card-link-wrapper {
   text-decoration: none;
   color: inherit;
-  transition: opacity 0.25s ease;
   display: block;
   min-width: 240px;
 }
 
-.prop-card-link-wrapper:hover {
-  opacity: 0.9;
+.prop-image-container {
+  transition: box-shadow 0.35s ease;
+}
+
+.prop-card-link-wrapper:hover .prop-image-container {
+  box-shadow: 0 16px 32px rgba(90, 68, 15, 0.16);
 }
 
 /* ============================================
@@ -253,7 +267,8 @@
 }
 
 .heart-btn:hover {
-  background: rgba(0, 0, 0, 0.45);
+  background: #d4af37;
+  color: #111111;
   transform: scale(1.05);
 }
 
@@ -348,6 +363,12 @@
   margin-bottom: 20px;
   background-size: cover;
   background-position: center;
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.18);
+  transition: box-shadow 0.35s ease;
+}
+
+.mid-banner:hover {
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.5), 0 20px 40px rgba(0, 0, 0, 0.18);
 }
 
 .banner-properties {
@@ -360,6 +381,10 @@
 
 .banner-yachts {
   background-image: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80');
+}
+
+.banner-services {
+  background-image: url('https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=1200&q=80');
 }
 
 .mid-banner-overlay {
@@ -376,6 +401,16 @@
   z-index: 2;
   color: white;
   max-width: 100%;
+}
+
+.mid-banner-kicker {
+  display: block;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: #d4af37;
+  margin-bottom: 4px;
 }
 
 .mid-banner-content h2 {
@@ -421,10 +456,10 @@
 }
 
 .btn-banner-cta:hover {
-  background: #111;
-  color: white;
+  background: #d4af37;
+  color: #111111;
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
 }
 
 .btn-banner-cta:hover svg {
@@ -444,182 +479,10 @@
 }
 
 /* ============================================
-   9. MEMBERSHIP CLUB SECTION (WANDER STYLE)
+   9. SERVICES CTA WRAPPER
    ============================================ */
-.membership-section {
-  background-color: #111111; /* Contraste oscuro premium */
-  color: #ffffff;
-  padding: 60px 20px;
-}
-
-.membership-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.membership-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.membership-pretitle {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #888888;
-  margin-bottom: 12px;
-  font-weight: 600;
-  display: block;
-}
-
-.membership-title {
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  margin-bottom: 16px;
-  color: #ffffff;
-}
-
-.membership-title span {
-  color: #d4af37; /* Acento dorado sutil */
-}
-
-.membership-subtitle {
-  font-size: 13px;
-  color: #aaaaaa;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-.membership-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-.membership-card {
-  background: #161616;
-  border: 1px solid #2a2a2a;
-  border-radius: 16px;
-  padding: 40px 32px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.membership-card:hover {
-  border-color: #444444;
-}
-
-.membership-card.highlight {
-  border-color: #d4af37;
-  background: #1a1813; /* Ligero tinte dorado en el fondo */
-  transform: translateY(-8px);
-}
-
-.membership-badge {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #d4af37;
-  color: #111111;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 6px 16px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-
-.card-tier {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 12px;
-  color: #ffffff;
-}
-
-.card-price {
-  text-align: center;
-  font-size: 36px;
-  font-weight: 700;
-  color: #d4af37;
-  margin-bottom: 32px;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 6px;
-}
-
-.card-price span {
-  font-size: 12px;
-  color: #888888;
-  font-weight: 500;
-  letter-spacing: 1px;
-}
-
-.card-benefits {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 32px 0;
-  flex-grow: 1;
-}
-
-.card-benefits li {
-  font-size: 13px;
-  color: #cccccc;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  line-height: 1.5;
-}
-
-.card-benefits li svg {
-  flex-shrink: 0;
-  color: #d4af37;
-  width: 14px;
-  height: 14px;
-  margin-top: 3px;
-}
-
-.btn-membership {
-  width: 100%;
-  padding: 14px;
-  background: transparent;
-  border: 1px solid #444444;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-}
-
-.btn-membership:hover {
-  background: #ffffff;
-  color: #111111;
-  border-color: #ffffff;
-}
-
-.membership-card.highlight .btn-membership {
-  background: #d4af37;
-  color: #111111;
-  border-color: #d4af37;
-}
-
-.membership-card.highlight .btn-membership:hover {
-  background: #b5952f;
-  border-color: #b5952f;
+.services-cta-wrapper {
+  padding-top: 32px;
 }
 
 /* ============================================
@@ -801,17 +664,6 @@
   .rating {
     font-size: 12px;
   }
-
-  /* Membership Ajustes */
-  .membership-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .membership-section {
-    padding: 80px 40px;
-  }
-  .membership-title {
-    font-size: 40px;
-  }
 }
 
 /* --- DESKTOP (≥ 1024px) --- */
@@ -860,7 +712,7 @@
   }
 
   .home-listings-container {
-    padding: 28px 40px 60px;
+    padding: 90px 40px 60px;
   }
 
   .property-carousel {

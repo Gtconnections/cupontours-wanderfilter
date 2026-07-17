@@ -34,6 +34,8 @@ export default function CreateContactModal({
     if (!isOpen) return;
 
     if (mode === 'edit' && contact) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: contact.name || '',
         phone: contact.phone || '',
@@ -92,9 +94,9 @@ export default function CreateContactModal({
     try {
       await onSave(formData);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al guardar:', err);
-      setError(err.message || 'Error al guardar el contacto');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al guardar el contacto');
     } finally {
       setIsLoading(false);
     }

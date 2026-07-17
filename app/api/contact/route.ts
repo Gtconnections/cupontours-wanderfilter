@@ -51,10 +51,10 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("SendGrid route handler error:", error);
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to process the email delivery via Next.js server handles." },
+      { success: false, message: error instanceof Error ? error.message : "Failed to process the email delivery via Next.js server handles." },
       { status: 500 }
     );
   }

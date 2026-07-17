@@ -6,11 +6,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getExperiences, Experience } from '@/app/lib/api/experienceAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiEye, 
+import { getExperiences, Experience, createExperience, deleteExperience } from '@/app/lib/api/experienceAdmin';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiEye,
   FiTrash2,
   FiDollarSign,
   FiMapPin,
@@ -20,8 +20,13 @@ import {
   FiCalendar,
   FiTag,
   FiHeart,
-  FiCompass
+  FiCompass,
+  FiBarChart2
 } from 'react-icons/fi';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { CreateExperienceForm } from '@/app/(dashboard)/admin/components/CreateExperienceForm';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './experiences.css';
 
 const LoadingSkeleton = () => (
@@ -54,6 +59,26 @@ export default function ExperienceListPage() {
   const [itemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
+
   const loadExperiences = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -70,9 +95,9 @@ export default function ExperienceListPage() {
       setExperiences(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando experiencias:', err);
-      setError(err.message || 'Error loading experiences');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading experiences');
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +107,9 @@ export default function ExperienceListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -142,6 +170,76 @@ export default function ExperienceListPage() {
     );
   };
 
+  // Create experience handler
+  const handleCreateExperience = async (data: { name: string }) => {
+    setIsSubmitting(true);
+    try {
+      const response = await createExperience(data);
+      console.log('✅ Experiencia creada:', response);
+      
+      setToast({
+        message: `Experience "${data.name}" created successfully!`,
+        type: 'success'
+      });
+      
+      setIsModalOpen(false);
+      await loadExperiences(true);
+    } catch (err) {
+      console.error('❌ Error creando experiencia:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error creating experience',
+        type: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Delete experience handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteExperience(confirmDialog.id);
+      console.log('✅ Experiencia eliminada:', confirmDialog.id);
+      
+      setToast({
+        message: `Experience "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadExperiences(true);
+    } catch (err) {
+      console.error('❌ Error eliminando experiencia:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting experience',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;
   }
@@ -179,6 +277,28 @@ export default function ExperienceListPage() {
 
   return (
     <div className="wander-experience-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Experience"
+        message={`Are you sure you want to delete "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-experience-header">
         <div>
@@ -189,16 +309,23 @@ export default function ExperienceListPage() {
           </p>
         </div>
         <div className="wander-experience-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Refresh
           </button>
-          <button 
+          <Link
+            href="/admin/accounting?servicio_tipo=experiences"
+            className="wander-btn-secondary"
+          >
+            <FiBarChart2 size={16} />
+            Transactions
+          </Link>
+          <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/experiences/create')}
+            onClick={() => setIsModalOpen(true)}
           >
             <FiPlus size={16} />
             Create Experience
@@ -276,7 +403,7 @@ export default function ExperienceListPage() {
                   Details
                 </Link>
                 <button 
-                  onClick={() => alert(`Delete ${experience.name} - Feature in development`)}
+                  onClick={() => handleDeleteClick(experience.id, experience.name)}
                   className="wander-experience-action-btn delete"
                 >
                   <FiTrash2 size={14} />
@@ -340,6 +467,20 @@ export default function ExperienceListPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Creación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Experience"
+        maxWidth="640px"
+      >
+        <CreateExperienceForm
+          onSubmit={handleCreateExperience}
+          onCancel={() => setIsModalOpen(false)}
+          isSubmitting={isSubmitting}
+        />
+      </Modal>
     </div>
   );
 }

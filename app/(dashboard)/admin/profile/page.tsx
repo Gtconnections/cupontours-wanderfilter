@@ -50,21 +50,6 @@ export default function ProfilePage() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
-      router.push('/login');
-      return;
-    }
-    
-    loadProfile();
-  }, [isChecking, checkAuth, router]);
-
   const loadProfile = useCallback(async (forceRefresh = false) => {
     if (!checkAuth()) {
       router.push('/login');
@@ -103,17 +88,35 @@ export default function ProfilePage() {
         country: data.country || '',
         zipcode: data.zipcode?.toString() || '',
       });
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando perfil:', err);
-      setError(err.message || 'Error al cargar el perfil');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar el perfil');
       
-      if (err.message?.includes('sesión') || err.message?.includes('autenticación')) {
+      if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
         router.push('/login');
       }
     } finally {
       setIsLoading(false);
     }
   }, [checkAuth, router, getProfileId]);
+
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      console.log('🔒 No autenticado, redirigiendo a login');
+      router.push('/login');
+      return;
+    }
+
+    loadProfile();
+  }, [isChecking, checkAuth, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -154,9 +157,9 @@ export default function ProfilePage() {
       await loadProfile(true);
       
       setTimeout(() => setSuccess(null), 3000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al actualizar perfil:', err);
-      setError(err.message || 'Error al actualizar el perfil');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar el perfil');
     } finally {
       setIsSaving(false);
     }

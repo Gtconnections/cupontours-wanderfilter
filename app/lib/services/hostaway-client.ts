@@ -10,7 +10,7 @@
 
 import { hostawayAuth } from './hostaway-auth';
 
-interface HostawayApiResponse<T = any> {
+interface HostawayApiResponse<T = unknown> {
   status: 'success' | 'fail';
   result: T;
   message?: string;
@@ -19,7 +19,7 @@ interface HostawayApiResponse<T = any> {
 interface HostawayRequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   params?: Record<string, string | number | boolean>;
-  body?: any;
+  body?: unknown;
   timeout?: number;
   retries?: number;
 }
@@ -27,7 +27,7 @@ interface HostawayRequestOptions {
 class HostawayHttpClient {
   private static instance: HostawayHttpClient;
   private baseUrl: string;
-  private requestQueue: Array<() => Promise<any>> = [];
+  private requestQueue: Array<() => Promise<unknown>> = [];
   private isProcessingQueue = false;
   private lastRequestTime = 0;
   private readonly rateLimitDelay = 1000; // 1 second between requests to avoid rate limits
@@ -168,7 +168,7 @@ class HostawayHttpClient {
   /**
    * Make authenticated request to Hostaway API
    */
-  async request<T = any>(
+  async request<T = unknown>(
     endpoint: string,
     options: HostawayRequestOptions = {}
   ): Promise<T> {
@@ -218,35 +218,35 @@ class HostawayHttpClient {
   /**
    * GET request shorthand
    */
-  async get<T = any>(endpoint: string, params?: Record<string, string | number | boolean>): Promise<T> {
+  async get<T = unknown>(endpoint: string, params?: Record<string, string | number | boolean>): Promise<T> {
     return this.request<T>(endpoint, { method: 'GET', params });
   }
 
   /**
    * POST request shorthand
    */
-  async post<T = any>(endpoint: string, body?: any): Promise<T> {
+  async post<T = unknown>(endpoint: string, body?: unknown): Promise<T> {
     return this.request<T>(endpoint, { method: 'POST', body });
   }
 
   /**
    * PUT request shorthand
    */
-  async put<T = any>(endpoint: string, body?: any): Promise<T> {
+  async put<T = unknown>(endpoint: string, body?: unknown): Promise<T> {
     return this.request<T>(endpoint, { method: 'PUT', body });
   }
 
   /**
    * DELETE request shorthand
    */
-  async delete<T = any>(endpoint: string): Promise<T> {
+  async delete<T = unknown>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'DELETE' });
   }
 
   /**
    * Health check - test API connectivity
    */
-  async healthCheck(): Promise<{ status: string; authenticated: boolean; tokenInfo?: any }> {
+  async healthCheck(): Promise<{ status: string; authenticated: boolean; tokenInfo?: unknown }> {
     try {
       // Try to get account information to test authentication
       await this.get('/listings', { limit: 1 });

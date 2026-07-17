@@ -33,9 +33,25 @@ export default function ModalCreateAgreement({
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Cargar listings desde la API
+  const loadListings = async () => {
+    setIsLoadingListings(true);
+    try {
+      const data = await getListingsNamesAndIds();
+      setListings(data);
+    } catch (err) {
+      console.error('❌ Error al cargar listings:', err);
+      setError('Error al cargar la lista de propiedades');
+    } finally {
+      setIsLoadingListings(false);
+    }
+  };
+
   // Cargar listings al abrir el modal
   useEffect(() => {
     if (isOpen) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadListings();
       // Resetear formulario
       setTitle('');
@@ -45,20 +61,6 @@ export default function ModalCreateAgreement({
       setError(null);
     }
   }, [isOpen]);
-
-  // Cargar listings desde la API
-  const loadListings = async () => {
-    setIsLoadingListings(true);
-    try {
-      const data = await getListingsNamesAndIds();
-      setListings(data);
-    } catch (err: any) {
-      console.error('❌ Error al cargar listings:', err);
-      setError('Error al cargar la lista de propiedades');
-    } finally {
-      setIsLoadingListings(false);
-    }
-  };
 
   // Manejar selección de archivo
   const handleFileSelect = (file: File | null) => {
@@ -168,9 +170,9 @@ export default function ModalCreateAgreement({
       onSuccess();
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear agreement:', err);
-      setError(err.message || 'Error al crear el agreement');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear el agreement');
     } finally {
       setIsLoading(false);
     }

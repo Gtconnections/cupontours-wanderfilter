@@ -38,7 +38,7 @@ export default function DeleteCarModal({
           <div className="wander-delete-confirm">
             <span className="wander-delete-icon">⚠️</span>
             <p>
-              ¿Estás seguro que deseas eliminar el auto <strong>"{carName}"</strong>?
+              ¿Estás seguro que deseas eliminar el auto <strong>&quot;{carName}&quot;</strong>?
             </p>
             <p className="wander-delete-warning">
               Esta acción no se puede deshacer.

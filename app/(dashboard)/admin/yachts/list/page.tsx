@@ -75,9 +75,9 @@ export default function YachtsListPage() {
       setYachts(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / pageSize));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando yates:', err);
-      setError(err.message || 'Error loading yachts');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading yachts');
     } finally {
       setIsLoading(false);
     }
@@ -87,6 +87,9 @@ export default function YachtsListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

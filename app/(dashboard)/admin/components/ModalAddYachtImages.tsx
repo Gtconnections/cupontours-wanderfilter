@@ -33,6 +33,8 @@ export default function ModalAddYachtImages({
   useEffect(() => {
     if (!isOpen) {
       previews.forEach(url => URL.revokeObjectURL(url));
+      // Resets the form when the modal opens/closes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFiles([]);
       setPreviews([]);
       setError(null);
@@ -126,9 +128,9 @@ export default function ModalAddYachtImages({
       onSuccess();
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al subir imágenes:', err);
-      setError(err.message || 'Error uploading images');
+      setError((err instanceof Error ? err.message : undefined) || 'Error uploading images');
     } finally {
       setIsLoading(false);
     }
@@ -150,7 +152,7 @@ export default function ModalAddYachtImages({
         {/* Body */}
         <div className="wander-add-yacht-images-body">
           <p className="wander-add-yacht-images-subtitle">
-            Adding images for <strong>"{yachtName}"</strong>
+            Adding images for <strong>&quot;{yachtName}&quot;</strong>
           </p>
 
           <div 

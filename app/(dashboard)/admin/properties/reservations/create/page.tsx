@@ -60,6 +60,9 @@ function CreateReservationContent() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -67,13 +70,6 @@ function CreateReservationContent() {
       return;
     }
   }, [isAuthenticated, isChecking, checkAuth, router]);
-
-  // Cargar listings
-  useEffect(() => {
-    if (isAuthVerified && isAuthenticated) {
-      loadListings();
-    }
-  }, [isAuthVerified, isAuthenticated]);
 
   // Cargar listings desde la API
   const loadListings = async () => {
@@ -91,13 +87,22 @@ function CreateReservationContent() {
           setIsListingLocked(true);
         }
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar listings:', err);
       setError('Error al cargar la lista de propiedades');
     } finally {
       setIsLoadingListings(false);
     }
   };
+
+  // Cargar listings
+  useEffect(() => {
+    if (isAuthVerified && isAuthenticated) {
+      // Fetches data once auth is confirmed.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadListings();
+    }
+  }, [isAuthVerified, isAuthenticated]);
 
   // Manejar cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -155,9 +160,9 @@ function CreateReservationContent() {
         router.push(`/admin/properties/reservations/${formData.listing_id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear reservación:', err);
-      setError(err.message || 'Error al crear la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear la reservación');
     } finally {
       setIsLoading(false);
     }

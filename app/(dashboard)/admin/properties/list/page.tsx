@@ -6,15 +6,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import { getProperties, Property, refreshProperties } from '@/app/lib/api/propertiesAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiSearch, 
-  FiX, 
-  FiHome, 
-  FiUser, 
-  FiDroplet, 
-  FiUsers, 
+import type { IconType } from 'react-icons';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiSearch,
+  FiX,
+  FiHome,
+  FiUser,
+  FiDroplet,
+  FiUsers,
   FiDollarSign,
   FiEye,
   FiCalendar,
@@ -74,9 +75,9 @@ export default function PropertiesListPage() {
       setProperties(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / (filters.page_size || 10)));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando propiedades:', err);
-      setError(err.message || 'Error al cargar las propiedades');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las propiedades');
     } finally {
       setIsLoading(false);
     }
@@ -86,6 +87,9 @@ export default function PropertiesListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -149,7 +153,7 @@ export default function PropertiesListPage() {
   };
 
   const getTypeBadge = (type: string) => {
-    const typeMap: Record<string, { label: string; color: string; icon: any }> = {
+    const typeMap: Record<string, { label: string; color: string; icon: IconType }> = {
       'house': { label: 'House', color: '#2563eb', icon: FiHome },
       'apartment': { label: 'Apartment', color: '#8b5cf6', icon: FiHome },
       'luxury': { label: 'Luxury', color: '#f59e0b', icon: FiHome },

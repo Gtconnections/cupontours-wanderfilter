@@ -1,0 +1,190 @@
+/* app/(dashboard)/admin/components/ConfirmDialog.css */
+
+.wander-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: wanderFadeIn 0.2s ease;
+}
+
+.wander-confirm-dialog {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 440px;
+  width: 100%;
+  padding: 32px 28px 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: wanderSlideUp 0.3s ease;
+  position: relative;
+  text-align: center;
+}
+
+.wander-confirm-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #717171;
+  transition: all 0.2s ease;
+}
+
+.wander-confirm-close:hover {
+  background: #f5f5f5;
+  color: #000000;
+}
+
+.wander-confirm-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+}
+
+.wander-confirm-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 8px;
+}
+
+.wander-confirm-message {
+  font-size: 14px;
+  color: #717171;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.wander-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.wander-confirm-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wander-confirm-btn.cancel {
+  background: #f5f5f5;
+  color: #333333;
+}
+
+.wander-confirm-btn.cancel:hover:not(:disabled) {
+  background: #ebebeb;
+}
+
+.wander-confirm-btn.confirm {
+  color: #ffffff;
+}
+
+.wander-confirm-btn.confirm:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.wander-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.wander-confirm-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: wanderSpin 0.8s linear infinite;
+}
+
+@keyframes wanderFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes wanderSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes wanderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .wander-confirm-dialog {
+    padding: 24px 20px 20px;
+    margin: 10px;
+  }
+
+  .wander-confirm-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .wander-confirm-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .wander-confirm-title {
+    font-size: 16px;
+  }
+
+  .wander-confirm-message {
+    font-size: 13px;
+  }
+
+  .wander-confirm-actions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .wander-confirm-btn {
+    padding: 12px 16px;
+  }
+}

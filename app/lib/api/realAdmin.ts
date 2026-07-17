@@ -20,6 +20,21 @@ export interface RealEstate {
   updated_at: string;
 }
 
+export interface UpdateRealEstateData {
+  name: string;
+  price: number;
+  operation_type: string;
+  property_type?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  sqft?: number;
+  location?: string;
+  address?: string;
+  parking_spaces?: number;
+  descripcion?: string;
+  status?: string;
+}
+
 export interface RealEstateResponse {
   count: number;
   next: string | null;
@@ -75,7 +90,6 @@ export async function getRealEstates(): Promise<RealEstateResponse> {
     const data = await response.json();
     console.log('✅ Inmuebles obtenidos:', data);
     
-    // 🔥 Manejar ambos casos: array directo o objeto con results
     if (Array.isArray(data)) {
       return {
         count: data.length,
@@ -148,7 +162,111 @@ export async function getRealEstateDetail(id: number): Promise<RealEstate> {
   }
 }
 
-// Función auxiliar para obtener token (la misma que en transportAdmin.ts)
+// 🔥 CREAR INMUEBLE
+export async function createRealEstate(data: unknown): Promise<RealEstate> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/real-estate/`;
+    console.log('📡 Creando inmueble:', url);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const dataResponse = await response.json();
+    console.log('✅ Inmueble creado:', dataResponse);
+    return dataResponse;
+
+  } catch (error) {
+    console.error('❌ Error en createRealEstate:', error);
+    throw error;
+  }
+}
+
+// 🔥 ACTUALIZAR INMUEBLE
+export async function updateRealEstate(id: number, data: UpdateRealEstateData): Promise<RealEstate> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/real-estate/${id}`;
+    console.log('📡 Actualizando inmueble:', url);
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const result = await response.json();
+    console.log('✅ Inmueble actualizado:', result);
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en updateRealEstate:', error);
+    throw error;
+  }
+}
+
+// Función auxiliar para obtener token
 const getAuthToken = (): string | null => {
   if (typeof window === 'undefined') return null;
   
@@ -164,3 +282,168 @@ const getAuthToken = (): string | null => {
   
   return null;
 };
+
+// app/lib/api/realAdmin.ts - AÑADIR AL FINAL DEL ARCHIVO
+
+// 🔥 ELIMINAR INMUEBLE
+export async function deleteRealEstate(id: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/real-estate/${id}/`;
+    console.log('📡 Eliminando inmueble:', url);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Inmueble ${id} no encontrado`);
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    console.log('✅ Inmueble eliminado:', id);
+
+  } catch (error) {
+    console.error('❌ Error en deleteRealEstate:', error);
+    throw error;
+  }
+}
+
+// 🔥 SUBIR IMÁGENES A LA GALERÍA (agrega, no reemplaza)
+export async function uploadGallery(id: number, files: File[]): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/real-estate/${id}/galeria`;
+    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
+
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('imagenes[]', file);
+    });
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log('✅ Imágenes subidas a la galería:', data);
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en uploadGallery:', error);
+    throw error;
+  }
+}
+
+// 🔥 CAMBIAR IMAGEN PRINCIPAL (reemplaza principal_image)
+export async function changePrincipalImage(id: number, file: File): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/real-estate/${id}/imagen`;
+    console.log('📡 Actualizando imagen principal:', url);
+
+    const formData = new FormData();
+    formData.append('imagen', file);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log('✅ Imagen principal actualizada:', data);
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en changePrincipalImage:', error);
+    throw error;
+  }
+}

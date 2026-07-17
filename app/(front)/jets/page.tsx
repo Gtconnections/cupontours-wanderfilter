@@ -102,10 +102,10 @@ export default function JetsPage() {
       setPhoneNumber('');
       setInstagram('');
       setDepartureDate('');
-    } catch (error: any) {
+    } catch (error) {
       setStatusMessage({
         type: 'error',
-        text: error.message || "Something went wrong while requesting your quote. Please try again."
+        text: (error instanceof Error ? error.message : undefined) || "Something went wrong while requesting your quote. Please try again."
       });
     } finally {
       setIsLoading(false);
@@ -330,8 +330,8 @@ export default function JetsPage() {
                     What happens next?
                   </div>
                   <ul className="info-box-list">
-                    <li>• We'll review your request within 2 hours</li>
-                    <li>• You'll receive a detailed quote with availability</li>
+                    <li>• We&apos;ll review your request within 2 hours</li>
+                    <li>• You&apos;ll receive a detailed quote with availability</li>
                     <li>• Our team will contact you to finalize details</li>
                   </ul>
                 </div>
@@ -347,7 +347,7 @@ export default function JetsPage() {
         <div className="pitch-container">
           <span className="pre-title">The Standard</span>
           <blockquote className="editorial-quote">
-            "Your journey is strictly personal. Flight options configured from custom travel horizons are ready to respond to your exact target."
+            &quot;Your journey is strictly personal. Flight options configured from custom travel horizons are ready to respond to your exact target.&quot;
           </blockquote>
           <p className="pitch-subtext">Access our premium array of services, tailored to your lifestyle parameters across any coordinates.</p>
         </div>
@@ -402,7 +402,7 @@ export default function JetsPage() {
       {/* 6. BRUTALIST DARK BANNER */}
       <section className="aviation-dark-banner">
         <div className="dark-banner-content">
-          <h2>YOU DON'T DESERVE LESS THAN THIS</h2>
+          <h2>YOU DON&apos;T DESERVE LESS THAN THIS</h2>
           <p>There is nothing to await for. Experience the ultimate in luxury aviation with Cupon Tours Exclusive Fly Service.</p>
           <div className="banner-actions">
             <a 

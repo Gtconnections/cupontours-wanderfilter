@@ -4,6 +4,7 @@ import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import './wellness-detail.css';
 import { getWellnessById, WellnessItem } from '@/app/lib/api/services';
+import Membership from '@/components/Membership';
 
 // Extendemos la interfaz localmente para incluir la galería
 interface WellnessDetail extends WellnessItem {
@@ -201,6 +202,9 @@ export default function WellnessDetailPage({ params }: { params: Promise<{ id: s
 
         </div>
       </div>
+
+      {/* MEMBERSHIP CLUB SECTION */}
+      <Membership />
 
       {/* LIGHTBOX MODAL */}
       {lightboxOpen && (

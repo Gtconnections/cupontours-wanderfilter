@@ -134,7 +134,7 @@ const SuccessModal = ({
           </div>
 
           <p className="wander-drop-note">
-            If you don't want to upload photos press the <strong>CANCEL</strong> button below.
+            If you don&apos;t want to upload photos press the <strong>CANCEL</strong> button below.
           </p>
         </div>
 
@@ -199,23 +199,21 @@ export default function CreateCarPage() {
   const [isUploading, setIsUploading] = useState(false);
 
   // Lista de owners (esto debería venir de la API)
-  const [owners, setOwners] = useState<{ id: number; name: string }[]>([]);
-
-  // Cargar owners (por ahora usamos datos estáticos, pero idealmente viene de la API)
-  useEffect(() => {
-    // TODO: Obtener owners de la API
-    setOwners([
-      { id: 2, name: 'Gerardo Cornejo' },
-      { id: 3, name: 'Magnetic Investments' },
-      { id: 4, name: 'Wilda Valdez' },
-    ]);
-  }, []);
+  // TODO: Obtener owners de la API
+  const [owners] = useState<{ id: number; name: string }[]>([
+    { id: 2, name: 'Gerardo Cornejo' },
+    { id: 3, name: 'Magnetic Investments' },
+    { id: 4, name: 'Wilda Valdez' },
+  ]);
 
   // Verificar autenticación
   useEffect(() => {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -281,9 +279,9 @@ export default function CreateCarPage() {
       setCreatedCarName(`${result.brand} ${result.model} ${result.year}`);
       setModalOpen(true);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al crear auto:', err);
-      setError(err.message || 'Error al crear el auto');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear el auto');
     } finally {
       setIsSubmitting(false);
     }
@@ -302,9 +300,9 @@ export default function CreateCarPage() {
     try {
       await uploadPrincipalImage(createdCarId, file);
       router.push(`/admin/cars/${createdCarId}`);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al subir imagen:', err);
-      alert(err.message || 'Error al subir la imagen');
+      alert((err instanceof Error ? err.message : undefined) || 'Error al subir la imagen');
       setIsUploading(false);
     }
   };

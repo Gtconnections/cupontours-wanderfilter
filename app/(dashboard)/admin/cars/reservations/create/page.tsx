@@ -65,21 +65,6 @@ function CreateReservationContent() {
     observations: '',
   });
 
-  // Verificar autenticación y cargar autos
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      router.push('/login');
-      return;
-    }
-
-    loadCars();
-  }, [isChecking, checkAuth, router]);
-
   const loadCars = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -91,13 +76,31 @@ function CreateReservationContent() {
       if (!carIdFromUrl && data.length > 0) {
         setFormData(prev => ({ ...prev, car_id: data[0].id }));
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando autos:', err);
-      setError(err.message || 'Error al cargar los autos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los autos');
     } finally {
       setIsLoading(false);
     }
   }, [carIdFromUrl]);
+
+  // Verificar autenticación y cargar autos
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      router.push('/login');
+      return;
+    }
+
+    loadCars();
+  }, [isChecking, checkAuth, router]);
 
   // 🔥 Función para extraer la hora de una fecha
   const extractTime = (dateStr: string): string => {
@@ -124,12 +127,16 @@ function CreateReservationContent() {
   // 🔥 Calcular total_earnings automáticamente
   useEffect(() => {
     const total = formData.earnings + formData.extra_charges;
+    // Derived total_earnings kept in sync with its own inputs inside the same form state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(prev => ({ ...prev, total_earnings: total }));
   }, [formData.earnings, formData.extra_charges]);
 
   // 🔥 Calcular miles_drive automáticamente
   useEffect(() => {
     const drive = formData.miles_post_trip - formData.miles_pre_trip;
+    // Derived miles_drive kept in sync with its own inputs inside the same form state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(prev => ({ ...prev, miles_drive: drive >= 0 ? drive : 0 }));
   }, [formData.miles_pre_trip, formData.miles_post_trip]);
 
@@ -215,9 +222,9 @@ function CreateReservationContent() {
         router.push(`/admin/cars/reservations/${formData.car_id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al crear reservación:', err);
-      setError(err.message || 'Error al crear la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear la reservación');
     } finally {
       setIsSubmitting(false);
     }

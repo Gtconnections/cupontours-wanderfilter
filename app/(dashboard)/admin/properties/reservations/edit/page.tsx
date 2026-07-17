@@ -70,6 +70,9 @@ function EditReservationContent() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -77,17 +80,6 @@ function EditReservationContent() {
       return;
     }
   }, [isAuthenticated, isChecking, checkAuth, router]);
-
-  // Validar que hay un ID
-  useEffect(() => {
-    if (isAuthVerified && isAuthenticated) {
-      if (!reservationId) {
-        setError('No reservation ID provided');
-        return;
-      }
-      loadData();
-    }
-  }, [isAuthVerified, isAuthenticated, reservationId]);
 
   // Cargar datos (listings y detalle de reservación)
   const loadData = async () => {
@@ -121,14 +113,27 @@ function EditReservationContent() {
         observations: reservationData.observations || '',
       });
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar datos:', err);
-      setError(err.message || 'Error al cargar los datos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');
     } finally {
       setIsLoadingListings(false);
       setIsLoadingReservation(false);
     }
   };
+
+  // Validar que hay un ID
+  useEffect(() => {
+    if (isAuthVerified && isAuthenticated) {
+      if (!reservationId) {
+        // Validates the route param once auth is confirmed.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setError('No reservation ID provided');
+        return;
+      }
+      loadData();
+    }
+  }, [isAuthVerified, isAuthenticated, reservationId]);
 
   // Manejar cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -202,9 +207,9 @@ function EditReservationContent() {
         router.push(`/admin/properties/reservations/${formData.listing_id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al actualizar reservación:', err);
-      setError(err.message || 'Error al actualizar la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar la reservación');
     } finally {
       setIsLoading(false);
     }

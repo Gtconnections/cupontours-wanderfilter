@@ -78,7 +78,7 @@ export default function TermsPage() {
           <div className="legal-text-block" id="liability">
             <h2>6. Limits of Liability</h2>
             <p>
-              Cupontours provides its digital solutions and marketplace services on an "as-is" and "as-available" basis. We do not assume direct liability for unforeseen structural accidents, local power failures, guest personal injury during external activities, or asset wear-and-tear inside managed real estate properties beyond standard maintenance guarantees.
+              Cupontours provides its digital solutions and marketplace services on an &quot;as-is&quot; and &quot;as-available&quot; basis. We do not assume direct liability for unforeseen structural accidents, local power failures, guest personal injury during external activities, or asset wear-and-tear inside managed real estate properties beyond standard maintenance guarantees.
             </p>
           </div>
 

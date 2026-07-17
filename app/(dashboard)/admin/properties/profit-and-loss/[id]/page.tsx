@@ -50,9 +50,9 @@ export default function ProfitAndLossDetailPage() {
       const result = await getProfitAndLossDetail(plId);
       console.log('📦 Detalle PL:', result);
       setData(result);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando detalle:', err);
-      setError(err.message || 'Error al cargar los detalles');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los detalles');
     } finally {
       setIsLoading(false);
     }
@@ -62,6 +62,9 @@ export default function ProfitAndLossDetailPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -89,11 +92,11 @@ export default function ProfitAndLossDetailPage() {
         router.push('/admin/properties/profit-and-loss');
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al eliminar:', err);
-      setError(err.message || 'Error al eliminar el registro');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar el registro');
       setIsDeleteModalOpen(false);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete'}`);
+      setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to delete'}`);
       setTimeout(() => setToastMessage(null), 3000);
     } finally {
       setIsDeleting(false);
@@ -112,9 +115,9 @@ export default function ProfitAndLossDetailPage() {
       generateProfitAndLossPDF(data);
       setToastMessage('📄 PDF generated successfully!');
       setTimeout(() => setToastMessage(null), 3000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al generar PDF:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to generate PDF'}`);
+      setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to generate PDF'}`);
       setTimeout(() => setToastMessage(null), 3000);
     }
   };

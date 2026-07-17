@@ -1,4 +1,5 @@
 import { clientConfig } from "../config";
+import { RawApiItem } from "../types/raw";
 const API_BASE_URL = clientConfig.api.baseUrl
 
 export interface CarCatalogItem {
@@ -8,6 +9,12 @@ export interface CarCatalogItem {
   price: string;
   rating: string;
   img: string;
+}
+
+export interface CarDetail extends CarCatalogItem {
+  description: string;
+  year: number;
+  gallery: string[];
 }
 
 export async function getCars(): Promise<CarCatalogItem[]> {
@@ -23,7 +30,7 @@ export async function getCars(): Promise<CarCatalogItem[]> {
     const data = await response.json();
     const results = data.results || data.data || data || [];
 
-    return results.map((item: any): CarCatalogItem => {
+    return results.map((item: RawApiItem): CarCatalogItem => {
       const id = item.id || Math.random();
       
       // Combinamos la marca y el modelo (Ej: "Chevrolet Tahoe SRT")
@@ -55,7 +62,7 @@ export async function getCars(): Promise<CarCatalogItem[]> {
 
 // Añade esta función al final de tu archivo lib/api/cars.ts existente
 
-export async function getCarById(id: string): Promise<any> {
+export async function getCarById(id: string): Promise<CarDetail> {
   try {
     const response = await fetch(`${API_BASE_URL}/landing/cars/${id}/`, {
       method: "GET",
@@ -74,8 +81,8 @@ export async function getCarById(id: string): Promise<any> {
     const img = item.principal_image || "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80";
 
     // CORREGIDO: Aseguramos el mapeo de todas las variaciones de la base de datos (priorizando image_url)
-    const gallery = Array.isArray(item.gallery) 
-      ? item.gallery.map((g: any) => {
+    const gallery = Array.isArray(item.gallery)
+      ? item.gallery.map((g: RawApiItem) => {
           if (typeof g === 'string') return g.trim();
           return g.image_url || g.image || g.url || g.file || img;
         })

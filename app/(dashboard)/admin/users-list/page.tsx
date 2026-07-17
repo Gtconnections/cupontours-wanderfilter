@@ -53,22 +53,6 @@ export default function UsersListPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  // Verificar autenticación
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
-      router.push('/login');
-      return;
-    }
-    
-    loadProfiles();
-  }, [isChecking, checkAuth, router]);
-
   // Cargar datos
   const loadProfiles = useCallback(async (forceRefresh = false) => {
     if (!checkAuth()) {
@@ -82,17 +66,36 @@ export default function UsersListPage() {
     try {
       const data = await getProfiles(forceRefresh);
       setAllProfiles(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando usuarios:', err);
-      setError(err.message || 'Error al cargar los usuarios');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los usuarios');
       
-      if (err.message?.includes('sesión') || err.message?.includes('autenticación')) {
+      if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
         router.push('/login');
       }
     } finally {
       setIsLoading(false);
     }
   }, [checkAuth, router]);
+
+  // Verificar autenticación
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      console.log('🔒 No autenticado, redirigiendo a login');
+      router.push('/login');
+      return;
+    }
+
+    loadProfiles();
+  }, [isChecking, checkAuth, router]);
 
   // 🔥 MANEJAR ACTUALIZACIÓN DE USUARIO
   const handleUpdateUser = async (userId: number, userData: UpdateUserData) => {
@@ -178,6 +181,8 @@ export default function UsersListPage() {
   const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
 
   useEffect(() => {
+    // Resets pagination when the search/filter criteria change.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
   }, [searchTerm, positionFilter, itemsPerPage]);
 

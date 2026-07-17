@@ -40,7 +40,7 @@ export default function DeletePropertyModal({
         <div className="wander-delete-modal-body">
           <div className="wander-delete-modal-icon">🗑️</div>
           <p className="wander-delete-modal-message">
-            Are you sure you want to delete the P&L record for <strong>"{listingName}"</strong>?
+            Are you sure you want to delete the P&L record for <strong>&quot;{listingName}&quot;</strong>?
           </p>
           <p className="wander-delete-modal-warning">
             This action cannot be undone.

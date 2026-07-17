@@ -227,7 +227,7 @@ export const generateProfitAndLossPDF = (data: ProfitAndLossDetail) => {
     });
 
     // Obtener la última posición Y después de la tabla
-    const finalY = (doc as any).lastAutoTable?.finalY || yPos + 20;
+    const finalY = (doc as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY || yPos + 20;
     yPos = finalY + 8;
   }
 

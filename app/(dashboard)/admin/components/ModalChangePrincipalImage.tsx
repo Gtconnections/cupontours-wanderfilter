@@ -1,25 +1,28 @@
-// app/admin/properties/components/ModalChangePrincipalImage.tsx
+// app/admin/components/ModalChangePrincipalImage.tsx
+// Shared principal-image-change modal, reused across properties and cars detail pages.
 
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { updatePrincipalPhoto } from '@/app/lib/api/propertiesAdmin';
+import { FiX, FiCamera, FiAlertTriangle } from 'react-icons/fi';
 
 interface ModalChangePrincipalImageProps {
   isOpen: boolean;
   onClose: () => void;
-  listingId: number;
-  listingName: string;
+  itemId: number;
+  itemName: string;
   currentImage: string;
+  uploadFn: (id: number, file: File) => Promise<unknown>;
   onSuccess: () => void;
 }
 
 export default function ModalChangePrincipalImage({
   isOpen,
   onClose,
-  listingId,
-  listingName,
+  itemId,
+  itemName,
   currentImage,
+  uploadFn,
   onSuccess,
 }: ModalChangePrincipalImageProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -36,6 +39,8 @@ export default function ModalChangePrincipalImage({
       if (preview) {
         URL.revokeObjectURL(preview);
       }
+      // Resets the form when the modal opens/closes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedFile(null);
       setPreview(null);
       setError(null);
@@ -119,8 +124,8 @@ export default function ModalChangePrincipalImage({
     setError(null);
 
     try {
-      const result = await updatePrincipalPhoto(listingId, selectedFile);
-      console.log('✅ Foto principal actualizada:', result);
+      const result = await uploadFn(itemId, selectedFile);
+      console.log('Foto principal actualizada:', result);
 
       // Limpiar preview
       if (preview) {
@@ -133,9 +138,9 @@ export default function ModalChangePrincipalImage({
       // Cerrar modal
       onClose();
 
-    } catch (err: any) {
-      console.error('❌ Error al actualizar foto principal:', err);
-      setError(err.message || 'Error al actualizar la foto principal. Por favor, intenta de nuevo.');
+    } catch (err) {
+      console.error('Error al actualizar foto principal:', err);
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar la foto principal. Por favor, intenta de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -159,7 +164,7 @@ export default function ModalChangePrincipalImage({
         <div className="wander-modal-header">
           <h2>Change Principal Image</h2>
           <button className="wander-modal-close" onClick={onClose} disabled={isLoading}>
-            ✕
+            <FiX size={18} />
           </button>
         </div>
 
@@ -167,7 +172,7 @@ export default function ModalChangePrincipalImage({
         <div className="wander-modal-body">
           <div className="wander-modal-section">
             <p className="wander-modal-description">
-              Select a new image to set as the principal photo for <strong>"{listingName}"</strong>
+              Select a new image to set as the principal photo for <strong>&quot;{itemName}&quot;</strong>
             </p>
 
             {/* Current Image Preview */}
@@ -203,12 +208,13 @@ export default function ModalChangePrincipalImage({
                   <div className="wander-principal-preview">
                     <img src={preview} alt="New principal preview" />
                     <div className="wander-principal-preview-overlay">
-                      <span>📷 Click to change</span>
+                      <FiCamera size={16} />
+                      <span>Click to change</span>
                     </div>
                   </div>
                 ) : (
                   <div className="wander-drop-content">
-                    <div className="wander-drop-icon">📸</div>
+                    <div className="wander-drop-icon"><FiCamera size={28} /></div>
                     <p className="wander-drop-text">Drop your image here</p>
                     <p className="wander-drop-subtext">or click to browse</p>
                     <p className="wander-drop-hint">PNG, JPG, WEBP (Max 10MB)</p>
@@ -218,7 +224,7 @@ export default function ModalChangePrincipalImage({
 
               {error && (
                 <div className="wander-modal-error">
-                  ⚠️ {error}
+                  <FiAlertTriangle size={14} /> {error}
                 </div>
               )}
             </div>

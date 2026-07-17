@@ -160,9 +160,9 @@ export default function CarCalendarPage() {
       }
       
       console.log('📊 Total de reservaciones:', reservationsData.length);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando reservaciones:', err);
-      setError(err.message || 'Error al cargar las reservaciones');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las reservaciones');
     } finally {
       setIsLoading(false);
     }
@@ -172,6 +172,9 @@ export default function CarCalendarPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

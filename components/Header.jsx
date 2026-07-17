@@ -19,8 +19,12 @@ export default function Header() {
   });
 
   // Estado para el calendario
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [nextMonth, setNextMonth] = useState(new Date());
+  const getFirstOfMonth = (monthsAhead) => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() + monthsAhead, 1);
+  };
+  const [currentMonth, setCurrentMonth] = useState(() => getFirstOfMonth(0));
+  const [nextMonth, setNextMonth] = useState(() => getFirstOfMonth(1));
 
   const menuRef = useRef(null);
   const searchRef = useRef(null);
@@ -28,11 +32,18 @@ export default function Header() {
   const router = useRouter();
   
   const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account'];
-  const isLightPage = 
-        lightPages.includes(pathname) || 
+  const isLightPage =
+        lightPages.includes(pathname) ||
         (pathname.startsWith('/properties/') && pathname !== '/properties') ||
         (pathname.startsWith('/cars/') && pathname !== '/cars') ||
-        (pathname.startsWith('/yachts/') && pathname !== '/yachts');
+        (pathname.startsWith('/yachts/') && pathname !== '/yachts') ||
+        (pathname.startsWith('/services/transport/') && pathname !== '/services/transport') ||
+        (pathname.startsWith('/services/real-estate/') && pathname !== '/services/real-estate') ||
+        (pathname.startsWith('/services/experiences/') && pathname !== '/services/experiences') ||
+        (pathname.startsWith('/services/general/') && pathname !== '/services/general') ||
+        (pathname.startsWith('/services/wellness/') && pathname !== '/services/wellness') ||
+        (pathname.startsWith('/services/health/') && pathname !== '/services/health') ||
+        (pathname.startsWith('/services/events/') && pathname !== '/services/events');
 
   // Cargar ciudades disponibles al montar el componente
   useEffect(() => {
@@ -51,15 +62,6 @@ export default function Header() {
       }
     };
     loadCities();
-  }, []);
-
-  // Inicializar calendario con mes actual y siguiente
-  useEffect(() => {
-    const today = new Date();
-    const current = new Date(today.getFullYear(), today.getMonth(), 1);
-    const next = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    setCurrentMonth(current);
-    setNextMonth(next);
   }, []);
 
   useEffect(() => {

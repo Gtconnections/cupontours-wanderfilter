@@ -417,7 +417,7 @@ const displayAmenities = amenityCategories.length > 0 ? amenityCategories : [
           <div className="header-split-row">
             <div className="header-text-side">
               <span className="pre-title">Exclusive Stay</span>
-              <h1 className="massive-heading">"{propertyName}"</h1>
+              <h1 className="massive-heading">&quot;{propertyName}&quot;</h1>
               <p className="property-location-tag">{location}</p>
             </div>
             <div className="header-action-side">
@@ -608,7 +608,7 @@ const displayAmenities = amenityCategories.length > 0 ? amenityCategories : [
                   color: HOSTAWAY_WIDGET_COLORS,
                 }}
               />
-              <p className="booking-disclaimer">You won't be charged yet. Payouts processed under verified token parameters.</p>
+              <p className="booking-disclaimer">You won&apos;t be charged yet. Payouts processed under verified token parameters.</p>
             </div>
           </div>
 

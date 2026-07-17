@@ -46,6 +46,8 @@ export default function ProcessModal({
         defaultTypeId = matchedType ? matchedType.id : processTypes[0].id;
       }
 
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: process.name || '',
         repetition: process.repetition || '',
@@ -97,9 +99,9 @@ export default function ProcessModal({
     try {
       await onSave(formData);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al guardar:', err);
-      setError(err.message || 'Error al guardar el proceso');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al guardar el proceso');
     } finally {
       setIsLoading(false);
     }

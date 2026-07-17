@@ -32,7 +32,7 @@ export default function EventsPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   const formatDateTime = (dateString: string) => {
@@ -53,9 +53,10 @@ export default function EventsPage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Curated Happenings</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Exclusive Events</h1>
           <p className="hero-subtitle">
-            From private art exhibitions and jazz nights to VIP sports access. Discover and book your spot at the city's most anticipated gatherings.
+            From private art exhibitions and jazz nights to VIP sports access. Discover and book your spot at the city&apos;s most anticipated gatherings.
           </p>
         </div>
       </section>
@@ -64,7 +65,7 @@ export default function EventsPage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Calendar</span>
-            <h2>Upcoming <span style={{ color: '#d4af37', fontStyle: 'italic' }}>events.</span></h2>
+            <h2>Upcoming <span className="accent-word">events.</span></h2>
             <p>Browse and secure your attendance to premium local and regional events.</p>
           </div>
 

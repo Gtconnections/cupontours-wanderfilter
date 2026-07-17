@@ -76,10 +76,10 @@ export default function AboutPage() {
       setEmail('');
       setPhoneNumber('');
       setMessage('');
-    } catch (error: any) {
+    } catch (error) {
       setStatusMessage({
         type: 'error',
-        text: error.message || "Failed to deliver message. Please verify your connection."
+        text: (error instanceof Error ? error.message : undefined) || "Failed to deliver message. Please verify your connection."
       });
     } finally {
       setIsLoading(false);
@@ -158,7 +158,7 @@ export default function AboutPage() {
       <section className="about-pillars-section">
         <div className="about-pillars-container">
           <div className="about-pillars-text-side">
-            <h2>Things we believe, that brings us users's absolute satisfaction</h2>
+            <h2>Things we believe, that brings us users&apos;s absolute satisfaction</h2>
             
             <div className="pillars-text-stack">
               {pillars.map((item, i) => (
@@ -206,7 +206,7 @@ export default function AboutPage() {
               {"★".repeat(5)}
             </div>
             <p className="testimonial-quote-body">
-              "CuponTours exceeded all my expectations. From the moment I contacted them until the end of my trip, everything was perfectly organized. The attention to detail and personal service made my vacation truly unforgettable."
+              &quot;CuponTours exceeded all my expectations. From the moment I contacted them until the end of my trip, everything was perfectly organized. The attention to detail and personal service made my vacation truly unforgettable.&quot;
             </p>
             <div className="testimonial-author-meta">
               <strong>Sarah Johnson</strong>

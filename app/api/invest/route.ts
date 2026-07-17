@@ -49,15 +49,16 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-  } catch (error: any) {
-    if (error.response) {
-      console.error("SendGrid Invest Route Error Details:", error.response.body);
+  } catch (error) {
+    const sgError = error as { response?: { body?: unknown }; message?: string };
+    if (sgError.response) {
+      console.error("SendGrid Invest Route Error Details:", sgError.response.body);
     } else {
       console.error("General Invest Route Error:", error);
     }
 
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to process the email delivery via Next.js handles." },
+      { success: false, message: sgError.message || "Failed to process the email delivery via Next.js handles." },
       { status: 500 }
     );
   }

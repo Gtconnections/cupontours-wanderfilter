@@ -18,7 +18,7 @@ export interface TransportItem {
 }
 
 export async function getPrivateTransport(): Promise<TransportItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/transporte-privado`, {
       method: 'GET',
@@ -34,7 +34,7 @@ export async function getPrivateTransport(): Promise<TransportItem[]> {
 }
 
 export async function getPrivateTransportById(id: string): Promise<TransportItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/transporte-privado/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -65,7 +65,7 @@ export interface ExperienceItem {
 }
 
 export async function getExperiences(): Promise<ExperienceItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/experiences?status=activo`, {
       method: 'GET',
@@ -81,7 +81,7 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
 }
 
 export async function getExperienceById(id: string): Promise<ExperienceItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/experiences/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -114,7 +114,7 @@ export interface RealEstateItem {
 }
 
 export async function getRealEstate(): Promise<RealEstateItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/real-estate?status=activo`, {
       method: 'GET',
@@ -130,7 +130,7 @@ export async function getRealEstate(): Promise<RealEstateItem[]> {
 }
 
 export async function getRealEstateById(id: string): Promise<RealEstateItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/real-estate/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -157,7 +157,7 @@ export interface GeneralServiceItem {
 }
 
 export async function getGeneralServices(): Promise<GeneralServiceItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/servicios-generales?status=activo`, {
       method: 'GET',
@@ -173,7 +173,7 @@ export async function getGeneralServices(): Promise<GeneralServiceItem[]> {
 }
 
 export async function getGeneralServiceById(id: string): Promise<GeneralServiceItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/servicios-generales/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -201,7 +201,7 @@ export interface WellnessItem {
 }
 
 export async function getWellness(): Promise<WellnessItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/wellness?status=activo`, {
       method: 'GET',
@@ -217,7 +217,7 @@ export async function getWellness(): Promise<WellnessItem[]> {
 }
 
 export async function getWellnessById(id: string): Promise<WellnessItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/wellness/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -245,7 +245,7 @@ export interface HealthItem {
 }
 
 export async function getHealth(): Promise<HealthItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/health?status=activo`, {
       method: 'GET',
@@ -261,7 +261,7 @@ export async function getHealth(): Promise<HealthItem[]> {
 }
 
 export async function getHealthById(id: string): Promise<HealthItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/health/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -290,7 +290,7 @@ export interface EventItem {
 }
 
 export async function getEvents(): Promise<EventItem[]> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/events?status=activo`, {
       method: 'GET',
@@ -306,7 +306,7 @@ export async function getEvents(): Promise<EventItem[]> {
 }
 
 export async function getEventById(id: string): Promise<EventItem | null> {
-  const API_BASE = process.env.API_BASE_URL_LOCAL || 'http://localhost/backend_cupon';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://gthomework.com/api';
   try {
     const response = await fetch(`${API_BASE}/events/${id}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);

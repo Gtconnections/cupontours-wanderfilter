@@ -90,9 +90,9 @@ export default function AccessLinksPage() {
         setListingName(`Property #${listingId}`);
       }
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando access links:', err);
-      setError(err.message || 'Error loading access links');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading access links');
     } finally {
       setIsLoading(false);
     }
@@ -108,9 +108,9 @@ export default function AccessLinksPage() {
       const detail = await getAccessLinkDetail(id);
       console.log('📦 Detalle de access link:', detail);
       setSelectedAccessLink(detail);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando detalle:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to load details'}`);
+      setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to load details'}`);
       setTimeout(() => setToastMessage(null), 3000);
     } finally {
       setIsLoadingDetail(false);
@@ -137,9 +137,9 @@ export default function AccessLinksPage() {
       setAccessLinkToDelete(null);
       loadAccessLinks();
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al eliminar:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete'}`);
+      setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to delete'}`);
       setTimeout(() => setToastMessage(null), 3000);
       setIsDeleteModalOpen(false);
     } finally {
@@ -158,6 +158,9 @@ export default function AccessLinksPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

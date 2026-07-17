@@ -6,22 +6,26 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getEvents, Event } from '@/app/lib/api/eventAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiEye, 
+import { getEvents, Event, createEvent, deleteEvent } from '@/app/lib/api/eventAdmin';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiEye,
   FiTrash2,
   FiDollarSign,
   FiMapPin,
   FiChevronLeft,
   FiChevronRight,
   FiTag,
-  FiCalendar,
+  FiCalendar as FiCalendarIcon,
   FiUsers,
   FiMusic,
-  FiCalendar as FiCalendarIcon
+  FiBarChart2
 } from 'react-icons/fi';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { CreateEventForm } from '@/app/(dashboard)/admin/components/CreateEventForm';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './events.css';
 
 const LoadingSkeleton = () => (
@@ -54,6 +58,26 @@ export default function EventListPage() {
   const [itemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
+
   const loadEvents = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -70,9 +94,9 @@ export default function EventListPage() {
       setEvents(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando eventos:', err);
-      setError(err.message || 'Error loading events');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading events');
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +106,9 @@ export default function EventListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -164,6 +191,76 @@ export default function EventListPage() {
     );
   };
 
+  // Create event handler
+  const handleCreateEvent = async (data: { name: string }) => {
+    setIsSubmitting(true);
+    try {
+      const response = await createEvent(data);
+      console.log('✅ Evento creado:', response);
+      
+      setToast({
+        message: `Event "${data.name}" created successfully!`,
+        type: 'success'
+      });
+      
+      setIsModalOpen(false);
+      await loadEvents(true);
+    } catch (err) {
+      console.error('❌ Error creando evento:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error creating event',
+        type: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Delete event handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteEvent(confirmDialog.id);
+      console.log('✅ Evento eliminado:', confirmDialog.id);
+      
+      setToast({
+        message: `Event "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadEvents(true);
+    } catch (err) {
+      console.error('❌ Error eliminando evento:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting event',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;
   }
@@ -201,6 +298,28 @@ export default function EventListPage() {
 
   return (
     <div className="wander-event-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Event"
+        message={`Are you sure you want to delete "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-event-header">
         <div>
@@ -211,16 +330,23 @@ export default function EventListPage() {
           </p>
         </div>
         <div className="wander-event-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Refresh
           </button>
-          <button 
+          <Link
+            href="/admin/accounting?servicio_tipo=events"
+            className="wander-btn-secondary"
+          >
+            <FiBarChart2 size={16} />
+            Transactions
+          </Link>
+          <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/events/create')}
+            onClick={() => setIsModalOpen(true)}
           >
             <FiPlus size={16} />
             Create Event
@@ -302,7 +428,7 @@ export default function EventListPage() {
                   Details
                 </Link>
                 <button 
-                  onClick={() => alert(`Delete ${event.name} - Feature in development`)}
+                  onClick={() => handleDeleteClick(event.id, event.name)}
                   className="wander-event-action-btn delete"
                 >
                   <FiTrash2 size={14} />
@@ -366,6 +492,20 @@ export default function EventListPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Creación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Event"
+        maxWidth="640px"
+      >
+        <CreateEventForm
+          onSubmit={handleCreateEvent}
+          onCancel={() => setIsModalOpen(false)}
+          isSubmitting={isSubmitting}
+        />
+      </Modal>
     </div>
   );
 }

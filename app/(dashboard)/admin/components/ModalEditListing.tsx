@@ -45,18 +45,11 @@ export default function ModalEditListing({
   const [isSuccess, setIsSuccess] = useState(false);
 
   // Función para obtener el nombre completo del owner
-  const getOwnerFullName = (owner: any): string => {
+  const getOwnerFullName = (owner: Owner): string => {
     const firstName = owner.user?.first_name || '';
     const lastName = owner.user?.last_name || '';
     return `${firstName} ${lastName}`.trim() || owner.user?.username || '';
   };
-
-  // Cargar owners al abrir el modal
-  useEffect(() => {
-    if (isOpen) {
-      loadOwners();
-    }
-  }, [isOpen]);
 
   // Cargar datos de la propiedad al abrir el modal
   useEffect(() => {
@@ -89,6 +82,8 @@ export default function ModalEditListing({
         }
       }
 
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         owner_id: ownerId,
         listing_public_name: listing.public_name || listing.name || '',
@@ -118,13 +113,22 @@ export default function ModalEditListing({
       const ownersData = await getOwners();
       setOwners(ownersData);
       console.log('✅ Owners cargados:', ownersData);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar owners:', err);
       setError('Error al cargar la lista de propietarios');
     } finally {
       setIsLoadingOwners(false);
     }
   };
+
+  // Cargar owners al abrir el modal
+  useEffect(() => {
+    if (isOpen) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadOwners();
+    }
+  }, [isOpen]);
 
   // Manejar cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -177,9 +181,9 @@ export default function ModalEditListing({
         onClose();
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al editar propiedad:', err);
-      setError(err.message || 'Error al editar la propiedad. Por favor, intenta de nuevo.');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al editar la propiedad. Por favor, intenta de nuevo.');
     } finally {
       setIsLoading(false);
     }

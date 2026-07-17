@@ -59,9 +59,9 @@ export default function FurnishPage() {
       }
       const jsonData: FurnishData = await response.json();
       setData(jsonData);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error cargando datos:', err);
-      setError(err.message || 'Error al cargar los datos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +72,9 @@ export default function FurnishPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

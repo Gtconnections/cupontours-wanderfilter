@@ -12,7 +12,7 @@ interface UserData {
   fullName?: string;
   profile_id?: string | number;
   user_id?: string | number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface UseAuthReturn {
@@ -203,6 +203,9 @@ export function useAuth(): UseAuthReturn {
   }, []);
 
   useEffect(() => {
+    // Reading localStorage/cookies must happen after mount to avoid an SSR hydration
+    // mismatch, so the resulting setState calls are intentionally synchronous here.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     const hasData = loadUserData();
     setIsLoading(false);
     setIsChecking(false);

@@ -31,6 +31,8 @@ export default function ModalAddFiles({
   useEffect(() => {
     if (!isOpen) {
       previews.forEach(url => URL.revokeObjectURL(url));
+      // Resets the form when the modal opens/closes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFiles([]);
       setPreviews([]);
       setError(null);
@@ -124,9 +126,9 @@ export default function ModalAddFiles({
       onSuccess();
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al subir archivos:', err);
-      setError(err.message || 'Error uploading files');
+      setError((err instanceof Error ? err.message : undefined) || 'Error uploading files');
     } finally {
       setIsLoading(false);
     }

@@ -52,9 +52,9 @@ export default function ProfitAndLossDetailPage() {
     try {
       const result = await getProfitAndLossDetail(plId);
       setData(result);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando detalle:', err);
-      setError(err.message || 'Error al cargar el detalle');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar el detalle');
     } finally {
       setIsLoading(false);
     }
@@ -64,6 +64,9 @@ export default function ProfitAndLossDetailPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -96,9 +99,9 @@ export default function ProfitAndLossDetailPage() {
       setTimeout(() => {
         router.push('/admin/cars/profit-and-loss');
       }, 1500);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar PL:', err);
-      setError(err.message || 'Error al eliminar Profit and Loss');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar Profit and Loss');
       setIsDeleting(false);
     }
   };

@@ -1,3 +1,5 @@
+import { RawApiItem } from "../types/raw";
+
 // CORREGIDO: Añadido 'www.' para hacer match exacto con el origen del backend viejo
 const BACKEND_URL = "https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app";
 
@@ -30,7 +32,7 @@ export async function getCatalogItems(type: 'home' | 'car' | 'yacht'): Promise<C
 
     const results = data.data?.result || data.data || data.results || data || [];
     
-    return results.map((item: any): CatalogItem => {
+    return results.map((item: RawApiItem): CatalogItem => {
       const id = item.id || item._id || Math.random();
       const title = item.title || item.name || "Exclusive Asset";
       

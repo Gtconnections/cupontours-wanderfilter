@@ -1,4 +1,4 @@
-// lib/api/transportAdmin.ts
+// app/lib/api/transportAdmin.ts
 
 export interface Transport {
   id: number;
@@ -16,6 +16,19 @@ export interface Transport {
   status: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface UpdateTransportData {
+  name: string;
+  price_hour: number;
+  capacity: number;
+  category?: string;
+  brand?: string;
+  model?: string;
+  color?: string;
+  kit?: string;
+  descripcion?: string;
+  status?: string;
 }
 
 export interface TransportResponse {
@@ -73,7 +86,6 @@ export async function getTransports(): Promise<TransportResponse> {
     const data = await response.json();
     console.log('✅ Transportes obtenidos:', data);
     
-    // 🔥 Manejar ambos casos: array directo o objeto con results
     if (Array.isArray(data)) {
       return {
         count: data.length,
@@ -146,6 +158,110 @@ export async function getTransportDetail(id: number): Promise<Transport> {
   }
 }
 
+// 🔥 CREAR TRANSPORTE
+export async function createTransport(data: unknown): Promise<Transport> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/transporte-privado/`;
+    console.log('📡 Creando transporte:', url);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const dataResponse = await response.json();
+    console.log('✅ Transporte creado:', dataResponse);
+    return dataResponse;
+
+  } catch (error) {
+    console.error('❌ Error en createTransport:', error);
+    throw error;
+  }
+}
+
+// 🔥 ACTUALIZAR TRANSPORTE
+export async function updateTransport(id: number, data: UpdateTransportData): Promise<Transport> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/transporte-privado/${id}`;
+    console.log('📡 Actualizando transporte:', url);
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const result = await response.json();
+    console.log('✅ Transporte actualizado:', result);
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en updateTransport:', error);
+    throw error;
+  }
+}
+
 // Función auxiliar para obtener token
 const getAuthToken = (): string | null => {
   if (typeof window === 'undefined') return null;
@@ -162,3 +278,168 @@ const getAuthToken = (): string | null => {
   
   return null;
 };
+
+// app/lib/api/transportAdmin.ts - AÑADIR AL FINAL DEL ARCHIVO
+
+// 🔥 ELIMINAR TRANSPORTE
+export async function deleteTransport(id: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/transporte-privado/${id}/`;
+    console.log('📡 Eliminando transporte:', url);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Transporte ${id} no encontrado`);
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    console.log('✅ Transporte eliminado:', id);
+
+  } catch (error) {
+    console.error('❌ Error en deleteTransport:', error);
+    throw error;
+  }
+}
+
+// 🔥 SUBIR IMÁGENES A LA GALERÍA (agrega, no reemplaza)
+export async function uploadGallery(id: number, files: File[]): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/transporte-privado/${id}/galeria`;
+    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
+
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('imagenes[]', file);
+    });
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log('✅ Imágenes subidas a la galería:', data);
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en uploadGallery:', error);
+    throw error;
+  }
+}
+
+// 🔥 CAMBIAR IMAGEN PRINCIPAL (reemplaza principal_image)
+export async function changePrincipalImage(id: number, file: File): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/transporte-privado/${id}/imagen`;
+    console.log('📡 Actualizando imagen principal:', url);
+
+    const formData = new FormData();
+    formData.append('imagen', file);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log('✅ Imagen principal actualizada:', data);
+    return data;
+
+  } catch (error) {
+    console.error('❌ Error en changePrincipalImage:', error);
+    throw error;
+  }
+}

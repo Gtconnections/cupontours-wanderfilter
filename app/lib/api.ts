@@ -31,7 +31,7 @@ export async function loginUser(payload: LoginPayload): Promise<AuthResponse> {
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Fetch API login error:", error);
     throw error;
   }
@@ -55,7 +55,7 @@ export async function sendContactRequest(payload: ContactPayload): Promise<Conta
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch contact API error:", error);
     throw error;
   }
@@ -78,7 +78,7 @@ export async function sendAllianceRequest(payload: AlliancePayload): Promise<All
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch alliance API error:", error);
     throw error;
   }
@@ -101,7 +101,7 @@ export async function sendInvestRequest(payload: InvestPayload): Promise<InvestR
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch invest API error:", error);
     throw error;
   }
@@ -124,7 +124,7 @@ export async function sendAboutContactRequest(payload: AlliancePayload): Promise
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch alliance API error:", error);
     throw error;
   }
@@ -147,7 +147,7 @@ export async function sendJetQuoteRequest(payload: JetQuotePayload): Promise<Jet
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch jets API error:", error);
     throw error;
   }
@@ -170,7 +170,7 @@ export async function sendCarBookingRequest(payload: CarBookingPayload): Promise
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch car booking API error:", error);
     throw error;
   }
@@ -193,7 +193,7 @@ export async function sendYachtBookingRequest(payload: YachtBookingPayload): Pro
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Local Next.js fetch yacht booking API error:", error);
     throw error;
   }

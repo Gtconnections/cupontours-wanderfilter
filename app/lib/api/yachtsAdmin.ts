@@ -1,5 +1,7 @@
 // lib/api/yachtsAdmin.ts
 
+import { RawApiItem } from "../types/raw";
+
 export interface Yacht {
   id: number;
   name: string;
@@ -94,8 +96,8 @@ export interface YachtFullDetail {
   percentage_expenses_month: number | null;
   profit_last_month: number | null;
   percentage_profit_last_month: number | null;
-  agreements: any | null;
-  profit_and_loss_history: any | null;
+  agreements: RawApiItem[] | null;
+  profit_and_loss_history: RawApiItem[] | null;
 }
 
 // 🔥 INTERFACE PARA ACTUALIZAR YATE
@@ -295,7 +297,7 @@ export async function getYachtImages(id: number): Promise<YachtGalleryImage[]> {
 }
 
 // 🔥 ACTUALIZAR YATE
-export async function updateYacht(id: number, data: UpdateYachtData): Promise<any> {
+export async function updateYacht(id: number, data: UpdateYachtData): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -350,7 +352,16 @@ export async function updateYacht(id: number, data: UpdateYachtData): Promise<an
 }
 
 // 🔥 OBTENER LISTA DE OWNERS
-export async function getOwners(): Promise<any[]> {
+export interface YachtOwner {
+  id: number;
+  user?: {
+    first_name?: string;
+    last_name?: string;
+    username?: string;
+  };
+}
+
+export async function getOwners(): Promise<YachtOwner[]> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -421,7 +432,7 @@ const getAuthToken = (): string | null => {
 // ... (interfaces existentes)
 
 // 🔥 SUBIR IMÁGENES DEL YATE
-export async function uploadYachtImages(yachtId: number, files: File[]): Promise<any[]> {
+export async function uploadYachtImages(yachtId: number, files: File[]): Promise<unknown[]> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -482,7 +493,7 @@ export async function uploadYachtImages(yachtId: number, files: File[]): Promise
 // ... (interfaces existentes)
 
 // 🔥 CREAR YATE
-export async function createYacht(data: UpdateYachtData): Promise<any> {
+export async function createYacht(data: UpdateYachtData): Promise<{ id: number }> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -590,6 +601,129 @@ export async function deleteYacht(id: number): Promise<{ message: string }> {
 
   } catch (error) {
     console.error('❌ Error en deleteYacht:', error);
+    throw error;
+  }
+}
+
+// 🔥 CAMBIAR IMAGEN PRINCIPAL DEL YATE
+export async function uploadYachtPrincipalImage(yachtId: number, imageFile: File): Promise<{ principal_image: string }> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts/principal_image/`;
+    console.log('📡 Subiendo imagen principal:', url);
+
+    const formData = new FormData();
+    formData.append('yacht_id', yachtId.toString());
+    formData.append('image', imageFile);
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+
+      let errorMsg = `Error ${response.status}: No se pudo subir la imagen`;
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMsg = errorData.message || errorData.detail || errorMsg;
+      } catch {
+        errorMsg = errorText || errorMsg;
+      }
+      throw new Error(errorMsg);
+    }
+
+    const result = await response.json();
+    console.log('✅ Imagen principal actualizada:', result);
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en uploadYachtPrincipalImage:', error);
+    throw error;
+  }
+}
+
+// 🔥 ELIMINAR IMAGEN DE LA GALERÍA DEL YATE
+export async function deleteYachtImage(imageId: number): Promise<{ message: string }> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/yachts/yacht_images/`;
+    console.log('📡 Eliminando imagen de yate:', url, imageId);
+
+    // El endpoint solo acepta FormParser/MultiPartParser (no JSON)
+    const formData = new FormData();
+    formData.append('image_id', imageId.toString());
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Imagen ${imageId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al eliminar la imagen'}`);
+    }
+
+    if (response.status === 204) {
+      return { message: 'Imagen eliminada exitosamente' };
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en deleteYachtImage:', error);
     throw error;
   }
 }

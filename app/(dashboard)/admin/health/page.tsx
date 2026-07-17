@@ -6,11 +6,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getHealthServices, Health } from '@/app/lib/api/healthAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiEye, 
+import { getHealthServices, Health, createHealthService, deleteHealthService } from '@/app/lib/api/healthAdmin';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiEye,
   FiTrash2,
   FiDollarSign,
   FiMapPin,
@@ -19,8 +19,13 @@ import {
   FiTag,
   FiClock,
   FiHeart,
-  FiActivity
+  FiActivity,
+  FiBarChart2
 } from 'react-icons/fi';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { CreateHealthForm } from '@/app/(dashboard)/admin/components/CreateHealthForm';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './health.css';
 
 const LoadingSkeleton = () => (
@@ -53,6 +58,26 @@ export default function HealthListPage() {
   const [itemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
+
   const loadServices = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -69,9 +94,9 @@ export default function HealthListPage() {
       setServices(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando servicios de salud:', err);
-      setError(err.message || 'Error loading health services');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading health services');
     } finally {
       setIsLoading(false);
     }
@@ -81,6 +106,9 @@ export default function HealthListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -154,6 +182,76 @@ export default function HealthListPage() {
     return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
   };
 
+  // Create service handler
+  const handleCreateService = async (data: { name: string }) => {
+    setIsSubmitting(true);
+    try {
+      const response = await createHealthService(data);
+      console.log('✅ Servicio de salud creado:', response);
+      
+      setToast({
+        message: `Health service "${data.name}" created successfully!`,
+        type: 'success'
+      });
+      
+      setIsModalOpen(false);
+      await loadServices(true);
+    } catch (err) {
+      console.error('❌ Error creando servicio de salud:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error creating health service',
+        type: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Delete service handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteHealthService(confirmDialog.id);
+      console.log('✅ Servicio de salud eliminado:', confirmDialog.id);
+      
+      setToast({
+        message: `Health service "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadServices(true);
+    } catch (err) {
+      console.error('❌ Error eliminando servicio de salud:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting health service',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;
   }
@@ -191,6 +289,28 @@ export default function HealthListPage() {
 
   return (
     <div className="wander-health-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Health Service"
+        message={`Are you sure you want to delete "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-health-header">
         <div>
@@ -201,16 +321,23 @@ export default function HealthListPage() {
           </p>
         </div>
         <div className="wander-health-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Refresh
           </button>
-          <button 
+          <Link
+            href="/admin/accounting?servicio_tipo=health"
+            className="wander-btn-secondary"
+          >
+            <FiBarChart2 size={16} />
+            Transactions
+          </Link>
+          <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/health/create')}
+            onClick={() => setIsModalOpen(true)}
           >
             <FiPlus size={16} />
             Create Service
@@ -285,7 +412,7 @@ export default function HealthListPage() {
                   Details
                 </Link>
                 <button 
-                  onClick={() => alert(`Delete ${service.name} - Feature in development`)}
+                  onClick={() => handleDeleteClick(service.id, service.name)}
                   className="wander-health-action-btn delete"
                 >
                   <FiTrash2 size={14} />
@@ -349,6 +476,20 @@ export default function HealthListPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Creación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Health Service"
+        maxWidth="640px"
+      >
+        <CreateHealthForm
+          onSubmit={handleCreateService}
+          onCancel={() => setIsModalOpen(false)}
+          isSubmitting={isSubmitting}
+        />
+      </Modal>
     </div>
   );
 }

@@ -20,15 +20,6 @@ export function Sidebar() {
   // Menús principales con sus subitems
   const menuGroups = [
     {
-      id: "students",
-      label: "Students",
-      subitems: [
-        { name: "BNB Calculator", href: "/admin/students/bnb-calculator" },
-        { name: "Furniture Standard", href: "/admin/students/furnish" },
-        { name: "Cleaning Standard", href: "/admin/students/cleaning" },
-      ]
-    },
-    {
       id: "properties",
       label: "Properties Business",
       subitems: [
@@ -60,6 +51,31 @@ export function Sidebar() {
         { name: "Create an Invoice", href: "/admin/yachts/invoices/create" },
         { name: "Create a Reservation", href: "/admin/yachts/reservations/create" },
       ]
+    },
+    // 🔥 NUEVO: SERVICES
+    {
+      id: "services",
+      label: "Services",
+      subitems: [
+        { name: "Transport Private", href: "/admin/transport" },
+        { name: "Real Estate", href: "/admin/real-estate" },
+        { name: "Esperiences", href: "/admin/experiences" },
+        { name: "General", href: "/admin/general" },
+        { name: "Wellness", href: "/admin/wellness" },
+        { name: "Health", href: "/admin/health" },
+        { name: "Events", href: "/admin/events" },
+        { name: "Reservations", href: "/admin/services-reservations" },
+        { name: "Accounting", href: "/admin/accounting" }
+      ]
+    },
+    {
+      id: "students",
+      label: "Students",
+      subitems: [
+        { name: "BNB Calculator", href: "/admin/students/bnb-calculator" },
+        { name: "Furniture Standard", href: "/admin/students/furnish" },
+        { name: "Cleaning Standard", href: "/admin/students/cleaning" },
+      ]
     }
   ];
 
@@ -72,6 +88,8 @@ export function Sidebar() {
         newOpenMenus[group.id] = true;
       }
     });
+    // Expands the menu group for the current route; merges with user-toggled state, so it cannot be derived purely at render time.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpenMenus(newOpenMenus);
   }, [pathname]);
 

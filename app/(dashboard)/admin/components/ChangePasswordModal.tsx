@@ -66,10 +66,10 @@ export default function ChangePasswordModal({
         onClose();
         setSuccess(false);
       }, 2000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al cambiar contraseña:', err);
       // 🔥 Mostrar el mensaje de error específico que viene del servicio
-      setError(err.message || 'Error al cambiar la contraseña');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cambiar la contraseña');
     } finally {
       setIsLoading(false);
     }

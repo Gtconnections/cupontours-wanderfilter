@@ -229,15 +229,17 @@ export default function ReservationDetailModal({
 
       const result = await response.json();
       setData(result);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al cargar detalle:', err);
-      setError(err.message || 'Error al cargar los detalles de la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los detalles de la reservación');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
+    // Fetches the reservation detail when the modal opens or the target reservation changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchDetail();
   }, [isOpen, reservationId]);
 
@@ -282,9 +284,9 @@ export default function ReservationDetailModal({
       setShowDeleteConfirm(false);
       onDelete();
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar:', err);
-      setError(err.message || 'Error al eliminar la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar la reservación');
       setIsDeleting(false);
     }
   };

@@ -57,10 +57,10 @@ export default function WorkWithUsPage() {
       setEmail('');
       setPhoneNumber('');
       setMessage('');
-    } catch (error: any) {
+    } catch (error) {
       setStatusMessage({
         type: 'error',
-        text: error.message || "Something went wrong. Please check your credentials."
+        text: (error instanceof Error ? error.message : undefined) || "Something went wrong. Please check your credentials."
       });
     } finally {
       setIsLoading(false);
@@ -88,7 +88,7 @@ export default function WorkWithUsPage() {
             <span className="pre-title">About Us</span>
             <h2 className="section-title">A company dedicated to working<br />on behalf of your dreams.</h2>
             <div className="text-content">
-              <p>Our Short Term Property Management company is dedicated to working on behalf of our clients' best interests. We focus on our guests and community, providing exceptional service every step of the way.</p>
+              <p>Our Short Term Property Management company is dedicated to working on behalf of our clients&apos; best interests. We focus on our guests and community, providing exceptional service every step of the way.</p>
               <p>Through the use of technology, knowledge-based maintenance, accounting discipline, and outstanding customer service, we help our clients achieve their rental income goals with transparency. Our comprehensive approach to property management ensures that every detail is taken care of, so you can relax and enjoy the benefits of Short Term Property Management.</p>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function WorkWithUsPage() {
           <div className="split-form">
             <div className="form-card">
               <h3>Join Our Team</h3>
-              <p>Fill out the form below and let's start working together</p>
+              <p>Fill out the form below and let&apos;s start working together</p>
               
               <form onSubmit={handleAllySubmit} className="ally-form custom-wander-layout">
                 
@@ -258,8 +258,8 @@ export default function WorkWithUsPage() {
       <section className="revenue-section">
         <div className="section-header center">
           <span className="pre-title">Projections</span>
-          <h2 className="section-title">Let's Work Together and Make Money</h2>
-          <p className="subtitle-text">Partner with us for Short Term Property Management and earn money for every property you bring in for us to manage. Here's how it works:</p>
+          <h2 className="section-title">Let&apos;s Work Together and Make Money</h2>
+          <p className="subtitle-text">Partner with us for Short Term Property Management and earn money for every property you bring in for us to manage. Here&apos;s how it works:</p>
         </div>
         
         <div className="revenue-grid">

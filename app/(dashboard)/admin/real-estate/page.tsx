@@ -6,11 +6,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getRealEstates, RealEstate } from '@/app/lib/api/realAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiEye, 
+import { getRealEstates, RealEstate, createRealEstate, deleteRealEstate } from '@/app/lib/api/realAdmin';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiEye,
   FiTrash2,
   FiDollarSign,
   FiHome,
@@ -18,9 +18,14 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiGrid,
-  FiMaximize
+  FiMaximize,
+  FiBarChart2
 } from 'react-icons/fi';
 import { FaBed, FaBath } from 'react-icons/fa';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { CreateRealEstateForm } from '@/app/(dashboard)/admin/components/CreateRealEstateForm';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './real-estate.css';
 
 const LoadingSkeleton = () => (
@@ -53,6 +58,26 @@ export default function RealEstateListPage() {
   const [itemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
+
   const loadProperties = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -69,9 +94,9 @@ export default function RealEstateListPage() {
       setProperties(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando inmuebles:', err);
-      setError(err.message || 'Error loading properties');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading properties');
     } finally {
       setIsLoading(false);
     }
@@ -81,6 +106,9 @@ export default function RealEstateListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -166,6 +194,76 @@ export default function RealEstateListPage() {
     );
   };
 
+  // Create property handler
+  const handleCreateProperty = async (data: { name: string }) => {
+    setIsSubmitting(true);
+    try {
+      const response = await createRealEstate(data);
+      console.log('✅ Inmueble creado:', response);
+      
+      setToast({
+        message: `Property "${data.name}" created successfully!`,
+        type: 'success'
+      });
+      
+      setIsModalOpen(false);
+      await loadProperties(true);
+    } catch (err) {
+      console.error('❌ Error creando inmueble:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error creating property',
+        type: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Delete property handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteRealEstate(confirmDialog.id);
+      console.log('✅ Inmueble eliminado:', confirmDialog.id);
+      
+      setToast({
+        message: `Property "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadProperties(true);
+    } catch (err) {
+      console.error('❌ Error eliminando inmueble:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting property',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;
   }
@@ -203,6 +301,28 @@ export default function RealEstateListPage() {
 
   return (
     <div className="wander-realestate-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Property"
+        message={`Are you sure you want to delete "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-realestate-header">
         <div>
@@ -213,16 +333,23 @@ export default function RealEstateListPage() {
           </p>
         </div>
         <div className="wander-realestate-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Refresh
           </button>
-          <button 
+          <Link
+            href="/admin/accounting?servicio_tipo=real_estate"
+            className="wander-btn-secondary"
+          >
+            <FiBarChart2 size={16} />
+            Transactions
+          </Link>
+          <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/real-estate/create')}
+            onClick={() => setIsModalOpen(true)}
           >
             <FiPlus size={16} />
             Create Property
@@ -300,7 +427,6 @@ export default function RealEstateListPage() {
                 </div>
               </div>
               
-              {/* ✅ ACCIONES: SOLO 2 BOTONES (Details y Delete) */}
               <div className="wander-realestate-actions">
                 <Link 
                   href={`/admin/real-estate/${property.id}`}
@@ -310,7 +436,7 @@ export default function RealEstateListPage() {
                   Details
                 </Link>
                 <button 
-                  onClick={() => alert(`Delete ${property.name} - Feature in development`)}
+                  onClick={() => handleDeleteClick(property.id, property.name)}
                   className="wander-realestate-action-btn delete"
                 >
                   <FiTrash2 size={14} />
@@ -374,6 +500,20 @@ export default function RealEstateListPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Creación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Property"
+        maxWidth="640px"
+      >
+        <CreateRealEstateForm
+          onSubmit={handleCreateProperty}
+          onCancel={() => setIsModalOpen(false)}
+          isSubmitting={isSubmitting}
+        />
+      </Modal>
     </div>
   );
 }

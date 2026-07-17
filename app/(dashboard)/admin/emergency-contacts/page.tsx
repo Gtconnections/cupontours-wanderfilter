@@ -66,22 +66,6 @@ export default function EmergencyContactsPage() {
 
   const [isCreateTypeModalOpen, setIsCreateTypeModalOpen] = useState(false);
 
-  // Verificar autenticación
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
-      router.push('/login');
-      return;
-    }
-    
-    loadData();
-  }, [isChecking, checkAuth, router]);
-
   // Cargar datos
   const loadData = useCallback(async (forceRefresh = false) => {
     if (!checkAuth()) {
@@ -99,17 +83,36 @@ export default function EmergencyContactsPage() {
       ]);
       setContacts(contactsData);
       setContactTypes(typesData);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando datos:', err);
-      setError(err.message || 'Error al cargar los contactos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los contactos');
       
-      if (err.message?.includes('sesión') || err.message?.includes('autenticación')) {
+      if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
         router.push('/login');
       }
     } finally {
       setIsLoading(false);
     }
   }, [checkAuth, router]);
+
+  // Verificar autenticación
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      console.log('🔒 No autenticado, redirigiendo a login');
+      router.push('/login');
+      return;
+    }
+
+    loadData();
+  }, [isChecking, checkAuth, router]);
 
   // 🔥 MANEJAR CREACIÓN DE CONTACTO
   const handleCreateContact = async (data: ContactFormData) => {
@@ -138,7 +141,7 @@ export default function EmergencyContactsPage() {
       await deleteContact(contactId);
       await loadData(true);
       closeDeleteModal();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar contacto:', err);
       throw err;
     }

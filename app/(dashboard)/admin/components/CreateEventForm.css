@@ -1,0 +1,175 @@
+/* app/(dashboard)/admin/components/CreateEventForm.css */
+
+.wander-create-form {
+  width: 100%;
+}
+
+.wander-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.wander-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wander-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.wander-form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.wander-form-required {
+  color: #dc2626;
+}
+
+.wander-form-hint {
+  font-size: 11px;
+  color: #717171;
+  margin-top: 2px;
+}
+
+.wander-form-input,
+.wander-form-select,
+.wander-form-textarea {
+  padding: 10px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #000000;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+/* Estilo específico para input datetime-local */
+input[type="datetime-local"].wander-form-input {
+  color-scheme: light;
+  padding-right: 8px;
+}
+
+input[type="datetime-local"].wander-form-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 4px;
+}
+
+input[type="datetime-local"].wander-form-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.wander-form-input:focus,
+.wander-form-select:focus,
+.wander-form-textarea:focus {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.wander-form-input::placeholder,
+.wander-form-textarea::placeholder {
+  color: #b0b0b0;
+}
+
+.wander-form-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.wander-form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.wander-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #ebebeb;
+}
+
+.wander-form-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wander-form-btn.cancel {
+  background: transparent;
+  color: #717171;
+}
+
+.wander-form-btn.cancel:hover:not(:disabled) {
+  background: #f5f5f5;
+  color: #000000;
+}
+
+.wander-form-btn.submit {
+  background: #000000;
+  color: #ffffff;
+}
+
+.wander-form-btn.submit:hover:not(:disabled) {
+  background: #333333;
+}
+
+.wander-form-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wander-spinner {
+  animation: wanderSpin 0.8s linear infinite;
+}
+
+@keyframes wanderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wander-form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .wander-form-group.full-width {
+    grid-column: 1;
+  }
+
+  .wander-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .wander-form-btn {
+    justify-content: center;
+    padding: 12px 24px;
+  }
+
+  input[type="datetime-local"].wander-form-input {
+    font-size: 14px;
+  }
+}

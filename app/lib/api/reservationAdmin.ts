@@ -16,9 +16,7 @@ export interface Reservation {
   updated_at: string;
 }
 
-export interface ReservationDetail extends Reservation {
-  // Podemos extender si el detalle trae más campos
-}
+export type ReservationDetail = Reservation;
 
 export interface ReservationResponse {
   count: number;
@@ -167,3 +165,58 @@ const getAuthToken = (): string | null => {
   
   return null;
 };
+
+// app/lib/api/reservationAdmin.ts - AÑADIR AL FINAL DEL ARCHIVO
+
+// 🔥 ELIMINAR RESERVA
+export async function deleteReservation(id: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/reservas/${id}/`;
+    console.log('📡 Eliminando reserva:', url);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Reserva ${id} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ Error en la respuesta:', response.status, errorData);
+      const errorMessage = errorData.message || errorData.error || `Error ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    console.log('✅ Reserva eliminada:', id);
+
+  } catch (error) {
+    console.error('❌ Error en deleteReservation:', error);
+    throw error;
+  }
+}

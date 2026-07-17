@@ -5,7 +5,7 @@ import './yacht-detail.css';
 import Link from 'next/link';
 
 // IMPORTAMOS LAS LLAMADAS MODULARES DESACOPLADAS
-import { getYachtById } from '../../../lib/api/yachts';
+import { getYachtById, YachtDetail } from '../../../lib/api/yachts';
 import { sendYachtBookingRequest } from '../../../lib/api';
 
 interface PageProps {
@@ -16,7 +16,7 @@ export default function YachtDetailPage({ params }: PageProps) {
   const { id } = use(params);
 
   // Estados de datos y control de carga
-  const [yacht, setYacht] = useState<any>(null);
+  const [yacht, setYacht] = useState<YachtDetail | null>(null);
   const [cleanGallery, setCleanGallery] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -124,7 +124,7 @@ export default function YachtDetailPage({ params }: PageProps) {
 
     const payload = {
       yachtId: id,
-      yachtName: yacht?.title,
+      yachtName: yacht?.title || '',
       charterStart: formatIdToText(charterDate),
       charterEnd: formatIdToText(returnDate),
       totalDays: calculateDays(),
@@ -143,10 +143,10 @@ export default function YachtDetailPage({ params }: PageProps) {
       setSpecialRequests('');
       setCharterDate(null);
       setReturnDate(null);
-    } catch (err: any) {
+    } catch (err) {
       setStatusMessage({
         type: 'error',
-        text: err.message || "Failed to process charter application. Please verify parameters."
+        text: (err instanceof Error ? err.message : undefined) || "Failed to process charter application. Please verify parameters."
       });
     } finally {
       setIsSubmitting(false);
@@ -157,7 +157,7 @@ export default function YachtDetailPage({ params }: PageProps) {
     return (
       <div className="yacht-detail-page py-20 text-center">
         <h2 className="text-xl font-bold">Vessel not found</h2>
-        <p className="text-gray-400 mt-2">The requested charter asset is unavailable or doesn't exist.</p>
+        <p className="text-gray-400 mt-2">The requested charter asset is unavailable or doesn&apos;t exist.</p>
         <Link href="/yachts" className="btn-back-editorial inline-flex mt-6">Go back to fleet</Link>
       </div>
     );
@@ -172,6 +172,10 @@ export default function YachtDetailPage({ params }: PageProps) {
         </div>
       </div>
     );
+  }
+
+  if (!yacht) {
+    return null;
   }
 
   const basePriceNum = yacht.price_full_day ? parseInt(yacht.price_full_day.replace(/[^0-9]/g, '')) : 9950;
@@ -473,8 +477,8 @@ export default function YachtDetailPage({ params }: PageProps) {
                   What happens next?
                 </div>
                 <ul className="info-box-list">
-                  <li>• We'll review your request within 2 hours</li>
-                  <li>• You'll receive a detailed quote with availability</li>
+                  <li>• We&apos;ll review your request within 2 hours</li>
+                  <li>• You&apos;ll receive a detailed quote with availability</li>
                   <li>• Our team will contact you to finalize details</li>
                 </ul>
               </div>

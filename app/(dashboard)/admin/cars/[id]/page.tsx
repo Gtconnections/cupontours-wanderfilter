@@ -3,17 +3,29 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { 
-  getCarById, 
-  CarDetail, 
-  refreshCarDetail,
-  updateCar,
-  uploadCarImages,
-  deleteCar
+import {
+  getCarById,
+  CarDetail,
+  getCarImages,
+  deleteCarImage,
+  uploadPrincipalImage,
 } from '@/app/lib/api/carsAdmin';
+import {
+  FiRefreshCw,
+  FiArrowLeft,
+  FiTrash2,
+  FiCamera,
+  FiSearch,
+  FiAlertTriangle,
+  FiX,
+  FiChevronLeft,
+  FiChevronRight,
+} from 'react-icons/fi';
 import EditCarModal from '../../components/EditCarModal';
 import AddCarImagesModal from '../../components/AddCarImagesModal';
 import DeleteCarModal from '../../components/DeleteCarModal';
+import ModalConfirmDelete from '../../components/ModalConfirmDelete';
+import ModalChangePrincipalImage from '../../components/ModalChangePrincipalImage';
 import './car-detail.css';
 
 const LoadingSkeleton = () => (
@@ -36,8 +48,23 @@ export default function CarDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthVerified, setIsAuthVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage(message);
+    setToastType(type);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  // Galería (misma organización que el detalle de propiedades)
+  const [images, setImages] = useState<{ id: number; url: string }[]>([]);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPrincipalModalOpen, setIsPrincipalModalOpen] = useState(false);
+  const [isImageDeleteModalOpen, setIsImageDeleteModalOpen] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState<{ id: number; url: string } | null>(null);
+  const [isDeletingImage, setIsDeletingImage] = useState(false);
 
   // 🔥 ESTADOS PARA MODALES - Inicializados explícitamente
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -45,36 +72,12 @@ export default function CarDetailPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // 🔥 FUNCIONES PARA ABRIR MODALES CON LOGS
-  const openEditModal = () => {
-    console.log('✏️ Abriendo modal de edición');
-    setIsEditModalOpen(true);
-  };
-
-  const openImagesModal = () => {
-    console.log('🖼️ Abriendo modal de imágenes');
-    setIsImagesModalOpen(true);
-  };
-
-  const openDeleteModal = () => {
-    console.log('🗑️ Abriendo modal de eliminación');
-    setIsDeleteModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    console.log('🔒 Cerrando modal de edición');
-    setIsEditModalOpen(false);
-  };
-
-  const closeImagesModal = () => {
-    console.log('🔒 Cerrando modal de imágenes');
-    setIsImagesModalOpen(false);
-  };
-
-  const closeDeleteModal = () => {
-    console.log('🔒 Cerrando modal de eliminación');
-    setIsDeleteModalOpen(false);
-  };
+  const openEditModal = () => setIsEditModalOpen(true);
+  const openImagesModal = () => setIsImagesModalOpen(true);
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeEditModal = () => setIsEditModalOpen(false);
+  const closeImagesModal = () => setIsImagesModalOpen(false);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
   const loadCarDetail = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
@@ -86,27 +89,33 @@ export default function CarDetailPage() {
     setError(null);
 
     try {
-      const data = await getCarById(carId, forceRefresh);
+      const [data, galleryImages] = await Promise.all([
+        getCarById(carId, forceRefresh),
+        getCarImages(carId).catch(() => []),
+      ]);
       setCar(data);
+
+      const galleryList = galleryImages.map((img) => ({ id: img.id, url: img.image }));
       if (data.principal_image) {
-        setSelectedImage(data.principal_image);
+        setImages([{ id: -1, url: data.principal_image }, ...galleryList]);
+      } else {
+        setImages(galleryList);
       }
-      // Limpiar mensaje de éxito después de 3 segundos
-      if (successMessage) {
-        setTimeout(() => setSuccessMessage(null), 3000);
-      }
-    } catch (err: any) {
-      console.error('❌ Error cargando auto:', err);
-      setError(err.message || 'Error al cargar los detalles del auto');
+    } catch (err) {
+      console.error('Error cargando auto:', err);
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los detalles del auto');
     } finally {
       setIsLoading(false);
     }
-  }, [carId, token, isAuthenticated, router, successMessage]);
+  }, [carId, token, isAuthenticated, router]);
 
   useEffect(() => {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -127,13 +136,13 @@ export default function CarDetailPage() {
   };
 
   // 🔥 MANEJAR ACTUALIZACIÓN DEL AUTO
-  const handleUpdateCar = async (id: number, data: any) => {
+  const handleUpdateCar = async (id: number, data: unknown) => {
     try {
       const { updateCar } = await import('@/app/lib/api/carsAdmin');
       await updateCar(id, data);
       await loadCarDetail(true);
-      setSuccessMessage('✅ Auto actualizado exitosamente');
-    } catch (err: any) {
+      showToast('Auto actualizado exitosamente');
+    } catch (err) {
       console.error('Error al actualizar:', err);
       throw err;
     }
@@ -145,8 +154,8 @@ export default function CarDetailPage() {
       const { uploadCarImages } = await import('@/app/lib/api/carsAdmin');
       await uploadCarImages(id, files);
       await loadCarDetail(true);
-      setSuccessMessage(`✅ ${files.length} imagen(es) subidas exitosamente`);
-    } catch (err: any) {
+      showToast(`${files.length} imagen(es) subidas exitosamente`);
+    } catch (err) {
       console.error('Error al subir imágenes:', err);
       throw err;
     }
@@ -159,11 +168,80 @@ export default function CarDetailPage() {
       const { deleteCar } = await import('@/app/lib/api/carsAdmin');
       await deleteCar(carId);
       router.push('/admin/cars/list');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar auto:', err);
-      setError(err.message || 'Error al eliminar el auto');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar el auto');
       setIsDeleting(false);
       setIsDeleteModalOpen(false);
+    }
+  };
+
+  // Manejador de éxito al cambiar imagen principal
+  const handlePrincipalImageSuccess = async () => {
+    await loadCarDetail(true);
+    showToast('Imagen principal actualizada exitosamente');
+  };
+
+  // Funciones del Lightbox
+  const openLightbox = (index: number) => {
+    if (images.length === 0) return;
+    setCurrentImageIndex(index);
+    setIsLightboxOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
+  const goToPrevious = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  // Abrir modal de confirmación para eliminar imagen
+  const confirmDeleteImage = (imageId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const image = images.find((img) => img.id === imageId);
+    if (!image) return;
+    setImageToDelete(image);
+    setIsImageDeleteModalOpen(true);
+  };
+
+  // Ejecutar eliminación de imagen
+  const handleDeleteImage = async () => {
+    if (!imageToDelete) return;
+
+    setIsDeletingImage(true);
+
+    try {
+      await deleteCarImage(imageToDelete.id);
+
+      setImages((prev) => prev.filter((img) => img.id !== imageToDelete.id));
+
+      if (currentImageIndex >= images.length - 1) {
+        setCurrentImageIndex(Math.max(0, images.length - 2));
+      }
+
+      if (images.length <= 1) {
+        closeLightbox();
+      }
+
+      showToast('Imagen eliminada exitosamente');
+      setIsImageDeleteModalOpen(false);
+      setImageToDelete(null);
+
+      await loadCarDetail(true);
+
+    } catch (err) {
+      console.error('Error al eliminar imagen:', err);
+      showToast((err instanceof Error ? err.message : undefined) || 'Failed to delete image', 'error');
+    } finally {
+      setIsDeletingImage(false);
     }
   };
 
@@ -210,7 +288,7 @@ export default function CarDetailPage() {
   };
 
   // 🔥 DEBUG: Mostrar estado de los modales
-  console.log('🔍 Estado de modales:', {
+  console.log('Estado de modales:', {
     isEditModalOpen,
     isImagesModalOpen,
     isDeleteModalOpen,
@@ -233,7 +311,7 @@ export default function CarDetailPage() {
     return (
       <div className="wander-car-detail-container">
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar el auto</h3>
+          <h3><FiAlertTriangle size={18} /> Error al cargar el auto</h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             Reintentar
@@ -247,7 +325,7 @@ export default function CarDetailPage() {
     return (
       <div className="wander-car-detail-container">
         <div className="wander-error-state">
-          <h3>⚠️ Auto no encontrado</h3>
+          <h3><FiAlertTriangle size={18} /> Auto no encontrado</h3>
           <p>No se encontró el auto con ID {carId}</p>
           <button onClick={() => router.push('/admin/cars/list')} className="wander-btn-primary">
             Volver a la lista
@@ -272,50 +350,150 @@ export default function CarDetailPage() {
           <p className="wander-car-detail-email">{car.email}</p>
         </div>
         <div className="wander-car-detail-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
-            🔄 Actualizar
+            <FiRefreshCw size={16} /> Actualizar
           </button>
-          <button 
+          <button
             onClick={() => router.push('/admin/cars/list')}
             className="wander-btn-secondary"
           >
-            ← Volver
+            <FiArrowLeft size={16} /> Volver
           </button>
         </div>
       </header>
 
-      {successMessage && (
-        <div className="wander-success-message">
-          {successMessage}
+      {toastMessage && (
+        <div className={`wander-toast ${toastType === 'error' ? 'error' : ''}`}>
+          {toastMessage}
         </div>
       )}
 
       <div className="wander-car-detail-content">
-        {/* Galería de imágenes */}
-        {car.car_images && car.car_images.length > 0 && (
-          <div className="wander-car-detail-gallery">
-            <div className="wander-car-detail-main-image">
-              <img src={selectedImage || car.principal_image || car.car_images[0]} alt={`${car.brand} ${car.model}`} />
+        {/* Galería en Lightbox - misma organización que el detalle de propiedades */}
+        {images.length > 0 && (
+          <div className="wander-gallery-grid">
+            {/* Imagen principal - con botón para cambiarla */}
+            <div
+              className="wander-gallery-main"
+              onClick={() => openLightbox(0)}
+            >
+              <img src={images[0].url} alt={`${car.brand} ${car.model}`} />
+
+              <button
+                className="wander-gallery-upload-principal"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsPrincipalModalOpen(true);
+                }}
+                title="Change principal image"
+              >
+                <FiCamera size={16} />
+              </button>
+
+              <div className="wander-gallery-overlay">
+                <span>Click to view gallery</span>
+              </div>
             </div>
-            {car.car_images.length > 1 && (
-              <div className="wander-car-detail-thumbnails">
-                {car.car_images.slice(0, 8).map((img, index) => (
-                  <button
-                    key={index}
-                    className={`wander-thumbnail-btn ${selectedImage === img ? 'active' : ''}`}
-                    onClick={() => setSelectedImage(img)}
-                  >
-                    <img src={img} alt={`${car.brand} ${car.model} ${index + 1}`} />
+
+            {/* Grid de miniaturas */}
+            <div className="wander-gallery-thumbnails">
+              {images.slice(1, 5).map((img, index) => (
+                <div
+                  key={img.id}
+                  className="wander-gallery-thumb"
+                  onClick={() => openLightbox(index + 1)}
+                >
+                  <img src={img.url} alt={`Thumbnail ${index + 1}`} />
+                  <div className="wander-gallery-thumb-overlay">
+                    <FiSearch size={18} />
+                  </div>
+                </div>
+              ))}
+
+              {images.length > 5 && (
+                <div
+                  className="wander-gallery-thumb wander-gallery-more"
+                  onClick={() => openLightbox(5)}
+                >
+                  <img src={images[5].url} alt="More images" />
+                  <div className="wander-gallery-thumb-overlay">
+                    <span>+{images.length - 5}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Lightbox Modal */}
+        {isLightboxOpen && images.length > 0 && (
+          <div className="wander-lightbox-overlay" onClick={closeLightbox}>
+            <div className="wander-lightbox-container" onClick={(e) => e.stopPropagation()}>
+              <button className="wander-lightbox-close" onClick={closeLightbox}>
+                <FiX size={22} />
+              </button>
+
+              {images.length > 1 && (
+                <>
+                  <button className="wander-lightbox-prev" onClick={goToPrevious}>
+                    <FiChevronLeft size={26} />
                   </button>
-                ))}
-                {car.car_images.length > 8 && (
-                  <span className="wander-thumbnail-more">+{car.car_images.length - 8} más</span>
+                  <button className="wander-lightbox-next" onClick={goToNext}>
+                    <FiChevronRight size={26} />
+                  </button>
+                </>
+              )}
+
+              <div className="wander-lightbox-counter">
+                {currentImageIndex + 1} / {images.length}
+              </div>
+
+              <div className="wander-lightbox-image-wrapper">
+                <img
+                  src={images[currentImageIndex].url}
+                  alt={`${car.brand} ${car.model} ${currentImageIndex + 1}`}
+                  className="wander-lightbox-image"
+                />
+
+                {images[currentImageIndex].id !== -1 ? (
+                  <button
+                    className="wander-lightbox-delete"
+                    onClick={(e) => confirmDeleteImage(images[currentImageIndex].id, e)}
+                    title="Delete this image"
+                  >
+                    <FiTrash2 size={18} />
+                  </button>
+                ) : (
+                  <button
+                    className="wander-lightbox-upload"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsPrincipalModalOpen(true);
+                    }}
+                    title="Change principal image"
+                  >
+                    <FiCamera size={20} />
+                  </button>
                 )}
               </div>
-            )}
+
+              {images.length > 1 && (
+                <div className="wander-lightbox-thumbnails">
+                  {images.map((img, index) => (
+                    <div
+                      key={img.id}
+                      className={`wander-lightbox-thumb ${index === currentImageIndex ? 'active' : ''}`}
+                      onClick={() => setCurrentImageIndex(index)}
+                    >
+                      <img src={img.url} alt={`Thumb ${index + 1}`} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -511,6 +689,32 @@ export default function CarDetailPage() {
         onClose={closeDeleteModal}
         onDelete={handleDeleteCar}
         isDeleting={isDeleting}
+      />
+
+      {/* Modal Confirm Delete Image */}
+      <ModalConfirmDelete
+        isOpen={isImageDeleteModalOpen}
+        onClose={() => {
+          setIsImageDeleteModalOpen(false);
+          setImageToDelete(null);
+        }}
+        onConfirm={handleDeleteImage}
+        title="Eliminar Imagen"
+        message="¿Estás seguro que deseas eliminar esta imagen?"
+        confirmText="Eliminar Imagen"
+        cancelText="Cancelar"
+        isLoading={isDeletingImage}
+      />
+
+      {/* Modal Change Principal Image */}
+      <ModalChangePrincipalImage
+        isOpen={isPrincipalModalOpen}
+        onClose={() => setIsPrincipalModalOpen(false)}
+        itemId={car.car_id}
+        itemName={`${car.brand} ${car.model} ${car.year}`}
+        currentImage={images.length > 0 ? images[0].url : ''}
+        uploadFn={uploadPrincipalImage}
+        onSuccess={handlePrincipalImageSuccess}
       />
     </div>
   );

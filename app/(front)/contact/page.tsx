@@ -72,10 +72,10 @@ export default function ContactPage() {
       setEmail('');
       setPhoneNumber('');
       setMessage('');
-    } catch (error: any) {
+    } catch (error) {
       setStatusMessage({
         type: 'error',
-        text: error.message || "Failed to deliver message. Please verify your connection."
+        text: (error instanceof Error ? error.message : undefined) || "Failed to deliver message. Please verify your connection."
       });
     } finally {
       setIsLoading(false);

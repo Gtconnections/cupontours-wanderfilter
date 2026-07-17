@@ -24,9 +24,9 @@ export default function DeleteUserModal({ isOpen, user, onClose, onDelete }: Del
     try {
       await onDelete(user.id);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al eliminar:', err);
-      setError(err.message || 'Error al eliminar el usuario');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al eliminar el usuario');
     } finally {
       setIsLoading(false);
     }

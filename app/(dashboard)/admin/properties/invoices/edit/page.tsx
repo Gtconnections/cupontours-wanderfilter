@@ -74,6 +74,9 @@ function EditInvoiceContent() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -81,17 +84,6 @@ function EditInvoiceContent() {
       return;
     }
   }, [isAuthenticated, isChecking, checkAuth, router]);
-
-  // Validar que hay un ID
-  useEffect(() => {
-    if (isAuthVerified && isAuthenticated) {
-      if (!invoiceId) {
-        setError('No invoice ID provided');
-        return;
-      }
-      loadData();
-    }
-  }, [isAuthVerified, isAuthenticated, invoiceId]);
 
   // Cargar datos
   const loadData = async () => {
@@ -145,14 +137,27 @@ function EditInvoiceContent() {
         setItems([{ item: '', quantity: 1, rate: 0, amount: 0 }]);
       }
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar datos:', err);
-      setError(err.message || 'Error loading data');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading data');
     } finally {
       setIsLoadingListings(false);
       setIsLoadingInvoice(false);
     }
   };
+
+  // Validar que hay un ID
+  useEffect(() => {
+    if (isAuthVerified && isAuthenticated) {
+      if (!invoiceId) {
+        // Validates the route param once auth is confirmed.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setError('No invoice ID provided');
+        return;
+      }
+      loadData();
+    }
+  }, [isAuthVerified, isAuthenticated, invoiceId]);
 
   // Manejar cambios en items
   const addItem = () => {
@@ -255,9 +260,9 @@ function EditInvoiceContent() {
         router.push(`/admin/properties/invoice-detail/${invoiceId}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al actualizar factura:', err);
-      setError(err.message || 'Error updating invoice');
+      setError((err instanceof Error ? err.message : undefined) || 'Error updating invoice');
     } finally {
       setIsLoading(false);
     }

@@ -32,7 +32,7 @@ export default function ExperiencesPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   return (
@@ -41,6 +41,7 @@ export default function ExperiencesPage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Curated Moments</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Exclusive Experiences</h1>
           <p className="hero-subtitle">
             Immerse yourself in authentic adventures, culinary delights, and cultural journeys. Carefully curated to create unforgettable memories.
@@ -52,7 +53,7 @@ export default function ExperiencesPage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Collection</span>
-            <h2>Select your <span style={{ color: '#d4af37', fontStyle: 'italic' }}>adventure.</span></h2>
+            <h2>Select your <span className="accent-word">adventure.</span></h2>
             <p>Browse our handpicked selection of premium local and regional experiences.</p>
           </div>
 

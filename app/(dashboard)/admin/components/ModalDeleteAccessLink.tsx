@@ -50,7 +50,7 @@ export default function ModalDeleteAccessLink({
             <FiAlertTriangle size={48} />
           </div>
           <p className="wander-delete-al-message">
-            Are you sure you want to delete the access link <strong>"{accessLinkName}"</strong>?
+            Are you sure you want to delete the access link <strong>&quot;{accessLinkName}&quot;</strong>?
           </p>
           <p className="wander-delete-al-warning">
             This action cannot be undone.

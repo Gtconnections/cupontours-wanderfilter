@@ -30,6 +30,8 @@ export default function EditUserModal({ isOpen, user, onClose, onSave }: EditUse
   // Cargar datos del usuario cuando se abre el modal
   useEffect(() => {
     if (user) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         first_name: user.user.first_name || '',
         last_name: user.user.last_name || '',
@@ -80,9 +82,9 @@ export default function EditUserModal({ isOpen, user, onClose, onSave }: EditUse
     try {
       await onSave(user.id, formData);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al guardar:', err);
-      setError(err.message || 'Error al actualizar el usuario');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar el usuario');
     } finally {
       setIsLoading(false);
     }

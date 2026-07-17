@@ -28,6 +28,8 @@ export default function ModalAddWiFi({
   // Resetear estado al abrir/cerrar el modal
   useEffect(() => {
     if (!isOpen) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setNetwork('');
       setPassword('');
       setError(null);
@@ -79,9 +81,9 @@ export default function ModalAddWiFi({
       // Cerrar modal
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear WiFi:', err);
-      setError(err.message || 'Error al crear el WiFi. Por favor, intenta de nuevo.');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear el WiFi. Por favor, intenta de nuevo.');
     } finally {
       setIsLoading(false);
     }

@@ -25,9 +25,25 @@ export default function ModalCreatePL({
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Cargar listings desde la API
+  const loadListings = async () => {
+    setIsLoadingListings(true);
+    try {
+      const data = await getListingsNamesAndIds();
+      setListings(data);
+    } catch (err) {
+      console.error('❌ Error al cargar listings:', err);
+      setError('Error al cargar la lista de propiedades');
+    } finally {
+      setIsLoadingListings(false);
+    }
+  };
+
   // Cargar listings al abrir el modal
   useEffect(() => {
     if (isOpen) {
+      // Resets the form when the modal opens/closes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadListings();
       // Resetear selecciones
       setSelectedIds([]);
@@ -37,20 +53,6 @@ export default function ModalCreatePL({
       setSearchTerm('');
     }
   }, [isOpen]);
-
-  // Cargar listings desde la API
-  const loadListings = async () => {
-    setIsLoadingListings(true);
-    try {
-      const data = await getListingsNamesAndIds();
-      setListings(data);
-    } catch (err: any) {
-      console.error('❌ Error al cargar listings:', err);
-      setError('Error al cargar la lista de propiedades');
-    } finally {
-      setIsLoadingListings(false);
-    }
-  };
 
   // Manejar selección/deselección de un listing
   const toggleListing = (id: number) => {
@@ -123,7 +125,7 @@ export default function ModalCreatePL({
       onSuccess();
       onClose();
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear PL:', err);
       
       // 🔥 Incluso si hay error, llamar a onSuccess (la creación pudo haberse hecho)

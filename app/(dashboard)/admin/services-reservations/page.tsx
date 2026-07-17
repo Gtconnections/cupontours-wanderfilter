@@ -6,7 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getReservations, getReservationDetail, Reservation, ReservationDetail } from '@/app/lib/api/reservationAdmin';
+import { getReservations, getReservationDetail, Reservation, ReservationDetail, deleteReservation } from '@/app/lib/api/reservationAdmin';
 import { 
   FiPlus, 
   FiRefreshCw, 
@@ -31,13 +31,12 @@ import {
   FiHome,
   FiMusic,
   FiCalendar as FiCalendarIcon,
-  FiChevronDown,
-  FiChevronUp,
   FiInfo,
-  FiMapPin,
-  FiTag,
   FiType
 } from 'react-icons/fi';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './services-reservations.css';
 
 // Mapeo de tipos de servicio a iconos y etiquetas
@@ -88,11 +87,12 @@ export default function ReservationListPage() {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
   const [selectedFilter, setSelectedFilter] = useState<string>('');
-  
+  const [fechaDesde, setFechaDesde] = useState<string>('');
+  const [fechaHasta, setFechaHasta] = useState<string>('');
+
   // Paginación frontend
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(9);
-  const [totalPages, setTotalPages] = useState(0);
 
   // 📅 Estado del calendario
   const [calendarDate, setCalendarDate] = useState(new Date());
@@ -101,6 +101,22 @@ export default function ReservationListPage() {
   const [selectedReservation, setSelectedReservation] = useState<ReservationDetail | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
 
   const loadReservations = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
@@ -118,19 +134,21 @@ export default function ReservationListPage() {
       
       setReservations(data.results || []);
       setTotalCount(data.count || 0);
-      setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando reservas:', err);
-      setError(err.message || 'Error loading reservations');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading reservations');
     } finally {
       setIsLoading(false);
     }
-  }, [token, isAuthenticated, router, itemsPerPage, selectedFilter]);
+  }, [token, isAuthenticated, router, selectedFilter]);
 
   useEffect(() => {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -144,6 +162,8 @@ export default function ReservationListPage() {
   // Recargar cuando cambia el filtro
   useEffect(() => {
     if (isAuthVerified && isAuthenticated) {
+      // Reloads the list when the active filter changes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadReservations();
     }
   }, [selectedFilter, loadReservations, isAuthVerified, isAuthenticated]);
@@ -159,6 +179,26 @@ export default function ReservationListPage() {
 
   const clearFilter = () => {
     setSelectedFilter('');
+    setCurrentPage(1);
+  };
+
+  const handleFechaDesdeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFechaDesde(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleFechaHastaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFechaHasta(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const clearFechaDesde = () => {
+    setFechaDesde('');
+    setCurrentPage(1);
+  };
+
+  const clearFechaHasta = () => {
+    setFechaHasta('');
     setCurrentPage(1);
   };
 
@@ -182,7 +222,7 @@ export default function ReservationListPage() {
     try {
       const detail = await getReservationDetail(id);
       setSelectedReservation(detail);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando detalle:', err);
       setSelectedReservation(null);
     } finally {
@@ -195,11 +235,79 @@ export default function ReservationListPage() {
     setSelectedReservation(null);
   };
 
+  // 🗑️ Delete reservation handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteReservation(confirmDialog.id);
+      console.log('✅ Reserva eliminada:', confirmDialog.id);
+      
+      setToast({
+        message: `Reservation for "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadReservations(true);
+    } catch (err) {
+      console.error('❌ Error eliminando reserva:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting reservation',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
+  // Filtro por rango de fechas (fecha_inicio), aplicado en el cliente sobre lo ya cargado
+  const filteredReservations = reservations.filter((res) => {
+    if (!fechaDesde && !fechaHasta) return true;
+
+    const start = res.fecha_inicio ? new Date(res.fecha_inicio) : null;
+    if (!start || isNaN(start.getTime())) return false;
+    const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+
+    if (fechaDesde) {
+      const desde = new Date(`${fechaDesde}T00:00:00`);
+      if (startDay < desde) return false;
+    }
+
+    if (fechaHasta) {
+      const hasta = new Date(`${fechaHasta}T00:00:00`);
+      if (startDay > hasta) return false;
+    }
+
+    return true;
+  });
+
   // Paginación frontend
+  const totalPages = Math.ceil(filteredReservations.length / itemsPerPage);
+
   const getCurrentItems = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    return reservations.slice(indexOfFirstItem, indexOfLastItem);
+    return filteredReservations.slice(indexOfFirstItem, indexOfLastItem);
   };
 
   const handlePageChange = (page: number) => {
@@ -293,7 +401,7 @@ export default function ReservationListPage() {
   const renderCalendarView = () => {
     const reservationsByDate: Record<string, Reservation[]> = {};
     
-    reservations.forEach(res => {
+    filteredReservations.forEach(res => {
       const dateKey = new Date(res.fecha_inicio).toDateString();
       if (!reservationsByDate[dateKey]) {
         reservationsByDate[dateKey] = [];
@@ -543,7 +651,7 @@ export default function ReservationListPage() {
                 </Link>
                 <button 
                   onClick={() => {
-                    alert(`Delete reservation for ${selectedReservation.cliente_nombre} - Feature in development`);
+                    handleDeleteClick(selectedReservation.id, selectedReservation.cliente_nombre);
                     closeModal();
                   }}
                   className="wander-modal-btn delete"
@@ -600,20 +708,44 @@ export default function ReservationListPage() {
 
   return (
     <div className="wander-reservation-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Reservation"
+        message={`Are you sure you want to delete the reservation for "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-reservation-header">
         <div>
           <span className="wander-breadcrumb">SERVICES / RESERVATIONS</span>
           <h2>Reservations</h2>
           <p className="wander-reservation-subtitle">
-            {totalCount} {totalCount === 1 ? 'reservation' : 'reservations'} registered
+            {(fechaDesde || fechaHasta)
+              ? `${filteredReservations.length} of ${totalCount} ${totalCount === 1 ? 'reservation' : 'reservations'} matching filters`
+              : `${totalCount} ${totalCount === 1 ? 'reservation' : 'reservations'} registered`}
           </p>
         </div>
         <div className="wander-reservation-actions">
           <div className="wander-filter-wrapper">
             <FiFilter size={14} className="wander-filter-icon" />
-            <select 
-              value={selectedFilter} 
+            <select
+              value={selectedFilter}
               onChange={handleFilterChange}
               className="wander-filter-select"
             >
@@ -630,7 +762,39 @@ export default function ReservationListPage() {
             )}
           </div>
 
-          <button 
+          <div className="wander-date-filter-wrapper">
+            <span className="wander-date-filter-label">From</span>
+            <input
+              type="date"
+              value={fechaDesde}
+              onChange={handleFechaDesdeChange}
+              max={fechaHasta || undefined}
+              className="wander-filter-date"
+            />
+            {fechaDesde && (
+              <button onClick={clearFechaDesde} className="wander-filter-clear" aria-label="Clear from date">
+                <FiX size={14} />
+              </button>
+            )}
+          </div>
+
+          <div className="wander-date-filter-wrapper">
+            <span className="wander-date-filter-label">To</span>
+            <input
+              type="date"
+              value={fechaHasta}
+              onChange={handleFechaHastaChange}
+              min={fechaDesde || undefined}
+              className="wander-filter-date"
+            />
+            {fechaHasta && (
+              <button onClick={clearFechaHasta} className="wander-filter-clear" aria-label="Clear to date">
+                <FiX size={14} />
+              </button>
+            )}
+          </div>
+
+          <button
             onClick={() => setViewMode(viewMode === 'list' ? 'calendar' : 'list')}
             className="wander-btn-secondary"
           >
@@ -672,7 +836,13 @@ export default function ReservationListPage() {
                 </span>
                 <p>No reservations found</p>
                 <span className="wander-empty-desc">
-                  {selectedFilter ? `No reservations for "${SERVICE_TYPES.find(t => t.value === selectedFilter)?.label}"` : 'No reservations registered yet'}
+                  {selectedFilter && (fechaDesde || fechaHasta)
+                    ? `No reservations for "${SERVICE_TYPES.find(t => t.value === selectedFilter)?.label}" in the selected date range`
+                    : selectedFilter
+                    ? `No reservations for "${SERVICE_TYPES.find(t => t.value === selectedFilter)?.label}"`
+                    : (fechaDesde || fechaHasta)
+                    ? 'No reservations in the selected date range'
+                    : 'No reservations registered yet'}
                 </span>
               </div>
             ) : (
@@ -693,7 +863,6 @@ export default function ReservationListPage() {
                     <div className="wander-reservation-info">
                       <h3 className="wander-reservation-title">{reservation.cliente_nombre}</h3>
                       
-                      {/* Info resumida para la lista */}
                       <div className="wander-reservation-details">
                         <span>
                           <FiClock size={12} style={{ marginRight: '4px' }} />
@@ -705,7 +874,6 @@ export default function ReservationListPage() {
                         </span>
                       </div>
 
-                      {/* Solo mostrar email resumido */}
                       <div className="wander-reservation-details">
                         <span className="wander-reservation-email">
                           <FiMail size={12} style={{ marginRight: '4px' }} />
@@ -730,7 +898,7 @@ export default function ReservationListPage() {
                         Edit
                       </Link>
                       <button 
-                        onClick={() => alert(`Delete reservation for ${reservation.cliente_nombre} - Feature in development`)}
+                        onClick={() => handleDeleteClick(reservation.id, reservation.cliente_nombre)}
                         className="wander-reservation-action-btn delete"
                       >
                         <FiTrash2 size={14} />
@@ -746,8 +914,8 @@ export default function ReservationListPage() {
           {totalPages > 1 && (
             <div className="wander-reservation-pagination">
               <div className="wander-pagination-info">
-                Showing {((currentPage || 1) - 1) * itemsPerPage + 1} - 
-                {Math.min((currentPage || 1) * itemsPerPage, totalCount)} of {totalCount} reservations
+                Showing {((currentPage || 1) - 1) * itemsPerPage + 1} -
+                {Math.min((currentPage || 1) * itemsPerPage, filteredReservations.length)} of {filteredReservations.length} reservations
               </div>
               
               <div className="wander-pagination-controls">

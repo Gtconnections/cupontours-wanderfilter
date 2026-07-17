@@ -23,7 +23,7 @@ export interface DashboardData {
   monthly_sales?: {
     [key: string]: number;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface Activity {

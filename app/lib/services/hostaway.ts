@@ -325,7 +325,7 @@ class HostawayService {
     status: string
     authenticated: boolean
     cacheSize: number
-    tokenInfo?: Record<string, unknown>
+    tokenInfo?: unknown
   }> {
     try {
       const healthCheck = await hostawayClient.healthCheck()

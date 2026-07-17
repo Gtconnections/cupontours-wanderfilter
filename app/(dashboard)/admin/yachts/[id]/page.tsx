@@ -6,17 +6,19 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getFullYacht, getYachtImages, getOwners, YachtFullDetail, YachtGalleryImage, deleteYacht } from '@/app/lib/api/yachtsAdmin';
+import { getFullYacht, getYachtImages, getOwners, YachtFullDetail, YachtGalleryImage, YachtOwner, deleteYacht, uploadYachtPrincipalImage, deleteYachtImage } from '@/app/lib/api/yachtsAdmin';
 import ModalEditYacht from '../../components/ModalEditYacht';
 import ModalAddYachtImages from '../../components/ModalAddYachtImages';
 import ModalDeleteYacht from '../../components/ModalDeleteYacht';
-import { 
-  FiArrowLeft, 
-  FiImage, 
-  FiEdit2, 
-  FiTrash2, 
-  FiAnchor, 
-  FiUsers, 
+import ModalConfirmDelete from '../../components/ModalConfirmDelete';
+import ModalChangePrincipalImage from '../../components/ModalChangePrincipalImage';
+import {
+  FiArrowLeft,
+  FiImage,
+  FiEdit2,
+  FiTrash2,
+  FiAnchor,
+  FiUsers,
   FiMaximize,
   FiHome,
   FiDroplet,
@@ -28,7 +30,12 @@ import {
   FiFileText,
   FiUser,
   FiMail,
-  FiPhone
+  FiPhone,
+  FiSearch,
+  FiChevronLeft,
+  FiChevronRight,
+  FiAlertTriangle,
+  FiCamera
 } from 'react-icons/fi';
 import './yacht-detail.css';
 
@@ -55,13 +62,20 @@ export default function YachtDetailPage() {
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
   
   const [yacht, setYacht] = useState<YachtFullDetail | null>(null);
-  const [images, setImages] = useState<string[]>([]);
-  const [owners, setOwners] = useState<any[]>([]);
+  const [images, setImages] = useState<{ id: number; url: string }[]>([]);
+  const [owners, setOwners] = useState<YachtOwner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthVerified, setIsAuthVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage(message);
+    setToastType(type);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   // Estados para Lightbox
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -76,6 +90,14 @@ export default function YachtDetailPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Estado para modal de cambio de imagen principal
+  const [isPrincipalModalOpen, setIsPrincipalModalOpen] = useState(false);
+
+  // Estado para modal de confirmación de eliminación de imagen de galería
+  const [isImageDeleteModalOpen, setIsImageDeleteModalOpen] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState<{ id: number; url: string } | null>(null);
+  const [isDeletingImage, setIsDeletingImage] = useState(false);
+
   const loadYachtDetail = useCallback(async () => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -86,37 +108,39 @@ export default function YachtDetailPage() {
     setError(null);
 
     try {
-      // 🔥 Cargar owners y yate (obligatorios)
+      // Cargar owners y yate (obligatorios)
       const [ownersData, yachtData] = await Promise.all([
         getOwners(),
         getFullYacht(yachtId)
       ]);
-      
-      console.log('👥 Owners cargados:', ownersData.length);
-      console.log('📦 Datos del yate:', yachtData);
-      
+
+      console.log('Owners cargados:', ownersData.length);
+      console.log('Datos del yate:', yachtData);
+
       setOwners(ownersData);
       setYacht(yachtData);
-      
-      // 🔥 Intentar cargar imágenes, pero si falla, usar array vacío
-      let imageUrls: string[] = [];
+
+      // Intentar cargar imágenes de galería (con id, para poder eliminarlas), pero si falla, usar array vacío
+      let galleryImages: { id: number; url: string }[] = [];
       try {
         const imagesData = await getYachtImages(yachtId);
-        console.log('📸 Imágenes del yate:', imagesData);
-        imageUrls = imagesData?.map((img: YachtGalleryImage) => img.image) || [];
-      } catch (imgErr: any) {
+        console.log('Imágenes del yate:', imagesData);
+        galleryImages = (imagesData || []).map((img: YachtGalleryImage) => ({ id: img.id, url: img.image }));
+      } catch (imgErr) {
         // Si no hay imágenes (404) o cualquier otro error, solo continuamos con array vacío
-        console.log('ℹ️ No hay imágenes disponibles o error al cargarlas:', imgErr.message);
-        imageUrls = [];
+        console.log('No hay imágenes disponibles o error al cargarlas:', imgErr instanceof Error ? imgErr.message : undefined);
+        galleryImages = [];
       }
-      
-      // Combinar imagen principal con las de la galería
-      const allImages = yachtData.principal_image ? [yachtData.principal_image, ...imageUrls] : imageUrls;
+
+      // Combinar imagen principal (id -1, no eliminable) con las de la galería
+      const allImages = yachtData.principal_image
+        ? [{ id: -1, url: yachtData.principal_image }, ...galleryImages]
+        : galleryImages;
       setImages(allImages);
-      
-    } catch (err: any) {
-      console.error('❌ Error cargando yate:', err);
-      setError(err.message || 'Error loading yacht details');
+
+    } catch (err) {
+      console.error('Error cargando yate:', err);
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading yacht details');
     } finally {
       setIsLoading(false);
     }
@@ -126,6 +150,9 @@ export default function YachtDetailPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -143,15 +170,13 @@ export default function YachtDetailPage() {
 
   // Manejador de éxito al editar
   const handleEditSuccess = () => {
-    setToastMessage('✅ Yacht updated successfully!');
-    setTimeout(() => setToastMessage(null), 3000);
+    showToast('Yacht updated successfully!');
     loadYachtDetail();
   };
 
   // Manejador de éxito al subir imágenes
   const handleAddImagesSuccess = () => {
-    setToastMessage('✅ Images uploaded successfully!');
-    setTimeout(() => setToastMessage(null), 3000);
+    showToast('Images uploaded successfully!');
     loadYachtDetail();
   };
 
@@ -160,23 +185,69 @@ export default function YachtDetailPage() {
     setIsDeleting(true);
     try {
       await deleteYacht(yachtId);
-      
-      setToastMessage('🗑️ Yacht deleted successfully!');
-      setTimeout(() => setToastMessage(null), 3000);
-      
+
+      showToast('Yacht deleted successfully!');
+
       setIsDeleteModalOpen(false);
-      
+
       setTimeout(() => {
         router.push('/admin/yachts/list');
       }, 1500);
-      
-    } catch (err: any) {
-      console.error('❌ Error al eliminar yate:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete yacht'}`);
-      setTimeout(() => setToastMessage(null), 3000);
+
+    } catch (err) {
+      console.error('Error al eliminar yate:', err);
+      showToast((err instanceof Error ? err.message : undefined) || 'Failed to delete yacht', 'error');
       setIsDeleteModalOpen(false);
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  // Manejador de éxito al cambiar imagen principal
+  const handlePrincipalImageSuccess = async () => {
+    await loadYachtDetail();
+    showToast('Principal image updated successfully!');
+  };
+
+  // Abrir modal de confirmación para eliminar imagen
+  const confirmDeleteImage = (imageId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const image = images.find((img) => img.id === imageId);
+    if (!image) return;
+    setImageToDelete(image);
+    setIsImageDeleteModalOpen(true);
+  };
+
+  // Ejecutar eliminación de imagen
+  const handleDeleteImage = async () => {
+    if (!imageToDelete) return;
+
+    setIsDeletingImage(true);
+
+    try {
+      await deleteYachtImage(imageToDelete.id);
+
+      setImages((prev) => prev.filter((img) => img.id !== imageToDelete.id));
+
+      if (currentImageIndex >= images.length - 1) {
+        setCurrentImageIndex(Math.max(0, images.length - 2));
+      }
+
+      if (images.length <= 1) {
+        closeLightbox();
+      }
+
+      showToast('Image deleted successfully!');
+      setIsImageDeleteModalOpen(false);
+      setImageToDelete(null);
+
+      await loadYachtDetail();
+
+    } catch (err) {
+      console.error('Error al eliminar imagen:', err);
+      showToast((err instanceof Error ? err.message : undefined) || 'Failed to delete image', 'error');
+    } finally {
+      setIsDeletingImage(false);
     }
   };
 
@@ -247,7 +318,7 @@ export default function YachtDetailPage() {
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error loading yacht</h3>
+          <h3><FiAlertTriangle size={18} /> Error loading yacht</h3>
           <p>{error}</p>
           <button onClick={loadYachtDetail} className="wander-btn-primary">
             Retry
@@ -280,7 +351,7 @@ export default function YachtDetailPage() {
     <div className="wander-yacht-detail-container">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="wander-toast">
+        <div className={`wander-toast ${toastType === 'error' ? 'error' : ''}`}>
           {toastMessage}
         </div>
       )}
@@ -321,39 +392,51 @@ export default function YachtDetailPage() {
 
       {/* Contenido principal */}
       <div className="wander-yacht-detail-content">
-        {/* Galería - CORREGIDO: muestra placeholder si no hay imágenes */}
+        {/* Galería - muestra placeholder si no hay imágenes */}
         {images.length > 0 ? (
           <div className="wander-yacht-gallery-grid">
-            <div 
+            <div
               className="wander-yacht-gallery-main"
               onClick={() => openLightbox(0)}
             >
-              <img src={images[0]} alt={yacht.name} />
+              <img src={images[0].url} alt={yacht.name} />
+
+              <button
+                className="wander-yacht-gallery-upload-principal"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsPrincipalModalOpen(true);
+                }}
+                title="Change principal image"
+              >
+                <FiCamera size={16} />
+              </button>
+
               <div className="wander-yacht-gallery-overlay">
-                <span>Click to view gallery</span>
+                <span>Click to view gallery, camera icon to change principal</span>
               </div>
             </div>
 
             <div className="wander-yacht-gallery-thumbnails">
               {images.slice(1, 5).map((img, index) => (
-                <div 
-                  key={index}
+                <div
+                  key={img.id}
                   className="wander-yacht-gallery-thumb"
                   onClick={() => openLightbox(index + 1)}
                 >
-                  <img src={img} alt={`Thumbnail ${index + 1}`} />
+                  <img src={img.url} alt={`Thumbnail ${index + 1}`} />
                   <div className="wander-yacht-gallery-thumb-overlay">
-                    <span>🔍</span>
+                    <FiSearch size={18} />
                   </div>
                 </div>
               ))}
-              
+
               {images.length > 5 && (
-                <div 
+                <div
                   className="wander-yacht-gallery-thumb wander-yacht-gallery-more"
                   onClick={() => openLightbox(5)}
                 >
-                  <img src={images[5]} alt="More images" />
+                  <img src={images[5].url} alt="More images" />
                   <div className="wander-yacht-gallery-thumb-overlay">
                     <span>+{images.length - 5}</span>
                   </div>
@@ -365,7 +448,7 @@ export default function YachtDetailPage() {
           <div className="wander-yacht-gallery-placeholder">
             <FiAnchor size={48} />
             <p>No images available</p>
-            <span>Click "Add Images" to upload photos</span>
+            <span>Click &quot;Add Images&quot; to upload photos</span>
           </div>
         )}
 
@@ -374,16 +457,16 @@ export default function YachtDetailPage() {
           <div className="wander-yacht-lightbox-overlay" onClick={closeLightbox}>
             <div className="wander-yacht-lightbox-container" onClick={(e) => e.stopPropagation()}>
               <button className="wander-yacht-lightbox-close" onClick={closeLightbox}>
-                ✕
+                <FiX size={22} />
               </button>
 
               {images.length > 1 && (
                 <>
                   <button className="wander-yacht-lightbox-prev" onClick={goToPrevious}>
-                    ❮
+                    <FiChevronLeft size={26} />
                   </button>
                   <button className="wander-yacht-lightbox-next" onClick={goToNext}>
-                    ❯
+                    <FiChevronRight size={26} />
                   </button>
                 </>
               )}
@@ -393,22 +476,43 @@ export default function YachtDetailPage() {
               </div>
 
               <div className="wander-yacht-lightbox-image-wrapper">
-                <img 
-                  src={images[currentImageIndex]} 
+                <img
+                  src={images[currentImageIndex].url}
                   alt={`Imagen ${currentImageIndex + 1}`}
                   className="wander-yacht-lightbox-image"
                 />
+
+                {images[currentImageIndex].id !== -1 ? (
+                  <button
+                    className="wander-yacht-lightbox-delete"
+                    onClick={(e) => confirmDeleteImage(images[currentImageIndex].id, e)}
+                    title="Delete this image"
+                  >
+                    <FiTrash2 size={18} />
+                  </button>
+                ) : (
+                  <button
+                    className="wander-yacht-lightbox-upload"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsPrincipalModalOpen(true);
+                    }}
+                    title="Change principal image"
+                  >
+                    <FiCamera size={20} />
+                  </button>
+                )}
               </div>
 
               {images.length > 1 && (
                 <div className="wander-yacht-lightbox-thumbnails">
                   {images.map((img, index) => (
                     <div
-                      key={index}
+                      key={img.id}
                       className={`wander-yacht-lightbox-thumb ${index === currentImageIndex ? 'active' : ''}`}
                       onClick={() => setCurrentImageIndex(index)}
                     >
-                      <img src={img} alt={`Thumb ${index + 1}`} />
+                      <img src={img.url} alt={`Thumb ${index + 1}`} />
                     </div>
                   ))}
                 </div>
@@ -546,6 +650,32 @@ export default function YachtDetailPage() {
         yachtName={yacht.name}
         yachtId={yacht.yacht_id}
         isLoading={isDeleting}
+      />
+
+      {/* Modal Confirm Delete Image */}
+      <ModalConfirmDelete
+        isOpen={isImageDeleteModalOpen}
+        onClose={() => {
+          setIsImageDeleteModalOpen(false);
+          setImageToDelete(null);
+        }}
+        onConfirm={handleDeleteImage}
+        title="Eliminar Imagen"
+        message="¿Estás seguro que deseas eliminar esta imagen?"
+        confirmText="Eliminar Imagen"
+        cancelText="Cancelar"
+        isLoading={isDeletingImage}
+      />
+
+      {/* Modal Change Principal Image */}
+      <ModalChangePrincipalImage
+        isOpen={isPrincipalModalOpen}
+        onClose={() => setIsPrincipalModalOpen(false)}
+        itemId={yacht.yacht_id}
+        itemName={yacht.name}
+        currentImage={images.length > 0 ? images[0].url : ''}
+        uploadFn={uploadYachtPrincipalImage}
+        onSuccess={handlePrincipalImageSuccess}
       />
     </div>
   );

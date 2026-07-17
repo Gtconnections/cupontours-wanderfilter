@@ -32,7 +32,7 @@ export default function WellnessPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   return (
@@ -41,6 +41,7 @@ export default function WellnessPage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Mind, Body & Soul</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Wellness & Spa</h1>
           <p className="hero-subtitle">
             Restore your balance with our exclusive selection of therapeutic massages, holistic treatments, and fitness sessions designed for ultimate relaxation.
@@ -52,7 +53,7 @@ export default function WellnessPage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Collection</span>
-            <h2>Select your <span style={{ color: '#d4af37', fontStyle: 'italic' }}>treatment.</span></h2>
+            <h2>Select your <span className="accent-word">treatment.</span></h2>
             <p>Browse our curated selection of premium wellness experiences.</p>
           </div>
 

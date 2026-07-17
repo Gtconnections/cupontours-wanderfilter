@@ -59,9 +59,9 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to process the booking email via Next.js handles." },
+      { success: false, message: error instanceof Error ? error.message : "Failed to process the booking email via Next.js handles." },
       { status: 500 }
     );
   }

@@ -6,7 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getReservations, Reservation, getReservationDetail, ReservationDetail, deleteReservation } from '@/app/lib/api/propertiesAdmin';
+import { getReservations, Reservation, ReservationsFilters, getReservationDetail, ReservationDetail, deleteReservation } from '@/app/lib/api/propertiesAdmin';
 import ModalReservationDetail from '../../../components/ModalReservationDetail';
 import ModalDeleteReservation from '../../../components/ModalDeleteReservation';
 import { FiSearch, FiX, FiPlus, FiArrowLeft, FiDollarSign, FiEye, FiEdit2, FiTrash2 } from 'react-icons/fi';
@@ -80,7 +80,7 @@ export default function ReservationsPage() {
     setError(null);
 
     try {
-      const filters: any = {
+      const filters: ReservationsFilters = {
         page: page,
         listing_id: listingId,
       };
@@ -104,9 +104,9 @@ export default function ReservationsPage() {
       setTotalCount(total);
       setTotalPages(Math.ceil(total / 20));
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando reservaciones:', err);
-      setError(err.message || 'Error al cargar las reservaciones');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las reservaciones');
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +122,7 @@ export default function ReservationsPage() {
       const detail = await getReservationDetail(reservationId);
       console.log('📦 Detalle de reservación:', detail);
       setSelectedReservation(detail);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando detalle:', err);
     } finally {
       setIsLoadingDetail(false);
@@ -151,9 +151,9 @@ export default function ReservationsPage() {
       // Recargar la lista
       loadReservations(currentPage, startDate, endDate);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al eliminar:', err);
-      setToastMessage(`❌ Error: ${err.message || 'Failed to delete'}`);
+      setToastMessage(`❌ Error: ${(err instanceof Error ? err.message : undefined) || 'Failed to delete'}`);
       setTimeout(() => setToastMessage(null), 3000);
       setIsDeleteModalOpen(false);
     } finally {
@@ -166,6 +166,9 @@ export default function ReservationsPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

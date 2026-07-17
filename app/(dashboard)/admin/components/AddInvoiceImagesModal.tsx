@@ -82,9 +82,9 @@ export default function AddInvoiceImagesModal({
       await onUpload(invoiceId, selectedFiles);
       resetState();
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al subir imágenes:', err);
-      setError(err.message || 'Error al subir las imágenes');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al subir las imágenes');
     } finally {
       setIsLoading(false);
     }

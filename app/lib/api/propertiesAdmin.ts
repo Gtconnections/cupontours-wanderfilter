@@ -1,5 +1,7 @@
 // lib/api/propertiesAdmin.ts
 
+import { RawApiItem } from "../types/raw";
+
 export interface Property {
   id: number;
   name: string;
@@ -18,7 +20,7 @@ export interface Property {
   max_of_guest: number;
   booking_price: string;
   listing_status: boolean;
-  amenities: any[];
+  amenities: RawApiItem[];
 }
 
 export interface PropertyDetailImage {
@@ -61,14 +63,21 @@ export interface PropertyDetail {
   bathrooms: number;
   rent: number;
   cleaning_fee: number;
-  agreements: any[];
+  agreements: PropertyAgreement[];
   profit_and_loss_history: {
     id: number;
     date: string;
     total_income: number;
     net_income: number;
   }[];
-  amenities: any[];
+  amenities: RawApiItem[];
+}
+
+export interface PropertyAgreement {
+  id: number;
+  agreements_title: string;
+  expiration_date: string;
+  agreement: string;
 }
 
 export interface PropertyDetailResponse {
@@ -665,7 +674,7 @@ export interface EditListingData {
 }
 
 // 🔥 EDITAR PROPIEDAD
-export async function editListing(listingId: number, data: EditListingData): Promise<any> {
+export async function editListing(listingId: number, data: EditListingData): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -752,8 +761,8 @@ export interface ProfitAndLossItem {
     status: string;
     property_id: string;
   };
-  list_invoices: any[];
-  list_reservations: any[];
+  list_invoices: RawApiItem[];
+  list_reservations: RawApiItem[];
 }
 
 export interface ProfitAndLossResponse {
@@ -1759,7 +1768,7 @@ export interface UpdateReservationData {
 }
 
 // 🔥 ACTUALIZAR RESERVACIÓN - con interfaz correcta
-export async function updateReservation(id: number, data: UpdateReservationData): Promise<any> {
+export async function updateReservation(id: number, data: UpdateReservationData): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -1917,7 +1926,7 @@ export interface CreateListingResponse {
   expenses_type: string;
   property_id: string;
   photo: string | null;
-  listing_images: any[];
+  listing_images: RawApiItem[];
   max_of_guest: number;
   booking_price: string;
   description: string;
@@ -1941,9 +1950,9 @@ export interface CreateListingResponse {
   bathrooms: number;
   rent: string;
   cleaning_fee: string;
-  agreements: any[];
-  profit_and_loss_history: any[];
-  amenities: any[];
+  agreements: RawApiItem[];
+  profit_and_loss_history: RawApiItem[];
+  amenities: RawApiItem[];
 }
 
 // 🔥 OBTENER AMENITIES
@@ -2496,7 +2505,7 @@ export async function deleteInvoice(id: number, detail: string): Promise<{ messa
 // ... (todas las interfaces y funciones existentes)
 
 // 🔥 EDITAR FACTURA
-export async function updateInvoice(id: number, data: any): Promise<any> {
+export async function updateInvoice(id: number, data: unknown): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -2555,7 +2564,7 @@ export async function updateInvoice(id: number, data: any): Promise<any> {
 // ... (todas las interfaces y funciones existentes)
 
 // 🔥 SUBIR IMÁGENES DE FACTURA
-export async function uploadInvoiceImages(invoiceId: number, files: File[]): Promise<any[]> {
+export async function uploadInvoiceImages(invoiceId: number, files: File[]): Promise<unknown[]> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();

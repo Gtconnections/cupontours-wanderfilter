@@ -162,9 +162,9 @@ export default function EditReservationPage() {
 
       setCarInfo({ brand: data.brand, model: data.model });
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al cargar reservación:', err);
-      setError(err.message || 'Error al cargar la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar la reservación');
     }
   }, [reservationId, token, isAuthenticated, router]);
 
@@ -173,7 +173,7 @@ export default function EditReservationPage() {
     try {
       const data = await getAllCars();
       setCars(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al cargar autos:', err);
     }
   }, []);
@@ -182,6 +182,9 @@ export default function EditReservationPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -205,17 +208,21 @@ export default function EditReservationPage() {
 
   // 🔥 Calcular total_earnings automáticamente - CORREGIDO
   useEffect(() => {
-    const earnings = typeof formData.earnings === 'number' ? formData.earnings : parseFloat(formData.earnings as any) || 0;
-    const extraCharges = typeof formData.extra_charges === 'number' ? formData.extra_charges : parseFloat(formData.extra_charges as any) || 0;
+    const earnings = typeof formData.earnings === 'number' ? formData.earnings : parseFloat(formData.earnings) || 0;
+    const extraCharges = typeof formData.extra_charges === 'number' ? formData.extra_charges : parseFloat(formData.extra_charges) || 0;
     const total = earnings + extraCharges;
+    // Derived total_earnings kept in sync with its own inputs inside the same form state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(prev => ({ ...prev, total_earnings: total }));
   }, [formData.earnings, formData.extra_charges]);
 
   // 🔥 Calcular miles_drive automáticamente - CORREGIDO
   useEffect(() => {
-    const preTrip = typeof formData.miles_pre_trip === 'number' ? formData.miles_pre_trip : parseFloat(formData.miles_pre_trip as any) || 0;
-    const postTrip = typeof formData.miles_post_trip === 'number' ? formData.miles_post_trip : parseFloat(formData.miles_post_trip as any) || 0;
+    const preTrip = typeof formData.miles_pre_trip === 'number' ? formData.miles_pre_trip : parseFloat(formData.miles_pre_trip) || 0;
+    const postTrip = typeof formData.miles_post_trip === 'number' ? formData.miles_post_trip : parseFloat(formData.miles_post_trip) || 0;
     const drive = postTrip - preTrip;
+    // Derived miles_drive kept in sync with its own inputs inside the same form state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(prev => ({ ...prev, miles_drive: drive >= 0 ? drive : 0 }));
   }, [formData.miles_pre_trip, formData.miles_post_trip]);
 
@@ -339,9 +346,9 @@ export default function EditReservationPage() {
         router.push(`/admin/cars/reservations/${formData.car_id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al actualizar reservación:', err);
-      setError(err.message || 'Error al actualizar la reservación');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar la reservación');
     } finally {
       setIsSubmitting(false);
     }

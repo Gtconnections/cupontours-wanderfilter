@@ -107,6 +107,9 @@ export default function CreatePropertyPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -115,25 +118,27 @@ export default function CreatePropertyPage() {
     }
   }, [isAuthenticated, isChecking, checkAuth, router]);
 
-  // Cargar datos
-  useEffect(() => {
-    if (isAuthVerified && isAuthenticated) {
-      loadData();
-    }
-  }, [isAuthVerified, isAuthenticated]);
-
   const loadData = async () => {
     setIsLoadingData(true);
     try {
       const ownersData = await getOwners();
       setOwners(ownersData);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar datos:', err);
       setError('Error al cargar los datos necesarios');
     } finally {
       setIsLoadingData(false);
     }
   };
+
+  // Cargar datos
+  useEffect(() => {
+    if (isAuthVerified && isAuthenticated) {
+      // Fetches data once auth is confirmed.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadData();
+    }
+  }, [isAuthVerified, isAuthenticated]);
 
   // Manejar cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -311,9 +316,9 @@ export default function CreatePropertyPage() {
         router.push(`/admin/properties/${listingId}`);
       }, 1500);
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear propiedad:', err);
-      setError(err.message || 'Error al crear la propiedad');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al crear la propiedad');
     } finally {
       setIsLoading(false);
     }

@@ -32,7 +32,7 @@ export default function RealEstatePage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   const formatPrice = (priceStr: string) => {
@@ -46,6 +46,7 @@ export default function RealEstatePage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Exclusive Portfolio</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Real Estate</h1>
           <p className="hero-subtitle">
             Discover extraordinary properties in the most desirable locations. From luxury villas to premium commercial spaces, find your perfect investment.
@@ -57,7 +58,7 @@ export default function RealEstatePage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Collection</span>
-            <h2>Select your <span style={{ color: '#d4af37', fontStyle: 'italic' }}>property.</span></h2>
+            <h2>Select your <span className="accent-word">property.</span></h2>
             <p>Browse our curated selection of high-end real estate available for rent and sale.</p>
           </div>
 

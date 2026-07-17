@@ -2,7 +2,7 @@ import { clientConfig } from '@/app/lib/config'
 
 interface StructuredDataProps {
   type?: 'Organization' | 'WebSite' | 'Product' | 'RentalProperty' | 'Vehicle'
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 }
 
 export function StructuredData({ type = 'Organization', data = {} }: StructuredDataProps) {

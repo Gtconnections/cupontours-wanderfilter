@@ -52,21 +52,6 @@ export default function EditInvoicePage() {
     { item: '', quantity: 1, rate: 0, amount: 0 }
   ]);
 
-  // Cargar datos
-  useEffect(() => {
-    if (isChecking) return;
-    
-    const hasAuth = checkAuth();
-    setIsAuthVerified(true);
-    
-    if (!hasAuth) {
-      router.push('/login');
-      return;
-    }
-
-    loadData();
-  }, [isChecking, checkAuth, router]);
-
   const loadData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -104,13 +89,31 @@ export default function EditInvoicePage() {
         setItems([{ item: '', quantity: 1, rate: 0, amount: 0 }]);
       }
 
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando datos:', err);
-      setError(err.message || 'Error al cargar los datos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');
     } finally {
       setIsLoading(false);
     }
   }, [invoiceId]);
+
+  // Cargar datos
+  useEffect(() => {
+    if (isChecking) return;
+
+    const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsAuthVerified(true);
+
+    if (!hasAuth) {
+      router.push('/login');
+      return;
+    }
+
+    loadData();
+  }, [isChecking, checkAuth, router]);
 
   // Calcular total de la factura
   const calculateTotal = (): number => {
@@ -121,6 +124,8 @@ export default function EditInvoicePage() {
   // Actualizar el precio total cuando cambian los items
   useEffect(() => {
     const total = calculateTotal();
+    // Derived total kept in sync with its own inputs inside the same form state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(prev => ({ ...prev, price: total.toFixed(2) }));
   }, [items]);
 
@@ -238,9 +243,9 @@ const updateItem = (index: number, field: keyof InvoiceItem, value: string | num
         router.push(`/admin/cars/invoice-detail/${result.id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al actualizar factura:', err);
-      setError(err.message || 'Error al actualizar la factura');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar la factura');
     } finally {
       setIsSubmitting(false);
     }

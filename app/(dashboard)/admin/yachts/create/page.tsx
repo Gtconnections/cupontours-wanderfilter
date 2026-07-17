@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getOwners, createYacht, UpdateYachtData } from '@/app/lib/api/yachtsAdmin';
+import { getOwners, createYacht, UpdateYachtData, YachtOwner } from '@/app/lib/api/yachtsAdmin';
 import { 
   FiArrowLeft, 
   FiSave, 
@@ -42,7 +42,7 @@ export default function CreateYachtPage() {
   const router = useRouter();
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
   
-  const [owners, setOwners] = useState<any[]>([]);
+  const [owners, setOwners] = useState<YachtOwner[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingOwners, setIsLoadingOwners] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -77,6 +77,9 @@ export default function CreateYachtPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -85,26 +88,28 @@ export default function CreateYachtPage() {
     }
   }, [isAuthenticated, isChecking, checkAuth, router]);
 
-  // Cargar owners
-  useEffect(() => {
-    if (isAuthVerified && isAuthenticated) {
-      loadOwners();
-    }
-  }, [isAuthVerified, isAuthenticated]);
-
   const loadOwners = async () => {
     setIsLoadingOwners(true);
     try {
       const data = await getOwners();
       setOwners(data);
       console.log('👥 Owners cargados:', data.length);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al cargar owners:', err);
       setError('Error loading owners');
     } finally {
       setIsLoadingOwners(false);
     }
   };
+
+  // Cargar owners
+  useEffect(() => {
+    if (isAuthVerified && isAuthenticated) {
+      // Fetches data once auth is confirmed.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadOwners();
+    }
+  }, [isAuthVerified, isAuthenticated]);
 
   // Manejar cambios en inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -154,9 +159,9 @@ export default function CreateYachtPage() {
         router.push(`/admin/yachts/${result.id}`);
       }, 1500);
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error al crear yate:', err);
-      setError(err.message || 'Error creating yacht');
+      setError((err instanceof Error ? err.message : undefined) || 'Error creating yacht');
     } finally {
       setIsLoading(false);
     }

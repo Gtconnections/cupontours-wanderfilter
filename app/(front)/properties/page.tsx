@@ -39,6 +39,8 @@ function PropertiesCatalogContent() {
   useEffect(() => {
     if (allProperties.length > 0) {
       const sorted = sortProperties(allProperties, sortOption);
+      // Derived list kept in sync with its own inputs (source data + sort option).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFilteredProperties(sorted);
     }
   }, [allProperties, sortOption]);

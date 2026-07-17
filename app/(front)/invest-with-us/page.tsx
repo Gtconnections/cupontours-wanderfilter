@@ -77,10 +77,10 @@ export default function InvestPage() {
       setEmail('');
       setPhoneNumber('');
       setMessage('');
-    } catch (error: any) {
+    } catch (error) {
       setStatusMessage({
         type: 'error',
-        text: error.message || "Something went wrong. Please check your data."
+        text: (error instanceof Error ? error.message : undefined) || "Something went wrong. Please check your data."
       });
     } finally {
       setIsLoading(false);
@@ -164,7 +164,7 @@ export default function InvestPage() {
           <div className="split-text">
             <span className="pre-title">Our Profile</span>
             <h2 className="section-title">A modern approach to<br />real estate management.</h2>
-            <p className="text-content">At Cupon Tours, we have built a reputation as Miami's premier property management company. Our expertise spans across all aspects of real estate investment, from acquisition to ongoing management.</p>
+            <p className="text-content">At Cupon Tours, we have built a reputation as Miami&apos;s premier property management company. Our expertise spans across all aspects of real estate investment, from acquisition to ongoing management.</p>
             <p className="text-content">With over a decade of experience in the Miami market, we understand the unique challenges and opportunities that come with short-term rental investments. Our team is committed to delivering exceptional results for our property owners.</p>
             <p className="text-content">We leverage cutting-edge technology, market insights, and proven strategies to ensure your investment generates maximum returns while maintaining the highest standards of guest experience and property care.</p>
             <button className="btn-black-pill mt-4" type="button" onClick={() => document.getElementById('invest-form-block')?.scrollIntoView({ behavior: 'smooth' })}>Get Started</button>
@@ -312,7 +312,7 @@ export default function InvestPage() {
           <div className="split-form">
             <div className="form-card animate-form-style">
               <h3>Receive better advice in this search for the right property for you!</h3>
-              <p>Contact our expert team today and discover how we can help you maximize your property investment returns. We're here to guide you through every step of the process.</p>
+              <p>Contact our expert team today and discover how we can help you maximize your property investment returns. We&apos;re here to guide you through every step of the process.</p>
               
               <form onSubmit={handleInvestSubmit} className="clean-form custom-wander-layout mt-4">
                 
@@ -333,7 +333,7 @@ export default function InvestPage() {
                 )}
 
                 <div className="wander-radio-container">
-                  <span className="radio-title-label">I'm interested in:</span>
+                  <span className="radio-title-label">I&apos;m interested in:</span>
                   <label className="radio-custom-item">
                     <input 
                       type="radio" 
@@ -435,7 +435,7 @@ export default function InvestPage() {
                 <div className="wander-contact-text-node">
                   <span className="contact-node-title">Email</span>
                   <a href={`mailto:${process.env.NEXT_PUBLIC_COMPANY_EMAIL || ''}`} className="contact-node-value">{process.env.NEXT_PUBLIC_COMPANY_EMAIL || ''}</a>
-                  <span className="contact-node-caption">We'll respond within 24 hours</span>
+                  <span className="contact-node-caption">We&apos;ll respond within 24 hours</span>
                 </div>
               </div>
 

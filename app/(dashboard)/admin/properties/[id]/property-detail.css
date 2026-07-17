@@ -448,6 +448,9 @@
 }
 
 .wander-error-state h3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: #991b1b;
   margin-bottom: 12px;
 }
@@ -732,6 +735,9 @@
 
 /* Error */
 .wander-modal-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background: #fef2f2;
   border: 1px solid #fee2e2;
   color: #991b1b;
@@ -915,6 +921,10 @@
   z-index: 2000;
   animation: wanderToastSlide 0.3s ease;
   max-width: 400px;
+}
+
+.wander-toast.error {
+  background: #dc2626;
 }
 
 @keyframes wanderToastSlide {
@@ -1720,9 +1730,16 @@
 }
 
 .wander-confirm-icon {
-  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 12px;
-  display: block;
+  color: #dc2626;
+}
+
+.wander-confirm-icon svg {
+  width: 40px;
+  height: 40px;
 }
 
 .wander-confirm-message {
@@ -1912,6 +1929,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   opacity: 0;
   transition: opacity 0.3s ease;
   color: #ffffff;

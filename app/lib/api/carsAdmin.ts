@@ -1,5 +1,7 @@
 // lib/api/carsAdmin.ts
 
+import { RawApiItem } from "../types/raw";
+
 export interface Car {
   id: number;
   brand: string;
@@ -49,8 +51,8 @@ export interface CarDetail {
   percentage_expenses_month: number | null;
   profit_last_month: number | null;
   percentage_profit_last_month: number | null;
-  agreements: any | null;
-  profit_and_loss_history: any | null;
+  agreements: RawApiItem[] | null;
+  profit_and_loss_history: RawApiItem[] | null;
 }
 
 export interface CarsResponse {
@@ -429,7 +431,7 @@ export async function uploadPrincipalImage(carId: number, imageFile: File): Prom
 }
 
 // 🔥 ACTUALIZAR AUTO
-export async function updateCar(carId: number, data: any): Promise<CarDetail> {
+export async function updateCar(carId: number, data: unknown): Promise<CarDetail> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -499,7 +501,7 @@ export async function updateCar(carId: number, data: any): Promise<CarDetail> {
 }
 
 // 🔥 SUBIR MÚLTIPLES IMÁGENES
-export async function uploadCarImages(carId: number, files: File[]): Promise<any> {
+export async function uploadCarImages(carId: number, files: File[]): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -565,6 +567,119 @@ export async function uploadCarImages(carId: number, files: File[]): Promise<any
 
   } catch (error) {
     console.error('❌ Error en uploadCarImages:', error);
+    throw error;
+  }
+}
+
+// 🔥 IMÁGENES DE LA GALERÍA CON ID (para poder eliminarlas individualmente)
+export interface CarGalleryImage {
+  id: number;
+  image: string;
+  car_id: number;
+}
+
+export async function getCarImages(carId: number): Promise<CarGalleryImage[]> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/cars/car_images/${carId}/`;
+    console.log('📡 Obteniendo imágenes de la galería:', url);
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: No se pudieron obtener las imágenes`);
+    }
+
+    const result = await response.json();
+    return Array.isArray(result) ? result : [];
+
+  } catch (error) {
+    console.error('❌ Error en getCarImages:', error);
+    throw error;
+  }
+}
+
+export async function deleteCarImage(imageId: number): Promise<{ message: string }> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  try {
+    const url = `${API_BASE_URL}/cars/car_images/`;
+    console.log('📡 Eliminando imagen de auto:', url, imageId);
+
+    // El endpoint solo acepta FormParser/MultiPartParser (no JSON)
+    const formData = new FormData();
+    formData.append('image_id', imageId.toString());
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      console.error('❌ Error de autenticación:', response.status);
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (response.status === 404) {
+      throw new Error(`Imagen ${imageId} no encontrada`);
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta:', response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al eliminar la imagen'}`);
+    }
+
+    if (response.status === 204) {
+      return { message: 'Imagen eliminada exitosamente' };
+    }
+
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    console.error('❌ Error en deleteCarImage:', error);
     throw error;
   }
 }
@@ -797,7 +912,7 @@ export async function getAllCars(): Promise<Car[]> {
 }
 
 // 🔥 CREAR RESERVACIÓN - CON total_earnings Y miles_drive
-export async function createReservation(data: CreateReservationData): Promise<any> {
+export async function createReservation(data: CreateReservationData): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -1065,7 +1180,7 @@ export async function getInvoiceDetail(invoiceId: number): Promise<InvoiceDetail
 // lib/api/carsAdmin.ts - Añadir al final del archivo
 
 // 🔥 CREAR FACTURA
-export async function createInvoice(data: any): Promise<InvoiceDetailResponse> {
+export async function createInvoice(data: unknown): Promise<InvoiceDetailResponse> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -1127,7 +1242,7 @@ export async function createInvoice(data: any): Promise<InvoiceDetailResponse> {
 // lib/api/carsAdmin.ts - Añadir al final del archivo
 
 // 🔥 ACTUALIZAR FACTURA
-export async function updateInvoice(invoiceId: number, data: any): Promise<InvoiceDetailResponse> {
+export async function updateInvoice(invoiceId: number, data: unknown): Promise<InvoiceDetailResponse> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -1261,7 +1376,7 @@ export async function deleteInvoice(invoiceId: number, comment: string): Promise
 // lib/api/carsAdmin.ts - Añadir al final del archivo
 
 // 🔥 SUBIR IMÁGENES A UNA FACTURA
-export async function uploadInvoiceImages(invoiceId: number, files: File[]): Promise<any> {
+export async function uploadInvoiceImages(invoiceId: number, files: File[]): Promise<unknown> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
   
   const token = getAuthToken();
@@ -1427,7 +1542,7 @@ export interface ProfitAndLossItem {
     status: string;
     external_id: string;
   };
-  list_invoices: any[];
+  list_invoices: RawApiItem[];
 }
 
 export interface ProfitAndLossResponse {
@@ -1526,7 +1641,7 @@ export interface ProfitAndLossDetail {
     status: string;
     external_id: string;
   };
-  list_invoices: any[];
+  list_invoices: RawApiItem[];
 }
 
 // 🔥 OBTENER DETALLE DE PROFIT AND LOSS
@@ -1598,7 +1713,7 @@ export interface CreateProfitAndLossData {
 }
 
 export interface CreateProfitAndLossResponse {
-  list_errors: any[];
+  list_errors: RawApiItem[];
   list_success: ProfitAndLossItem[];
 }
 

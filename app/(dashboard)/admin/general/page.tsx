@@ -6,11 +6,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getGeneralServices, GeneralService } from '@/app/lib/api/generalAdmin';
-import { 
-  FiPlus, 
-  FiRefreshCw, 
-  FiEye, 
+import { getGeneralServices, GeneralService, createGeneralService, deleteGeneralService } from '@/app/lib/api/generalAdmin';
+import {
+  FiPlus,
+  FiRefreshCw,
+  FiEye,
   FiTrash2,
   FiDollarSign,
   FiTag,
@@ -18,8 +18,13 @@ import {
   FiChevronRight,
   FiGrid,
   FiFileText,
-  FiHelpCircle
+  FiHelpCircle,
+  FiBarChart2
 } from 'react-icons/fi';
+import { Modal } from '@/app/(dashboard)/admin/components/Modal';
+import { CreateGeneralServiceForm } from '@/app/(dashboard)/admin/components/CreateGeneralServiceForm';
+import { ConfirmDialog } from '@/app/(dashboard)/admin/components/ConfirmDialog';
+import Toast from '@/app/(dashboard)/admin/components/Toast';
 import './general.css';
 
 const LoadingSkeleton = () => (
@@ -52,6 +57,26 @@ export default function GeneralServiceListPage() {
   const [itemsPerPage] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  // Confirm Dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    id: number | null;
+    name: string;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    id: null,
+    name: '',
+    isDeleting: false
+  });
+
   const loadServices = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
       router.push('/login');
@@ -68,9 +93,9 @@ export default function GeneralServiceListPage() {
       setServices(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / itemsPerPage));
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando servicios generales:', err);
-      setError(err.message || 'Error loading services');
+      setError((err instanceof Error ? err.message : undefined) || 'Error loading services');
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +105,9 @@ export default function GeneralServiceListPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {
@@ -163,6 +191,76 @@ export default function GeneralServiceListPage() {
     );
   };
 
+  // Create service handler
+  const handleCreateService = async (data: { name: string }) => {
+    setIsSubmitting(true);
+    try {
+      const response = await createGeneralService(data);
+      console.log('✅ Servicio general creado:', response);
+      
+      setToast({
+        message: `Service "${data.name}" created successfully!`,
+        type: 'success'
+      });
+      
+      setIsModalOpen(false);
+      await loadServices(true);
+    } catch (err) {
+      console.error('❌ Error creando servicio general:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error creating service',
+        type: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Delete service handler
+  const handleDeleteClick = (id: number, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      id,
+      name,
+      isDeleting: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDialog.id) return;
+
+    setConfirmDialog(prev => ({ ...prev, isDeleting: true }));
+
+    try {
+      await deleteGeneralService(confirmDialog.id);
+      console.log('✅ Servicio general eliminado:', confirmDialog.id);
+      
+      setToast({
+        message: `Service "${confirmDialog.name}" deleted successfully!`,
+        type: 'success'
+      });
+      
+      setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+      await loadServices(true);
+    } catch (err) {
+      console.error('❌ Error eliminando servicio general:', err);
+      setToast({
+        message: (err instanceof Error ? err.message : undefined) || 'Error deleting service',
+        type: 'error'
+      });
+      setConfirmDialog(prev => ({ ...prev, isDeleting: false }));
+    }
+  };
+
+  const handleCloseConfirmDialog = () => {
+    if (confirmDialog.isDeleting) return;
+    setConfirmDialog({ isOpen: false, id: null, name: '', isDeleting: false });
+  };
+
+  const handleCloseToast = () => {
+    setToast(null);
+  };
+
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;
   }
@@ -200,6 +298,28 @@ export default function GeneralServiceListPage() {
 
   return (
     <div className="wander-general-container">
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={handleCloseToast}
+        />
+      )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={handleCloseConfirmDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Service"
+        message={`Are you sure you want to delete "${confirmDialog.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        isSubmitting={confirmDialog.isDeleting}
+      />
+
       {/* Header */}
       <header className="wander-general-header">
         <div>
@@ -210,16 +330,23 @@ export default function GeneralServiceListPage() {
           </p>
         </div>
         <div className="wander-general-actions">
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Refresh
           </button>
-          <button 
+          <Link
+            href="/admin/accounting?servicio_tipo=servicios_generales"
+            className="wander-btn-secondary"
+          >
+            <FiBarChart2 size={16} />
+            Transactions
+          </Link>
+          <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/general/create')}
+            onClick={() => setIsModalOpen(true)}
           >
             <FiPlus size={16} />
             Create Service
@@ -308,7 +435,7 @@ export default function GeneralServiceListPage() {
                   Details
                 </Link>
                 <button 
-                  onClick={() => alert(`Delete ${service.name} - Feature in development`)}
+                  onClick={() => handleDeleteClick(service.id, service.name)}
                   className="wander-general-action-btn delete"
                 >
                   <FiTrash2 size={14} />
@@ -372,6 +499,20 @@ export default function GeneralServiceListPage() {
           </div>
         </div>
       )}
+
+      {/* Modal de Creación */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Service"
+        maxWidth="640px"
+      >
+        <CreateGeneralServiceForm
+          onSubmit={handleCreateService}
+          onCancel={() => setIsModalOpen(false)}
+          isSubmitting={isSubmitting}
+        />
+      </Modal>
     </div>
   );
 }

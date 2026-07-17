@@ -3,6 +3,7 @@
 'use client';
 
 import React from 'react';
+import { FiX, FiTrash2 } from 'react-icons/fi';
 
 interface ModalConfirmDeleteProps {
   isOpen: boolean;
@@ -39,13 +40,13 @@ export default function ModalConfirmDelete({
         <div className="wander-modal-header wander-modal-confirm-header">
           <h2>{title}</h2>
           <button className="wander-modal-close" onClick={onClose} disabled={isLoading}>
-            ✕
+            <FiX size={18} />
           </button>
         </div>
 
         {/* Body */}
         <div className="wander-modal-body wander-modal-confirm-body">
-          <div className="wander-confirm-icon">🗑️</div>
+          <div className="wander-confirm-icon"><FiTrash2 /></div>
           <p className="wander-confirm-message">{message}</p>
           <p className="wander-confirm-warning">Esta acción no se puede deshacer.</p>
         </div>

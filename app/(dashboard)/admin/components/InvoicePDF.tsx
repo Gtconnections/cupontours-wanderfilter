@@ -198,7 +198,7 @@ export async function generateInvoicePDF(invoice: InvoicePDFData): Promise<void>
   });
 
   // 🔥 OBTENER LA POSICIÓN Y DE LA TABLA
-  const finalY = (doc as any).lastAutoTable.finalY + 8;
+  const finalY = (doc as jsPDF & { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8;
 
   // 🔥 TOTAL
   yPos = finalY;

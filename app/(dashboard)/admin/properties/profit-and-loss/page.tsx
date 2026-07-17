@@ -6,7 +6,7 @@ import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getProfitAndLoss, ProfitAndLossItem, ProfitAndLossResponse } from '@/app/lib/api/propertiesAdmin';
+import { getProfitAndLoss, ProfitAndLossItem, ProfitAndLossResponse, ProfitAndLossFilters } from '@/app/lib/api/propertiesAdmin';
 import ModalCreatePL from '../../components/ModalCreatePL';
 import './profit-and-loss.css';
 
@@ -54,11 +54,11 @@ function ProfitAndLossContent() {
     setError(null);
 
     try {
-      const filters: any = {
+      const filters: ProfitAndLossFilters = {
         page: page,
         page_size: 20,
       };
-      
+
       if (listing.trim()) {
         filters.slug__icontains = listing.trim();
       }
@@ -77,9 +77,9 @@ function ProfitAndLossContent() {
       const pageSize = 20;
       setTotalPages(Math.ceil(total / pageSize));
       
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando Profit and Loss:', err);
-      setError(err.message || 'Error al cargar los datos');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');
     } finally {
       setIsLoading(false);
     }
@@ -90,6 +90,9 @@ function ProfitAndLossContent() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

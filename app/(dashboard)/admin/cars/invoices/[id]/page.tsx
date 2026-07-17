@@ -75,9 +75,9 @@ export default function CarInvoicesPage() {
       }
       
       console.log('📊 Total de facturas:', data.count);
-    } catch (err: any) {
+    } catch (err) {
       console.error('❌ Error cargando facturas:', err);
-      setError(err.message || 'Error al cargar las facturas');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las facturas');
     } finally {
       setIsLoading(false);
     }
@@ -87,6 +87,9 @@ export default function CarInvoicesPage() {
     if (isChecking) return;
     
     const hasAuth = checkAuth();
+    // Auth check reads cookies/localStorage, only available after mount; deferring
+    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
     
     if (!hasAuth) {

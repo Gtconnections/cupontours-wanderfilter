@@ -1,4 +1,5 @@
 import { clientConfig } from "../config";
+import { RawApiItem } from "../types/raw";
 const API_BASE_URL = clientConfig.api.baseUrl
 
 export interface YachtCatalogItem {
@@ -8,6 +9,28 @@ export interface YachtCatalogItem {
   price: string;
   rating: string;
   img: string;
+}
+
+export interface YachtDetail {
+  id: number;
+  title: string;
+  img: string;
+  description: string;
+  length: string;
+  capacity: string;
+  staterooms: string;
+  bathrooms: string;
+  price_full_day: string;
+  price_half_day: string | null;
+  gallery: string[];
+  amenities: {
+    certified_captain: boolean;
+    fuel: boolean;
+    jacuzzi: boolean;
+    slide: boolean;
+    jet_sky: boolean;
+    water_toys: boolean;
+  };
 }
 
 export async function getYachts(): Promise<YachtCatalogItem[]> {
@@ -23,7 +46,7 @@ export async function getYachts(): Promise<YachtCatalogItem[]> {
     const data = await response.json();
     const results = data.results || data.data || data || [];
 
-    return results.map((item: any): YachtCatalogItem => {
+    return results.map((item: RawApiItem): YachtCatalogItem => {
       const id = item.id || Math.random();
       
       // Usamos la clave 'name' directo del JSON (Ej: "103' Azimut + Slide")
@@ -55,7 +78,7 @@ export async function getYachts(): Promise<YachtCatalogItem[]> {
   }
 }
 
-export async function getYachtById(id: string): Promise<any> {
+export async function getYachtById(id: string): Promise<YachtDetail> {
   try {
     const response = await fetch(`${API_BASE_URL}/landing/yachts/${id}/`, {
       method: "GET",
@@ -73,7 +96,7 @@ export async function getYachtById(id: string): Promise<any> {
 
     // EXCEPCIÓN CORREGIDA: Normalizamos la galería limpiando cada image_url de la BD
     const gallery = Array.isArray(item.gallery)
-      ? item.gallery.map((g: any) => {
+      ? item.gallery.map((g: RawApiItem) => {
           if (typeof g === 'string') return g.trim();
           return g.image_url || g.image || g.url || g.file || img;
         })

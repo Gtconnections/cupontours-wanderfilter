@@ -32,7 +32,7 @@ export default function HealthPage() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: document.getElementById('catalog-start')?.offsetTop! - 100, behavior: 'smooth' });
+    window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
   return (
@@ -41,6 +41,7 @@ export default function HealthPage() {
         <div className="hero-overlay"></div>
         <div className="hero-container">
           <span className="pre-title">Premium Care</span>
+          <span className="hero-divider"></span>
           <h1 className="massive-heading">Health & Medical</h1>
           <p className="hero-subtitle">
             Access top-tier medical professionals and specialized clinics. Your well-being is our priority, providing exceptional care tailored to your needs.
@@ -52,7 +53,7 @@ export default function HealthPage() {
         <div className="inner-container">
           <div className="section-header text-center">
             <span className="pre-title">The Collection</span>
-            <h2>Select your <span style={{ color: '#d4af37', fontStyle: 'italic' }}>consultation.</span></h2>
+            <h2>Select your <span className="accent-word">consultation.</span></h2>
             <p>Browse our curated network of medical and healthcare services.</p>
           </div>
 

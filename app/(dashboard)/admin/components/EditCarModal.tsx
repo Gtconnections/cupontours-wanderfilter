@@ -8,7 +8,7 @@ interface EditCarModalProps {
   isOpen: boolean;
   car: CarDetail | null;
   onClose: () => void;
-  onSave: (carId: number, data: any) => Promise<void>;
+  onSave: (carId: number, data: unknown) => Promise<void>;
 }
 
 const EXPENSES_OPTIONS = [
@@ -35,6 +35,8 @@ export default function EditCarModal({ isOpen, car, onClose, onSave }: EditCarMo
 
   useEffect(() => {
     if (car && isOpen) {
+      // Pre-fills the form from the record being edited when the modal opens.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         brand: car.brand || '',
         model: car.model || '',
@@ -99,9 +101,9 @@ export default function EditCarModal({ isOpen, car, onClose, onSave }: EditCarMo
 
       await onSave(car.car_id, dataToSend);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error al guardar:', err);
-      setError(err.message || 'Error al actualizar el auto');
+      setError((err instanceof Error ? err.message : undefined) || 'Error al actualizar el auto');
     } finally {
       setIsLoading(false);
     }
