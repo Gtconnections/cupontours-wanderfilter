@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import { sendJetQuoteRequest } from '../../lib/api';
+import Membership from '@/components/Membership';
 import './jets.css';
 import Link from 'next/link';
 
@@ -351,16 +352,8 @@ export default function JetsPage() {
         </div>
       </section>
 
-      {/* 3. WOULD YOU RATHER (EDITORIAL BLOCK) */}
-      <section className="editorial-pitch bg-gray-light">
-        <div className="pitch-container">
-          <span className="pre-title">The Standard</span>
-          <blockquote className="editorial-quote">
-            &quot;Your journey is strictly personal. Flight options configured from custom travel horizons are ready to respond to your exact target.&quot;
-          </blockquote>
-          <p className="pitch-subtext">Access our premium array of services, tailored to your lifestyle parameters across any coordinates.</p>
-        </div>
-      </section>
+      {/* MEMBERSHIP CLUB SECTION */}
+      <Membership />
 
       {/* 4. PILLARS GRID */}
       <section className="pillars-section">
