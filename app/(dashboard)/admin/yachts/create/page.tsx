@@ -93,7 +93,6 @@ export default function CreateYachtPage() {
     try {
       const data = await getOwners();
       setOwners(data);
-      console.log('👥 Owners cargados:', data.length);
     } catch (err) {
       console.error('❌ Error al cargar owners:', err);
       setError('Error loading owners');
@@ -147,9 +146,7 @@ export default function CreateYachtPage() {
     setError(null);
 
     try {
-      console.log('📤 Creando yate:', formData);
       const result = await createYacht(formData);
-      console.log('✅ Yate creado:', result);
       
       setToastMessage('✅ Yacht created successfully!');
       setTimeout(() => setToastMessage(null), 3000);

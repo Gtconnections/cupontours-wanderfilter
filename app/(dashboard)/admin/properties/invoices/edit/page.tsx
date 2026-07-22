@@ -250,7 +250,6 @@ function EditInvoiceContent() {
       };
 
       const result = await updateInvoice(parseInt(invoiceId!), payload);
-      console.log('✅ Factura actualizada:', result);
       
       setToastMessage('✅ Invoice updated successfully!');
       setTimeout(() => setToastMessage(null), 3000);

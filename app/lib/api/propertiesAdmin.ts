@@ -197,13 +197,11 @@ export async function getProperties(filters: PropertiesFilters = {}, forceRefres
   const cacheKey = queryString || 'default';
 
   if (!forceRefresh && propertiesCache.data && propertiesCache.cacheKey === cacheKey && (Date.now() - propertiesCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché de propiedades');
     return propertiesCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/listings/${queryString ? `?${queryString}` : ''}`;
-    console.log('📡 Fetching properties:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -233,7 +231,6 @@ export async function getProperties(filters: PropertiesFilters = {}, forceRefres
     }
 
     const data = await response.json();
-    console.log('✅ Propiedades recibidas:', data);
 
     propertiesCache = {
       data: data,
@@ -247,7 +244,6 @@ export async function getProperties(filters: PropertiesFilters = {}, forceRefres
     console.error('❌ Error en getProperties:', error);
     
     if (propertiesCache.data) {
-      console.log('📦 Usando caché por error de red');
       return propertiesCache.data;
     }
     
@@ -269,13 +265,11 @@ export async function getPropertyDetail(propertyId: number, forceRefresh = false
   }
 
   if (!forceRefresh && propertyDetailCache.data && propertyDetailCache.propertyId === propertyId && (Date.now() - propertyDetailCache.timestamp) < DETAIL_CACHE_DURATION) {
-    console.log('📦 Usando caché de propiedad');
     return propertyDetailCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/listings/${propertyId}/`;
-    console.log('📡 Fetching property detail:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -309,7 +303,6 @@ export async function getPropertyDetail(propertyId: number, forceRefresh = false
     }
 
     const data = await response.json();
-    console.log('✅ Propiedad detalle recibida:', data);
 
     propertyDetailCache = {
       data: data,
@@ -323,7 +316,6 @@ export async function getPropertyDetail(propertyId: number, forceRefresh = false
     console.error('❌ Error en getPropertyDetail:', error);
     
     if (propertyDetailCache.data && propertyDetailCache.propertyId === propertyId) {
-      console.log('📦 Usando caché por error de red');
       return propertyDetailCache.data;
     }
     
@@ -343,7 +335,6 @@ export async function createWiFi(data: WiFiCreateData): Promise<WiFiResponse> {
 
   try {
     const url = `${API_BASE_URL}/wifi/create/`;
-    console.log('📡 Creando WiFi:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -373,7 +364,6 @@ export async function createWiFi(data: WiFiCreateData): Promise<WiFiResponse> {
     }
 
     const result = await response.json();
-    console.log('✅ WiFi creado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -394,7 +384,6 @@ export async function uploadListingImages(listingId: number, files: File[]): Pro
 
   try {
     const url = `${API_BASE_URL}/listings/listing_photos/`;
-    console.log('📡 Subiendo imágenes:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     formData.append('listing_id', listingId.toString());
@@ -431,7 +420,6 @@ export async function uploadListingImages(listingId: number, files: File[]): Pro
     }
 
     const result = await response.json();
-    console.log('✅ Imágenes subidas exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -452,7 +440,6 @@ export function clearPropertiesCache() {
     timestamp: 0,
     propertyId: null
   };
-  console.log('🧹 Caché de propiedades limpiada');
 }
 
 // 🔥 REFRESCAR PROPIEDADES
@@ -487,7 +474,6 @@ export async function deleteListingImage(imageId: number): Promise<{ message: st
 
   try {
     const url = `${API_BASE_URL}/delete_listing_photos/${imageId}/`;
-    console.log('📡 Eliminando imagen:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -520,12 +506,10 @@ export async function deleteListingImage(imageId: number): Promise<{ message: st
 
     // Si la respuesta está vacía (204 No Content), retornamos éxito
     if (response.status === 204) {
-      console.log('✅ Imagen eliminada exitosamente (204)');
       return { message: 'Imagen eliminada exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Imagen eliminada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -550,7 +534,6 @@ export async function updatePrincipalPhoto(listingId: number, file: File): Promi
 
   try {
     const url = `${API_BASE_URL}/listings/principal_photo/`;
-    console.log('📡 Actualizando foto principal:', url);
 
     const formData = new FormData();
     formData.append('listing_id', listingId.toString());
@@ -583,7 +566,6 @@ export async function updatePrincipalPhoto(listingId: number, file: File): Promi
     }
 
     const result = await response.json();
-    console.log('✅ Foto principal actualizada:', result);
     return result;
 
   } catch (error) {
@@ -616,7 +598,6 @@ export async function getOwners(): Promise<Owner[]> {
 
   try {
     const url = `${API_BASE_URL}/profiles/get-owners/`;
-    console.log('📡 Obteniendo owners:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -645,7 +626,6 @@ export async function getOwners(): Promise<Owner[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Owners obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -685,7 +665,6 @@ export async function editListing(listingId: number, data: EditListingData): Pro
 
   try {
     const url = `${API_BASE_URL}/listings/${listingId}/`;
-    console.log('📡 Editando propiedad:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -719,7 +698,6 @@ export async function editListing(listingId: number, data: EditListingData): Pro
     }
 
     const result = await response.json();
-    console.log('✅ Propiedad editada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -807,7 +785,6 @@ export async function getProfitAndLoss(filters: ProfitAndLossFilters = {}): Prom
   const queryString = params.toString();
   const url = `${API_BASE_URL}/profit-and-loss/${queryString ? `?${queryString}` : ''}`;
   
-  console.log('📡 Fetching profit and loss:', url);
 
   try {
     const response = await fetch(url, {
@@ -838,7 +815,6 @@ export async function getProfitAndLoss(filters: ProfitAndLossFilters = {}): Prom
     }
 
     const data = await response.json();
-    console.log('✅ Profit and Loss recibido:', data);
     return data;
 
   } catch (error) {
@@ -936,7 +912,6 @@ export async function getProfitAndLossDetail(id: number): Promise<ProfitAndLossD
 
   try {
     const url = `${API_BASE_URL}/profit-and-loss/${id}/`;
-    console.log('📡 Fetching profit and loss detail:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -970,7 +945,6 @@ export async function getProfitAndLossDetail(id: number): Promise<ProfitAndLossD
     }
 
     const data = await response.json();
-    console.log('✅ Detalle de Profit and Loss:', data);
     return data;
 
   } catch (error) {
@@ -995,7 +969,6 @@ export async function deleteProfitAndLoss(id: number): Promise<{ message: string
 
   try {
     const url = `${API_BASE_URL}/profit-and-loss/${id}/`;
-    console.log('📡 Eliminando Profit and Loss:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1028,12 +1001,10 @@ export async function deleteProfitAndLoss(id: number): Promise<{ message: string
 
     // Si la respuesta está vacía (204 No Content), retornamos éxito
     if (response.status === 204) {
-      console.log('✅ Profit and Loss eliminado exitosamente (204)');
       return { message: 'Registro eliminado exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Profit and Loss eliminado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1083,7 +1054,6 @@ export async function getListingsNamesAndIds(): Promise<ListingSimple[]> {
 
   try {
     const url = `${API_BASE_URL}/listings_names_and_ids/`;
-    console.log('📡 Obteniendo listings:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1112,7 +1082,6 @@ export async function getListingsNamesAndIds(): Promise<ListingSimple[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Listings obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -1133,7 +1102,6 @@ export async function createProfitAndLoss(data: CreateProfitAndLossData): Promis
 
   try {
     const url = `${API_BASE_URL}/profit-and-loss/`;
-    console.log('📡 Creando Profit and Loss:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -1163,7 +1131,6 @@ export async function createProfitAndLoss(data: CreateProfitAndLossData): Promis
     }
 
     const result = await response.json();
-    console.log('✅ Profit and Loss creado:', result);
     return result;
 
   } catch (error) {
@@ -1222,7 +1189,6 @@ export async function getAgreements(filters: AgreementsFilters = {}): Promise<Ag
   const queryString = params.toString();
   const url = `${API_BASE_URL}/agreement/${queryString ? `?${queryString}` : ''}`;
   
-  console.log('📡 Obteniendo agreements:', url);
 
   try {
     const response = await fetch(url, {
@@ -1253,7 +1219,6 @@ export async function getAgreements(filters: AgreementsFilters = {}): Promise<Ag
     }
 
     const data = await response.json();
-    console.log('✅ Agreements obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -1278,7 +1243,6 @@ export async function deleteAgreement(id: number): Promise<{ message: string }> 
 
   try {
     const url = `${API_BASE_URL}/agreement/${id}/`;
-    console.log('📡 Eliminando Agreement:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1311,12 +1275,10 @@ export async function deleteAgreement(id: number): Promise<{ message: string }> 
 
     // Si la respuesta está vacía (204 No Content), retornamos éxito
     if (response.status === 204) {
-      console.log('✅ Agreement eliminado exitosamente (204)');
       return { message: 'Agreement eliminado exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Agreement eliminado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1360,7 +1322,6 @@ export async function createAgreement(data: CreateAgreementData): Promise<Create
 
   try {
     const url = `${API_BASE_URL}/agreement/`;
-    console.log('📡 Creando Agreement:', url);
 
     const formData = new FormData();
     formData.append('title', data.title);
@@ -1396,7 +1357,6 @@ export async function createAgreement(data: CreateAgreementData): Promise<Create
     }
 
     const result = await response.json();
-    console.log('✅ Agreement creado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1479,7 +1439,6 @@ export async function getReservations(filters: ReservationsFilters = {}): Promis
   const queryString = params.toString();
   const url = `${API_BASE_URL}/reservation/${queryString ? `?${queryString}` : ''}`;
   
-  console.log('📡 Obteniendo reservaciones:', url);
 
   try {
     const response = await fetch(url, {
@@ -1510,7 +1469,6 @@ export async function getReservations(filters: ReservationsFilters = {}): Promis
     }
 
     const data = await response.json();
-    console.log('✅ Reservaciones obtenidas:', data);
     return data;
 
   } catch (error) {
@@ -1557,7 +1515,6 @@ export async function getReservationDetail(id: number): Promise<ReservationDetai
 
   try {
     const url = `${API_BASE_URL}/reservation/${id}/`;
-    console.log('📡 Obteniendo detalle de reservación:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1591,7 +1548,6 @@ export async function getReservationDetail(id: number): Promise<ReservationDetai
     }
 
     const data = await response.json();
-    console.log('✅ Detalle de reservación obtenido:', data);
     return data;
 
   } catch (error) {
@@ -1616,7 +1572,6 @@ export async function deleteReservation(id: number): Promise<{ message: string }
 
   try {
     const url = `${API_BASE_URL}/reservation/${id}/`;
-    console.log('📡 Eliminando reservación:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1648,12 +1603,10 @@ export async function deleteReservation(id: number): Promise<{ message: string }
     }
 
     if (response.status === 204) {
-      console.log('✅ Reservación eliminada exitosamente (204)');
       return { message: 'Reservación eliminada exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Reservación eliminada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1710,7 +1663,6 @@ export async function createReservation(data: CreateReservationData): Promise<Cr
 
   try {
     const url = `${API_BASE_URL}/reservation/`;
-    console.log('📡 Creando reservación:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -1740,7 +1692,6 @@ export async function createReservation(data: CreateReservationData): Promise<Cr
     }
 
     const result = await response.json();
-    console.log('✅ Reservación creada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1779,7 +1730,6 @@ export async function updateReservation(id: number, data: UpdateReservationData)
 
   try {
     const url = `${API_BASE_URL}/reservation/${id}/`;
-    console.log('📡 Editando reservación:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -1813,7 +1763,6 @@ export async function updateReservation(id: number, data: UpdateReservationData)
     }
 
     const result = await response.json();
-    console.log('✅ Reservación editada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1838,7 +1787,6 @@ export async function deleteListing(id: number): Promise<{ message: string }> {
 
   try {
     const url = `${API_BASE_URL}/listings/${id}/`;
-    console.log('📡 Eliminando propiedad:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1870,12 +1818,10 @@ export async function deleteListing(id: number): Promise<{ message: string }> {
     }
 
     if (response.status === 204) {
-      console.log('✅ Propiedad eliminada exitosamente (204)');
       return { message: 'Propiedad eliminada exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Propiedad eliminada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -1967,7 +1913,6 @@ export async function getAmenities(): Promise<Amenity[]> {
 
   try {
     const url = `${API_BASE_URL}/amenities/`;
-    console.log('📡 Obteniendo amenities:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1996,7 +1941,6 @@ export async function getAmenities(): Promise<Amenity[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Amenities obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -2017,7 +1961,6 @@ export async function createListing(data: CreateListingData): Promise<CreateList
 
   try {
     const url = `${API_BASE_URL}/listings/`;
-    console.log('📡 Creando propiedad:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -2047,7 +1990,6 @@ export async function createListing(data: CreateListingData): Promise<CreateList
     }
 
     const result = await response.json();
-    console.log('✅ Propiedad creada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2120,7 +2062,6 @@ export async function getPropertyCalendar(listingId: number): Promise<CalendarRe
 
   try {
     const url = `${API_BASE_URL}/calendar/${listingId}/`;
-    console.log('📡 Obteniendo calendario de propiedad:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -2154,7 +2095,6 @@ export async function getPropertyCalendar(listingId: number): Promise<CalendarRe
     }
 
     const data = await response.json();
-    console.log('✅ Calendario de propiedad obtenido:', data);
     return data;
 
   } catch (error) {
@@ -2227,7 +2167,6 @@ export async function getInvoicesByListing(listingId: number, filters: InvoicesF
   const queryString = params.toString();
   const url = `${API_BASE_URL}/invoices-by-listing/${listingId}/${queryString ? `?${queryString}` : ''}`;
   
-  console.log('📡 Obteniendo facturas:', url);
 
   try {
     const response = await fetch(url, {
@@ -2262,7 +2201,6 @@ export async function getInvoicesByListing(listingId: number, filters: InvoicesF
     }
 
     const data = await response.json();
-    console.log('✅ Facturas obtenidas:', data);
     return data;
 
   } catch (error) {
@@ -2311,7 +2249,6 @@ export async function getInvoiceDetail(invoiceId: number): Promise<InvoiceDetail
 
   try {
     const url = `${API_BASE_URL}/invoices/${invoiceId}/`;
-    console.log('📡 Obteniendo detalle de factura:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -2345,7 +2282,6 @@ export async function getInvoiceDetail(invoiceId: number): Promise<InvoiceDetail
     }
 
     const data = await response.json();
-    console.log('✅ Detalle de factura obtenido:', data);
     return data;
 
   } catch (error) {
@@ -2399,7 +2335,6 @@ export async function createInvoice(data: CreateInvoiceData): Promise<CreateInvo
 
   try {
     const url = `${API_BASE_URL}/invoices/`;
-    console.log('📡 Creando factura:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -2429,7 +2364,6 @@ export async function createInvoice(data: CreateInvoiceData): Promise<CreateInvo
     }
 
     const result = await response.json();
-    console.log('✅ Factura creada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2454,7 +2388,6 @@ export async function deleteInvoice(id: number, detail: string): Promise<{ messa
 
   try {
     const url = `${API_BASE_URL}/invoices/${id}/?detail=${encodeURIComponent(detail)}`;
-    console.log('📡 Eliminando factura:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -2486,12 +2419,10 @@ export async function deleteInvoice(id: number, detail: string): Promise<{ messa
     }
 
     if (response.status === 204) {
-      console.log('✅ Factura eliminada exitosamente (204)');
       return { message: 'Factura eliminada exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Factura eliminada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2516,7 +2447,6 @@ export async function updateInvoice(id: number, data: unknown): Promise<unknown>
 
   try {
     const url = `${API_BASE_URL}/invoices/${id}/`;
-    console.log('📡 Editando factura:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -2550,7 +2480,6 @@ export async function updateInvoice(id: number, data: unknown): Promise<unknown>
     }
 
     const result = await response.json();
-    console.log('✅ Factura editada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2575,7 +2504,6 @@ export async function uploadInvoiceImages(invoiceId: number, files: File[]): Pro
 
   try {
     const url = `${API_BASE_URL}/invoice-images/`;
-    console.log('📡 Subiendo imágenes de factura:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     formData.append('invoice_id', invoiceId.toString());
@@ -2611,7 +2539,6 @@ export async function uploadInvoiceImages(invoiceId: number, files: File[]): Pro
     }
 
     const result = await response.json();
-    console.log('✅ Imágenes subidas exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2635,7 +2562,6 @@ export async function deleteInvoiceImage(imageId: number): Promise<{ message: st
 
   try {
     const url = `${API_BASE_URL}/invoice-images/`;
-    console.log('📡 Eliminando imagen de factura:', url, 'image_id:', imageId);
 
     const formData = new FormData();
     formData.append('image_id', imageId.toString());
@@ -2671,12 +2597,10 @@ export async function deleteInvoiceImage(imageId: number): Promise<{ message: st
     }
 
     if (response.status === 204) {
-      console.log('✅ Imagen eliminada exitosamente (204)');
       return { message: 'Imagen eliminada exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Imagen eliminada exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2735,7 +2659,6 @@ export async function getAccessLinks(filters: AccessLinksFilters = {}): Promise<
   const queryString = params.toString();
   const url = `${API_BASE_URL}/listing-link-access/${queryString ? `?${queryString}` : ''}`;
   
-  console.log('📡 Obteniendo access links:', url);
 
   try {
     const response = await fetch(url, {
@@ -2770,7 +2693,6 @@ export async function getAccessLinks(filters: AccessLinksFilters = {}): Promise<
     }
 
     const data = await response.json();
-    console.log('✅ Access links obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -2795,7 +2717,6 @@ export async function getAccessLinkDetail(id: number): Promise<AccessLink> {
 
   try {
     const url = `${API_BASE_URL}/listing-link-access/${id}/`;
-    console.log('📡 Obteniendo detalle de access link:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -2829,7 +2750,6 @@ export async function getAccessLinkDetail(id: number): Promise<AccessLink> {
     }
 
     const data = await response.json();
-    console.log('✅ Access link detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -2850,7 +2770,6 @@ export async function deleteAccessLink(id: number): Promise<{ message: string }>
 
   try {
     const url = `${API_BASE_URL}/listing-link-access/${id}/`;
-    console.log('📡 Eliminando access link:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -2882,12 +2801,10 @@ export async function deleteAccessLink(id: number): Promise<{ message: string }>
     }
 
     if (response.status === 204) {
-      console.log('✅ Access link eliminado exitosamente (204)');
       return { message: 'Access link eliminado exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Access link eliminado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -2925,7 +2842,6 @@ export async function createAccessLink(data: CreateAccessLinkData): Promise<Acce
 
   try {
     const url = `${API_BASE_URL}/listing-link-access/`;
-    console.log('📡 Creando access link:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -2955,7 +2871,6 @@ export async function createAccessLink(data: CreateAccessLinkData): Promise<Acce
     }
 
     const result = await response.json();
-    console.log('✅ Access link creado exitosamente:', result);
     return result;
 
   } catch (error) {

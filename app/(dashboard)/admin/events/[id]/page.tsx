@@ -92,7 +92,6 @@ export default function EventDetailPage() {
 
     try {
       const data = await getEventDetail(parseInt(id));
-      console.log('📦 Detalle de evento:', data);
       setEvent(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -200,7 +199,6 @@ export default function EventDetailPage() {
 
     try {
       await deleteEvent(event.id);
-      console.log('✅ Evento eliminado:', event.id);
       
       setToast({
         message: `Event "${event.name}" deleted successfully!`,

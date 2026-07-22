@@ -150,7 +150,6 @@ function CreateReservationContent() {
 
     try {
       const result = await createReservation(formData);
-      console.log('✅ Reservación creada:', result);
       
       setToastMessage('✅ Reservation created successfully!');
       setTimeout(() => setToastMessage(null), 3000);

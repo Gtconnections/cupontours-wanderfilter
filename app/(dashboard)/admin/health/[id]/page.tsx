@@ -91,7 +91,6 @@ export default function HealthDetailPage() {
 
     try {
       const data = await getHealthDetail(parseInt(id));
-      console.log('📦 Detalle de health:', data);
       setService(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -190,7 +189,6 @@ export default function HealthDetailPage() {
 
     try {
       await deleteHealthService(service.id);
-      console.log('✅ Servicio de health eliminado:', service.id);
       
       setToast({
         message: `Health service "${service.name}" deleted successfully!`,

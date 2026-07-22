@@ -22,7 +22,6 @@ export default function DeleteCarModal({
 }: DeleteCarModalProps) {
   if (!isOpen) return null;
 
-  console.log('🗑️ DeleteCarModal renderizado:', { isOpen, carId, carName });
 
   return (
     <div className="wander-modal-overlay" onClick={onClose}>

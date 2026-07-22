@@ -92,7 +92,6 @@ export default function ExperienceDetailPage() {
 
     try {
       const data = await getExperienceDetail(parseInt(id));
-      console.log('📦 Detalle de experiencia:', data);
       setExperience(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -178,7 +177,6 @@ export default function ExperienceDetailPage() {
 
     try {
       await deleteExperience(experience.id);
-      console.log('✅ Experiencia eliminada:', experience.id);
       
       setToast({
         message: `Experience "${experience.name}" deleted successfully!`,

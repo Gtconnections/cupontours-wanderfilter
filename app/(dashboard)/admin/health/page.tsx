@@ -89,7 +89,6 @@ export default function HealthListPage() {
 
     try {
       const data = await getHealthServices();
-      console.log('📦 Datos de servicios de salud:', data);
       
       setServices(data.results || []);
       setTotalCount(data.count || 0);
@@ -187,7 +186,6 @@ export default function HealthListPage() {
     setIsSubmitting(true);
     try {
       const response = await createHealthService(data);
-      console.log('✅ Servicio de salud creado:', response);
       
       setToast({
         message: `Health service "${data.name}" created successfully!`,
@@ -224,7 +222,6 @@ export default function HealthListPage() {
 
     try {
       await deleteHealthService(confirmDialog.id);
-      console.log('✅ Servicio de salud eliminado:', confirmDialog.id);
       
       setToast({
         message: `Health service "${confirmDialog.name}" deleted successfully!`,

@@ -197,7 +197,6 @@ function EditReservationContent() {
       };
 
       const result = await updateReservation(parseInt(reservationId!), payload);
-      console.log('✅ Reservación actualizada:', result);
       
       setToastMessage('✅ Reservation updated successfully!');
       setTimeout(() => setToastMessage(null), 3000);

@@ -114,8 +114,6 @@ export default function YachtDetailPage() {
         getFullYacht(yachtId)
       ]);
 
-      console.log('Owners cargados:', ownersData.length);
-      console.log('Datos del yate:', yachtData);
 
       setOwners(ownersData);
       setYacht(yachtData);
@@ -124,11 +122,9 @@ export default function YachtDetailPage() {
       let galleryImages: { id: number; url: string }[] = [];
       try {
         const imagesData = await getYachtImages(yachtId);
-        console.log('Imágenes del yate:', imagesData);
         galleryImages = (imagesData || []).map((img: YachtGalleryImage) => ({ id: img.id, url: img.image }));
       } catch (imgErr) {
         // Si no hay imágenes (404) o cualquier otro error, solo continuamos con array vacío
-        console.log('No hay imágenes disponibles o error al cargarlas:', imgErr instanceof Error ? imgErr.message : undefined);
         galleryImages = [];
       }
 

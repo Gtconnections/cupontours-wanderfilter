@@ -44,7 +44,6 @@ export async function getReservations(filters?: { servicio_tipo?: string }): Pro
     url += `?servicio_tipo=${encodeURIComponent(filters.servicio_tipo)}`;
   }
   
-  console.log('📡 Obteniendo reservas:', url);
 
   try {
     const response = await fetch(url, {
@@ -75,7 +74,6 @@ export async function getReservations(filters?: { servicio_tipo?: string }): Pro
     }
 
     const data = await response.json();
-    console.log('✅ Reservas obtenidas:', data);
     
     if (Array.isArray(data)) {
       return {
@@ -106,7 +104,6 @@ export async function getReservationDetail(id: number): Promise<ReservationDetai
 
   try {
     const url = `${API_BASE_URL}/reservas/${id}/`;
-    console.log('📡 Obteniendo detalle de reserva:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -140,7 +137,6 @@ export async function getReservationDetail(id: number): Promise<ReservationDetai
     }
 
     const data = await response.json();
-    console.log('✅ Reserva detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -180,7 +176,6 @@ export async function deleteReservation(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/reservas/${id}/`;
-    console.log('📡 Eliminando reserva:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -213,7 +208,6 @@ export async function deleteReservation(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Reserva eliminada:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteReservation:', error);

@@ -288,12 +288,6 @@ export default function CarDetailPage() {
   };
 
   // 🔥 DEBUG: Mostrar estado de los modales
-  console.log('Estado de modales:', {
-    isEditModalOpen,
-    isImagesModalOpen,
-    isDeleteModalOpen,
-    car: car?.car_id
-  });
 
   if (isChecking || !isAuthVerified) {
     return <LoadingSkeleton />;

@@ -125,7 +125,6 @@ export default function ModalChangePrincipalImage({
 
     try {
       const result = await uploadFn(itemId, selectedFile);
-      console.log('Foto principal actualizada:', result);
 
       // Limpiar preview
       if (preview) {

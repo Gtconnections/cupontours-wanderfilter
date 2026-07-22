@@ -88,7 +88,6 @@ export default function GeneralServiceListPage() {
 
     try {
       const data = await getGeneralServices();
-      console.log('📦 Datos de servicios generales:', data);
       
       setServices(data.results || []);
       setTotalCount(data.count || 0);
@@ -196,7 +195,6 @@ export default function GeneralServiceListPage() {
     setIsSubmitting(true);
     try {
       const response = await createGeneralService(data);
-      console.log('✅ Servicio general creado:', response);
       
       setToast({
         message: `Service "${data.name}" created successfully!`,
@@ -233,7 +231,6 @@ export default function GeneralServiceListPage() {
 
     try {
       await deleteGeneralService(confirmDialog.id);
-      console.log('✅ Servicio general eliminado:', confirmDialog.id);
       
       setToast({
         message: `Service "${confirmDialog.name}" deleted successfully!`,

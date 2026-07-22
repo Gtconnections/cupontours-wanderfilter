@@ -60,10 +60,6 @@ export default function LoginPage() {
       setCookie('position', positionMap[userData.position.toLowerCase()] || '3', 7);
       if (userData.email) setCookie('userEmail', userData.email, 7);
 
-      console.log('✅ DATOS GUARDADOS:');
-      console.log('  - User ID:', userData.id);
-      console.log('  - Profile ID:', userData.profile_id);
-      console.log('  - Username:', userData.username);
       
       return true;
     } catch (error) {
@@ -86,7 +82,6 @@ export default function LoginPage() {
     try {
       const result = await loginUser({ username, password });
       
-      console.log('✅ LOGIN EXITOSO - Datos recibidos:', result);
       
       if (!result.token) {
         throw new Error('El servidor no retornó un token válido.');
@@ -94,7 +89,6 @@ export default function LoginPage() {
 
       saveUserData(result);
       
-      console.log('🎯 Redirigiendo al dashboard...');
       
       await new Promise(resolve => setTimeout(resolve, 200));
       

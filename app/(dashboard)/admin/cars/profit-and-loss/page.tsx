@@ -58,7 +58,6 @@ export default function ProfitAndLossPage() {
       setTotalCount(response.count || 0);
       setTotalPages(Math.ceil((response.count || 0) / pageSize));
       
-      console.log('📊 Total de registros:', response.count);
     } catch (err) {
       console.error('❌ Error cargando datos:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los datos');

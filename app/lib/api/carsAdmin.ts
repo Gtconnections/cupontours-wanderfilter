@@ -135,13 +135,11 @@ export async function getCars(filters: CarsFilters = {}, forceRefresh = false): 
   const cacheKey = queryString || 'default';
 
   if (!forceRefresh && carsCache.data && carsCache.cacheKey === cacheKey && (Date.now() - carsCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché de autos');
     return carsCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/cars/${queryString ? `?${queryString}` : ''}`;
-    console.log('📡 Fetching cars:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -171,7 +169,6 @@ export async function getCars(filters: CarsFilters = {}, forceRefresh = false): 
     }
 
     const data = await response.json();
-    console.log('✅ Autos recibidos:', data);
 
     carsCache = {
       data: data,
@@ -185,7 +182,6 @@ export async function getCars(filters: CarsFilters = {}, forceRefresh = false): 
     console.error('❌ Error en getCars:', error);
     
     if (carsCache.data) {
-      console.log('📦 Usando caché por error de red');
       return carsCache.data;
     }
     
@@ -206,13 +202,11 @@ export async function getCarById(carId: number, forceRefresh = false): Promise<C
   }
 
   if (!forceRefresh && carDetailCache.data && carDetailCache.carId === carId && (Date.now() - carDetailCache.timestamp) < DETAIL_CACHE_DURATION) {
-    console.log('📦 Usando caché del auto:', carId);
     return carDetailCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/cars/${carId}/`;
-    console.log('📡 Fetching car detail:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -246,7 +240,6 @@ export async function getCarById(carId: number, forceRefresh = false): Promise<C
     }
 
     const data = await response.json();
-    console.log('✅ Auto detalle recibido:', data);
 
     carDetailCache = {
       data: data,
@@ -260,7 +253,6 @@ export async function getCarById(carId: number, forceRefresh = false): Promise<C
     console.error('❌ Error en getCarById:', error);
     
     if (carDetailCache.data && carDetailCache.carId === carId) {
-      console.log('📦 Usando caché por error de red');
       return carDetailCache.data;
     }
     
@@ -279,7 +271,6 @@ export function clearCarsCache() {
     timestamp: 0,
     carId: null
   };
-  console.log('🧹 Caché de autos limpiada');
 }
 
 export async function refreshCars(filters: CarsFilters = {}) {
@@ -308,7 +299,6 @@ export async function createCar(data: FormData): Promise<CarDetail> {
 
   try {
     const url = `${API_BASE_URL}/cars/`;
-    console.log('📡 Creando auto:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -345,7 +335,6 @@ export async function createCar(data: FormData): Promise<CarDetail> {
     }
 
     const result = await response.json();
-    console.log('✅ Auto creado:', result);
 
     clearCarsCache();
 
@@ -373,7 +362,6 @@ export async function uploadPrincipalImage(carId: number, imageFile: File): Prom
 
   try {
     const url = `${API_BASE_URL}/cars/principal_image/`;
-    console.log('📡 Subiendo imagen principal:', url);
 
     const formData = new FormData();
     formData.append('car_id', carId.toString());
@@ -414,7 +402,6 @@ export async function uploadPrincipalImage(carId: number, imageFile: File): Prom
     }
 
     const result = await response.json();
-    console.log('✅ Imagen subida:', result);
 
     carDetailCache = {
       data: null,
@@ -442,7 +429,6 @@ export async function updateCar(carId: number, data: unknown): Promise<CarDetail
 
   try {
     const url = `${API_BASE_URL}/cars/${carId}/`;
-    console.log('📡 Actualizando auto:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -484,7 +470,6 @@ export async function updateCar(carId: number, data: unknown): Promise<CarDetail
     }
 
     const result = await response.json();
-    console.log('✅ Auto actualizado:', result);
 
     carDetailCache = {
       data: null,
@@ -512,7 +497,6 @@ export async function uploadCarImages(carId: number, files: File[]): Promise<unk
 
   try {
     const url = `${API_BASE_URL}/cars/car_images/`;
-    console.log('📡 Subiendo imágenes:', url);
 
     const formData = new FormData();
     formData.append('car_id', carId.toString());
@@ -555,7 +539,6 @@ export async function uploadCarImages(carId: number, files: File[]): Promise<unk
     }
 
     const result = await response.json();
-    console.log('✅ Imágenes subidas:', result);
 
     carDetailCache = {
       data: null,
@@ -589,7 +572,6 @@ export async function getCarImages(carId: number): Promise<CarGalleryImage[]> {
 
   try {
     const url = `${API_BASE_URL}/cars/car_images/${carId}/`;
-    console.log('📡 Obteniendo imágenes de la galería:', url);
 
     const response = await fetch(url, {
       headers: {
@@ -635,7 +617,6 @@ export async function deleteCarImage(imageId: number): Promise<{ message: string
 
   try {
     const url = `${API_BASE_URL}/cars/car_images/`;
-    console.log('📡 Eliminando imagen de auto:', url, imageId);
 
     // El endpoint solo acepta FormParser/MultiPartParser (no JSON)
     const formData = new FormData();
@@ -696,7 +677,6 @@ export async function deleteCar(carId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/cars/${carId}/`;
-    console.log('📡 Eliminando auto:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -736,7 +716,6 @@ export async function deleteCar(carId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Auto eliminado:', carId);
 
     clearCarsCache();
 
@@ -792,7 +771,6 @@ export async function getCarReservations(carId: number): Promise<CarReservations
 
   try {
     const url = `${API_BASE_URL}/cars-reservation/?car_id=${carId}`;
-    console.log('📡 Fetching all car reservations:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -826,7 +804,6 @@ export async function getCarReservations(carId: number): Promise<CarReservations
     }
 
     const data = await response.json();
-    console.log('✅ Reservaciones recibidas:', data);
 
     return data;
 
@@ -871,7 +848,6 @@ export async function getAllCars(): Promise<Car[]> {
 
   try {
     const url = `${API_BASE_URL}/cars/`;
-    console.log('📡 Fetching all cars:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -901,7 +877,6 @@ export async function getAllCars(): Promise<Car[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Autos recibidos:', data);
 
     return data;
 
@@ -923,7 +898,6 @@ export async function createReservation(data: CreateReservationData): Promise<un
 
   try {
     const url = `${API_BASE_URL}/cars-reservation/`;
-    console.log('📡 Creando reservación:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -961,7 +935,6 @@ export async function createReservation(data: CreateReservationData): Promise<un
     }
 
     const result = await response.json();
-    console.log('✅ Reservación creada:', result);
 
     return result;
 
@@ -1042,7 +1015,6 @@ export async function getCarInvoices(
 
     const queryString = params.toString();
     const url = `${API_BASE_URL}/cars-invoices-by-car_id/${carId}/${queryString ? `?${queryString}` : ''}`;
-    console.log('📡 Fetching car invoices:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1076,7 +1048,6 @@ export async function getCarInvoices(
     }
 
     const data = await response.json();
-    console.log('✅ Facturas recibidas:', data);
 
     return data;
 
@@ -1133,7 +1104,6 @@ export async function getInvoiceDetail(invoiceId: number): Promise<InvoiceDetail
 
   try {
     const url = `${API_BASE_URL}/cars-invoices/${invoiceId}/`;
-    console.log('📡 Fetching invoice detail:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1167,7 +1137,6 @@ export async function getInvoiceDetail(invoiceId: number): Promise<InvoiceDetail
     }
 
     const data = await response.json();
-    console.log('✅ Factura detalle recibida:', data);
 
     return data;
 
@@ -1191,7 +1160,6 @@ export async function createInvoice(data: unknown): Promise<InvoiceDetailRespons
 
   try {
     const url = `${API_BASE_URL}/cars-invoices/`;
-    console.log('📡 Creando factura:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -1229,7 +1197,6 @@ export async function createInvoice(data: unknown): Promise<InvoiceDetailRespons
     }
 
     const result = await response.json();
-    console.log('✅ Factura creada:', result);
 
     return result;
 
@@ -1253,7 +1220,6 @@ export async function updateInvoice(invoiceId: number, data: unknown): Promise<I
 
   try {
     const url = `${API_BASE_URL}/cars-invoices/${invoiceId}/`;
-    console.log('📡 Actualizando factura:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -1295,7 +1261,6 @@ export async function updateInvoice(invoiceId: number, data: unknown): Promise<I
     }
 
     const result = await response.json();
-    console.log('✅ Factura actualizada:', result);
 
     return result;
 
@@ -1320,7 +1285,6 @@ export async function deleteInvoice(invoiceId: number, comment: string): Promise
   try {
     // 🔥 El endpoint requiere el parámetro 'detail' con el motivo
     const url = `${API_BASE_URL}/cars-invoices/${invoiceId}/?detail=${encodeURIComponent(comment)}`;
-    console.log('📡 Eliminando factura:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1365,7 +1329,6 @@ export async function deleteInvoice(invoiceId: number, comment: string): Promise
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Factura eliminada:', invoiceId);
 
   } catch (error) {
     console.error('❌ Error en deleteInvoice:', error);
@@ -1387,7 +1350,6 @@ export async function uploadInvoiceImages(invoiceId: number, files: File[]): Pro
 
   try {
     const url = `${API_BASE_URL}/cars-invoices/invoice_image/`;
-    console.log('📡 Subiendo imágenes a factura:', url);
 
     const formData = new FormData();
     formData.append('invoice_id', invoiceId.toString());
@@ -1434,7 +1396,6 @@ export async function uploadInvoiceImages(invoiceId: number, files: File[]): Pro
     }
 
     const result = await response.json();
-    console.log('✅ Imágenes subidas:', result);
 
     return result;
 
@@ -1458,8 +1419,6 @@ export async function deleteInvoiceImage(imageId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/cars-invoices/invoice_image/`;
-    console.log('📡 Eliminando imagen de factura:', url);
-    console.log('📤 image_id:', imageId);
 
     // 🔥 CREAR FormData en lugar de JSON
     const formData = new FormData();
@@ -1504,7 +1463,6 @@ export async function deleteInvoiceImage(imageId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Imagen eliminada:', imageId);
 
   } catch (error) {
     console.error('❌ Error en deleteInvoiceImage:', error);
@@ -1571,7 +1529,6 @@ export async function getProfitAndLoss(page: number = 1): Promise<ProfitAndLossR
 
     const queryString = params.toString();
     const url = `${API_BASE_URL}/cars-profit-and-loss/${queryString ? `?${queryString}` : ''}`;
-    console.log('📡 Fetching profit and loss:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1601,7 +1558,6 @@ export async function getProfitAndLoss(page: number = 1): Promise<ProfitAndLossR
     }
 
     const data = await response.json();
-    console.log('✅ Profit and Loss recibido:', data);
 
     return data;
 
@@ -1659,7 +1615,6 @@ export async function getProfitAndLossDetail(plId: number): Promise<ProfitAndLos
 
   try {
     const url = `${API_BASE_URL}/cars-profit-and-loss/${plId}/`;
-    console.log('📡 Fetching profit and loss detail:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1693,7 +1648,6 @@ export async function getProfitAndLossDetail(plId: number): Promise<ProfitAndLos
     }
 
     const data = await response.json();
-    console.log('✅ Profit and Loss detalle recibido:', data);
 
     return data;
 
@@ -1729,7 +1683,6 @@ export async function createProfitAndLoss(data: CreateProfitAndLossData): Promis
 
   try {
     const url = `${API_BASE_URL}/cars-profit-and-loss/`;
-    console.log('📡 Creando Profit and Loss:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -1767,7 +1720,6 @@ export async function createProfitAndLoss(data: CreateProfitAndLossData): Promis
     }
 
     const result = await response.json();
-    console.log('✅ Profit and Loss creado:', result);
 
     return result;
 
@@ -1791,7 +1743,6 @@ export async function deleteProfitAndLoss(plId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/cars-profit-and-loss/${plId}/`;
-    console.log('📡 Eliminando Profit and Loss:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1831,7 +1782,6 @@ export async function deleteProfitAndLoss(plId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Profit and Loss eliminado:', plId);
 
   } catch (error) {
     console.error('❌ Error en deleteProfitAndLoss:', error);

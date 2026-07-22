@@ -93,7 +93,6 @@ export default function TransportDetailPage() {
 
     try {
       const data = await getTransportDetail(parseInt(id));
-      console.log('📦 Detalle de transporte:', data);
       setTransport(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -180,7 +179,6 @@ export default function TransportDetailPage() {
 
     try {
       await deleteTransport(transport.id);
-      console.log('✅ Transporte eliminado:', transport.id);
       
       setToast({
         message: `Transport "${transport.name}" deleted successfully!`,

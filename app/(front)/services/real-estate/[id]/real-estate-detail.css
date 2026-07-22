@@ -408,3 +408,27 @@
     gap: 64px;
   }
 }
+/* ========================= DARK THEME — /services/real-estate/[id] (.re-page) ========================= */
+[data-theme="dark"] .re-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .re-page .re-skeleton { background-color: #1c1c20; }
+[data-theme="dark"] .re-page .re-breadcrumb { color: #8f897f; }
+[data-theme="dark"] .re-page .re-breadcrumb a { color: #ece7dd; }
+[data-theme="dark"] .re-page .re-breadcrumb .current { color: #726c63; }
+[data-theme="dark"] .re-page .re-title { color: #ece7dd; }
+[data-theme="dark"] .re-page .re-main-image { background-color: #141416; }
+[data-theme="dark"] .re-page .expand-hint { background: rgba(20,20,22,0.82); color: #ece7dd; }
+[data-theme="dark"] .re-page .re-section-title { color: #ece7dd; }
+[data-theme="dark"] .re-page .re-divider { background-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .re-page .re-description { color: #b8b2a8; }
+[data-theme="dark"] .re-page .re-booking-widget { background: #141416; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .re-page .widget-price { color: #ece7dd; }
+[data-theme="dark"] .re-page .widget-unit { color: #a7a199; }
+[data-theme="dark"] .re-page .widget-specs { border-top-color: rgba(255,255,255,0.10); border-bottom-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .re-page .widget-spec-label { color: #8f897f; }
+[data-theme="dark"] .re-page .widget-spec-value { color: #ece7dd; }
+[data-theme="dark"] .re-page .widget-info p { color: #a7a199; }
+[data-theme="dark"] .re-page .widget-assurance { color: #8f897f; }
+[data-theme="dark"] .re-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .re-page .btn-black-pill:hover { background-color: #e8c766; }
+[data-theme="dark"] .re-page .btn-outline-pill { color: #ece7dd; border-color: rgba(255,255,255,0.16); }
+[data-theme="dark"] .re-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: #ece7dd; }

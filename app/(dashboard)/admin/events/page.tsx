@@ -89,7 +89,6 @@ export default function EventListPage() {
 
     try {
       const data = await getEvents();
-      console.log('📦 Datos de eventos:', data);
       
       setEvents(data.results || []);
       setTotalCount(data.count || 0);
@@ -196,7 +195,6 @@ export default function EventListPage() {
     setIsSubmitting(true);
     try {
       const response = await createEvent(data);
-      console.log('✅ Evento creado:', response);
       
       setToast({
         message: `Event "${data.name}" created successfully!`,
@@ -233,7 +231,6 @@ export default function EventListPage() {
 
     try {
       await deleteEvent(confirmDialog.id);
-      console.log('✅ Evento eliminado:', confirmDialog.id);
       
       setToast({
         message: `Event "${confirmDialog.name}" deleted successfully!`,

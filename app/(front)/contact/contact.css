@@ -300,3 +300,34 @@
   .logos-flex { gap: 50px 80px; }
   .platform-logo-item { font-size: 22px; }
 }
+/* ==========================================================================
+   DARK THEME — /contact (scopeado bajo .contact-page)
+   ========================================================================== */
+[data-theme="dark"] .contact-page { background-color: #0a0a0b; }
+[data-theme="dark"] .contact-page .pre-title { color: #d4af37; }
+[data-theme="dark"] .contact-page .massive-heading { color: #ece7dd; }
+[data-theme="dark"] .contact-page .bg-gray-light { background-color: #101013; }
+
+/* Tarjeta de formulario + inputs */
+[data-theme="dark"] .contact-page .contact-form-card { background: #141416; border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.40); }
+[data-theme="dark"] .contact-page .wander-label { color: #d6d1c7; }
+[data-theme="dark"] .contact-page .wander-label svg { color: #8f897f; }
+[data-theme="dark"] .contact-page .wander-input,
+[data-theme="dark"] .contact-page .wander-textarea { background-color: #1c1c20; border-color: rgba(255, 255, 255, 0.14); color: #ece7dd; }
+[data-theme="dark"] .contact-page .wander-input::placeholder,
+[data-theme="dark"] .contact-page .wander-textarea::placeholder { color: #8f897f; }
+[data-theme="dark"] .contact-page .wander-input:focus,
+[data-theme="dark"] .contact-page .wander-textarea:focus { border-color: #d4af37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15); }
+
+/* Botón enviar → dorado */
+[data-theme="dark"] .contact-page .btn-booking-primary.override-btn-submit { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .contact-page .btn-booking-primary.override-btn-submit:hover { background: #e8c766; }
+
+/* Caja informativa (azul) */
+[data-theme="dark"] .contact-page .wander-info-box { background-color: rgba(59, 130, 246, 0.10); border-color: rgba(59, 130, 246, 0.28); }
+[data-theme="dark"] .contact-page .info-box-title { color: #93c5fd; }
+[data-theme="dark"] .contact-page .info-box-list li { color: #93c5fd; }
+
+/* Métodos de contacto + logos */
+[data-theme="dark"] .contact-page .method-icon { background: #1c1c20; }
+[data-theme="dark"] .contact-page .platform-logo-item { color: #ece7dd; }

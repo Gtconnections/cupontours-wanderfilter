@@ -321,7 +321,6 @@ export default function EditReservationPage() {
         total_earnings: formData.total_earnings,
       };
       
-      console.log('📤 Enviando payload PATCH:', payload);
 
       const response = await fetch(`${API_BASE_URL}/cars-reservation/${reservationId}/`, {
         method: 'PATCH',
@@ -338,7 +337,6 @@ export default function EditReservationPage() {
       }
 
       const result = await response.json();
-      console.log('✅ Reservación actualizada:', result);
       
       setSuccess('Reservación actualizada exitosamente');
       

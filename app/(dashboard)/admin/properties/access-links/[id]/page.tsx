@@ -80,7 +80,6 @@ export default function AccessLinksPage() {
 
     try {
       const result = await getAccessLinks({ listing_id: listingId });
-      console.log('📦 Datos de access links:', result);
       
       const data = Array.isArray(result) ? result : result.results || [];
       setAccessLinks(data);
@@ -106,7 +105,6 @@ export default function AccessLinksPage() {
 
     try {
       const detail = await getAccessLinkDetail(id);
-      console.log('📦 Detalle de access link:', detail);
       setSelectedAccessLink(detail);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);

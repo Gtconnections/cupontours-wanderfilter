@@ -659,3 +659,67 @@
   .invest-page .stat-card h3 { font-size: 52px; margin-bottom: 6px; }
   .invest-page .stat-card p { font-size: 13px; }
 }
+/* ==========================================================================
+   DARK THEME — /invest-with-us (scopeado bajo .invest-page)
+   Hero, galería y modales ya van sobre imagen/oscuro por diseño.
+   ========================================================================== */
+[data-theme="dark"] .invest-page { background-color: #0a0a0b; }
+[data-theme="dark"] .invest-page .pre-title { color: #d4af37; }
+[data-theme="dark"] .invest-page .bg-gray-light { background-color: #101013; }
+
+/* Botones */
+[data-theme="dark"] .invest-page .btn-black-pill { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .invest-page .btn-black-pill:hover { background: #e8c766; }
+[data-theme="dark"] .invest-page .btn-white-pill { background: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .invest-page .btn-white-pill:hover { background: #26262c; }
+
+/* Inputs / formulario */
+[data-theme="dark"] .invest-page .wander-label,
+[data-theme="dark"] .invest-page .radio-title-label { color: #d6d1c7; }
+[data-theme="dark"] .invest-page .wander-label svg { color: #8f897f; }
+[data-theme="dark"] .invest-page .wander-input,
+[data-theme="dark"] .invest-page .wander-textarea { background-color: #1c1c20; border-color: rgba(255, 255, 255, 0.14); color: #ece7dd; }
+[data-theme="dark"] .invest-page .wander-input::placeholder,
+[data-theme="dark"] .invest-page .wander-textarea::placeholder { color: #8f897f; }
+[data-theme="dark"] .invest-page .wander-input:focus,
+[data-theme="dark"] .invest-page .wander-textarea:focus { border-color: #d4af37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15); }
+[data-theme="dark"] .invest-page .radio-custom-item { color: #ece7dd; }
+[data-theme="dark"] .invest-page .radio-custom-item input[type="radio"] { accent-color: #d4af37; }
+[data-theme="dark"] .invest-page .btn-booking-primary.override-btn-submit { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .invest-page .btn-booking-primary.override-btn-submit:hover { background: #e8c766; }
+
+/* Caja informativa (azul) */
+[data-theme="dark"] .invest-page .wander-info-box { background-color: rgba(59, 130, 246, 0.10); border-color: rgba(59, 130, 246, 0.28); }
+[data-theme="dark"] .invest-page .info-box-title { color: #93c5fd; }
+[data-theme="dark"] .invest-page .info-box-list li { color: #93c5fd; }
+
+/* Steps (número gigante de fondo) */
+[data-theme="dark"] .invest-page .step-number { color: #1c1c20; }
+
+/* Sección "why" oscura → superficie elevada + acento dorado */
+[data-theme="dark"] .invest-page .why-dark-section { background: #141416; }
+[data-theme="dark"] .invest-page .dark-pre { color: #d4af37; }
+[data-theme="dark"] .invest-page .dark-feature-item { border-left-color: rgba(255, 255, 255, 0.14); }
+
+/* Timeline (círculos numerados) */
+[data-theme="dark"] .invest-page .tl-num-bold { background: #1c1c20; border-color: #d4af37; color: #ece7dd; }
+
+/* Service cards */
+[data-theme="dark"] .invest-page .service-card { background: #141416; }
+
+/* Solution cards */
+[data-theme="dark"] .invest-page .solution-elegant-card { background: #141416; }
+[data-theme="dark"] .invest-page .card-top-accent-bar { background: #d4af37; }
+[data-theme="dark"] .invest-page .solution-elegant-card h3 { color: #ece7dd; }
+
+/* Contacto interno */
+[data-theme="dark"] .invest-page .form-card { background: #141416; }
+[data-theme="dark"] .invest-page .wander-contact-icon-wrapper { background-color: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .invest-page .contact-node-title { color: #ece7dd; }
+[data-theme="dark"] .invest-page .contact-node-value { color: #a7a199; }
+[data-theme="dark"] .invest-page .highlight-dark-node { color: #ece7dd !important; }
+[data-theme="dark"] .invest-page .contact-node-caption { color: #8f897f; }
+
+/* Stats inferiores */
+[data-theme="dark"] .invest-page .stat-card { border-left-color: #d4af37; }
+[data-theme="dark"] .invest-page .stat-card h3 { color: #ece7dd; }

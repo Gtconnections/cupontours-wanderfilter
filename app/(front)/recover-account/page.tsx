@@ -8,7 +8,6 @@ export default function RecoverAccountPage() {
 
   const handleRecoverSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Processing account recovery for email:", email);
   };
 
   return (

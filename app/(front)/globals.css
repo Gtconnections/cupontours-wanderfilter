@@ -43,6 +43,8 @@ body {
 
 .link-dinamic {
   text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 /* ==========================================================================
@@ -1201,3 +1203,89 @@ body {
   color: #7a7878;
   font-weight: 600;
 }
+/* ==========================================================================
+   HEADER BUTTONS — HOVER (Luxury Jets, menú, wishlist)
+   ========================================================================== */
+.btn-host:hover {
+  background: rgba(255, 255, 255, 0.30);
+  transform: translateY(-1px);
+}
+.header-scrolled .btn-host:hover {
+  background: #ececec;
+}
+
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.30);
+  transform: translateY(-1px);
+}
+.header-scrolled .menu-btn:hover {
+  background: #ececec;
+}
+
+/* ==========================================================================
+   DARK THEME — tokens globales + chrome (header/footer/buscador/menú)
+   Base clara por defecto; en oscuro el acento es dorado #d4af37.
+   ========================================================================== */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-main: #0a0a0b;
+  --bg-dark: #000000;
+  --bg-footer: #0d0d0f;
+  --text-main: #ece7dd;
+  --text-muted: #a7a199;
+  --text-light: #726c63;
+  --border-light: rgba(255, 255, 255, 0.10);
+  --accent-gold: #d4af37;
+}
+
+[data-theme="dark"] body { background: #0a0a0b; color: #ece7dd; }
+
+/* ---- HEADER (estado scrolled = oscuro; transparente sigue glassy sobre el hero) ---- */
+[data-theme="dark"] .main-header.header-scrolled {
+  background: #0a0a0b;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .header-scrolled .brand-header-cupon { color: #ece7dd; }
+[data-theme="dark"] .header-scrolled .brand-header-tours { color: #d4af37; }
+[data-theme="dark"] .header-scrolled .btn-host { background: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .header-scrolled .btn-host:hover { background: #26262c; }
+[data-theme="dark"] .header-scrolled .menu-btn { background: #1c1c20; color: #ece7dd; border-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .header-scrolled .menu-btn:hover { background: #26262c; }
+[data-theme="dark"] .menu-btn.active { background: #d4af37 !important; color: #0a0a0b !important; border-color: #d4af37 !important; }
+
+/* ---- BUSCADOR ---- */
+[data-theme="dark"] .mobile-search-trigger { background: #141416; border-color: rgba(255, 255, 255, 0.10); color: #ece7dd; box-shadow: none; }
+[data-theme="dark"] .interactive-search-bar { background: #141416; box-shadow: none; }
+[data-theme="dark"] .header-scrolled .interactive-search-bar { border-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .interactive-search-bar.is-active { background: #1c1c20; border-color: rgba(255, 255, 255, 0.12); }
+[data-theme="dark"] .search-segment.active { background: #26262c; box-shadow: none; }
+[data-theme="dark"] .interactive-search-bar.is-active .search-segment:not(.active):hover { background: #24242a; }
+[data-theme="dark"] .search-divider { background: rgba(255, 255, 255, 0.16); }
+[data-theme="dark"] .search-btn { background: #d4af37; color: #0a0a0b; }
+
+/* ---- POPOVERS (where / when / who) ---- */
+[data-theme="dark"] .search-popover { background: #141416; box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .where-input { background: transparent; color: #ece7dd; border-bottom-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .when-tabs { background: #1c1c20; }
+[data-theme="dark"] .when-tab.active { background: #26262c; color: #ece7dd; box-shadow: none; }
+[data-theme="dark"] .cal-nav:hover { background: #1c1c20; }
+[data-theme="dark"] .cal-day.disabled { color: #4d4a44; }
+[data-theme="dark"] .cal-day.selectable:hover { background: #24242a; }
+[data-theme="dark"] .cal-day.selected { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .cal-day.in-range { background: rgba(212, 175, 55, 0.18); }
+[data-theme="dark"] .location-item .icon-box { border-color: rgba(255, 255, 255, 0.10); color: #ece7dd; }
+[data-theme="dark"] .counter-label { color: #ece7dd; }
+[data-theme="dark"] .counter-btn { border-color: rgba(255, 255, 255, 0.16); background: transparent; color: #ece7dd; }
+[data-theme="dark"] .counter-btn:hover:not(:disabled) { border-color: #d4af37; background: #1c1c20; }
+[data-theme="dark"] .popover-apply { background: #d4af37; color: #0a0a0b; }
+
+/* ---- DROPDOWN MENU ---- */
+[data-theme="dark"] .dropdown-menu { background: #141416; border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55); }
+[data-theme="dark"] .dropdown-menu li a { color: #ece7dd; }
+[data-theme="dark"] .dropdown-menu li a:hover { background: #1c1c20; }
+
+/* ---- FOOTER ---- */
+[data-theme="dark"] .partner-card-badge { background: #141416; border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .brand-cupon { color: #ece7dd; }
+[data-theme="dark"] .brand-tours { color: #d4af37; }
+[data-theme="dark"] .btn-circle:hover { background: #1c1c20; }

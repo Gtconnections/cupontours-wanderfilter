@@ -45,7 +45,7 @@
   max-width: 100%;
 }
 
-.bg-gray-light {
+.services-page .bg-gray-light {
   background-color: #fafafa;
 }
 
@@ -393,8 +393,8 @@
   gap: 12px;
 }
 
-.btn-black-pill,
-.btn-outline-pill {
+.services-page .btn-black-pill,
+.services-page .btn-outline-pill {
   width: 100%;
   max-width: 280px;
   padding: 12px 24px;
@@ -407,10 +407,10 @@
   transition: all 0.2s;
   display: block;
 }
-.btn-black-pill { background: var(--text-main, #000); color: white; border: none; }
-.btn-black-pill:hover { background: #222; }
-.btn-outline-pill { background: transparent; color: var(--text-main, #000); border: 1px solid var(--border-light, #eaeaea); }
-.btn-outline-pill:hover { background: #f0f0f0; border-color: var(--text-main, #000); }
+.services-page .btn-black-pill { background: var(--text-main, #000); color: white; border: none; }
+.services-page .btn-black-pill:hover { background: #222; }
+.services-page .btn-outline-pill { background: transparent; color: var(--text-main, #000); border: 1px solid var(--border-light, #eaeaea); }
+.services-page .btn-outline-pill:hover { background: #f0f0f0; border-color: var(--text-main, #000); }
 
 /* ==========================================================================
    MEDIA QUERIES (TABLETAS Y ESCENARIO ESCRITORIO)
@@ -435,7 +435,7 @@
   .why-grid { grid-template-columns: repeat(2, 1fr); }
 
   .cta-actions { flex-direction: row; justify-content: center; gap: 16px; }
-  .btn-black-pill, .btn-outline-pill { width: auto; }
+  .services-page .btn-black-pill, .services-page .btn-outline-pill { width: auto; }
 }
 
 @media (min-width: 1024px) {
@@ -479,10 +479,33 @@
   .cta-container { max-width: 600px; }
   .services-cta h2 { font-size: 36px; margin-bottom: 16px; }
   .services-cta p { font-size: 15px; margin-bottom: 40px; line-height: 1.6; }
-  .btn-black-pill, .btn-outline-pill { padding: 14px 32px; font-size: 15px; }
+  .services-page .btn-black-pill, .services-page .btn-outline-pill { padding: 14px 32px; font-size: 15px; }
 }
 
 @media (min-width: 1280px) {
   .offer-section .inner-container { max-width: 1180px; }
   .catalog-grid { gap: 32px; }
 }
+
+/* ==========================================================================
+   DARK THEME — /services (scopeado bajo .services-page)
+   El hero y las catalog-cards de la oferta ya van en oscuro/dorado por diseño.
+   ========================================================================== */
+[data-theme="dark"] .services-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .services-page .bg-gray-light { background-color: #101013; }
+[data-theme="dark"] .services-page .section-header .pre-title { color: #d4af37; }
+
+/* Why section */
+[data-theme="dark"] .services-page .why-card { border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .services-page .why-card:hover { background-color: #141416; border-color: rgba(212, 175, 55, 0.4); }
+[data-theme="dark"] .services-page .why-icon-container { background: #1c1c20; color: #d4af37; }
+
+/* Split list */
+[data-theme="dark"] .services-page .col-title { border-bottom-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .services-page .service-list-item:hover { background: #141416; border-left-color: #d4af37; }
+
+/* CTA */
+[data-theme="dark"] .services-page .btn-black-pill { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .services-page .btn-black-pill:hover { background: #e8c766; }
+[data-theme="dark"] .services-page .btn-outline-pill { border-color: rgba(255, 255, 255, 0.16); }
+[data-theme="dark"] .services-page .btn-outline-pill:hover { background: #1c1c20; border-color: #ece7dd; }

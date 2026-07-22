@@ -146,7 +146,6 @@ export async function getYachts(filters: YachtsFilters = {}, forceRefresh = fals
   const queryString = params.toString();
   const url = `${API_BASE_URL}/yachts/${queryString ? `?${queryString}` : ''}`;
   
-  console.log('📡 Obteniendo yates:', url);
 
   try {
     const response = await fetch(url, {
@@ -177,7 +176,6 @@ export async function getYachts(filters: YachtsFilters = {}, forceRefresh = fals
     }
 
     const data = await response.json();
-    console.log('✅ Yates obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -198,7 +196,6 @@ export async function getFullYacht(id: number): Promise<YachtFullDetail> {
 
   try {
     const url = `${API_BASE_URL}/yachts/${id}/`;
-    console.log('📡 Obteniendo yate completo:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -232,7 +229,6 @@ export async function getFullYacht(id: number): Promise<YachtFullDetail> {
     }
 
     const data = await response.json();
-    console.log('✅ Yate completo obtenido:', data);
     return data;
 
   } catch (error) {
@@ -253,7 +249,6 @@ export async function getYachtImages(id: number): Promise<YachtGalleryImage[]> {
 
   try {
     const url = `${API_BASE_URL}/yachts/yacht_images/${id}/`;
-    console.log('📡 Obteniendo imágenes del yate:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -287,7 +282,6 @@ export async function getYachtImages(id: number): Promise<YachtGalleryImage[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Imágenes del yate obtenidas:', data);
     return data;
 
   } catch (error) {
@@ -308,7 +302,6 @@ export async function updateYacht(id: number, data: UpdateYachtData): Promise<un
 
   try {
     const url = `${API_BASE_URL}/yachts/${id}/`;
-    console.log('📡 Actualizando yate:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -342,7 +335,6 @@ export async function updateYacht(id: number, data: UpdateYachtData): Promise<un
     }
 
     const result = await response.json();
-    console.log('✅ Yate actualizado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -372,7 +364,6 @@ export async function getOwners(): Promise<YachtOwner[]> {
 
   try {
     const url = `${API_BASE_URL}/profiles/get-owners/`;
-    console.log('📡 Obteniendo owners:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -401,7 +392,6 @@ export async function getOwners(): Promise<YachtOwner[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Owners obtenidos:', data);
     return data;
 
   } catch (error) {
@@ -443,7 +433,6 @@ export async function uploadYachtImages(yachtId: number, files: File[]): Promise
 
   try {
     const url = `${API_BASE_URL}/yachts/yacht_images/`;
-    console.log('📡 Subiendo imágenes del yate:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     formData.append('yacht_id', yachtId.toString());
@@ -479,7 +468,6 @@ export async function uploadYachtImages(yachtId: number, files: File[]): Promise
     }
 
     const result = await response.json();
-    console.log('✅ Imágenes subidas exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -504,7 +492,6 @@ export async function createYacht(data: UpdateYachtData): Promise<{ id: number }
 
   try {
     const url = `${API_BASE_URL}/yachts/`;
-    console.log('📡 Creando yate:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -534,7 +521,6 @@ export async function createYacht(data: UpdateYachtData): Promise<{ id: number }
     }
 
     const result = await response.json();
-    console.log('✅ Yate creado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -559,7 +545,6 @@ export async function deleteYacht(id: number): Promise<{ message: string }> {
 
   try {
     const url = `${API_BASE_URL}/yachts/${id}/`;
-    console.log('📡 Eliminando yate:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -591,12 +576,10 @@ export async function deleteYacht(id: number): Promise<{ message: string }> {
     }
 
     if (response.status === 204) {
-      console.log('✅ Yate eliminado exitosamente (204)');
       return { message: 'Yate eliminado exitosamente' };
     }
 
     const result = await response.json();
-    console.log('✅ Yate eliminado exitosamente:', result);
     return result;
 
   } catch (error) {
@@ -617,7 +600,6 @@ export async function uploadYachtPrincipalImage(yachtId: number, imageFile: File
 
   try {
     const url = `${API_BASE_URL}/yachts/principal_image/`;
-    console.log('📡 Subiendo imagen principal:', url);
 
     const formData = new FormData();
     formData.append('yacht_id', yachtId.toString());
@@ -658,7 +640,6 @@ export async function uploadYachtPrincipalImage(yachtId: number, imageFile: File
     }
 
     const result = await response.json();
-    console.log('✅ Imagen principal actualizada:', result);
     return result;
 
   } catch (error) {
@@ -679,7 +660,6 @@ export async function deleteYachtImage(imageId: number): Promise<{ message: stri
 
   try {
     const url = `${API_BASE_URL}/yachts/yacht_images/`;
-    console.log('📡 Eliminando imagen de yate:', url, imageId);
 
     // El endpoint solo acepta FormParser/MultiPartParser (no JSON)
     const formData = new FormData();
@@ -743,7 +723,6 @@ export async function getAllYachts(): Promise<Yacht[]> {
 
   try {
     const url = `${API_BASE_URL}/yachts/`;
-    console.log('📡 Fetching all yachts:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -773,7 +752,6 @@ export async function getAllYachts(): Promise<Yacht[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Yates recibidos:', data);
 
     return data;
 
@@ -818,7 +796,6 @@ export async function getYachtReservations(yachtId: number): Promise<YachtReserv
 
   try {
     const url = `${API_BASE_URL}/yachts-reservation/?yacht_id=${yachtId}`;
-    console.log('📡 Obteniendo reservaciones del yate:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -928,7 +905,6 @@ export async function getYachtInvoices(
     if (finalDate) params.append('final_date', finalDate);
 
     const url = `${API_BASE_URL}/yachts-invoices-by-yacht_id/${yachtId}/?${params.toString()}`;
-    console.log('📡 Obteniendo facturas del yate:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -981,7 +957,6 @@ export async function getYachtInvoiceDetail(invoiceId: number): Promise<YachtInv
 
   try {
     const url = `${API_BASE_URL}/yachts-invoices/${invoiceId}/`;
-    console.log('📡 Obteniendo detalle de factura:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1034,7 +1009,6 @@ export async function createYachtInvoice(data: CreateYachtInvoiceData): Promise<
 
   try {
     const url = `${API_BASE_URL}/yachts-invoices/`;
-    console.log('📡 Creando factura:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -1091,7 +1065,6 @@ export async function updateYachtInvoice(invoiceId: number, data: Partial<Create
 
   try {
     const url = `${API_BASE_URL}/yachts-invoices/${invoiceId}/`;
-    console.log('📡 Actualizando factura:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -1144,7 +1117,6 @@ export async function deleteYachtInvoice(invoiceId: number, comment: string): Pr
 
   try {
     const url = `${API_BASE_URL}/yachts-invoices/${invoiceId}/?detail=${encodeURIComponent(comment)}`;
-    console.log('📡 Eliminando factura:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -1197,7 +1169,6 @@ export async function uploadYachtInvoiceImages(invoiceId: number, files: File[])
 
   try {
     const url = `${API_BASE_URL}/yachts-invoices/invoice_image/`;
-    console.log('📡 Subiendo imágenes de factura:', url);
 
     const formData = new FormData();
     formData.append('invoice_id', invoiceId.toString());
@@ -1253,7 +1224,6 @@ export async function deleteYachtInvoiceImage(imageId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/yachts-invoices/invoice_image/`;
-    console.log('📡 Eliminando imagen de factura:', url, imageId);
 
     const formData = new FormData();
     formData.append('image_id', imageId.toString());
@@ -1323,7 +1293,6 @@ export async function getYachtReservationDetail(reservationId: number): Promise<
 
   try {
     const url = `${API_BASE_URL}/yachts-reservation/${reservationId}/`;
-    console.log('📡 Obteniendo detalle de reservación:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -1376,7 +1345,6 @@ export async function createYachtReservation(data: CreateYachtReservationData): 
 
   try {
     const url = `${API_BASE_URL}/yachts-reservation/`;
-    console.log('📡 Creando reservación:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -1433,7 +1401,6 @@ export async function updateYachtReservation(reservationId: number, data: Partia
 
   try {
     const url = `${API_BASE_URL}/yachts-reservation/${reservationId}/`;
-    console.log('📡 Actualizando reservación:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -1494,7 +1461,6 @@ export async function deleteYachtReservation(reservationId: number): Promise<voi
 
   try {
     const url = `${API_BASE_URL}/yachts-reservation/${reservationId}/`;
-    console.log('📡 Eliminando reservación:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',

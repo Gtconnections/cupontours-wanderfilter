@@ -76,7 +76,6 @@ export default function InvoiceDetailPage() {
 
     try {
       const data = await getInvoiceDetail(invoiceId);
-      console.log('📦 Detalle de factura:', data);
       setInvoice(data);
     } catch (err) {
       console.error('❌ Error cargando factura:', err);

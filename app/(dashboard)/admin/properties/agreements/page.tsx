@@ -74,7 +74,6 @@ export default function AgreementsPage() {
       }
 
       const result = await getAgreements(filters);
-      console.log('📦 Datos de Agreements:', result);
       setData(result);
       setItems(result.results || []);
       

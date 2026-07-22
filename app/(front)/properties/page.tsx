@@ -4,9 +4,12 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './properties.css';
-import Link from 'next/link';
+import Membership from '@/components/Membership';
+import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getProperties, searchProperties, PropertyCardData } from '../../lib/api/properties';
+
+const PAGE_SIZE = 8;
 
 const propertiesPageStructuredData = {
   "@context": "https://schema.org",
@@ -23,16 +26,18 @@ function PropertiesCatalogContent() {
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<PropertyCardData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [sortOption, setSortOption] = useState('featured');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
-  
+
   const searchParams = useSearchParams();
 
   // Función para ordenar propiedades
   const sortProperties = (properties: PropertyCardData[], sortType: string) => {
     const sorted = [...properties];
-    
     switch (sortType) {
       case 'price-asc':
         return sorted.sort((a, b) => (a.price?.amount || 0) - (b.price?.amount || 0));
@@ -42,33 +47,32 @@ function PropertiesCatalogContent() {
         return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
       case 'featured':
       default:
-        // Mantener el orden original (el que viene de la API)
         return sorted;
     }
   };
 
   // Aplicar ordenamiento cuando cambian las propiedades o el sort
   useEffect(() => {
-    if (allProperties.length > 0) {
-      const sorted = sortProperties(allProperties, sortOption);
-      // Derived list kept in sync with its own inputs (source data + sort option).
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFilteredProperties(sorted);
-    }
+    // Derived list kept in sync with its own inputs (source data + sort option).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFilteredProperties(sortProperties(allProperties, sortOption));
   }, [allProperties, sortOption]);
 
+  // Carga inicial / reset al cambiar búsqueda
   useEffect(() => {
+    let active = true;
+
     async function loadPropertiesData() {
       try {
         setIsLoading(true);
-        
+
         const city = searchParams.get('city');
         const checkIn = searchParams.get('checkIn');
         const checkOut = searchParams.get('checkOut');
         const guests = searchParams.get('guests');
-        
+
         if (city || checkIn || checkOut || guests) {
-          setHasSearched(true);
+          // Modo búsqueda: una sola página con los resultados
           const searchData = await searchProperties({
             city: city || undefined,
             checkIn: checkIn || undefined,
@@ -76,25 +80,57 @@ function PropertiesCatalogContent() {
             guests: guests ? parseInt(guests, 10) : undefined,
             limit: 50
           });
+          if (!active) return;
+          setHasSearched(true);
           setAllProperties(searchData);
+          setOffset(0);
+          setHasMore(false);
         } else {
+          // Modo catálogo: paginado de 8 en 8
+          const propertiesData = await getProperties({ limit: PAGE_SIZE, offset: 0 });
+          if (!active) return;
           setHasSearched(false);
-          const propertiesData = await getProperties({ limit: 50 });
           setAllProperties(propertiesData);
+          setOffset(PAGE_SIZE);
+          setHasMore(propertiesData.length === PAGE_SIZE);
         }
       } catch (error) {
         console.error("Error loading properties data:", error);
-        setAllProperties([]);
-        setFilteredProperties([]);
+        if (active) {
+          setAllProperties([]);
+          setFilteredProperties([]);
+          setHasMore(false);
+        }
       } finally {
-        setIsLoading(false);
+        if (active) setIsLoading(false);
       }
     }
 
     loadPropertiesData();
+    return () => { active = false; };
   }, [searchParams]);
 
-  // Obtener el label del sort actual
+  // Cargar 8 propiedades más (solo en modo catálogo)
+  const loadMore = async () => {
+    if (isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+    try {
+      const data = await getProperties({ limit: PAGE_SIZE, offset });
+      setAllProperties((prev) => {
+        const seen = new Set(prev.map((p) => p.id));
+        const fresh = data.filter((p) => !seen.has(p.id));
+        return [...prev, ...fresh];
+      });
+      setOffset((prev) => prev + PAGE_SIZE);
+      setHasMore(data.length === PAGE_SIZE);
+    } catch (error) {
+      console.error("Error loading more properties:", error);
+      setHasMore(false);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
   const getSortLabel = () => {
     switch (sortOption) {
       case 'featured': return 'Featured';
@@ -120,15 +156,22 @@ function PropertiesCatalogContent() {
     if (hasSearched && filteredProperties.length > 0) {
       return `Found ${filteredProperties.length} spaces matching your travel criteria. Discover unmatched style below.`;
     } else if (hasSearched && filteredProperties.length === 0) {
-      return "We couldn't find matches for your search criteria. Try adjusting your dates or choose a alternative location.";
+      return "We couldn't find matches for your search criteria. Try adjusting your dates or choose an alternative location.";
     } else {
       return "Discover exceptional vacation rentals and luxury properties. From cozy retreats to grand estates, find your perfect home.";
     }
   };
 
+  const sortOptions = [
+    { key: 'featured', label: 'Featured' },
+    { key: 'price-asc', label: 'Price: Low to High' },
+    { key: 'price-desc', label: 'Price: High to Low' },
+    { key: 'rating', label: 'Top Rated' },
+  ];
+
   return (
     <main className="catalog-page-container">
-      
+
       {/* 1. HERO INMERSIVO */}
       <section className="catalog-hero">
         <div className="catalog-hero-overlay"></div>
@@ -139,9 +182,9 @@ function PropertiesCatalogContent() {
         </div>
       </section>
 
-      {/* 2. SECCIÓN DE LISTADOS ESTILO WANDER */}
+      {/* 2. SECCIÓN DE LISTADOS */}
       <section className="catalog-listings-section">
-        
+
         <div className="listings-editorial-header">
           <span className="pre-title">The Collection</span>
           <h2>{hasSearched ? "Available Getaways" : "Find Your Perfect Place"}</h2>
@@ -152,99 +195,47 @@ function PropertiesCatalogContent() {
           <span className="properties-count">
             Showing <strong>{isLoading ? "..." : filteredProperties.length}</strong> extraordinary spaces
           </span>
-          
-          {/* SORT DROPDOWN MEJORADO */}
+
+          {/* SORT DROPDOWN (funcional, client-side) */}
           <div className="catalog-sort-filter">
-            <button 
-              className="btn-filter-selector" 
+            <button
+              className="btn-filter-selector"
               type="button"
               onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
             >
               <span>Sort by: {getSortLabel()}</span>
-              <svg 
-                width="12" 
-                height="12" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2"
+              <svg
+                width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                 style={{ transform: isSortDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}
               >
                 <polyline points="6 9 12 15 18 9"/>
               </svg>
             </button>
-            
+
             {isSortDropdownOpen && (
               <div className="sort-dropdown-menu">
-                <button 
-                  className={`sort-option ${sortOption === 'featured' ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortOption('featured');
-                    setIsSortDropdownOpen(false);
-                  }}
-                >
-                  <span>Featured</span>
-                  {sortOption === 'featured' && (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  )}
-                </button>
-                
-                <button 
-                  className={`sort-option ${sortOption === 'price-asc' ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortOption('price-asc');
-                    setIsSortDropdownOpen(false);
-                  }}
-                >
-                  <span>Price: Low to High</span>
-                  {sortOption === 'price-asc' && (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  )}
-                </button>
-                
-                <button 
-                  className={`sort-option ${sortOption === 'price-desc' ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortOption('price-desc');
-                    setIsSortDropdownOpen(false);
-                  }}
-                >
-                  <span>Price: High to Low</span>
-                  {sortOption === 'price-desc' && (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  )}
-                </button>
-                
-                <button 
-                  className={`sort-option ${sortOption === 'rating' ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortOption('rating');
-                    setIsSortDropdownOpen(false);
-                  }}
-                >
-                  <span>Top Rated</span>
-                  {sortOption === 'rating' && (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  )}
-                </button>
+                {sortOptions.map((opt) => (
+                  <button
+                    key={opt.key}
+                    className={`sort-option ${sortOption === opt.key ? 'active' : ''}`}
+                    onClick={() => { setSortOption(opt.key); setIsSortDropdownOpen(false); }}
+                  >
+                    <span>{opt.label}</span>
+                    {sortOption === opt.key && (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    )}
+                  </button>
+                ))}
               </div>
             )}
           </div>
         </div>
 
-        {/* GRID DE COLUMNAS DINÁMICO */}
-        <div className="catalog-grid">
+        {/* GRID */}
+        <div className="catprop-grid">
           {isLoading ? (
-            Array.from({ length: 8 }).map((_, idx) => (
-              <div key={idx} className="catalog-card animate-pulse" style={{ opacity: 0.5 }}>
+            Array.from({ length: PAGE_SIZE }).map((_, idx) => (
+              <div key={idx} className="catprop-card animate-pulse" style={{ opacity: 0.5 }}>
                 <div className="catalog-image-box" style={{ backgroundColor: '#e4e4e7' }}></div>
                 <div className="catalog-info-box">
                   <div style={{ height: '12px', backgroundColor: '#e4e4e7', borderRadius: '4px', width: '30%' }}></div>
@@ -261,30 +252,45 @@ function PropertiesCatalogContent() {
           ) : (
             filteredProperties.map((prop) => (
               <a href={`/properties/${prop.id}`} key={prop.id} className="link-dinamic" style={{ textDecoration: 'none' }}>
-                <div className="catalog-card">
+                <div className="catprop-card">
                   <div className="catalog-image-box">
-                    <img 
-                      src={prop.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"} 
-                      alt={prop.title} 
-                      loading="lazy" 
+                    <img
+                      src={prop.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"}
+                      alt={prop.title}
+                      loading="lazy"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80";
                       }}
                     />
-                    <button className="catalog-heart-btn" aria-label="Save to wishlist" type="button" onClick={(e) => e.preventDefault()}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    </button>
+                    <HeartButton
+                      className="catalog-heart-btn"
+                      item={{
+                        id: String(prop.id),
+                        type: 'property',
+                        title: prop.title,
+                        image: prop.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+                        price: `${prop.price?.currency || '$'}${prop.price?.amount || 0} / ${prop.price?.period || 'night'}`,
+                        href: `/properties/${prop.id}`,
+                        location: prop.location || "Exclusive Destination",
+                      }}
+                    />
                   </div>
-                  
+
                   <div className="catalog-info-box">
                     <div className="catalog-location-row">
                       <span className="location-text">{prop.location || "Exclusive Destination"}</span>
                     </div>
                     <h4 className="catalog-prop-title">{prop.title}</h4>
-                    <p className="catalog-prop-specs">
-                      {prop.features?.bedrooms || 0} bedrooms • {prop.features?.bathrooms || 0} baths
-                    </p>
-                    
+
+                    {/* Specs en chips */}
+                    <div className="catalog-prop-specs">
+                      <span className="spec-item">{prop.features?.bedrooms || 0} bedrooms</span>
+                      <span className="spec-item">{prop.features?.bathrooms || 0} baths</span>
+                      {prop.features?.guests ? (
+                        <span className="spec-item">{prop.features.guests} guests</span>
+                      ) : null}
+                    </div>
+
                     <div className="catalog-price-row">
                       <span className="price-text">
                         <strong>{prop.price?.currency || '$'}{prop.price?.amount || 0}</strong> / {prop.price?.period || 'night'}
@@ -301,10 +307,18 @@ function PropertiesCatalogContent() {
           )}
         </div>
 
-        <div className="catalog-pagination-container">
-          <button className="btn-load-more" type="button">Load more properties</button>
-        </div>
+        {/* PAGINACIÓN 8 EN 8 (solo catálogo, no búsqueda) */}
+        {!isLoading && !hasSearched && hasMore && (
+          <div className="catalog-pagination-container">
+            <button className="btn-load-more" type="button" onClick={loadMore} disabled={isLoadingMore}>
+              {isLoadingMore ? 'Loading…' : 'Load more properties'}
+            </button>
+          </div>
+        )}
       </section>
+
+      {/* 3. SECCIÓN DE MEMBRESÍAS */}
+      <Membership />
 
       <StructuredData type="Product" data={propertiesPageStructuredData} />
     </main>

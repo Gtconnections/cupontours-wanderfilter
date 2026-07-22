@@ -230,7 +230,6 @@ export default function PropertyCalendarPage() {
 
     try {
       const data = await getPropertyCalendar(propertyId);
-      console.log('📦 Datos del calendario:', data);
       
       setReservations(data || []);
       

@@ -55,19 +55,13 @@ export default function ModalEditYacht({
     
     try {
       // 🔥 Solo cargar el detalle del yate (los owners ya están en el padre)
-      console.log('📡 Cargando yate para edición...');
       const yachtData = await getFullYacht(yachtId);
-      console.log('⛵ Yate recibido:', yachtData);
-      console.log('🔑 owner_id del yate:', yachtData?.owner_id);
-      console.log('👥 Owners disponibles:', owners.length);
       
       if (yachtData) {
         const ownerId = Number(yachtData.owner_id) || 0;
-        console.log('🔑 owner_id seleccionado:', ownerId);
         
         // Verificar si el owner existe en la lista
         const ownerExists = owners.some((owner) => owner.id === ownerId);
-        console.log('✅ Owner existe en la lista:', ownerExists);
         
         setFormData({
           owner_id: ownerId,
@@ -145,9 +139,7 @@ export default function ModalEditYacht({
     setError(null);
 
     try {
-      console.log('📤 Enviando datos:', formData);
       await updateYacht(yachtId, formData);
-      console.log('✅ Yate actualizado');
       onSuccess();
       onClose();
     } catch (err) {

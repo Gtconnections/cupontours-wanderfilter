@@ -74,7 +74,6 @@ export default function CarInvoicesPage() {
         });
       }
       
-      console.log('📊 Total de facturas:', data.count);
     } catch (err) {
       console.error('❌ Error cargando facturas:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las facturas');

@@ -157,7 +157,6 @@ export default function ModalCreateAgreement({
     setError(null);
 
     try {
-      console.log('📦 Enviando agreement con userId:', userId);
       
       await createAgreement({
         title: title.trim(),

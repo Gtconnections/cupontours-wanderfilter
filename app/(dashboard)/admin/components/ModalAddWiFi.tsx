@@ -70,7 +70,6 @@ export default function ModalAddWiFi({
       };
 
       const result = await createWiFi(data);
-      console.log('✅ WiFi creado:', result);
 
       // Llamar al callback con los datos del WiFi
       onSuccess({

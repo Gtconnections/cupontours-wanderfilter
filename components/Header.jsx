@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import WishlistButton from '@/components/wishlist/WishlistButton';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -296,7 +298,7 @@ export default function Header() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="search-icon-small">
                   <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <span style={{color: searchData.location ? '#111' : '#717171', fontWeight: searchData.location ? '500' : '400'}}>
+                <span style={{color: searchData.location ? 'var(--text-main)' : 'var(--text-muted)', fontWeight: searchData.location ? '500' : '400'}}>
                   {activeSearchTab === 'where' ? 'Where?' : formatWhere()}
                 </span>
               </div>
@@ -306,7 +308,7 @@ export default function Header() {
 
             <div className={`search-segment when-segment ${activeSearchTab === 'when' ? 'active' : ''}`} onClick={() => setActiveSearchTab('when')}>
               <div className="segment-content">
-                <span style={{color: (searchData.checkIn && searchData.checkOut) ? '#111' : '#717171', fontWeight: (searchData.checkIn && searchData.checkOut) ? '500' : '400'}}>
+                <span style={{color: (searchData.checkIn && searchData.checkOut) ? 'var(--text-main)' : 'var(--text-muted)', fontWeight: (searchData.checkIn && searchData.checkOut) ? '500' : '400'}}>
                   {activeSearchTab === 'when' ? 'When?' : formatWhen()}
                 </span>
               </div>
@@ -316,7 +318,7 @@ export default function Header() {
 
             <div className={`search-segment who-segment ${activeSearchTab === 'who' ? 'active' : ''}`} onClick={() => setActiveSearchTab('who')}>
               <div className="segment-content">
-                <span style={{color: searchData.guests > 0 ? '#111' : '#717171', fontWeight: searchData.guests > 0 ? '500' : '400'}}>
+                <span style={{color: searchData.guests > 0 ? 'var(--text-main)' : 'var(--text-muted)', fontWeight: searchData.guests > 0 ? '500' : '400'}}>
                   {activeSearchTab === 'who' ? 'Who?' : formatWho()}
                 </span>
               </div>
@@ -437,6 +439,8 @@ export default function Header() {
 
         {/* RIGHT ACTIONS */}
         <div className="header-right" ref={menuRef}>
+          <ThemeToggle />
+          <WishlistButton className={isSearchExpanded ? 'hide-on-mobile' : ''} />
           <Link href="/jets" className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>Luxury Jets</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
@@ -450,12 +454,13 @@ export default function Header() {
             <ul>
               <li><Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
               <li className="menu-divider"></li>
-              <li><Link href="/about-us" onClick={() => setIsMenuOpen(false)}>About</Link></li>
+              <li><Link href="https://luxury.cupontours.com" target="_blank">Luxury Villas</Link></li>
               <li><Link href="/services" onClick={() => setIsMenuOpen(false)}>Services</Link></li>
               <li><Link href="/properties" onClick={() => setIsMenuOpen(false)}>Properties</Link></li>
               <li><Link href="/cars" onClick={() => setIsMenuOpen(false)}>Cars</Link></li>
               <li><Link href="/yachts" onClick={() => setIsMenuOpen(false)}>Yachts</Link></li>
               <li><Link href="/invest-with-us" onClick={() => setIsMenuOpen(false)}>Invest</Link></li>
+              <li><Link href="/about-us" onClick={() => setIsMenuOpen(false)}>About</Link></li>
               <li><Link href="/work-with-us" onClick={() => setIsMenuOpen(false)}>Team</Link></li>
               <li className="menu-divider"></li>
               <li><Link href="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>

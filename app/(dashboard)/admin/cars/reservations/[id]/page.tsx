@@ -81,8 +81,6 @@ export default function CarReservationsPage() {
         setCarInfo({ brand: first.brand, model: first.model });
       }
       
-      console.log('📊 Total de reservaciones:', reservationsData.length);
-      console.log('📊 Páginas:', Math.ceil(reservationsData.length / pageSize));
     } catch (err) {
       console.error('❌ Error cargando reservaciones:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las reservaciones');

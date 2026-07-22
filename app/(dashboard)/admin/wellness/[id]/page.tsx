@@ -90,7 +90,6 @@ export default function WellnessDetailPage() {
 
     try {
       const data = await getWellnessDetail(parseInt(id));
-      console.log('📦 Detalle de wellness:', data);
       setService(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -189,7 +188,6 @@ export default function WellnessDetailPage() {
 
     try {
       await deleteWellnessService(service.id);
-      console.log('✅ Servicio de wellness eliminado:', service.id);
       
       setToast({
         message: `Wellness service "${service.name}" deleted successfully!`,

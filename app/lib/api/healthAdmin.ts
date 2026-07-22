@@ -47,7 +47,6 @@ export async function getHealthServices(): Promise<HealthResponse> {
 
   const url = `${API_BASE_URL}/health/`;
   
-  console.log('📡 Obteniendo servicios de salud:', url);
 
   try {
     const response = await fetch(url, {
@@ -78,7 +77,6 @@ export async function getHealthServices(): Promise<HealthResponse> {
     }
 
     const data = await response.json();
-    console.log('✅ Servicios de salud obtenidos:', data);
     
     if (Array.isArray(data)) {
       return {
@@ -109,7 +107,6 @@ export async function getHealthDetail(id: number): Promise<Health> {
 
   try {
     const url = `${API_BASE_URL}/health/${id}/`;
-    console.log('📡 Obteniendo detalle de servicio de salud:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -143,7 +140,6 @@ export async function getHealthDetail(id: number): Promise<Health> {
     }
 
     const data = await response.json();
-    console.log('✅ Servicio de salud detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -164,7 +160,6 @@ export async function createHealthService(data: unknown): Promise<Health> {
 
   try {
     const url = `${API_BASE_URL}/health/`;
-    console.log('📡 Creando servicio de salud:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -195,7 +190,6 @@ export async function createHealthService(data: unknown): Promise<Health> {
     }
 
     const dataResponse = await response.json();
-    console.log('✅ Servicio de salud creado:', dataResponse);
     return dataResponse;
 
   } catch (error) {
@@ -216,7 +210,6 @@ export async function updateHealthService(id: number, data: UpdateHealthData): P
 
   try {
     const url = `${API_BASE_URL}/health/${id}`;
-    console.log('📡 Actualizando servicio de salud:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -247,7 +240,6 @@ export async function updateHealthService(id: number, data: UpdateHealthData): P
     }
 
     const result = await response.json();
-    console.log('✅ Servicio de salud actualizado:', result);
     return result;
 
   } catch (error) {
@@ -287,7 +279,6 @@ export async function deleteHealthService(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/health/${id}/`;
-    console.log('📡 Eliminando servicio de salud:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -320,7 +311,6 @@ export async function deleteHealthService(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Servicio de salud eliminado:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteHealthService:', error);
@@ -340,7 +330,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
 
   try {
     const url = `${API_BASE_URL}/health/${id}/galeria`;
-    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -375,7 +364,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
     }
 
     const data = await response.json();
-    console.log('✅ Imágenes subidas a la galería:', data);
     return data;
 
   } catch (error) {
@@ -396,7 +384,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
 
   try {
     const url = `${API_BASE_URL}/health/${id}/imagen`;
-    console.log('📡 Actualizando imagen principal:', url);
 
     const formData = new FormData();
     formData.append('imagen', file);
@@ -429,7 +416,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
     }
 
     const data = await response.json();
-    console.log('✅ Imagen principal actualizada:', data);
     return data;
 
   } catch (error) {

@@ -449,3 +449,50 @@
   .banner-content h2 { font-size: 36px; letter-spacing: -1px; }
 }
 
+
+/* ==========================================================================
+   DARK THEME — /work-with-us (scopeado bajo .work-page)
+   ========================================================================== */
+[data-theme="dark"] .work-page { background-color: #0a0a0b; }
+[data-theme="dark"] .work-page .pre-title { color: #d4af37; }
+[data-theme="dark"] .work-page .section-title { color: #ece7dd; }
+[data-theme="dark"] .work-page .bg-gray-light { background-color: #101013; }
+
+/* Botones */
+[data-theme="dark"] .work-page .btn-black-pill { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .work-page .btn-black-pill:hover { background: #e8c766; }
+[data-theme="dark"] .work-page .btn-white-pill { background: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .work-page .btn-white-pill:hover { background: #26262c; }
+
+/* Formulario / inputs */
+[data-theme="dark"] .work-page .form-card { background: #141416; border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.40); }
+[data-theme="dark"] .work-page .form-card h3 { color: #ece7dd; }
+[data-theme="dark"] .work-page .wander-label { color: #d6d1c7; }
+[data-theme="dark"] .work-page .wander-label svg { color: #8f897f; }
+[data-theme="dark"] .work-page .wander-input,
+[data-theme="dark"] .work-page .wander-textarea { background-color: #1c1c20; border-color: rgba(255, 255, 255, 0.14); color: #ece7dd; }
+[data-theme="dark"] .work-page .wander-input::placeholder,
+[data-theme="dark"] .work-page .wander-textarea::placeholder { color: #8f897f; }
+[data-theme="dark"] .work-page .wander-input:focus,
+[data-theme="dark"] .work-page .wander-textarea:focus { border-color: #d4af37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15); }
+[data-theme="dark"] .work-page .btn-booking-primary.override-btn-submit { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .work-page .btn-booking-primary.override-btn-submit:hover { background: #e8c766; }
+
+/* Caja informativa (azul) */
+[data-theme="dark"] .work-page .wander-info-box { background-color: rgba(59, 130, 246, 0.10); border-color: rgba(59, 130, 246, 0.28); }
+[data-theme="dark"] .work-page .info-box-title { color: #93c5fd; }
+[data-theme="dark"] .work-page .info-box-list li { color: #93c5fd; }
+
+/* Revenue cards */
+[data-theme="dark"] .work-page .revenue-card { background: #141416; }
+[data-theme="dark"] .work-page .revenue-card p { color: #a7a199; }
+[data-theme="dark"] .work-page .revenue-card.highlight { background: #d4af37; border-color: #d4af37; }
+[data-theme="dark"] .work-page .revenue-card.highlight,
+[data-theme="dark"] .work-page .revenue-card.highlight .price { color: #0a0a0b !important; }
+[data-theme="dark"] .work-page .revenue-card.highlight h4 { color: rgba(10, 10, 11, 0.65); }
+
+/* Why-us icon */
+[data-theme="dark"] .work-page .icon-circle { background: #1c1c20; }
+
+/* Dark banner → superficie elevada distinta del fondo */
+[data-theme="dark"] .work-page .dark-banner { background: #141416; color: #ece7dd; }

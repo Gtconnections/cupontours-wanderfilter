@@ -657,3 +657,65 @@ form > div{
   .about-experiential-banner h2 { font-size: 36px; letter-spacing: -1px; }
   .about-experiential-banner p { font-size: 15px; }
 }
+/* ==========================================================================
+   DARK THEME — /about-us (scopeado bajo .about-page)
+   El banner oscuro (.about-dark-banner) y el banner con imagen ya van oscuros.
+   ========================================================================== */
+[data-theme="dark"] .about-page { background-color: #0a0a0b; }
+[data-theme="dark"] .about-page .pre-title { color: #d4af37; }
+[data-theme="dark"] .about-page .bg-gray-light { background-color: #101013; }
+[data-theme="dark"] .about-page .about-main-heading { color: #ece7dd; }
+
+/* Hero badges */
+[data-theme="dark"] .about-page .about-hero-badge-item { background-color: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .about-page .about-hero-badge-item svg { color: #8f897f; }
+
+/* Benefits */
+[data-theme="dark"] .about-page .about-benefits-text-block h2 { color: #ece7dd; }
+[data-theme="dark"] .about-page .benefits-intro-desc { color: #a7a199; }
+[data-theme="dark"] .about-page .benefit-minimal-card { background: #141416; }
+[data-theme="dark"] .about-page .benefit-icon-bullet { background-color: rgba(59, 130, 246, 0.12); color: #93c5fd; }
+[data-theme="dark"] .about-page .benefit-card-content h4 { color: #ece7dd; }
+[data-theme="dark"] .about-page .benefit-card-content p { color: #a7a199; }
+
+/* Pillars */
+[data-theme="dark"] .about-page .about-pillars-text-side h2 { color: #ece7dd; }
+[data-theme="dark"] .about-page .pillar-text-node { border-left-color: #d4af37; }
+[data-theme="dark"] .about-page .pillar-text-node h4 { color: #ece7dd; }
+[data-theme="dark"] .about-page .pillar-text-node p { color: #a7a199; }
+
+/* Banner oscuro → superficie elevada para separarlo del fondo #0a0a0b */
+[data-theme="dark"] .about-page .about-dark-banner { background-color: #141416; }
+
+/* Testimonials */
+[data-theme="dark"] .about-page .testimonial-editorial-card { background: #141416; border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .about-page .testimonial-quote-body { color: #ece7dd; }
+[data-theme="dark"] .about-page .testimonial-author-meta strong { color: #ece7dd; }
+[data-theme="dark"] .about-page .testimonial-author-meta span { color: #8f897f; }
+
+/* Bloque contacto / formulario */
+[data-theme="dark"] .about-page .about-contact-grid-block { background-color: #0a0a0b; }
+[data-theme="dark"] .about-page .about-form-card-wrapper { background: #141416; }
+[data-theme="dark"] .about-page .about-form-card-wrapper h3 { color: #ece7dd; }
+[data-theme="dark"] .about-page .about-form-card-wrapper p { color: #a7a199; }
+[data-theme="dark"] .about-page .wander-label { color: #d6d1c7; }
+[data-theme="dark"] .about-page .wander-label svg { color: #8f897f; }
+[data-theme="dark"] .about-page .wander-input,
+[data-theme="dark"] .about-page .wander-textarea { background-color: #1c1c20; border-color: rgba(255, 255, 255, 0.14); color: #ece7dd; }
+[data-theme="dark"] .about-page .wander-input::placeholder,
+[data-theme="dark"] .about-page .wander-textarea::placeholder { color: #8f897f; }
+[data-theme="dark"] .about-page .wander-input:focus,
+[data-theme="dark"] .about-page .wander-textarea:focus { border-color: #d4af37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15); }
+[data-theme="dark"] .about-page .btn-booking-primary.override-btn-submit { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .about-page .btn-booking-primary.override-btn-submit:hover { background: #e8c766; }
+
+/* Get in touch */
+[data-theme="dark"] .about-page .touch-icon-box { background-color: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .about-page .touch-text-node h4 { color: #ece7dd; }
+[data-theme="dark"] .about-page .touch-text-node a,
+[data-theme="dark"] .about-page .touch-text-node span { color: #a7a199; }
+
+/* Metric cards */
+[data-theme="dark"] .about-page .about-metric-card-node { border-left-color: #d4af37; }
+[data-theme="dark"] .about-page .about-metric-card-node h3 { color: #ece7dd; }
+[data-theme="dark"] .about-page .about-metric-card-node p { color: #8f897f; }

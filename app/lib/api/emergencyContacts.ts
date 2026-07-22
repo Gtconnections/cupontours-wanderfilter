@@ -74,13 +74,11 @@ export async function getContacts(forceRefresh = false): Promise<Contact[]> {
   }
 
   if (!forceRefresh && contactsCache.data && (Date.now() - contactsCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché de contactos');
     return contactsCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/contacts/`;
-    console.log('📡 Fetching contacts:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -110,7 +108,6 @@ export async function getContacts(forceRefresh = false): Promise<Contact[]> {
     }
 
     const data = await response.json();
-    console.log('✅ Contactos recibidos:', data);
 
     contactsCache = {
       data: data,
@@ -123,7 +120,6 @@ export async function getContacts(forceRefresh = false): Promise<Contact[]> {
     console.error('❌ Error en getContacts:', error);
     
     if (contactsCache.data) {
-      console.log('📦 Usando caché por error de red');
       return contactsCache.data;
     }
     
@@ -142,13 +138,11 @@ export async function getContactTypes(forceRefresh = false): Promise<ContactType
   }
 
   if (!forceRefresh && contactTypesCache.data && (Date.now() - contactTypesCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché de tipos de contacto');
     return contactTypesCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/contact-type/`;
-    console.log('📡 Fetching contact types:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -171,7 +165,6 @@ export async function getContactTypes(forceRefresh = false): Promise<ContactType
     }
 
     const data = await response.json();
-    console.log('✅ Tipos de contacto recibidos:', data);
 
     contactTypesCache = {
       data: data,
@@ -184,7 +177,6 @@ export async function getContactTypes(forceRefresh = false): Promise<ContactType
     console.error('❌ Error en getContactTypes:', error);
     
     if (contactTypesCache.data) {
-      console.log('📦 Usando caché por error de red');
       return contactTypesCache.data;
     }
     
@@ -204,7 +196,6 @@ export async function createContact(data: ContactFormData): Promise<Contact> {
 
   try {
     const url = `${API_BASE_URL}/contacts/`;
-    console.log('📡 Creando contacto:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -248,7 +239,6 @@ export async function createContact(data: ContactFormData): Promise<Contact> {
     }
 
     const result = await response.json();
-    console.log('✅ Contacto creado:', result);
 
     contactsCache = {
       data: null,
@@ -275,7 +265,6 @@ export async function updateContact(contactId: number, data: ContactFormData): P
 
   try {
     const url = `${API_BASE_URL}/contacts/${contactId}/`;
-    console.log('📡 Actualizando contacto:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -323,7 +312,6 @@ export async function updateContact(contactId: number, data: ContactFormData): P
     }
 
     const result = await response.json();
-    console.log('✅ Contacto actualizado:', result);
 
     contactsCache = {
       data: null,
@@ -350,7 +338,6 @@ export async function deleteContact(contactId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/contacts/${contactId}/`;
-    console.log('📡 Eliminando contacto:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -390,7 +377,6 @@ export async function deleteContact(contactId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Contacto eliminado:', contactId);
 
     contactsCache = {
       data: null,
@@ -415,7 +401,6 @@ export async function createContactType(data: ContactTypeFormData): Promise<Cont
 
   try {
     const url = `${API_BASE_URL}/contact-type/`;
-    console.log('📡 Creando tipo de contacto:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -453,7 +438,6 @@ export async function createContactType(data: ContactTypeFormData): Promise<Cont
     }
 
     const result = await response.json();
-    console.log('✅ Tipo de contacto creado:', result);
 
     contactTypesCache = {
       data: null,
@@ -480,7 +464,6 @@ export async function deleteContactType(contactTypeId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/contact-type/${contactTypeId}/`;
-    console.log('📡 Eliminando tipo de contacto:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -520,7 +503,6 @@ export async function deleteContactType(contactTypeId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Tipo de contacto eliminado:', contactTypeId);
 
     contactTypesCache = {
       data: null,
@@ -542,5 +524,4 @@ export function clearContactsCache() {
     data: null,
     timestamp: 0
   };
-  console.log('🧹 Caché de contactos limpiada');
 }

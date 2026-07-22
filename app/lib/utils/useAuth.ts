@@ -63,7 +63,6 @@ export function useAuth(): UseAuthReturn {
     if (storedProfileId) {
       const id = Number(storedProfileId);
       if (!isNaN(id) && id > 0) {
-        console.log('📦 getProfileId desde localStorage:', id);
         return id;
       }
     }
@@ -73,7 +72,6 @@ export function useAuth(): UseAuthReturn {
     if (sessionProfileId) {
       const id = Number(sessionProfileId);
       if (!isNaN(id) && id > 0) {
-        console.log('📦 getProfileId desde sessionStorage:', id);
         return id;
       }
     }
@@ -82,7 +80,6 @@ export function useAuth(): UseAuthReturn {
     if (user?.profile_id) {
       const id = Number(user.profile_id);
       if (!isNaN(id) && id > 0) {
-        console.log('📦 getProfileId desde user:', id);
         return id;
       }
     }
@@ -220,7 +217,6 @@ export function useAuth(): UseAuthReturn {
 
   const logout = useCallback(async (): Promise<void> => {
     try {
-      console.log('🔒 Iniciando logout...');
 
       AUTH_KEYS.forEach(key => {
         localStorage.removeItem(key);
@@ -231,7 +227,6 @@ export function useAuth(): UseAuthReturn {
       setUser(null);
       setToken(null);
 
-      console.log('✅ Logout exitoso');
       
       router.push('/login?logout=success');
       
@@ -291,9 +286,6 @@ export function useAuth(): UseAuthReturn {
       setUser(userInfo);
       setToken(newToken);
       
-      console.log('✅ Login exitoso en useAuth');
-      console.log('  - User ID:', userId);
-      console.log('  - Profile ID:', profileId);
       
     } catch (error) {
       console.error('❌ Error en login:', error);

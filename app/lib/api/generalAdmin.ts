@@ -45,7 +45,6 @@ export async function getGeneralServices(): Promise<GeneralServiceResponse> {
 
   const url = `${API_BASE_URL}/servicios-generales/`;
   
-  console.log('📡 Obteniendo servicios generales:', url);
 
   try {
     const response = await fetch(url, {
@@ -76,7 +75,6 @@ export async function getGeneralServices(): Promise<GeneralServiceResponse> {
     }
 
     const data = await response.json();
-    console.log('✅ Servicios generales obtenidos:', data);
     
     if (Array.isArray(data)) {
       return {
@@ -107,7 +105,6 @@ export async function getGeneralServiceDetail(id: number): Promise<GeneralServic
 
   try {
     const url = `${API_BASE_URL}/servicios-generales/${id}/`;
-    console.log('📡 Obteniendo detalle de servicio general:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -141,7 +138,6 @@ export async function getGeneralServiceDetail(id: number): Promise<GeneralServic
     }
 
     const data = await response.json();
-    console.log('✅ Servicio general detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -162,7 +158,6 @@ export async function createGeneralService(data: unknown): Promise<GeneralServic
 
   try {
     const url = `${API_BASE_URL}/servicios-generales/`;
-    console.log('📡 Creando servicio general:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -193,7 +188,6 @@ export async function createGeneralService(data: unknown): Promise<GeneralServic
     }
 
     const dataResponse = await response.json();
-    console.log('✅ Servicio general creado:', dataResponse);
     return dataResponse;
 
   } catch (error) {
@@ -214,7 +208,6 @@ export async function updateGeneralService(id: number, data: UpdateGeneralServic
 
   try {
     const url = `${API_BASE_URL}/servicios-generales/${id}`;
-    console.log('📡 Actualizando servicio general:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -245,7 +238,6 @@ export async function updateGeneralService(id: number, data: UpdateGeneralServic
     }
 
     const result = await response.json();
-    console.log('✅ Servicio general actualizado:', result);
     return result;
 
   } catch (error) {
@@ -285,7 +277,6 @@ export async function deleteGeneralService(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/servicios-generales/${id}/`;
-    console.log('📡 Eliminando servicio general:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -318,7 +309,6 @@ export async function deleteGeneralService(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Servicio general eliminado:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteGeneralService:', error);
@@ -338,7 +328,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
 
   try {
     const url = `${API_BASE_URL}/servicios-generales/${id}/galeria`;
-    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -373,7 +362,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
     }
 
     const data = await response.json();
-    console.log('✅ Imágenes subidas a la galería:', data);
     return data;
 
   } catch (error) {
@@ -394,7 +382,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
 
   try {
     const url = `${API_BASE_URL}/servicios-generales/${id}/imagen`;
-    console.log('📡 Actualizando imagen principal:', url);
 
     const formData = new FormData();
     formData.append('imagen', file);
@@ -427,7 +414,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
     }
 
     const data = await response.json();
-    console.log('✅ Imagen principal actualizada:', data);
     return data;
 
   } catch (error) {

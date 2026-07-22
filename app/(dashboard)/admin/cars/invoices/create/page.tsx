@@ -218,10 +218,8 @@ function CreateInvoiceContent() {
         price: formData.price,
       };
 
-      console.log('📤 Enviando payload:', payload);
       
       const result = await createInvoice(payload);
-      console.log('✅ Factura creada:', result);
       
       setSuccess('Factura creada exitosamente');
       

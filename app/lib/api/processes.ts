@@ -72,13 +72,11 @@ export async function getProcesses(forceRefresh = false): Promise<ProcessCategor
   }
 
   if (!forceRefresh && processesCache.data && (Date.now() - processesCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché de procesos');
     return processesCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/process/`;
-    console.log('📡 Fetching processes:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -108,7 +106,6 @@ export async function getProcesses(forceRefresh = false): Promise<ProcessCategor
     }
 
     const data = await response.json();
-    console.log('✅ Procesos recibidos:', data);
 
     processesCache = {
       data: data,
@@ -121,7 +118,6 @@ export async function getProcesses(forceRefresh = false): Promise<ProcessCategor
     console.error('❌ Error en getProcesses:', error);
     
     if (processesCache.data) {
-      console.log('📦 Usando caché por error de red');
       return processesCache.data;
     }
     
@@ -140,7 +136,6 @@ export async function getProcessTypes(forceRefresh = false): Promise<ProcessType
 
   try {
     const url = `${API_BASE_URL}/process_type/`;
-    console.log('📡 Fetching process types:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -163,7 +158,6 @@ export async function getProcessTypes(forceRefresh = false): Promise<ProcessType
     }
 
     const data = await response.json();
-    console.log('✅ Tipos de procesos recibidos:', data);
 
     return data;
 
@@ -185,7 +179,6 @@ export async function updateProcess(processId: number, data: ProcessFormData): P
 
   try {
     const url = `${API_BASE_URL}/process/${processId}/`;
-    console.log('📡 Actualizando proceso:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -227,7 +220,6 @@ export async function updateProcess(processId: number, data: ProcessFormData): P
     }
 
     const result = await response.json();
-    console.log('✅ Proceso actualizado:', result);
 
     processesCache = {
       data: null,
@@ -254,7 +246,6 @@ export async function createProcess(data: ProcessFormData): Promise<Process> {
 
   try {
     const url = `${API_BASE_URL}/process/`;
-    console.log('📡 Creando proceso:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -292,7 +283,6 @@ export async function createProcess(data: ProcessFormData): Promise<Process> {
     }
 
     const result = await response.json();
-    console.log('✅ Proceso creado:', result);
 
     processesCache = {
       data: null,
@@ -319,7 +309,6 @@ export async function deleteProcess(processId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/process/${processId}/`;
-    console.log('📡 Eliminando proceso:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -359,7 +348,6 @@ export async function deleteProcess(processId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Proceso eliminado:', processId);
 
     processesCache = {
       data: null,
@@ -377,7 +365,6 @@ export function clearProcessesCache() {
     data: null,
     timestamp: 0
   };
-  console.log('🧹 Caché de procesos limpiada');
 }
 
 // lib/api/processes.ts
@@ -396,7 +383,6 @@ export async function createProcessType(data: { process_name: string; user_posit
 
   try {
     const url = `${API_BASE_URL}/process_type/`;
-    console.log('📡 Creando tipo de proceso:', url, data);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -434,7 +420,6 @@ export async function createProcessType(data: { process_name: string; user_posit
     }
 
     const result = await response.json();
-    console.log('✅ Tipo de proceso creado:', result);
 
     return result;
 

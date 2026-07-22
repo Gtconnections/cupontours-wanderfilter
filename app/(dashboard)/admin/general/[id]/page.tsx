@@ -90,7 +90,6 @@ export default function GeneralServiceDetailPage() {
 
     try {
       const data = await getGeneralServiceDetail(parseInt(id));
-      console.log('📦 Detalle de servicio general:', data);
       setService(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -201,7 +200,6 @@ export default function GeneralServiceDetailPage() {
 
     try {
       await deleteGeneralService(service.id);
-      console.log('✅ Servicio general eliminado:', service.id);
       
       setToast({
         message: `Service "${service.name}" deleted successfully!`,

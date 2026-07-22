@@ -231,3 +231,51 @@
     font-weight: 600;
   }
 }
+
+/* ==========================================================================
+   DARK THEME (RECOVER ACCOUNT)
+   ========================================================================== */
+[data-theme="dark"] .recover-page.recover-split-page {
+  background-color: #0a0a0b;
+}
+[data-theme="dark"] .recover-page .pre-title {
+  color: #8f897f;
+}
+[data-theme="dark"] .recover-page .recover-main-title {
+  color: #ece7dd;
+}
+[data-theme="dark"] .recover-page .recover-subtitle {
+  color: #a7a199;
+}
+[data-theme="dark"] .recover-page .form-group-clean label {
+  color: #d6d1c7;
+}
+[data-theme="dark"] .recover-page .input-with-icon svg {
+  color: #8f897f;
+}
+[data-theme="dark"] .recover-page .input-with-icon input {
+  background-color: #1c1c20;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #ece7dd;
+}
+[data-theme="dark"] .recover-page .input-with-icon input:focus {
+  background-color: #232327;
+  border-color: #d4af37;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+[data-theme="dark"] .recover-page .input-with-icon input:focus + svg {
+  color: #d4af37;
+}
+[data-theme="dark"] .recover-page .btn-recover-submit {
+  background-color: #d4af37;
+  color: #0a0a0b;
+}
+[data-theme="dark"] .recover-page .btn-recover-submit:hover {
+  background-color: #e8c766;
+}
+[data-theme="dark"] .recover-page .recover-footer-redirect {
+  color: #a7a199;
+}
+[data-theme="dark"] .recover-page .recover-footer-redirect a {
+  color: #d4af37;
+}

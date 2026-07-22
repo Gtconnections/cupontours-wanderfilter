@@ -48,7 +48,6 @@ export default function ProfitAndLossDetailPage() {
 
     try {
       const result = await getProfitAndLossDetail(plId);
-      console.log('📦 Detalle PL:', result);
       setData(result);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);

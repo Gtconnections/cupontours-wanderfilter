@@ -1,0 +1,47 @@
+/* ==========================================================================
+   THEME TOGGLE (sol / luna) — espejo del .menu-btn del header
+   Glassy blanco sobre header transparente; gris al hacer scroll;
+   variante oscura cuando el tema es dark.
+   ========================================================================== */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.30);
+  transform: translateY(-1px);
+}
+
+.header-scrolled .theme-toggle {
+  background: #f5f5f5;
+  color: var(--text-main);
+  border: 1px solid var(--border-light);
+}
+.header-scrolled .theme-toggle:hover {
+  background: #ececec;
+}
+
+@media (min-width: 768px) {
+  .theme-toggle { width: 40px; height: 40px; }
+}
+
+/* En tema oscuro, el header scrolleado es oscuro: el toggle usa dorado */
+[data-theme="dark"] .header-scrolled .theme-toggle {
+  background: #1c1c20;
+  color: #d4af37;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .header-scrolled .theme-toggle:hover {
+  background: #24242a;
+}

@@ -93,7 +93,6 @@ export default function RealEstateDetailPage() {
 
     try {
       const data = await getRealEstateDetail(parseInt(id));
-      console.log('📦 Detalle de inmueble:', data);
       setProperty(data);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);
@@ -198,7 +197,6 @@ export default function RealEstateDetailPage() {
 
     try {
       await deleteRealEstate(property.id);
-      console.log('✅ Inmueble eliminado:', property.id);
       
       setToast({
         message: `Property "${property.name}" deleted successfully!`,

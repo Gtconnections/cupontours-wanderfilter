@@ -542,3 +542,31 @@
   .transport-grid { gap: 46px; }
   .transport-cta { padding: 150px 160px; }
 }
+
+/* ==========================================================================
+   DARK THEME — /services/transport (scopeado bajo .transport-page)
+   Hero sobre imagen y acentos dorados no cambian.
+   ========================================================================== */
+[data-theme="dark"] .transport-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .transport-page .bg-gray-light { background: radial-gradient(ellipse 1400px 700px at 50% 0%, #101013 0%, #0c0c0e 55%, #0a0a0b 100%); }
+[data-theme="dark"] .transport-page .transport-catalog-section .section-header h2 { color: #ece7dd; }
+[data-theme="dark"] .transport-page .transport-catalog-section .section-header p { color: #a7a199; }
+[data-theme="dark"] .transport-page .transport-card { background-color: #141416; border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .transport-page .transport-card:hover { border-color: rgba(212, 175, 55, 0.35); }
+[data-theme="dark"] .transport-page .transport-img-container { background-color: #1c1c20; }
+[data-theme="dark"] .transport-page .transport-info h3 { color: #ece7dd; }
+[data-theme="dark"] .transport-page .transport-specs { color: #b8b2a8; }
+[data-theme="dark"] .transport-page .transport-kit { color: #8f897f; }
+[data-theme="dark"] .transport-page .transport-price { color: #ece7dd; }
+[data-theme="dark"] .transport-page .transport-price .price-unit { color: #8f897f; }
+[data-theme="dark"] .transport-page .pagination-wrapper { border-top-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .transport-page .page-nav-btn,
+[data-theme="dark"] .transport-page .page-num-btn { border-color: rgba(255, 255, 255, 0.12); color: #ece7dd; }
+[data-theme="dark"] .transport-page .page-nav-btn:hover:not(:disabled),
+[data-theme="dark"] .transport-page .page-num-btn:hover:not(.active) { border-color: #d4af37; color: #d4af37; }
+[data-theme="dark"] .transport-page .page-num-btn.active { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .transport-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .transport-page .btn-black-pill:hover { background-color: #e8c766; }
+[data-theme="dark"] .transport-page .btn-outline-pill { border-color: rgba(255, 255, 255, 0.16); color: #ece7dd; }
+[data-theme="dark"] .transport-page .btn-outline-pill:hover { background: #1c1c20; border-color: #ece7dd; }
+[data-theme="dark"] .transport-page .empty-state { color: #a7a199; }

@@ -488,3 +488,28 @@
   .well-grid { gap: 46px; }
   .well-cta { padding: 150px 160px; }
 }
+
+/* ==========================================================================
+   DARK THEME — /services/wellness (scopeado bajo .well-page)
+   ========================================================================== */
+[data-theme="dark"] .well-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .well-page .bg-gray-light { background: radial-gradient(ellipse 1400px 700px at 50% 0%, #101013 0%, #0c0c0e 55%, #0a0a0b 100%); }
+[data-theme="dark"] .well-page .well-catalog-section .section-header h2 { color: #ece7dd; }
+[data-theme="dark"] .well-page .well-catalog-section .section-header p { color: #a7a199; }
+[data-theme="dark"] .well-page .well-card { background-color: #141416; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .well-page .well-card:hover { border-color: rgba(212,175,55,0.35); }
+[data-theme="dark"] .well-page .well-img-container { background-color: #1c1c20; }
+[data-theme="dark"] .well-page .well-location { color: #a7a199; }
+[data-theme="dark"] .well-page .well-info h3 { color: #ece7dd; }
+[data-theme="dark"] .well-page .well-desc { color: #a7a199; }
+[data-theme="dark"] .well-page .well-price { color: #ece7dd; }
+[data-theme="dark"] .well-page .well-price .price-unit { color: #8f897f; }
+[data-theme="dark"] .well-page .pagination-wrapper { border-top-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .well-page .page-nav-btn, [data-theme="dark"] .well-page .page-num-btn { border-color: rgba(255,255,255,0.12); color: #ece7dd; }
+[data-theme="dark"] .well-page .page-nav-btn:hover:not(:disabled), [data-theme="dark"] .well-page .page-num-btn:hover:not(.active) { border-color: #d4af37; color: #d4af37; }
+[data-theme="dark"] .well-page .page-num-btn.active { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .well-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .well-page .btn-black-pill:hover { background-color: #e8c766; border-color: #e8c766; color: #0a0a0b; }
+[data-theme="dark"] .well-page .btn-outline-pill { background-color: transparent; color: #ece7dd; border-color: rgba(255,255,255,0.16); }
+[data-theme="dark"] .well-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: rgba(255,255,255,0.16); color: #ece7dd; }
+[data-theme="dark"] .well-page .empty-state { background: #141416; border-color: rgba(255,255,255,0.10); color: #a7a199; }

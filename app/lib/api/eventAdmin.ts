@@ -49,7 +49,6 @@ export async function getEvents(): Promise<EventResponse> {
 
   const url = `${API_BASE_URL}/events/`;
   
-  console.log('📡 Obteniendo eventos:', url);
 
   try {
     const response = await fetch(url, {
@@ -80,7 +79,6 @@ export async function getEvents(): Promise<EventResponse> {
     }
 
     const data = await response.json();
-    console.log('✅ Eventos obtenidos:', data);
     
     if (Array.isArray(data)) {
       return {
@@ -111,7 +109,6 @@ export async function getEventDetail(id: number): Promise<Event> {
 
   try {
     const url = `${API_BASE_URL}/events/${id}/`;
-    console.log('📡 Obteniendo detalle de evento:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -145,7 +142,6 @@ export async function getEventDetail(id: number): Promise<Event> {
     }
 
     const data = await response.json();
-    console.log('✅ Evento detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -166,7 +162,6 @@ export async function createEvent(data: unknown): Promise<Event> {
 
   try {
     const url = `${API_BASE_URL}/events/`;
-    console.log('📡 Creando evento:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -197,7 +192,6 @@ export async function createEvent(data: unknown): Promise<Event> {
     }
 
     const dataResponse = await response.json();
-    console.log('✅ Evento creado:', dataResponse);
     return dataResponse;
 
   } catch (error) {
@@ -218,7 +212,6 @@ export async function updateEvent(id: number, data: UpdateEventData): Promise<Ev
 
   try {
     const url = `${API_BASE_URL}/events/${id}`;
-    console.log('📡 Actualizando evento:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -249,7 +242,6 @@ export async function updateEvent(id: number, data: UpdateEventData): Promise<Ev
     }
 
     const result = await response.json();
-    console.log('✅ Evento actualizado:', result);
     return result;
 
   } catch (error) {
@@ -289,7 +281,6 @@ export async function deleteEvent(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/events/${id}/`;
-    console.log('📡 Eliminando evento:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -322,7 +313,6 @@ export async function deleteEvent(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Evento eliminado:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteEvent:', error);
@@ -342,7 +332,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
 
   try {
     const url = `${API_BASE_URL}/events/${id}/galeria`;
-    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -377,7 +366,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
     }
 
     const data = await response.json();
-    console.log('✅ Imágenes subidas a la galería:', data);
     return data;
 
   } catch (error) {
@@ -398,7 +386,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
 
   try {
     const url = `${API_BASE_URL}/events/${id}/imagen`;
-    console.log('📡 Actualizando imagen principal:', url);
 
     const formData = new FormData();
     formData.append('imagen', file);
@@ -431,7 +418,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
     }
 
     const data = await response.json();
-    console.log('✅ Imagen principal actualizada:', data);
     return data;
 
   } catch (error) {

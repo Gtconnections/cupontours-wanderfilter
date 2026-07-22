@@ -753,3 +753,58 @@ a{
   width: 100% !important;
   aspect-ratio: 1 / 1 !important;
 }
+/* ==========================================================================
+   DARK THEME — /jets (scopeado bajo .aviation-page para no afectar otras páginas)
+   El hero y el dark-banner ya van sobre fondo oscuro y no cambian.
+   ========================================================================== */
+[data-theme="dark"] .aviation-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .aviation-page .bg-gray-light { background-color: #101013; }
+[data-theme="dark"] .aviation-page .pre-title { color: #d4af37; }
+[data-theme="dark"] .aviation-page .split-text-side h2 { color: #ece7dd; }
+
+/* Tarjeta de cotización + formulario */
+[data-theme="dark"] .aviation-page .quote-form-card { background: #141416; border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .aviation-page .quote-form-card h3 { color: #ece7dd; }
+[data-theme="dark"] .aviation-page .form-desc { color: #a7a199; }
+[data-theme="dark"] .aviation-page .wander-label { color: #cfc9bf; }
+[data-theme="dark"] .aviation-page .wander-input,
+[data-theme="dark"] .aviation-page .select-wander,
+[data-theme="dark"] .aviation-page .time-period-select {
+  background-color: #1c1c20;
+  border-color: rgba(255, 255, 255, 0.10);
+  color: #ece7dd;
+}
+[data-theme="dark"] .aviation-page .wander-input:focus { border-color: #d4af37; }
+[data-theme="dark"] .aviation-page .form-section-divider { border-top-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .aviation-page .form-section-divider span { color: #ece7dd; background: #141416; }
+[data-theme="dark"] .aviation-page .reset-picker-box { background: #1c1c20 !important; border-color: rgba(255, 255, 255, 0.10) !important; }
+[data-theme="dark"] .aviation-page .picker-col.spec-padding-col span { color: #8f897f; }
+[data-theme="dark"] .aviation-page .selected-value { color: #ece7dd !important; }
+[data-theme="dark"] .aviation-page .picker-divider { background-color: rgba(255, 255, 255, 0.12); }
+
+/* Calendario */
+[data-theme="dark"] .aviation-page .editorial-calendar-popup { background: #141416; border-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .aviation-page .month-block h4 { color: #ece7dd; }
+[data-theme="dark"] .aviation-page .day-btn { color: #ece7dd; }
+[data-theme="dark"] .aviation-page .day-btn:hover { background: #24242a; }
+[data-theme="dark"] .aviation-page .day-btn.active-bound { background: #d4af37 !important; color: #0a0a0b !important; }
+
+/* Botón enviar */
+[data-theme="dark"] .aviation-page .btn-booking-primary.override-btn-submit { background: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .aviation-page .btn-booking-primary.override-btn-submit:hover { background: #e8c766; }
+
+/* Caja informativa (azul) */
+[data-theme="dark"] .aviation-page .wander-info-box { background-color: rgba(37, 99, 235, 0.12); border-color: rgba(37, 99, 235, 0.28); }
+[data-theme="dark"] .aviation-page .info-box-title { color: #93c5fd; }
+[data-theme="dark"] .aviation-page .info-box-list li { color: #93c5fd; }
+
+/* Pitch / pilares / objetivos */
+[data-theme="dark"] .aviation-page .editorial-quote { color: #ece7dd; }
+[data-theme="dark"] .aviation-page .pitch-subtext { color: #a7a199; }
+[data-theme="dark"] .aviation-page .pillar-image-wrapper { background-color: #1c1c20; }
+[data-theme="dark"] .aviation-page .pillar-card h3 { color: #ece7dd; }
+[data-theme="dark"] .aviation-page .pillar-card p { color: #a7a199; }
+[data-theme="dark"] .aviation-page .obj-card { background: #141416; border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .aviation-page .obj-icon-wrapper { background: #1c1c20; color: #d4af37; }
+[data-theme="dark"] .aviation-page .obj-card h3 { color: #ece7dd; }
+[data-theme="dark"] .aviation-page .obj-card p { color: #a7a199; }

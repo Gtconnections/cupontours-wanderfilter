@@ -211,7 +211,6 @@ function CreateInvoiceContent() {
       };
 
       const result = await createInvoice(payload);
-      console.log('✅ Factura creada:', result);
       
       setToastMessage('✅ Invoice created successfully!');
       setTimeout(() => setToastMessage(null), 3000);

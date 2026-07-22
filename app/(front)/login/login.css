@@ -248,3 +248,49 @@
     font-weight: 600;
   }
 }
+
+/* ==========================================================================
+   DARK THEME (LOGIN)
+   ========================================================================== */
+[data-theme="dark"] .login-split-page {
+  background-color: #0a0a0b;
+}
+[data-theme="dark"] .login-split-page .pre-title {
+  color: #8f897f;
+}
+[data-theme="dark"] .login-split-page .form-group-clean label {
+  color: #d6d1c7;
+}
+[data-theme="dark"] .login-split-page .forgot-link:hover {
+  color: #e8c766;
+}
+[data-theme="dark"] .login-split-page .input-with-icon svg {
+  color: #8f897f;
+}
+[data-theme="dark"] .login-split-page .input-with-icon input {
+  background-color: #1c1c20;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+[data-theme="dark"] .login-split-page .input-with-icon input:focus {
+  background-color: #232327;
+  border-color: #d4af37;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+[data-theme="dark"] .login-split-page .input-with-icon input:focus + svg {
+  color: #d4af37;
+}
+[data-theme="dark"] .login-split-page .btn-login-submit {
+  background-color: #d4af37;
+  color: #0a0a0b;
+}
+[data-theme="dark"] .login-split-page .btn-login-submit:hover {
+  background-color: #e8c766;
+}
+[data-theme="dark"] .login-split-page .login-footer-redirect a {
+  color: #d4af37;
+}
+[data-theme="dark"] .login-split-page .error-message {
+  background-color: rgba(239, 68, 68, 0.10) !important;
+  border-color: rgba(239, 68, 68, 0.30) !important;
+  color: #fca5a5 !important;
+}

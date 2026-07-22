@@ -68,7 +68,6 @@ function ProfitAndLossContent() {
       }
 
       const result = await getProfitAndLoss(filters);
-      console.log('📦 Datos de Profit and Loss:', result);
       setData(result);
       setItems(result.results.results || []);
       

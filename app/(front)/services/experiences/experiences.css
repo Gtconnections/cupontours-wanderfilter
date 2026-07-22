@@ -517,3 +517,30 @@
   .experiences-grid { gap: 46px; }
   .experiences-cta { padding: 150px 160px; }
 }
+
+/* ==========================================================================
+   DARK THEME — /services/experiences (scopeado bajo .experiences-page)
+   ========================================================================== */
+[data-theme="dark"] .experiences-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .experiences-page .bg-gray-light { background: radial-gradient(ellipse 1400px 700px at 50% 0%, #101013 0%, #0c0c0e 55%, #0a0a0b 100%); }
+[data-theme="dark"] .experiences-page .experiences-catalog-section .section-header h2 { color: #ece7dd; }
+[data-theme="dark"] .experiences-page .experiences-catalog-section .section-header p { color: #a7a199; }
+[data-theme="dark"] .experiences-page .experience-card { background-color: #141416; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .experiences-page .experience-card:hover { border-color: rgba(212,175,55,0.35); }
+[data-theme="dark"] .experiences-page .experience-img-container { background-color: #1c1c20; }
+[data-theme="dark"] .experiences-page .experience-badge.dark { background: rgba(28,28,32,0.85); border-color: rgba(212,175,55,0.3); }
+[data-theme="dark"] .experiences-page .experience-location { color: #a7a199; }
+[data-theme="dark"] .experiences-page .experience-info h3 { color: #ece7dd; }
+[data-theme="dark"] .experiences-page .experience-desc { color: #a7a199; }
+[data-theme="dark"] .experiences-page .experience-capacity { color: #b8b2a8; }
+[data-theme="dark"] .experiences-page .experience-price { color: #ece7dd; }
+[data-theme="dark"] .experiences-page .experience-price .price-unit { color: #8f897f; }
+[data-theme="dark"] .experiences-page .pagination-wrapper { border-top-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .experiences-page .page-nav-btn, [data-theme="dark"] .experiences-page .page-num-btn { border-color: rgba(255,255,255,0.12); color: #ece7dd; }
+[data-theme="dark"] .experiences-page .page-nav-btn:hover:not(:disabled), [data-theme="dark"] .experiences-page .page-num-btn:hover:not(.active) { border-color: #d4af37; color: #d4af37; }
+[data-theme="dark"] .experiences-page .page-num-btn.active { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .experiences-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .experiences-page .btn-black-pill:hover { background-color: #e8c766; border-color: #e8c766; color: #0a0a0b; }
+[data-theme="dark"] .experiences-page .btn-outline-pill { border-color: rgba(255,255,255,0.16); color: #ece7dd; }
+[data-theme="dark"] .experiences-page .btn-outline-pill:hover { background-color: #1c1c20; }
+[data-theme="dark"] .experiences-page .empty-state { background: #141416; border-color: rgba(255,255,255,0.10); color: #a7a199; }

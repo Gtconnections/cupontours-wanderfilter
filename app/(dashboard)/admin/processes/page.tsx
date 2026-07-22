@@ -56,7 +56,6 @@ const ProcessItem = ({
       await navigator.clipboard.writeText(process.description);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
-      console.log('📋 Descripción copiada al portapapeles');
     } catch (err) {
       console.error('❌ Error al copiar:', err);
       const textarea = document.createElement('textarea');
@@ -279,7 +278,6 @@ export default function ProcessesPage() {
     setIsAuthVerified(true);
 
     if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
       router.push('/login');
       return;
     }

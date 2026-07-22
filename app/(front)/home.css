@@ -887,3 +887,26 @@
     font-size: 8px;
   }
 }
+/* ==========================================================================
+   DARK THEME — home (hero y banners van sobre imagen, no cambian)
+   ========================================================================== */
+[data-theme="dark"] .filter-pill {
+  background: #1c1c20;
+  color: #ece7dd;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .filter-pill.active {
+  background: #d4af37;
+  color: #0a0a0b;
+  border-color: #d4af37;
+}
+[data-theme="dark"] .filter-pill:hover:not(.active) {
+  border-color: #d4af37;
+  color: #ece7dd;
+}
+[data-theme="dark"] .row-header h3 { color: #ece7dd; }
+[data-theme="dark"] .prop-image-container { background-color: #1c1c20; }
+[data-theme="dark"] .prop-title-row h4 { color: #ece7dd; }
+[data-theme="dark"] .prop-specs { color: #a7a199; }
+[data-theme="dark"] .price { color: #ece7dd; }
+[data-theme="dark"] .rating { color: #ece7dd; }

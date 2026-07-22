@@ -114,7 +114,6 @@ export default function UsersListPage() {
     setIsAuthVerified(true);
 
     if (!hasAuth) {
-      console.log('No autenticado, redirigiendo a login');
       router.push('/login');
       return;
     }

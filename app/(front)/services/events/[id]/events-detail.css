@@ -414,3 +414,28 @@
     gap: 64px;
   }
 }
+/* ========================= DARK THEME — /services/events/[id] (.ev-page) ========================= */
+[data-theme="dark"] .ev-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .ev-page .ev-skeleton { background-color: #1c1c20; }
+[data-theme="dark"] .ev-page .ev-breadcrumb { color: #8f897f; }
+[data-theme="dark"] .ev-page .ev-breadcrumb a { color: #ece7dd; }
+[data-theme="dark"] .ev-page .ev-breadcrumb .current { color: #726c63; }
+[data-theme="dark"] .ev-page .ev-title { color: #ece7dd; }
+[data-theme="dark"] .ev-page .ev-main-image { background-color: #141416; }
+[data-theme="dark"] .ev-page .expand-hint { background: rgba(20,20,22,0.82); color: #ece7dd; }
+[data-theme="dark"] .ev-page .ev-section-title { color: #ece7dd; }
+[data-theme="dark"] .ev-page .ev-divider { background-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .ev-page .ev-description { color: #b8b2a8; }
+[data-theme="dark"] .ev-page .ev-booking-widget { background: #141416; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .ev-page .widget-price { color: #ece7dd; }
+[data-theme="dark"] .ev-page .free-price { color: #d4af37; }
+[data-theme="dark"] .ev-page .widget-unit { color: #a7a199; }
+[data-theme="dark"] .ev-page .widget-specs { border-top-color: rgba(255,255,255,0.10); border-bottom-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .ev-page .widget-spec-label { color: #8f897f; }
+[data-theme="dark"] .ev-page .widget-spec-value { color: #ece7dd; }
+[data-theme="dark"] .ev-page .widget-info p { color: #a7a199; }
+[data-theme="dark"] .ev-page .widget-assurance { color: #8f897f; }
+[data-theme="dark"] .ev-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .ev-page .btn-black-pill:hover { background-color: #e8c766; }
+[data-theme="dark"] .ev-page .btn-outline-pill { color: #ece7dd; border-color: rgba(255,255,255,0.16); }
+[data-theme="dark"] .ev-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: #ece7dd; }

@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import './yachts.css';
 import Link from 'next/link';
+import Membership from '@/components/Membership';
+import HeartButton from '@/components/wishlist/HeartButton';
 
 // IMPORTAMOS LA FUNCIÓN DE LA API Y SU INTERFAZ CORREGIDA
 import { getYachts, YachtCatalogItem } from '../../lib/api/yachts';
@@ -53,7 +55,7 @@ export default function YachtsPage() {
 
       {/* 2. CONTENEDOR EDITORIAL */}
       <section className="marine-listings-section">
-        
+
         <div className="marine-editorial-header">
           <span className="pre-title">The Fleet</span>
           <h2>Choose Your Dream Yacht</h2>
@@ -64,12 +66,6 @@ export default function YachtsPage() {
           <span className="marine-count">
             Vessels docked: <strong>{isLoading ? "..." : fleet.length}</strong>
           </span>
-          <div className="marine-sort">
-            <button className="btn-sort-selector" type="button">
-              <span>Length: All Tiers</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
         </div>
 
         {/* GRID COMPLETADO CON DATOS DINÁMICOS */}
@@ -97,25 +93,26 @@ export default function YachtsPage() {
               <Link href={`/yachts/${yacht.id}`} key={yacht.id} className="link-dinamic">
                 <div className="marine-card">
                   <div className="marine-image-box">
-                    <img 
-                      src={yacht.img} 
-                      alt={yacht.title} 
-                      loading="lazy" 
+                    <img
+                      src={yacht.img}
+                      alt={yacht.title}
+                      loading="lazy"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
                       }}
                     />
-                    <button className="marine-heart-btn" aria-label="Save yacht" type="button" onClick={(e) => e.preventDefault()}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    </button>
+                    <HeartButton
+                      className="marine-heart-btn"
+                      item={{ id: String(yacht.id), type: 'yacht', title: yacht.title, image: yacht.img, price: yacht.price, href: `/yachts/${yacht.id}`, location: 'Miami, FL' }}
+                    />
                   </div>
-                  
+
                   <div className="marine-info-box">
                     <div className="marine-location-row">
                       <span className="location-text">Miami, FL</span>
                     </div>
                     <h4 className="marine-yacht-title">{yacht.title}</h4>
-                    
+
                     {/* FILA DE ESPECIFICACIONES CON LAS CLAVES DE TU BASE DE DATOS TRADUCIDAS (Length • Capacity) */}
                     <div className="marine-technical-specs">
                       <div className="spec-item">
@@ -131,7 +128,7 @@ export default function YachtsPage() {
                         <span>{yacht.specs.split(' • ')[0] || '60ft'}</span>
                       </div>
                     </div>
-                    
+
                     <div className="marine-price-row">
                       <span className="price-text"><strong>{yacht.price}</strong></span>
                       <span className="rating-text">
@@ -145,11 +142,10 @@ export default function YachtsPage() {
             ))
           )}
         </div>
-
-        <div className="marine-pagination-container">
-          <button className="btn-load-more" type="button">View All Vessels</button>
-        </div>
       </section>
+
+      {/* 3. SECCIÓN DE MEMBRESÍAS */}
+      <Membership />
 
       <StructuredData type="Product" data={yachtsPageStructuredData} />
     </main>

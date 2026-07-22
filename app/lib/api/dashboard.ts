@@ -78,7 +78,6 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
 export async function getDashboardData(forceRefresh = false): Promise<DashboardData> {
   if (!forceRefresh && dashboardCache.data && (Date.now() - dashboardCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando datos en caché del dashboard');
     return dashboardCache.data;
   }
 
@@ -102,7 +101,6 @@ export async function getDashboardData(forceRefresh = false): Promise<DashboardD
     }
   }
 
-  console.log('🔑 Token para dashboard:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
 
   if (!token) {
     if (typeof window !== 'undefined') {
@@ -143,7 +141,6 @@ export async function getDashboardData(forceRefresh = false): Promise<DashboardD
     }
 
     const data = await response.json();
-    console.log('✅ Dashboard data recibida:', data);
 
     dashboardCache = {
       data: data,
@@ -156,7 +153,6 @@ export async function getDashboardData(forceRefresh = false): Promise<DashboardD
     console.error('❌ Error en getDashboardData:', error);
     
     if (dashboardCache.data) {
-      console.log('📦 Usando caché por error de red');
       return dashboardCache.data;
     }
     
@@ -169,7 +165,6 @@ export function clearDashboardCache() {
     data: null,
     timestamp: 0
   };
-  console.log('🧹 Caché del dashboard limpiada');
 }
 
 export async function refreshDashboard() {

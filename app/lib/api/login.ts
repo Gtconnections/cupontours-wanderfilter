@@ -129,10 +129,6 @@ export async function loginUser(credentials: LoginCredentials): Promise<AuthResp
   const normalizedData = normalizeResponse(data);
   
   if (process.env.NODE_ENV === 'development') {
-    console.log('📦 Respuesta normalizada:');
-    console.log('  - User ID:', normalizedData.id);
-    console.log('  - Profile ID:', normalizedData.profile_id);
-    console.log('  - Username:', normalizedData.username);
   }
 
   return normalizedData;

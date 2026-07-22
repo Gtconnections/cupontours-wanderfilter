@@ -89,7 +89,6 @@ export default function WellnessListPage() {
 
     try {
       const data = await getWellnessServices();
-      console.log('📦 Datos de servicios de bienestar:', data);
       
       setServices(data.results || []);
       setTotalCount(data.count || 0);
@@ -187,7 +186,6 @@ export default function WellnessListPage() {
     setIsSubmitting(true);
     try {
       const response = await createWellnessService(data);
-      console.log('✅ Servicio de bienestar creado:', response);
       
       setToast({
         message: `Wellness service "${data.name}" created successfully!`,
@@ -224,7 +222,6 @@ export default function WellnessListPage() {
 
     try {
       await deleteWellnessService(confirmDialog.id);
-      console.log('✅ Servicio de bienestar eliminado:', confirmDialog.id);
       
       setToast({
         message: `Wellness service "${confirmDialog.name}" deleted successfully!`,

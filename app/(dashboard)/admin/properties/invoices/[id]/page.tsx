@@ -83,7 +83,6 @@ export default function InvoicesPage() {
       }
 
       const result = await getInvoicesByListing(listingId, filters);
-      console.log('📦 Datos de facturas:', result);
       
       setInvoices(result.results || []);
       setTotalExpenses(result.total_expenses || 0);

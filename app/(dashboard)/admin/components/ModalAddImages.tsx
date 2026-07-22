@@ -129,7 +129,6 @@ export default function ModalAddImages({
 
     try {
       const result = await uploadListingImages(listingId, files);
-      console.log('✅ Imágenes subidas:', result);
 
       // Limpiar URLs de preview
       previews.forEach(url => URL.revokeObjectURL(url));

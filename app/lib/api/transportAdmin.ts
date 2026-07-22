@@ -53,7 +53,6 @@ export async function getTransports(): Promise<TransportResponse> {
 
   const url = `${API_BASE_URL}/transporte-privado/`;
   
-  console.log('📡 Obteniendo transportes:', url);
 
   try {
     const response = await fetch(url, {
@@ -84,7 +83,6 @@ export async function getTransports(): Promise<TransportResponse> {
     }
 
     const data = await response.json();
-    console.log('✅ Transportes obtenidos:', data);
     
     if (Array.isArray(data)) {
       return {
@@ -115,7 +113,6 @@ export async function getTransportDetail(id: number): Promise<Transport> {
 
   try {
     const url = `${API_BASE_URL}/transporte-privado/${id}/`;
-    console.log('📡 Obteniendo detalle de transporte:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -149,7 +146,6 @@ export async function getTransportDetail(id: number): Promise<Transport> {
     }
 
     const data = await response.json();
-    console.log('✅ Transporte detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -170,7 +166,6 @@ export async function createTransport(data: unknown): Promise<Transport> {
 
   try {
     const url = `${API_BASE_URL}/transporte-privado/`;
-    console.log('📡 Creando transporte:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -201,7 +196,6 @@ export async function createTransport(data: unknown): Promise<Transport> {
     }
 
     const dataResponse = await response.json();
-    console.log('✅ Transporte creado:', dataResponse);
     return dataResponse;
 
   } catch (error) {
@@ -222,7 +216,6 @@ export async function updateTransport(id: number, data: UpdateTransportData): Pr
 
   try {
     const url = `${API_BASE_URL}/transporte-privado/${id}`;
-    console.log('📡 Actualizando transporte:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -253,7 +246,6 @@ export async function updateTransport(id: number, data: UpdateTransportData): Pr
     }
 
     const result = await response.json();
-    console.log('✅ Transporte actualizado:', result);
     return result;
 
   } catch (error) {
@@ -293,7 +285,6 @@ export async function deleteTransport(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/transporte-privado/${id}/`;
-    console.log('📡 Eliminando transporte:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -326,7 +317,6 @@ export async function deleteTransport(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Transporte eliminado:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteTransport:', error);
@@ -346,7 +336,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
 
   try {
     const url = `${API_BASE_URL}/transporte-privado/${id}/galeria`;
-    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -381,7 +370,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
     }
 
     const data = await response.json();
-    console.log('✅ Imágenes subidas a la galería:', data);
     return data;
 
   } catch (error) {
@@ -402,7 +390,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
 
   try {
     const url = `${API_BASE_URL}/transporte-privado/${id}/imagen`;
-    console.log('📡 Actualizando imagen principal:', url);
 
     const formData = new FormData();
     formData.append('imagen', file);
@@ -435,7 +422,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
     }
 
     const data = await response.json();
-    console.log('✅ Imagen principal actualizada:', data);
     return data;
 
   } catch (error) {

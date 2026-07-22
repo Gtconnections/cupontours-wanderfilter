@@ -93,7 +93,6 @@ export default function ReservationsPage() {
       }
 
       const result = await getReservations(filters);
-      console.log('📦 Datos de Reservations:', result);
       
       const reservationData = result.results.reservations;
       setListingName(reservationData.listing_name || `Listing #${listingId}`);
@@ -120,7 +119,6 @@ export default function ReservationsPage() {
 
     try {
       const detail = await getReservationDetail(reservationId);
-      console.log('📦 Detalle de reservación:', detail);
       setSelectedReservation(detail);
     } catch (err) {
       console.error('❌ Error cargando detalle:', err);

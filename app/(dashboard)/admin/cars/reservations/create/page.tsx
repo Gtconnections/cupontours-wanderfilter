@@ -211,10 +211,8 @@ function CreateReservationContent() {
         total_earnings: formData.total_earnings,
       };
       
-      console.log('📤 Enviando payload:', payload);
       
       const result = await createReservation(payload);
-      console.log('✅ Reservación creada:', result);
       
       setSuccess('Reservación creada exitosamente');
       

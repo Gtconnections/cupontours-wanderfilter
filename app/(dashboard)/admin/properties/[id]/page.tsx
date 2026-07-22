@@ -101,7 +101,6 @@ export default function PropertyDetailPage() {
 
     try {
       const result = await getPropertyDetail(propertyId, forceRefresh);
-      console.log('Datos de la propiedad:', result);
       setData(result);
       
       // Actualizar lista de imágenes para el lightbox

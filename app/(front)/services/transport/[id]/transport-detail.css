@@ -406,3 +406,30 @@
     gap: 64px;
   }
 }
+/* ==========================================================================
+   DARK THEME — /services/transport/[id] (scopeado bajo .td-page)
+   El lightbox y los acentos dorados no cambian.
+   ========================================================================== */
+[data-theme="dark"] .td-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .td-page .td-skeleton { background-color: #1c1c20; }
+[data-theme="dark"] .td-page .td-breadcrumb { color: #8f897f; }
+[data-theme="dark"] .td-page .td-breadcrumb a { color: #ece7dd; }
+[data-theme="dark"] .td-page .td-breadcrumb .current { color: #726c63; }
+[data-theme="dark"] .td-page .td-title { color: #ece7dd; }
+[data-theme="dark"] .td-page .td-main-image { background-color: #141416; }
+[data-theme="dark"] .td-page .expand-hint { background: rgba(20, 20, 22, 0.82); color: #ece7dd; }
+[data-theme="dark"] .td-page .td-section-title { color: #ece7dd; }
+[data-theme="dark"] .td-page .td-divider { background-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .td-page .td-description { color: #b8b2a8; }
+[data-theme="dark"] .td-page .td-booking-widget { background: #141416; border-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .td-page .widget-price { color: #ece7dd; }
+[data-theme="dark"] .td-page .widget-unit { color: #a7a199; }
+[data-theme="dark"] .td-page .widget-specs { border-top-color: rgba(255, 255, 255, 0.10); border-bottom-color: rgba(255, 255, 255, 0.10); }
+[data-theme="dark"] .td-page .widget-spec-label { color: #8f897f; }
+[data-theme="dark"] .td-page .widget-spec-value { color: #ece7dd; }
+[data-theme="dark"] .td-page .widget-info p { color: #a7a199; }
+[data-theme="dark"] .td-page .widget-assurance { color: #8f897f; }
+[data-theme="dark"] .td-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .td-page .btn-black-pill:hover { background-color: #e8c766; }
+[data-theme="dark"] .td-page .btn-outline-pill { color: #ece7dd; border-color: rgba(255, 255, 255, 0.16); }
+[data-theme="dark"] .td-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: #ece7dd; }

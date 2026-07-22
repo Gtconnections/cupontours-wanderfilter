@@ -112,7 +112,6 @@ export default function ModalEditListing({
     try {
       const ownersData = await getOwners();
       setOwners(ownersData);
-      console.log('✅ Owners cargados:', ownersData);
     } catch (err) {
       console.error('❌ Error al cargar owners:', err);
       setError('Error al cargar la lista de propietarios');

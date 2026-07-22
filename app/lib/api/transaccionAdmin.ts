@@ -113,7 +113,6 @@ export async function getTransacciones(filters: TransaccionesFilters = {}): Prom
 
   const url = `${API_BASE_URL}/transacciones/${buildQueryString(filters)}`;
 
-  console.log('📡 Obteniendo transacciones:', url);
 
   try {
     const response = await fetch(url, {
@@ -136,7 +135,6 @@ export async function getTransacciones(filters: TransaccionesFilters = {}): Prom
     }
 
     const data = await response.json();
-    console.log('✅ Transacciones obtenidas:', data);
     return Array.isArray(data) ? data : [];
 
   } catch (error) {
@@ -157,7 +155,6 @@ export async function getResumen(filters: TransaccionesFilters = {}): Promise<Re
 
   const url = `${API_BASE_URL}/transacciones/resumen${buildQueryString(filters)}`;
 
-  console.log('📡 Obteniendo resumen contable:', url);
 
   try {
     const response = await fetch(url, {
@@ -180,7 +177,6 @@ export async function getResumen(filters: TransaccionesFilters = {}): Promise<Re
     }
 
     const data = await response.json();
-    console.log('✅ Resumen contable obtenido:', data);
     return data;
 
   } catch (error) {
@@ -201,7 +197,6 @@ export async function getTransaccionDetail(id: number): Promise<Transaccion> {
 
   try {
     const url = `${API_BASE_URL}/transacciones/${id}`;
-    console.log('📡 Obteniendo detalle de transacción:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -227,7 +222,6 @@ export async function getTransaccionDetail(id: number): Promise<Transaccion> {
     }
 
     const data = await response.json();
-    console.log('✅ Transacción detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -248,7 +242,6 @@ export async function createTransaccion(data: SaveTransaccionData): Promise<{ me
 
   try {
     const url = `${API_BASE_URL}/transacciones/`;
-    console.log('📡 Creando transacción:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -271,7 +264,6 @@ export async function createTransaccion(data: SaveTransaccionData): Promise<{ me
     }
 
     const result = await response.json();
-    console.log('✅ Transacción creada:', result);
     return result;
 
   } catch (error) {
@@ -292,7 +284,6 @@ export async function updateTransaccion(id: number, data: SaveTransaccionData): 
 
   try {
     const url = `${API_BASE_URL}/transacciones/${id}`;
-    console.log('📡 Actualizando transacción:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -315,7 +306,6 @@ export async function updateTransaccion(id: number, data: SaveTransaccionData): 
     }
 
     const result = await response.json();
-    console.log('✅ Transacción actualizada:', result);
     return result;
 
   } catch (error) {
@@ -336,7 +326,6 @@ export async function deleteTransaccion(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/transacciones/${id}`;
-    console.log('📡 Eliminando transacción:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -361,7 +350,6 @@ export async function deleteTransaccion(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Transacción eliminada:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteTransaccion:', error);

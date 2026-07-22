@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import './cars.css';
 import Link from 'next/link';
+import Membership from '@/components/Membership';
+import HeartButton from '@/components/wishlist/HeartButton';
 
 // IMPORTAMOS LA FUNCIÓN DE LA API Y SU INTERFAZ CORREGIDA
 import { getCars, CarCatalogItem } from '../../lib/api/cars';
@@ -41,8 +43,8 @@ export default function CarsPage() {
 
   return (
     <main className="fleet-page-container">
-      
-      {/* 1. HERO CON TEXTO FIEL A TU CAPTURA */}
+
+      {/* 1. HERO */}
       <section className="fleet-hero">
         <div className="fleet-hero-overlay"></div>
         <div className="fleet-hero-content">
@@ -54,7 +56,7 @@ export default function CarsPage() {
 
       {/* 2. CONTENEDOR DEL CATÁLOGO DE AUTOS */}
       <section className="fleet-listings-section">
-        
+
         {/* Cabecera Editorial */}
         <div className="fleet-editorial-header">
           <span className="pre-title">The Collection</span>
@@ -66,15 +68,9 @@ export default function CarsPage() {
           <span className="fleet-count">
             Available vehicles: <strong>{isLoading ? "..." : fleet.length}</strong>
           </span>
-          <div className="fleet-sort">
-            <button className="btn-sort-selector" type="button">
-              <span>Filter by Class: All</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
         </div>
 
-        {/* GRID DE 4 COLUMNAS CONCISO */}
+        {/* GRID DE 4 COLUMNAS */}
         <div className="fleet-grid">
           {isLoading ? (
             // SKELETONS DE CARGA ELEGANTES MIENTRAS CONECTA CON LA BASE DE DATOS
@@ -99,26 +95,33 @@ export default function CarsPage() {
               <Link href={`/cars/${car.id}`} key={car.id} className="link-dinamic">
                 <div className="fleet-card">
                   <div className="fleet-image-box">
-                    <img 
-                      src={car.img} 
-                      alt={car.title} 
-                      loading="lazy" 
+                    <img
+                      src={car.img}
+                      alt={car.title}
+                      loading="lazy"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80";
                       }}
                     />
-                    <button className="fleet-heart-btn" aria-label="Save vehicle" type="button" onClick={(e) => e.preventDefault()}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    </button>
+                    <HeartButton
+                      className="fleet-heart-btn"
+                      item={{ id: String(car.id), type: 'car', title: car.title, image: car.img, price: car.price, href: `/cars/${car.id}`, location: 'Miami, FL' }}
+                    />
                   </div>
-                  
+
                   <div className="fleet-info-box">
                     <div className="fleet-location-row">
                       <span className="location-text">Miami, FL</span>
                     </div>
                     <h4 className="fleet-car-title">{car.title}</h4>
-                    <p className="fleet-car-specs">{car.specs}</p>
-                    
+
+                    {/* Specs en chips (formato "Model 2023 • Premium Fleet") */}
+                    <div className="fleet-car-specs">
+                      {(car.specs || '').split('•').map((s) => s.trim()).filter(Boolean).map((s, i) => (
+                        <span key={i} className="spec-item">{s}</span>
+                      ))}
+                    </div>
+
                     <div className="fleet-price-row">
                       <span className="price-text"><strong>{car.price}</strong></span>
                       <span className="rating-text">
@@ -132,11 +135,10 @@ export default function CarsPage() {
             ))
           )}
         </div>
-
-        <div className="fleet-pagination-container">
-          <button className="btn-load-more" type="button">View All Cars</button>
-        </div>
       </section>
+
+      {/* 3. SECCIÓN DE MEMBRESÍAS */}
+      <Membership />
 
       <StructuredData type="Product" data={carsPageStructuredData} />
     </main>

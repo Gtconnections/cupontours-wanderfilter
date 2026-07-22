@@ -90,7 +90,6 @@ export default function ExperienceListPage() {
 
     try {
       const data = await getExperiences();
-      console.log('📦 Datos de experiencias:', data);
       
       setExperiences(data.results || []);
       setTotalCount(data.count || 0);
@@ -175,7 +174,6 @@ export default function ExperienceListPage() {
     setIsSubmitting(true);
     try {
       const response = await createExperience(data);
-      console.log('✅ Experiencia creada:', response);
       
       setToast({
         message: `Experience "${data.name}" created successfully!`,
@@ -212,7 +210,6 @@ export default function ExperienceListPage() {
 
     try {
       await deleteExperience(confirmDialog.id);
-      console.log('✅ Experiencia eliminada:', confirmDialog.id);
       
       setToast({
         message: `Experience "${confirmDialog.name}" deleted successfully!`,

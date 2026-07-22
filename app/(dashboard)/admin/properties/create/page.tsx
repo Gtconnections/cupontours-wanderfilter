@@ -292,20 +292,17 @@ export default function CreatePropertyPage() {
 
       // 1. Crear la propiedad
       const listingResult = await createListing(formData);
-      console.log('✅ Propiedad creada:', listingResult);
       
       const listingId = listingResult.listing_id;
 
       // 2. Subir todas las imágenes
       if (selectedFiles.length > 0) {
         await uploadListingImages(listingId, selectedFiles);
-        console.log('✅ Imágenes subidas');
       }
 
       // 3. Establecer la imagen principal
       if (principalImageIndex !== -1 && principalImageIndex < selectedFiles.length) {
         await updatePrincipalPhoto(listingId, selectedFiles[principalImageIndex]);
-        console.log('✅ Imagen principal establecida');
       }
 
       setToastMessage('✅ Property created successfully!');

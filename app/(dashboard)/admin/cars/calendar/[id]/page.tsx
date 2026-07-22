@@ -159,7 +159,6 @@ export default function CarCalendarPage() {
         setCarInfo({ brand: 'Auto', model: `#${carId}`, id: carId });
       }
       
-      console.log('📊 Total de reservaciones:', reservationsData.length);
     } catch (err) {
       console.error('❌ Error cargando reservaciones:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las reservaciones');

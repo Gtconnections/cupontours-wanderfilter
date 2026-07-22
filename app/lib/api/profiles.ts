@@ -93,13 +93,11 @@ export async function getProfiles(forceRefresh = false): Promise<UserProfile[]> 
 
   // 🔥 VERIFICAR CACHÉ - SI HAY DATOS Y NO HA EXPIRADO, RETORNARLOS
   if (!forceRefresh && profilesCache.data && (Date.now() - profilesCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché de perfiles');
     return profilesCache.data; // ✅ profilesCache.data es UserProfile[] (no null porque verificamos)
   }
 
   try {
     const url = `${API_BASE_URL}/profiles/`;
-    console.log('📡 Fetching profiles:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -129,7 +127,6 @@ export async function getProfiles(forceRefresh = false): Promise<UserProfile[]> 
     }
 
     const data = await response.json();
-    console.log('✅ Perfiles recibidos:', data);
 
     // 🔥 Asegurar que siempre guardamos un array
     const results = data.results || data || [];
@@ -146,7 +143,6 @@ export async function getProfiles(forceRefresh = false): Promise<UserProfile[]> 
     
     // 🔥 Si hay error de red y tenemos caché, usar caché
     if (profilesCache.data) {
-      console.log('📦 Usando caché por error de red');
       return profilesCache.data;
     }
     
@@ -168,7 +164,6 @@ export async function updateUser(userId: number, userData: UpdateUserData): Prom
 
   try {
     const url = `${API_BASE_URL}/user-management/update-user/${userId}/`;
-    console.log('📡 Actualizando usuario:', url, userData);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -210,7 +205,6 @@ export async function updateUser(userId: number, userData: UpdateUserData): Prom
     }
 
     const result = await response.json();
-    console.log('✅ Usuario actualizado:', result);
 
     // Limpiar caché
     profilesCache = {
@@ -238,7 +232,6 @@ export async function updateUserStatus(userId: number, isActive: boolean): Promi
 
   try {
     const url = `${API_BASE_URL}/user-management/update-user/${userId}/`;
-    console.log('📡 Cambiando estado de usuario:', url, isActive);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -281,7 +274,6 @@ export async function updateUserStatus(userId: number, isActive: boolean): Promi
     }
 
     const result = await response.json();
-    console.log('✅ Estado de usuario actualizado:', result);
 
     // Limpiar caché
     profilesCache = {
@@ -309,7 +301,6 @@ export async function deleteUser(userId: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/profiles/${userId}/`;
-    console.log('📡 Eliminando usuario:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -349,7 +340,6 @@ export async function deleteUser(userId: number): Promise<void> {
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Usuario eliminado:', userId);
 
     // Limpiar caché
     profilesCache = {
@@ -408,7 +398,6 @@ export async function createUser(userData: CreateUserData): Promise<unknown> {
 
   try {
     const url = `${API_BASE_URL}/authenticate/register/`;
-    console.log('📡 Creando usuario:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -441,7 +430,6 @@ export async function createUser(userData: CreateUserData): Promise<unknown> {
     }
 
     const result = await response.json();
-    console.log('✅ Usuario creado:', result);
 
     // Limpiar caché
     profilesCache = {
@@ -462,7 +450,6 @@ export function clearProfilesCache() {
     data: null,
     timestamp: 0
   };
-  console.log('🧹 Caché de perfiles limpiada');
 }
 
 export async function refreshProfiles() {

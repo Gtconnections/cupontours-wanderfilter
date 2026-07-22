@@ -408,3 +408,27 @@
     gap: 64px;
   }
 }
+/* ========================= DARK THEME — /services/wellness/[id] (.well-page) ========================= */
+[data-theme="dark"] .well-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .well-page .well-skeleton { background-color: #1c1c20; }
+[data-theme="dark"] .well-page .well-breadcrumb { color: #8f897f; }
+[data-theme="dark"] .well-page .well-breadcrumb a { color: #ece7dd; }
+[data-theme="dark"] .well-page .well-breadcrumb .current { color: #726c63; }
+[data-theme="dark"] .well-page .well-title { color: #ece7dd; }
+[data-theme="dark"] .well-page .well-main-image { background-color: #141416; }
+[data-theme="dark"] .well-page .expand-hint { background: rgba(20,20,22,0.82); color: #ece7dd; }
+[data-theme="dark"] .well-page .well-section-title { color: #ece7dd; }
+[data-theme="dark"] .well-page .well-divider { background-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .well-page .well-description { color: #b8b2a8; }
+[data-theme="dark"] .well-page .well-booking-widget { background: #141416; border-color: rgba(255,255,255,0.08); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+[data-theme="dark"] .well-page .widget-price { color: #ece7dd; }
+[data-theme="dark"] .well-page .widget-unit { color: #a7a199; }
+[data-theme="dark"] .well-page .widget-specs { border-top-color: rgba(255,255,255,0.10); border-bottom-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .well-page .widget-spec-label { color: #8f897f; }
+[data-theme="dark"] .well-page .widget-spec-value { color: #ece7dd; }
+[data-theme="dark"] .well-page .widget-info p { color: #a7a199; }
+[data-theme="dark"] .well-page .widget-assurance { color: #8f897f; }
+[data-theme="dark"] .well-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .well-page .btn-black-pill:hover { background-color: #e8c766; }
+[data-theme="dark"] .well-page .btn-outline-pill { color: #ece7dd; border-color: rgba(255,255,255,0.16); }
+[data-theme="dark"] .well-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: #ece7dd; }

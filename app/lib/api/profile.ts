@@ -80,13 +80,11 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
   }
 
   if (!forceRefresh && profileCache.data && (Date.now() - profileCache.timestamp) < CACHE_DURATION) {
-    console.log('📦 Usando caché del perfil');
     return profileCache.data;
   }
 
   try {
     const url = `${API_BASE_URL}/profiles/${profileId}/`;
-    console.log('📡 Fetching profile:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -97,7 +95,6 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
       cache: 'no-store'
     });
 
-    console.log('📡 Status de la respuesta:', response.status);
 
     if (response.status === 401 || response.status === 403) {
       console.error('❌ Error de autenticación:', response.status);
@@ -122,7 +119,6 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
     }
 
     const responseText = await response.text();
-    console.log('📄 Respuesta raw:', responseText);
 
     let data;
     try {
@@ -132,7 +128,6 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
       throw new Error('La respuesta del servidor no es un JSON válido');
     }
 
-    console.log('✅ Datos parseados:', data);
 
     if (!data) {
       throw new Error('La respuesta del servidor está vacía');
@@ -142,15 +137,12 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
 
     if (data.profile) {
       profileData = data.profile;
-      console.log('📦 Usando data.profile');
     }
 
     if (data.data) {
       profileData = data.data;
-      console.log('📦 Usando data.data');
     }
 
-    console.log('📦 Profile data:', profileData);
 
     if (!profileData.user) {
       console.error('❌ profileData no tiene "user":', profileData);
@@ -178,7 +170,6 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
       customer_id: profileData.customer_id || null,
     };
 
-    console.log('✅ Perfil normalizado:', normalizedData);
 
     profileCache = {
       data: normalizedData,
@@ -191,7 +182,6 @@ export async function getProfile(profileId: number, forceRefresh = false): Promi
     console.error('❌ Error en getProfile:', error);
     
     if (profileCache.data) {
-      console.log('📦 Usando caché por error de red');
       return profileCache.data;
     }
     
@@ -210,7 +200,6 @@ export async function updateProfile(profileId: number, data: UpdateProfileData):
 
   try {
     const url = `${API_BASE_URL}/profiles/${profileId}/`;
-    console.log('📡 Actualizando perfil:', url, data);
 
     const response = await fetch(url, {
       method: 'PATCH',
@@ -260,7 +249,6 @@ export async function updateProfile(profileId: number, data: UpdateProfileData):
       throw new Error('La respuesta del servidor no es un JSON válido');
     }
 
-    console.log('✅ Perfil actualizado:', result);
 
     let profileData = result;
     if (result.profile) {
@@ -316,7 +304,6 @@ export async function changePassword(data: ChangePasswordData): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/authenticate/change-password/`;
-    console.log('📡 Cambiando contraseña:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -348,7 +335,6 @@ export async function changePassword(data: ChangePasswordData): Promise<void> {
       
       try {
         const errorData = JSON.parse(errorText);
-        console.log('📦 Error parseado:', errorData);
         
         // 🔥 Buscar el mensaje de error en diferentes estructuras
         if (errorData.error) {
@@ -390,17 +376,14 @@ export async function changePassword(data: ChangePasswordData): Promise<void> {
           }
         }
         
-        console.log('📝 Mensaje de error extraído:', errorMsg);
       } catch (e) {
         // Si no se puede parsear, usar el texto plano
         errorMsg = errorText || errorMsg;
-        console.log('📝 Usando texto plano como error:', errorMsg);
       }
       
       throw new Error(errorMsg);
     }
 
-    console.log('✅ Contraseña cambiada exitosamente');
 
   } catch (error) {
     console.error('❌ Error en changePassword:', error);
@@ -413,5 +396,4 @@ export function clearProfileCache() {
     data: null,
     timestamp: 0
   };
-  console.log('🧹 Caché del perfil limpiada');
 }

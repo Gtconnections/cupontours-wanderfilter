@@ -89,7 +89,6 @@ export default function RealEstateListPage() {
 
     try {
       const data = await getRealEstates();
-      console.log('📦 Datos de inmuebles:', data);
       
       setProperties(data.results || []);
       setTotalCount(data.count || 0);
@@ -199,7 +198,6 @@ export default function RealEstateListPage() {
     setIsSubmitting(true);
     try {
       const response = await createRealEstate(data);
-      console.log('✅ Inmueble creado:', response);
       
       setToast({
         message: `Property "${data.name}" created successfully!`,
@@ -236,7 +234,6 @@ export default function RealEstateListPage() {
 
     try {
       await deleteRealEstate(confirmDialog.id);
-      console.log('✅ Inmueble eliminado:', confirmDialog.id);
       
       setToast({
         message: `Property "${confirmDialog.name}" deleted successfully!`,

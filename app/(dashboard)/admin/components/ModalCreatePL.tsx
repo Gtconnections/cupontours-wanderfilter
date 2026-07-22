@@ -119,7 +119,6 @@ export default function ModalCreatePL({
       };
 
       const result = await createProfitAndLoss(payload);
-      console.log('✅ PL creado (respuesta):', result);
 
       // 🔥 Siempre llamar a onSuccess sin importar la respuesta
       onSuccess();

@@ -90,7 +90,6 @@ export default function TransportListPage() {
 
     try {
       const data = await getTransports();
-      console.log('📦 Datos de transportes:', data);
       
       setTransports(data.results || []);
       setTotalCount(data.count || 0);
@@ -176,7 +175,6 @@ export default function TransportListPage() {
     setIsSubmitting(true);
     try {
       const response = await createTransport(data);
-      console.log('✅ Transporte creado:', response);
       
       setToast({
         message: `Transport "${data.name}" created successfully!`,
@@ -213,7 +211,6 @@ export default function TransportListPage() {
 
     try {
       await deleteTransport(confirmDialog.id);
-      console.log('✅ Transporte eliminado:', confirmDialog.id);
       
       setToast({
         message: `Transport "${confirmDialog.name}" deleted successfully!`,

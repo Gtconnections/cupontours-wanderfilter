@@ -231,10 +231,8 @@ const updateItem = (index: number, field: keyof InvoiceItem, value: string | num
         price: formData.price,
       };
 
-      console.log('📤 Enviando payload PATCH:', payload);
       
       const result = await updateInvoice(invoiceId, payload);
-      console.log('✅ Factura actualizada:', result);
       
       setSuccess('Factura actualizada exitosamente');
       

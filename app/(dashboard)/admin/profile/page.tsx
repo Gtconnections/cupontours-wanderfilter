@@ -66,9 +66,7 @@ export default function ProfilePage() {
         throw new Error('No se pudo obtener el ID del perfil. Por favor, inicia sesión nuevamente.');
       }
 
-      console.log('🔍 Cargando perfil con profile_id:', profileId);
       const data = await getProfile(Number(profileId), forceRefresh);
-      console.log('📦 Perfil cargado:', data);
       
       if (!data || !data.user) {
         throw new Error('Los datos del perfil no tienen la estructura esperada');
@@ -110,7 +108,6 @@ export default function ProfilePage() {
     setIsAuthVerified(true);
 
     if (!hasAuth) {
-      console.log('🔒 No autenticado, redirigiendo a login');
       router.push('/login');
       return;
     }

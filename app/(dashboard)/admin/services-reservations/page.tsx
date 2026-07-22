@@ -130,7 +130,6 @@ export default function ReservationListPage() {
     try {
       const filters = selectedFilter ? { servicio_tipo: selectedFilter } : undefined;
       const data = await getReservations(filters);
-      console.log('📦 Datos de reservas:', data);
       
       setReservations(data.results || []);
       setTotalCount(data.count || 0);
@@ -252,7 +251,6 @@ export default function ReservationListPage() {
 
     try {
       await deleteReservation(confirmDialog.id);
-      console.log('✅ Reserva eliminada:', confirmDialog.id);
       
       setToast({
         message: `Reservation for "${confirmDialog.name}" deleted successfully!`,

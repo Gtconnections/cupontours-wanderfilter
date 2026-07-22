@@ -57,7 +57,6 @@ export async function getRealEstates(): Promise<RealEstateResponse> {
 
   const url = `${API_BASE_URL}/real-estate/`;
   
-  console.log('📡 Obteniendo inmuebles:', url);
 
   try {
     const response = await fetch(url, {
@@ -88,7 +87,6 @@ export async function getRealEstates(): Promise<RealEstateResponse> {
     }
 
     const data = await response.json();
-    console.log('✅ Inmuebles obtenidos:', data);
     
     if (Array.isArray(data)) {
       return {
@@ -119,7 +117,6 @@ export async function getRealEstateDetail(id: number): Promise<RealEstate> {
 
   try {
     const url = `${API_BASE_URL}/real-estate/${id}/`;
-    console.log('📡 Obteniendo detalle de inmueble:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -153,7 +150,6 @@ export async function getRealEstateDetail(id: number): Promise<RealEstate> {
     }
 
     const data = await response.json();
-    console.log('✅ Inmueble detalle obtenido:', data);
     return data;
 
   } catch (error) {
@@ -174,7 +170,6 @@ export async function createRealEstate(data: unknown): Promise<RealEstate> {
 
   try {
     const url = `${API_BASE_URL}/real-estate/`;
-    console.log('📡 Creando inmueble:', url);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -205,7 +200,6 @@ export async function createRealEstate(data: unknown): Promise<RealEstate> {
     }
 
     const dataResponse = await response.json();
-    console.log('✅ Inmueble creado:', dataResponse);
     return dataResponse;
 
   } catch (error) {
@@ -226,7 +220,6 @@ export async function updateRealEstate(id: number, data: UpdateRealEstateData): 
 
   try {
     const url = `${API_BASE_URL}/real-estate/${id}`;
-    console.log('📡 Actualizando inmueble:', url);
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -257,7 +250,6 @@ export async function updateRealEstate(id: number, data: UpdateRealEstateData): 
     }
 
     const result = await response.json();
-    console.log('✅ Inmueble actualizado:', result);
     return result;
 
   } catch (error) {
@@ -297,7 +289,6 @@ export async function deleteRealEstate(id: number): Promise<void> {
 
   try {
     const url = `${API_BASE_URL}/real-estate/${id}/`;
-    console.log('📡 Eliminando inmueble:', url);
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -330,7 +321,6 @@ export async function deleteRealEstate(id: number): Promise<void> {
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Inmueble eliminado:', id);
 
   } catch (error) {
     console.error('❌ Error en deleteRealEstate:', error);
@@ -350,7 +340,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
 
   try {
     const url = `${API_BASE_URL}/real-estate/${id}/galeria`;
-    console.log('📡 Subiendo imágenes a la galería:', url, `(${files.length} archivos)`);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -385,7 +374,6 @@ export async function uploadGallery(id: number, files: File[]): Promise<unknown>
     }
 
     const data = await response.json();
-    console.log('✅ Imágenes subidas a la galería:', data);
     return data;
 
   } catch (error) {
@@ -406,7 +394,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
 
   try {
     const url = `${API_BASE_URL}/real-estate/${id}/imagen`;
-    console.log('📡 Actualizando imagen principal:', url);
 
     const formData = new FormData();
     formData.append('imagen', file);
@@ -439,7 +426,6 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
     }
 
     const data = await response.json();
-    console.log('✅ Imagen principal actualizada:', data);
     return data;
 
   } catch (error) {

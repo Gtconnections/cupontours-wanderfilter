@@ -29,7 +29,6 @@ const PROTECTED_PATHS = [
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  console.log('🔍 Middleware - Path:', pathname);
   
   // Verificar si la ruta es pública
   const isPublicPath = PUBLIC_PATHS.some(path => 
@@ -44,17 +43,14 @@ export function middleware(request: NextRequest) {
   // 🔥 OBTENER TOKEN DE LAS COOKIES
   const token = request.cookies.get('accessToken')?.value || null;
   
-  console.log('🔑 Token en cookies:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
 
   // 🔥 Si está en /login y tiene token, redirigir al dashboard
   if (pathname === '/login' && token) {
-    console.log('✅ Usuario ya logueado, redirigiendo a dashboard');
     return NextResponse.redirect(new URL('/admin/dashboard', request.url));
   }
 
   // 🔥 Si está en ruta protegida y NO tiene token, redirigir al login
   if (isProtectedPath && !token) {
-    console.log('❌ Ruta protegida sin token, redirigiendo a login');
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
@@ -62,11 +58,9 @@ export function middleware(request: NextRequest) {
 
   // 🔥 Para rutas públicas con token, permitir el acceso
   if (isPublicPath && token) {
-    console.log('✅ Ruta pública con token, permitiendo acceso');
     return NextResponse.next();
   }
 
-  console.log('✅ Permitiendo acceso a:', pathname);
   return NextResponse.next();
 }
 
