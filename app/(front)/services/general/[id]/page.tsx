@@ -67,7 +67,7 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
   ].filter(Boolean);
 
   // Link dinámico a WhatsApp
-  const whatsappNumber = "1234567890";
+  const whatsappNumber = "17866566582";
   const whatsappMessage = encodeURIComponent(`Hello, I'm interested in requesting a quote for: ${service.name}.`);
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 

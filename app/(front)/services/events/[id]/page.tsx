@@ -67,7 +67,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   ].filter(Boolean);
 
   // Link dinámico a WhatsApp
-  const whatsappNumber = "1234567890";
+  const whatsappNumber = "17866566582";
   const whatsappMessage = encodeURIComponent(`Hello, I'm interested in attending the event "${eventData.name}" on ${eventData.fecha_hora}.`);
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 

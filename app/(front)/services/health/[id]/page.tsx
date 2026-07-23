@@ -67,7 +67,7 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
   ].filter(Boolean);
 
   // Link dinámico a WhatsApp
-  const whatsappNumber = "1234567890";
+  const whatsappNumber = "17866566582";
   const whatsappMessage = encodeURIComponent(`Hello, I'm interested in booking the "${healthService.name}" service at ${healthService.location}.`);
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 

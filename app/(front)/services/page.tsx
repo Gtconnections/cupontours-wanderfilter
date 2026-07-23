@@ -104,7 +104,7 @@ export default function ServicesPage() {
   // 1. CATÁLOGO ACTUALIZADO (Con Properties, Luxury Properties y enlace reparado)
   const categories = [
     { title: 'Properties', link: '/properties', img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80' },
-    { title: 'Luxury Properties', link: '/luxury-properties', img: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80' },
+    { title: 'Luxury Properties', link: 'https://luxury.cupontours.com', img: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80' },
     { title: 'Cars', link: '/cars', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80' },
     { title: 'Yachts', link: '/yachts', img: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=800&q=80' },
     { title: 'Private Jet', link: '/jets', img: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=800&q=80' },
@@ -189,7 +189,12 @@ export default function ServicesPage() {
 
           <div className="catalog-grid">
             {categories.map((cat, i) => (
-              <Link href={cat.link} key={i} className="catalog-card">
+              <Link
+                href={cat.link}
+                key={i}
+                className="catalog-card"
+                {...(cat.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
 
                 <img src={cat.img} alt={cat.title} className="catalog-bg-img" />
                 <div className="catalog-overlay"></div>

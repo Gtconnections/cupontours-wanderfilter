@@ -111,7 +111,14 @@ export default function Membership() {
                       <li key={idx}><CheckIcon /> {benefit}</li>
                     ))}
                   </ul>
-                  <button className="btn-membership">Solicitar Información</button>
+                  <a
+                    href={`https://wa.me/17866566582?text=${encodeURIComponent(`Hola, quiero información sobre la membresía ${plan.name} de Cupontours.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-membership"
+                  >
+                    Solicitar Información
+                  </a>
                 </div>
               );
             })

@@ -67,7 +67,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
   ].filter(Boolean);
 
   // Link dinámico a WhatsApp
-  const whatsappNumber = "1234567890";
+  const whatsappNumber = "17866566582";
   const whatsappMessage = encodeURIComponent(`Hello, I'm interested in the property "${property.name}" located in ${property.location}.`);
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
