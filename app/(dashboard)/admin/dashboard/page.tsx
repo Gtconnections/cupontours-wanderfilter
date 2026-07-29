@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './dashboard.css';
-import { getDashboardData, DashboardData, Reservation, MonthlyReservation } from '@/app/lib/api/dashboard';
+import { getDashboardData, DashboardData, Reservation, ReservationData, MonthlyReservation } from '@/app/lib/api/dashboard';
 import { useAuth } from '@/app/lib/utils/useAuth';
 
 export default function AdminDashboardPage() {
@@ -137,24 +137,35 @@ export default function AdminDashboardPage() {
     return days;
   };
 
-  // 🔥 VERIFICAR SI UN DÍA TIENE RESERVACIÓN
-  const hasReservationOnDate = (date: Date, reservations: Reservation[] | undefined) => {
+  // Convierte un valor de fecha a 'YYYY-MM-DD' de forma segura; null si es inválido
+  const toDateKey = (value: string | Date | null | undefined): string | null => {
+    if (!value) return null;
+    const d = new Date(value);
+    return isNaN(d.getTime()) ? null : d.toISOString().split('T')[0];
+  };
+
+  // VERIFICAR SI UN DÍA TIENE RESERVACIÓN
+  const hasReservationOnDate = (date: Date, reservations: ReservationData[] | undefined) => {
     if (!reservations) return false;
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = toDateKey(date);
+    if (!dateStr) return false;
     return reservations.some(res => {
-      const checkIn = new Date(res.check_in).toISOString().split('T')[0];
-      const checkOut = new Date(res.check_out).toISOString().split('T')[0];
+      const checkIn = toDateKey(res.start);
+      const checkOut = toDateKey(res.end);
+      if (!checkIn || !checkOut) return false;
       return dateStr >= checkIn && dateStr <= checkOut;
     });
   };
 
-  // 🔥 OBTENER RESERVACIONES PARA UN DÍA ESPECÍFICO
-  const getReservationsOnDate = (date: Date, reservations: Reservation[] | undefined) => {
+  // OBTENER RESERVACIONES PARA UN DÍA ESPECÍFICO
+  const getReservationsOnDate = (date: Date, reservations: ReservationData[] | undefined) => {
     if (!reservations) return [];
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = toDateKey(date);
+    if (!dateStr) return [];
     return reservations.filter(res => {
-      const checkIn = new Date(res.check_in).toISOString().split('T')[0];
-      const checkOut = new Date(res.check_out).toISOString().split('T')[0];
+      const checkIn = toDateKey(res.start);
+      const checkOut = toDateKey(res.end);
+      if (!checkIn || !checkOut) return false;
       return dateStr >= checkIn && dateStr <= checkOut;
     });
   };
@@ -251,11 +262,7 @@ export default function AdminDashboardPage() {
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const calendarDays = getDaysInMonth(selectedDate);
 
-  const allReservations = [
-    ...(dashboardData.upcoming_reservations || []),
-    ...(dashboardData.check_in || []),
-    ...(dashboardData.check_out || [])
-  ];
+  const allReservations = dashboardData.reservations_data || [];
 
   return (
     <div className="wander-dashboard-view">
@@ -339,6 +346,7 @@ export default function AdminDashboardPage() {
                   minWidth: '24px'
                 }}>
                   <div 
+                    className="wander-chart-bar"
                     style={{ 
                       width: '100%',
                       maxWidth: '40px',
@@ -346,7 +354,7 @@ export default function AdminDashboardPage() {
                       backgroundColor: barColor,
                       borderRadius: '4px 4px 0 0',
                       position: 'relative',
-                      transition: 'height 0.6s ease',
+                      transition: 'all 0.3s ease',
                       minHeight: '4px',
                       cursor: 'pointer'
                     }}
@@ -488,6 +496,7 @@ export default function AdminDashboardPage() {
             return (
               <div
                 key={index}
+                className={`wander-calendar-day${hasReservation ? ' has-reservation' : ''}`}
                 style={{
                   padding: '8px 4px',
                   textAlign: 'center',
@@ -648,18 +657,18 @@ export default function AdminDashboardPage() {
                 }}>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: '14px' }}>
-                      {reservation.property_name}
+                      {reservation.listing_name}
                     </div>
                     <div style={{ fontSize: '13px', color: '#717171' }}>
-                      {reservation.guest_name} • {reservation.nights || 0} noches • {reservation.guests || 0} huéspedes
+                      {reservation.guest_name} • {reservation.nights || 0} noches • {reservation.number_of_guest || 0} huéspedes
                     </div>
                     <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
-                      {formatDate(reservation.check_in)} → {formatDate(reservation.check_out)}
+                      {formatDate(reservation.start_date)} → {formatDate(reservation.end_date)}
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <span style={{ fontWeight: 600, fontSize: '15px' }}>
-                      {formatCurrency(reservation.total_price)}
+                      {formatCurrency(Number(reservation.earnings) || 0)}
                     </span>
                     <span style={{
                       padding: '4px 12px',

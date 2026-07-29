@@ -50,14 +50,14 @@ const ProcessItem = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // 🔥 FUNCIÓN PARA COPIAR DESCRIPCIÓN AL PORTAPAPELES
+  // FUNCIÓN PARA COPIAR DESCRIPCIÓN AL PORTAPAPELES
   const handleCopyDescription = async () => {
     try {
       await navigator.clipboard.writeText(process.description);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
-      console.error('❌ Error al copiar:', err);
+      console.error('Error al copiar:', err);
       const textarea = document.createElement('textarea');
       textarea.value = process.description;
       document.body.appendChild(textarea);
@@ -92,8 +92,9 @@ const ProcessItem = ({
             <span className="wander-process-badge">{repetitionLabel}</span>
           )}
           {copySuccess && (
-            <span className="wander-process-badge" style={{ backgroundColor: '#dcfce7', color: '#166534' }}>
-              ✅ Copiado
+            <span className="wander-process-badge" style={{ backgroundColor: '#dcfce7', color: '#166534', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Copiado
             </span>
           )}
         </div>
@@ -227,7 +228,7 @@ export default function ProcessesPage() {
     process: null,
   });
 
-  // 🔥 Estados para modales de eliminación y crear tipo
+  // Estados para modales de eliminación y crear tipo
   const [deleteModalState, setDeleteModalState] = useState<{
     isOpen: boolean;
     process: Process | null;
@@ -256,7 +257,7 @@ export default function ProcessesPage() {
       setProcesses(processesData);
       setProcessTypes(typesData);
     } catch (err) {
-      console.error('❌ Error cargando datos:', err);
+      console.error('Error cargando datos:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los procesos');
       
       if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
@@ -285,7 +286,7 @@ export default function ProcessesPage() {
     loadData();
   }, [isChecking, checkAuth, router]);
 
-  // 🔥 MANEJAR ACTUALIZACIÓN DE PROCESO
+  // MANEJAR ACTUALIZACIÓN DE PROCESO
   const handleUpdateProcess = async (data: ProcessFormData) => {
     if (!modalState.process) return;
     try {
@@ -296,7 +297,7 @@ export default function ProcessesPage() {
     }
   };
 
-  // 🔥 MANEJAR CREACIÓN DE PROCESO
+  // MANEJAR CREACIÓN DE PROCESO
   const handleCreateProcess = async (data: ProcessFormData) => {
     try {
       await createProcess(data);
@@ -306,7 +307,7 @@ export default function ProcessesPage() {
     }
   };
 
-  // 🔥 MANEJAR CREACIÓN DE TIPO DE PROCESO
+  // MANEJAR CREACIÓN DE TIPO DE PROCESO
   const handleCreateProcessType = async (data: { process_name: string; user_position: string }) => {
     try {
       await createProcessType(data);
@@ -317,7 +318,7 @@ export default function ProcessesPage() {
     }
   };
 
-  // 🔥 ABRIR MODAL DE CREACIÓN
+  // ABRIR MODAL DE CREACIÓN
   const openCreateModal = () => {
     setModalState({
       isOpen: true,
@@ -326,7 +327,7 @@ export default function ProcessesPage() {
     });
   };
 
-  // 🔥 ABRIR MODAL DE EDICIÓN
+  // ABRIR MODAL DE EDICIÓN
   const openEditModal = (process: Process) => {
     setModalState({
       isOpen: true,
@@ -335,7 +336,7 @@ export default function ProcessesPage() {
     });
   };
 
-  // 🔥 CERRAR MODAL DE PROCESO
+  // CERRAR MODAL DE PROCESO
   const closeModal = () => {
     setModalState({
       isOpen: false,
@@ -344,7 +345,7 @@ export default function ProcessesPage() {
     });
   };
 
-  // 🔥 ABRIR MODAL DE ELIMINACIÓN
+  // ABRIR MODAL DE ELIMINACIÓN
   const openDeleteModal = (process: Process) => {
     setDeleteModalState({
       isOpen: true,
@@ -352,7 +353,7 @@ export default function ProcessesPage() {
     });
   };
 
-  // 🔥 CERRAR MODAL DE ELIMINACIÓN
+  // CERRAR MODAL DE ELIMINACIÓN
   const closeDeleteModal = () => {
     setDeleteModalState({
       isOpen: false,
@@ -360,7 +361,7 @@ export default function ProcessesPage() {
     });
   };
 
-  // 🔥 MANEJAR ELIMINACIÓN DE PROCESO
+  // MANEJAR ELIMINACIÓN DE PROCESO
   const handleDeleteProcess = async (processId: number) => {
     try {
       await deleteProcess(processId);
@@ -372,7 +373,7 @@ export default function ProcessesPage() {
     }
   };
 
-  // 🔥 ABRIR MODAL DE CREAR TIPO
+  // ABRIR MODAL DE CREAR TIPO
   const openCreateTypeModal = () => {
     setIsCreateTypeModalOpen(true);
   };
@@ -409,7 +410,10 @@ export default function ProcessesPage() {
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar procesos</h3>
+          <h3 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Error al cargar procesos
+          </h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             Reintentar
@@ -437,21 +441,23 @@ export default function ProcessesPage() {
           <button 
             onClick={openCreateTypeModal}
             className="wander-btn-primary"
-            style={{ backgroundColor: '#2563eb' }}
           >
-            ➕ Add Type
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Type
           </button>
           <button 
             onClick={openCreateModal}
             className="wander-btn-primary"
           >
-            ➕ Add Process
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Process
           </button>
           <button 
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
-            🔄 Actualizar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Actualizar
           </button>
         </div>
       </header>
@@ -474,7 +480,7 @@ export default function ProcessesPage() {
               onClick={() => setSearchTerm('')}
               className="wander-clear-search"
             >
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           )}
         </div>
@@ -483,7 +489,7 @@ export default function ProcessesPage() {
       <div className="wander-processes-list">
         {filteredProcesses.length === 0 ? (
           <div className="wander-processes-empty">
-            <span className="wander-empty-icon">📋</span>
+            <span className="wander-empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 2h6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span>
             <p>No se encontraron procesos</p>
             <span className="wander-empty-desc">
               {searchTerm ? 'Prueba con otro término de búsqueda' : 'No hay procesos disponibles'}
@@ -502,7 +508,7 @@ export default function ProcessesPage() {
         )}
       </div>
 
-      {/* 🔥 MODAL DE PROCESO (Crear/Editar) */}
+      {/* MODAL DE PROCESO (Crear/Editar) */}
       <ProcessModal
         isOpen={modalState.isOpen}
         mode={modalState.mode}
@@ -512,7 +518,7 @@ export default function ProcessesPage() {
         onSave={modalState.mode === 'edit' ? handleUpdateProcess : handleCreateProcess}
       />
 
-      {/* 🔥 MODAL DE ELIMINACIÓN */}
+      {/* MODAL DE ELIMINACIÓN */}
       <DeleteProcessModal
         isOpen={deleteModalState.isOpen}
         process={deleteModalState.process}
@@ -520,7 +526,7 @@ export default function ProcessesPage() {
         onDelete={handleDeleteProcess}
       />
 
-      {/* 🔥 MODAL DE CREAR TIPO DE PROCESO */}
+      {/* MODAL DE CREAR TIPO DE PROCESO */}
       <CreateProcessTypeModal
         isOpen={isCreateTypeModalOpen}
         onClose={() => setIsCreateTypeModalOpen(false)}

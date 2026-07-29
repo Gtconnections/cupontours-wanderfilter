@@ -42,12 +42,21 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  transition: var(--transition, all 0.3s ease);
+  box-shadow: 0 1px 2px rgba(10, 10, 11, 0.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  animation: wander-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .wander-metric-card:hover {
-  border-color: var(--text-main, #000000);
+  transform: translateY(-4px);
+  border-color: var(--accent-gold, #d4af37);
+  box-shadow: 0 14px 30px rgba(10, 10, 11, 0.10);
 }
+
+.wander-metrics-grid > .wander-metric-card:nth-child(1) { animation-delay: 0.02s; }
+.wander-metrics-grid > .wander-metric-card:nth-child(2) { animation-delay: 0.08s; }
+.wander-metrics-grid > .wander-metric-card:nth-child(3) { animation-delay: 0.14s; }
+.wander-metrics-grid > .wander-metric-card:nth-child(4) { animation-delay: 0.20s; }
 
 .wander-metric-info {
   display: flex;
@@ -82,6 +91,14 @@
   justify-content: center;
   color: var(--text-main, #000000);
   background-color: #fafafa;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.wander-metric-card:hover .wander-metric-icon-box {
+  background-color: var(--accent-gold, #d4af37);
+  border-color: var(--accent-gold, #d4af37);
+  color: #0a0a0b;
+  transform: scale(1.08) rotate(-3deg);
 }
 
 /* ==========================================================================
@@ -92,6 +109,13 @@
   border: 1px solid var(--border-light, #ebebeb);
   border-radius: 16px;
   padding: 32px;
+  box-shadow: 0 1px 3px rgba(10, 10, 11, 0.04);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  animation: wander-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.wander-section-card:hover {
+  box-shadow: 0 10px 30px rgba(10, 10, 11, 0.07);
 }
 
 .wander-section-title-box {
@@ -135,14 +159,21 @@
 }
 
 .wander-filter-btn:hover {
-  border-color: var(--text-main, #000000);
+  border-color: var(--accent-gold, #d4af37);
   color: var(--text-main, #000000);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(10, 10, 11, 0.08);
+}
+
+.wander-filter-btn:active {
+  transform: translateY(0);
 }
 
 .wander-filter-btn.active {
   background-color: var(--text-main, #000000);
   border-color: var(--text-main, #000000);
   color: #ffffff;
+  box-shadow: 0 6px 16px rgba(10, 10, 11, 0.18);
 }
 
 /* Área de Contenido Central Vacio (Placeholder Editorial) */
@@ -180,3 +211,56 @@
   .wander-dashboard-header h2 { font-size: 32px; }
 }
 
+/* ==========================================================================
+   REFRESH DE ESTILO: profundidad, transiciones y hover (paleta LUX)
+   ========================================================================== */
+
+@keyframes wander-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Filas de reservacion: acento dorado y tinte suave al pasar el cursor */
+.wander-reservation-item {
+  border-radius: 10px;
+  box-shadow: inset 3px 0 0 transparent;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.wander-reservation-item:hover {
+  background-color: #faf8f4;
+  box-shadow: inset 3px 0 0 var(--accent-gold, #d4af37), 0 6px 16px rgba(10, 10, 11, 0.06);
+  transform: translateX(2px);
+}
+
+/* Celdas del calendario con reservacion: se elevan al pasar el cursor */
+.wander-calendar-day {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.wander-calendar-day.has-reservation:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(10, 10, 11, 0.12);
+}
+
+/* Barras del grafico: pasan a dorado y se elevan al pasar el cursor */
+.wander-chart-bar:hover {
+  background-color: var(--accent-gold, #d4af37) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35);
+}
+
+/* Respeto por prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .wander-metric-card,
+  .wander-section-card,
+  .wander-metric-icon-box,
+  .wander-filter-btn,
+  .wander-reservation-item,
+  .wander-calendar-day,
+  .wander-chart-bar {
+    animation: none !important;
+    transition: none !important;
+  }
+  .wander-metric-card:hover,
+  .wander-calendar-day.has-reservation:hover,
+  .wander-chart-bar:hover { transform: none !important; }
+}

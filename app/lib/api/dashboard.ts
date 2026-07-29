@@ -16,6 +16,7 @@ export interface DashboardData {
   upcoming_reservations?: Reservation[];
   check_in?: Reservation[];
   check_out?: Reservation[];
+  reservations_data?: ReservationData[];
   // 🔥 NUEVOS CAMPOS CON LOS DATOS REALES DE TU API
   monthly_reservations_count?: {
     [key: string]: number;
@@ -46,14 +47,37 @@ export interface ChartData {
 
 export interface Reservation {
   id: string | number;
-  property_name: string;
+  listing_name: string;
   guest_name: string;
-  check_in: string;
-  check_out: string;
-  total_price: number;
+  start_date: string;
+  end_date: string;
+  earnings: string | number;
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   nights: number;
-  guests: number;
+  number_of_guest: number;
+}
+
+export interface ReservationDataListing {
+  id: string | number;
+  name: string;
+  listing_type?: string;
+  address?: string | null;
+  photo?: string | null;
+  max_of_guest?: number | null;
+  booking_price?: string | number;
+  listing_status?: boolean;
+}
+
+export interface ReservationData {
+  id: string | number;
+  listing: ReservationDataListing;
+  booked: string;
+  start: string;
+  end: string;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  confirmation_code?: string;
+  reservation_type?: string;
+  earnings?: string | number;
 }
 
 export interface MonthlyReservation {

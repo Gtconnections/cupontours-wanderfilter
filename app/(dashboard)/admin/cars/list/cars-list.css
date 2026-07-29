@@ -72,18 +72,18 @@
 }
 
 .wander-btn-secondary {
-  padding: 8px 16px;
+  padding: 10px 24px;
   background-color: transparent;
   color: #000000;
   border: 1px solid #ebebeb;
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .wander-btn-secondary:hover {
@@ -138,6 +138,9 @@
 }
 
 .wander-clear-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   color: #717171;
@@ -246,7 +249,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
   color: #cccccc;
 }
 
@@ -346,9 +348,9 @@
 }
 
 .wander-empty-icon {
-  font-size: 48px;
   display: block;
   margin-bottom: 12px;
+  color: #cbd5e1;
 }
 
 .wander-cars-empty p {

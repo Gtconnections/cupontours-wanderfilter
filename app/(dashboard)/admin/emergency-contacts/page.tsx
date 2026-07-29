@@ -84,7 +84,7 @@ export default function EmergencyContactsPage() {
       setContacts(contactsData);
       setContactTypes(typesData);
     } catch (err) {
-      console.error('❌ Error cargando datos:', err);
+      console.error('Error cargando datos:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los contactos');
       
       if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
@@ -113,7 +113,7 @@ export default function EmergencyContactsPage() {
     loadData();
   }, [isChecking, checkAuth, router]);
 
-  // 🔥 MANEJAR CREACIÓN DE CONTACTO
+  // MANEJAR CREACIÓN DE CONTACTO
   const handleCreateContact = async (data: ContactFormData) => {
     try {
       await createContact(data);
@@ -123,7 +123,7 @@ export default function EmergencyContactsPage() {
     }
   };
 
-  // 🔥 MANEJAR ACTUALIZACIÓN DE CONTACTO
+  // MANEJAR ACTUALIZACIÓN DE CONTACTO
   const handleUpdateContact = async (data: ContactFormData) => {
     if (!contactModalState.contact) return;
     try {
@@ -134,7 +134,7 @@ export default function EmergencyContactsPage() {
     }
   };
 
-  // 🔥 MANEJAR ELIMINACIÓN DE CONTACTO
+  // MANEJAR ELIMINACIÓN DE CONTACTO
   const handleDeleteContact = async (contactId: number) => {
     try {
       await deleteContact(contactId);
@@ -146,7 +146,7 @@ export default function EmergencyContactsPage() {
     }
   };
 
-  // 🔥 MANEJAR CREACIÓN DE TIPO DE CONTACTO
+  // MANEJAR CREACIÓN DE TIPO DE CONTACTO
   const handleCreateContactType = async (data: { contact_type: string }) => {
     try {
       await createContactType(data);
@@ -157,7 +157,7 @@ export default function EmergencyContactsPage() {
     }
   };
 
-  // 🔥 ABRIR MODAL DE CREACIÓN DE CONTACTO
+  // ABRIR MODAL DE CREACIÓN DE CONTACTO
   const openCreateContactModal = () => {
     setContactModalState({
       isOpen: true,
@@ -166,7 +166,7 @@ export default function EmergencyContactsPage() {
     });
   };
 
-  // 🔥 ABRIR MODAL DE EDICIÓN DE CONTACTO
+  // ABRIR MODAL DE EDICIÓN DE CONTACTO
   const openEditContactModal = (contact: Contact) => {
     setContactModalState({
       isOpen: true,
@@ -175,7 +175,7 @@ export default function EmergencyContactsPage() {
     });
   };
 
-  // 🔥 CERRAR MODAL DE CONTACTO
+  // CERRAR MODAL DE CONTACTO
   const closeContactModal = () => {
     setContactModalState({
       isOpen: false,
@@ -184,7 +184,7 @@ export default function EmergencyContactsPage() {
     });
   };
 
-  // 🔥 ABRIR MODAL DE ELIMINACIÓN
+  // ABRIR MODAL DE ELIMINACIÓN
   const openDeleteModal = (contact: Contact) => {
     setDeleteModalState({
       isOpen: true,
@@ -192,7 +192,7 @@ export default function EmergencyContactsPage() {
     });
   };
 
-  // 🔥 CERRAR MODAL DE ELIMINACIÓN
+  // CERRAR MODAL DE ELIMINACIÓN
   const closeDeleteModal = () => {
     setDeleteModalState({
       isOpen: false,
@@ -231,7 +231,10 @@ export default function EmergencyContactsPage() {
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar contactos</h3>
+          <h3 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Error al cargar contactos
+          </h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             Reintentar
@@ -259,21 +262,23 @@ export default function EmergencyContactsPage() {
           <button 
             onClick={() => setIsCreateTypeModalOpen(true)}
             className="wander-btn-primary"
-            style={{ backgroundColor: '#2563eb' }}
           >
-            ➕ Add Type
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Type
           </button>
           <button 
             onClick={openCreateContactModal}
             className="wander-btn-primary"
           >
-            ➕ Add Contact
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Contact
           </button>
           <button 
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
-            🔄 Actualizar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Actualizar
           </button>
         </div>
       </header>
@@ -296,7 +301,7 @@ export default function EmergencyContactsPage() {
               onClick={() => setSearchTerm('')}
               className="wander-clear-search"
             >
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           )}
         </div>
@@ -318,7 +323,7 @@ export default function EmergencyContactsPage() {
               <tr>
                 <td colSpan={5} className="wander-empty-cell">
                   <div className="wander-empty-state">
-                    <span className="wander-empty-icon">📞</span>
+                    <span className="wander-empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
                     <p>No se encontraron contactos</p>
                     <span className="wander-empty-desc">
                       {searchTerm ? 'Prueba con otro término de búsqueda' : 'Haz clic en "Add Contact" para crear uno'}
@@ -328,7 +333,7 @@ export default function EmergencyContactsPage() {
               </tr>
             ) : (
               filteredContacts.map((contact) => {
-                // 🔥 FILTRAR TIPOS DE CONTACTO DUPLICADOS POR ID
+                // FILTRAR TIPOS DE CONTACTO DUPLICADOS POR ID
                 const uniqueContactTypes = contact.contact_type.filter(
                   (type, index, self) => 
                     index === self.findIndex((t) => t.id === type.id)

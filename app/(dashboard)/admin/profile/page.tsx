@@ -87,7 +87,7 @@ export default function ProfilePage() {
         zipcode: data.zipcode?.toString() || '',
       });
     } catch (err) {
-      console.error('❌ Error cargando perfil:', err);
+      console.error('Error cargando perfil:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar el perfil');
       
       if ((err instanceof Error ? err.message : undefined)?.includes('sesión') || (err instanceof Error ? err.message : undefined)?.includes('autenticación')) {
@@ -186,7 +186,10 @@ export default function ProfilePage() {
     return (
       <div className="wander-profile-container">
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar el perfil</h3>
+          <h3 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Error al cargar el perfil
+          </h3>
           <p>{error}</p>
           <button onClick={() => loadProfile(true)} className="wander-btn-primary">
             Reintentar
@@ -200,7 +203,10 @@ export default function ProfilePage() {
     return (
       <div className="wander-profile-container">
         <div className="wander-error-state">
-          <h3>⚠️ Perfil no encontrado</h3>
+          <h3 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Perfil no encontrado
+          </h3>
           <p>No se pudo encontrar el perfil del usuario.</p>
         </div>
       </div>
@@ -222,26 +228,39 @@ export default function ProfilePage() {
             onClick={() => setIsEditing(!isEditing)}
             className="wander-btn-primary"
           >
-            {isEditing ? 'Cancelar' : '✏️ Edit Profile'}
+            {isEditing ? (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Cancelar
+              </>
+            ) : (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit Profile
+              </>
+            )}
           </button>
           <button 
             onClick={() => setIsPasswordModalOpen(true)}
             className="wander-btn-secondary"
           >
-            🔒 Change Password
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Change Password
           </button>
         </div>
       </div>
 
       {success && (
         <div className="wander-profile-success">
-          ✅ {success}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          {success}
         </div>
       )}
 
       {error && (
         <div className="wander-profile-error">
-          ⚠️ {error}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          {error}
         </div>
       )}
 
@@ -382,7 +401,10 @@ export default function ProfilePage() {
                     Guardando...
                   </>
                 ) : (
-                  '💾 Save Changes'
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    Save Changes
+                  </>
                 )}
               </button>
             </div>

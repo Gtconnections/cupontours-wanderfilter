@@ -57,7 +57,7 @@ export default function CarsListPage() {
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / (filters.page_size || 10)));
     } catch (err) {
-      console.error('❌ Error cargando autos:', err);
+      console.error('Error cargando autos:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar los autos');
     } finally {
       setIsLoading(false);
@@ -155,7 +155,10 @@ export default function CarsListPage() {
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar autos</h3>
+          <h3 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Error al cargar autos
+          </h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             Reintentar
@@ -185,13 +188,15 @@ export default function CarsListPage() {
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
-            🔄 Actualizar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Actualizar
           </button>
           <button 
             className="wander-btn-primary"
             onClick={() => router.push('/admin/cars/create')}
           >
-            ➕ Create car
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create car
           </button>
         </div>
       </header>
@@ -215,7 +220,7 @@ export default function CarsListPage() {
               onClick={() => handleSearch('')}
               className="wander-clear-search"
             >
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           )}
         </div>
@@ -272,7 +277,7 @@ export default function CarsListPage() {
       <div className="wander-cars-grid">
         {cars.length === 0 ? (
           <div className="wander-cars-empty">
-            <span className="wander-empty-icon">🚗</span>
+            <span className="wander-empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span>
             <p>No se encontraron autos</p>
             <span className="wander-empty-desc">
               {filters.search ? 'No hay autos con esa marca' : 'No hay autos registrados aún'}
@@ -286,7 +291,7 @@ export default function CarsListPage() {
                   <img src={car.principal_image} alt={`${car.brand} ${car.model}`} />
                 ) : (
                   <div className="wander-car-image-placeholder">
-                    <span>🚗</span>
+                    <span><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span>
                   </div>
                 )}
                 <div className="wander-car-status">
