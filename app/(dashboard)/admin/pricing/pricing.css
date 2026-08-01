@@ -1,0 +1,181 @@
+/* ==========================================================================
+   PRICING ENGINE (admin) — estilo LUX. Clases con prefijo .pr-*
+   ========================================================================== */
+.pr-container { max-width: 1200px; margin: 0 auto; }
+
+.pr-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-light, #ebebeb);
+  padding-bottom: 20px;
+}
+.pr-breadcrumb {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-muted, #717171); display: block; margin-bottom: 8px;
+}
+.pr-header h2 {
+  font-size: 28px; font-weight: 700; letter-spacing: -1px;
+  color: var(--text-main, #0a0a0b); margin: 0;
+}
+.pr-subtitle { font-size: 13px; color: var(--text-muted, #717171); margin-top: 6px; }
+
+.pr-card {
+  background: var(--bg-main, #fff);
+  border: 1px solid var(--border-light, #ebebeb);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 1px 3px rgba(10,10,11,0.04);
+  transition: box-shadow 0.3s ease;
+  animation: pr-fade-up 0.5s cubic-bezier(0.16,1,0.3,1) backwards;
+}
+.pr-card:hover { box-shadow: 0 10px 30px rgba(10,10,11,0.06); }
+
+/* Controles superiores */
+.pr-controls {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px;
+  margin-bottom: 20px;
+}
+.pr-field { display: flex; flex-direction: column; gap: 6px; }
+.pr-field label {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
+  font-weight: 700; color: var(--text-muted, #717171);
+}
+.pr-input, .pr-select {
+  border: 1px solid var(--border-light, #ebebeb);
+  border-radius: 10px; padding: 11px 14px; font-size: 14px;
+  background: #fafafa; color: var(--text-main, #0a0a0b); outline: none;
+  font-family: inherit; transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pr-input:focus, .pr-select:focus {
+  border-color: var(--accent-gold, #d4af37);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
+  background: #fff;
+}
+.pr-select { min-width: 280px; cursor: pointer; }
+.pr-input { width: 110px; }
+
+.pr-month-nav { display: flex; align-items: center; gap: 8px; }
+.pr-month-label {
+  min-width: 130px; text-align: center; font-weight: 700; font-size: 14px;
+  color: var(--text-main, #0a0a0b);
+}
+.pr-icon-btn {
+  width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-light, #ebebeb); background: #fff; border-radius: 10px;
+  cursor: pointer; color: var(--text-main, #0a0a0b);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.pr-icon-btn:hover { border-color: var(--accent-gold, #d4af37); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(10,10,11,0.08); }
+
+/* Botones */
+.pr-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border: none; border-radius: 30px;
+  background: var(--text-main, #0a0a0b); color: #fff;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.pr-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(10,10,11,0.18); }
+.pr-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+.pr-btn-gold { background: var(--accent-gold, #d4af37); color: #0a0a0b; }
+.pr-btn-gold:hover { background: var(--accent-gold-hover, #e8c766); box-shadow: 0 8px 18px rgba(212,175,55,0.3); }
+.pr-btn-ghost {
+  background: transparent; color: var(--text-main, #0a0a0b);
+  border: 1px solid var(--border-light, #ebebeb);
+}
+.pr-btn-ghost:hover { border-color: var(--accent-gold, #d4af37); box-shadow: 0 6px 14px rgba(10,10,11,0.08); }
+
+/* Panel de ajustes (min/base/max/weekend) */
+.pr-settings {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px;
+  margin-bottom: 22px;
+}
+.pr-settings-title {
+  width: 100%; font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; color: var(--text-main, #0a0a0b); margin-bottom: 2px;
+}
+.pr-settings-hint { width: 100%; font-size: 12px; color: var(--text-muted, #8a8a8a); margin-top: -6px; }
+
+/* Leyenda */
+.pr-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 14px 2px 18px; }
+.pr-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted, #717171); }
+.pr-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.pr-dot--weekend { background: #6366f1; }
+.pr-dot--manual { background: var(--accent-gold, #d4af37); }
+.pr-dot--booked { background: #94a3b8; }
+
+/* Calendario */
+.pr-weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+  margin-bottom: 8px;
+}
+.pr-weekdays span {
+  text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-muted, #717171);
+}
+.pr-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+
+.pr-day {
+  position: relative; min-height: 78px; border-radius: 12px;
+  border: 1px solid var(--border-light, #ebebeb); background: #fff;
+  padding: 8px 10px; cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+.pr-day:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(10,10,11,0.10); border-color: var(--accent-gold, #d4af37); }
+.pr-day.pr-empty { background: transparent; border: none; cursor: default; box-shadow: none; transform: none; }
+.pr-day.pr-weekend { background: #f7f7fb; }
+.pr-day.pr-booked { background: #f1f5f9; }
+.pr-day.pr-manual { border-color: var(--accent-gold, #d4af37); box-shadow: inset 0 0 0 1px var(--accent-gold, #d4af37); }
+.pr-day.pr-selected { border-color: var(--text-main, #0a0a0b); box-shadow: 0 0 0 2px rgba(10,10,11,0.5); }
+
+.pr-day-top { display: flex; justify-content: space-between; align-items: center; }
+.pr-day-num { font-size: 13px; font-weight: 600; color: var(--text-main, #0a0a0b); }
+.pr-day-price { font-size: 15px; font-weight: 700; color: var(--text-main, #0a0a0b); }
+.pr-day-tag { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.pr-day-tag--booked { color: #64748b; }
+.pr-day-tag--manual { color: #a3873c; }
+
+/* Editor de override */
+.pr-editor {
+  margin-top: 18px; padding: 18px 20px; border-radius: 14px;
+  background: #faf8f4; border: 1px solid #eadfc7;
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px;
+  animation: pr-fade-up 0.3s ease backwards;
+}
+.pr-editor-info { flex: 1 1 220px; }
+.pr-editor-info strong { display: block; font-size: 15px; color: #0a0a0b; }
+.pr-editor-info small { font-size: 12px; color: #8a8a8a; }
+
+/* Estados */
+.pr-state {
+  border: 1px dashed var(--border-light, #ebebeb); border-radius: 16px;
+  padding: 56px 24px; text-align: center; display: flex; flex-direction: column;
+  align-items: center; gap: 10px; background: #fafafa;
+}
+.pr-state h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--text-main, #0a0a0b); display: inline-flex; align-items: center; gap: 8px; }
+.pr-state p { margin: 0; font-size: 13px; color: var(--text-muted, #717171); }
+.pr-state--error { background: #fef2f2; border-color: #fee2e2; }
+.pr-state--error h3 { color: #991b1b; }
+.pr-state--error p { color: #7f1d1d; }
+.pr-spinner {
+  width: 34px; height: 34px; border: 3px solid #ececec;
+  border-top-color: var(--accent-gold, #d4af37); border-radius: 50%;
+  animation: pr-spin 0.8s linear infinite;
+}
+.pr-toast {
+  padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; margin-bottom: 16px;
+}
+
+@keyframes pr-spin { to { transform: rotate(360deg); } }
+@keyframes pr-fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 720px) {
+  .pr-header h2 { font-size: 22px; }
+  .pr-day { min-height: 64px; }
+  .pr-day-price { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pr-card, .pr-day, .pr-btn, .pr-icon-btn, .pr-spinner, .pr-editor { animation: none !important; transition: none !important; }
+  .pr-day:hover, .pr-btn:hover, .pr-icon-btn:hover { transform: none !important; }
+}

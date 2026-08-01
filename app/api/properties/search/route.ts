@@ -1,49 +1,41 @@
 // app/api/properties/search/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { hostawayService } from '@/app/lib/services/hostaway';
+import { getBackendListings } from '@/app/lib/services/backend-properties';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
-    const params = {
-      limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 50,
-      offset: searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0,
-      city: searchParams.get('city') || undefined,
-      country: searchParams.get('country') || undefined,
-      guests: searchParams.get('guests') ? parseInt(searchParams.get('guests')!) : undefined,
-      availabilityDateStart: searchParams.get('checkIn') || undefined,
-      availabilityDateEnd: searchParams.get('checkOut') || undefined,
-      sortOrder: searchParams.get('sortOrder') as 'asc' | 'desc' || undefined,
-    };
 
-    const listingsResponse = await hostawayService.searchListings(params);
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 50;
+    const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0;
+    const city = searchParams.get('city') || undefined;
+    const country = searchParams.get('country') || undefined;
+    const guests = searchParams.get('guests') ? parseInt(searchParams.get('guests')!) : undefined;
+
+    const listingsResponse = await getBackendListings({ limit, offset, city, country });
+
+    let result = listingsResponse.result;
+    if (guests) {
+      result = result.filter(l => (l.personCapacity ?? 0) >= guests);
+    }
 
     return NextResponse.json(
       {
         success: true,
         data: {
           status: 'success',
-          result: listingsResponse.result,
-          count: listingsResponse.count,
+          result,
+          count: result.length,
           limit: listingsResponse.limit,
           offset: listingsResponse.offset,
         },
-        searchParams: params,
+        searchParams: { limit, offset, city, country, guests },
       },
-      {
-        status: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
+      { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } }
     );
   } catch (error) {
     return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : 'Search failed',
-      },
+      { success: false, error: error instanceof Error ? error.message : 'Search failed' },
       { status: 500 }
     );
   }

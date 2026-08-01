@@ -1,52 +1,42 @@
 // app/api/properties/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { hostawayService } from '@/app/lib/services/hostaway';
+import { getBackendListings } from '@/app/lib/services/backend-properties';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
-    // Extraer parámetros de la URL
+
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 50;
     const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0;
     const city = searchParams.get('city') || undefined;
     const country = searchParams.get('country') || undefined;
     const guests = searchParams.get('guests') ? parseInt(searchParams.get('guests')!) : undefined;
-    const checkIn = searchParams.get('checkIn') || undefined;
-    const checkOut = searchParams.get('checkOut') || undefined;
     const bedrooms = searchParams.get('bedrooms') ? parseInt(searchParams.get('bedrooms')!) : undefined;
     const bathrooms = searchParams.get('bathrooms') ? parseInt(searchParams.get('bathrooms')!) : undefined;
     const minPrice = searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')!) : undefined;
     const maxPrice = searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')!) : undefined;
 
-    // Llamar al servicio de Hostaway
-    const listingsResponse = await hostawayService.searchListings({
-      limit,
-      offset,
-      city,
-      country,
-      guests,
-      availabilityDateStart: checkIn,
-      availabilityDateEnd: checkOut,
-    });
+    // Leer del backend (mirror de Hostaway + precio del pricing engine)
+    const listingsResponse = await getBackendListings({ limit, offset, city, country });
 
-    // Aplicar filtros adicionales (los que Hostaway no soporta directamente)
     let filteredListings = listingsResponse.result;
 
+    if (guests) {
+      filteredListings = filteredListings.filter(l => (l.personCapacity ?? 0) >= guests);
+    }
     if (bedrooms) {
-      filteredListings = filteredListings.filter(l => l.bedroomsNumber >= bedrooms);
+      filteredListings = filteredListings.filter(l => (l.bedroomsNumber ?? 0) >= bedrooms);
     }
     if (bathrooms) {
-      filteredListings = filteredListings.filter(l => l.bathroomsNumber >= bathrooms);
+      filteredListings = filteredListings.filter(l => (l.bathroomsNumber ?? 0) >= bathrooms);
     }
     if (minPrice) {
-      filteredListings = filteredListings.filter(l => l.price >= minPrice);
+      filteredListings = filteredListings.filter(l => (l.price ?? 0) >= minPrice);
     }
     if (maxPrice) {
-      filteredListings = filteredListings.filter(l => l.price <= maxPrice);
+      filteredListings = filteredListings.filter(l => (l.price ?? 0) <= maxPrice);
     }
 
-    // Devolver respuesta con headers CORS permitidos
     return NextResponse.json(
       {
         success: true,
@@ -75,15 +65,12 @@ export async function GET(request: NextRequest) {
       },
       {
         status: 500,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
+        headers: { 'Access-Control-Allow-Origin': '*' },
       }
     );
   }
 }
 
-// Manejar preflight OPTIONS (necesario para CORS)
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,

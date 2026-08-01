@@ -1,11 +1,11 @@
-// app/admin/properties/list/page.tsx
+// app/admin/properties/luxury/page.tsx
 
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getProperties, Property, refreshProperties, syncHostawayProperties } from '@/app/lib/api/propertiesAdmin';
+import { getLuxuryProperties, Property } from '@/app/lib/api/propertiesAdmin';
 import type { IconType } from 'react-icons';
 import {
   FiPlus,
@@ -21,49 +21,45 @@ import {
   FiCalendar,
   FiFileText,
   FiLink,
-  FiEdit2,
   FiChevronLeft,
   FiChevronRight
 } from 'react-icons/fi';
-import './properties-list.css';
+import '../list/properties-list.css';
 
 const LoadingSkeleton = () => (
   <div className="wander-properties-container">
     <div className="wander-properties-header">
       <div>
-        <span className="wander-breadcrumb">Listings / Properties</span>
-        <h2>Cargando propiedades...</h2>
+        <span className="wander-breadcrumb">Listings / Luxury</span>
+        <h2>Cargando propiedades luxury...</h2>
       </div>
     </div>
     <div className="wander-properties-loading">
       <div className="wander-loading-spinner"></div>
-      <p>Cargando lista de propiedades...</p>
+      <p>Cargando lista de propiedades luxury...</p>
     </div>
   </div>
 );
 
-export default function PropertiesListPage() {
+export default function LuxuryPropertiesPage() {
   const router = useRouter();
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
-  
+
   const [properties, setProperties] = useState<Property[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthVerified, setIsAuthVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [syncMsg, setSyncMsg] = useState<string | null>(null);
-  
-  // Estados de paginación y filtros
+
   const [filters, setFilters] = useState({
     page: 1,
     page_size: 10,
     search: '',
   });
-  
+
   const [totalPages, setTotalPages] = useState(0);
 
-  const loadProperties = useCallback(async (forceRefresh = false) => {
+  const loadProperties = useCallback(async () => {
     if (!isAuthenticated || !token) {
       router.push('/login');
       return;
@@ -73,13 +69,13 @@ export default function PropertiesListPage() {
     setError(null);
 
     try {
-      const data = await getProperties(filters, forceRefresh);
+      const data = await getLuxuryProperties(filters);
       setProperties(data.results || []);
       setTotalCount(data.count || 0);
       setTotalPages(Math.ceil((data.count || 0) / (filters.page_size || 10)));
     } catch (err) {
-      console.error('❌ Error cargando propiedades:', err);
-      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las propiedades');
+      console.error('❌ Error cargando propiedades luxury:', err);
+      setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las propiedades luxury');
     } finally {
       setIsLoading(false);
     }
@@ -87,13 +83,11 @@ export default function PropertiesListPage() {
 
   useEffect(() => {
     if (isChecking) return;
-    
+
     const hasAuth = checkAuth();
-    // Auth check reads cookies/localStorage, only available after mount; deferring
-    // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
-    
+
     if (!hasAuth) {
       router.push('/login');
       return;
@@ -116,21 +110,7 @@ export default function PropertiesListPage() {
   };
 
   const handleRefresh = async () => {
-    await loadProperties(true);
-  };
-
-  const handleSyncHostaway = async () => {
-    setIsSyncing(true);
-    setSyncMsg(null);
-    try {
-      const res = await syncHostawayProperties();
-      setSyncMsg(res.message || 'Sincronizacion iniciada. Recarga en 1-2 minutos.');
-      setTimeout(() => loadProperties(true), 90000);
-    } catch (e) {
-      setSyncMsg(e instanceof Error ? e.message : 'Error al sincronizar');
-    } finally {
-      setIsSyncing(false);
-    }
+    await loadProperties();
   };
 
   const formatCurrency = (amount: string) => {
@@ -151,7 +131,7 @@ export default function PropertiesListPage() {
       'cleaning': { label: 'CLEANING', color: '#2563eb' },
       'business': { label: 'BUSINESS', color: '#8b5cf6' },
     };
-    const s = statusMap[status] || { label: status.toUpperCase(), color: '#6b7280' };
+    const s = statusMap[status] || { label: (status || '').toUpperCase(), color: '#6b7280' };
     return (
       <span style={{
         display: 'inline-block',
@@ -208,12 +188,12 @@ export default function PropertiesListPage() {
       <div className="wander-properties-container">
         <div className="wander-properties-header">
           <div>
-            <span className="wander-breadcrumb">Listings / Properties</span>
+            <span className="wander-breadcrumb">Listings / Luxury</span>
             <h2>Error</h2>
           </div>
         </div>
         <div className="wander-error-state">
-          <h3>⚠️ Error al cargar propiedades</h3>
+          <h3>⚠️ Error al cargar propiedades luxury</h3>
           <p>{error}</p>
           <button onClick={handleRefresh} className="wander-btn-primary">
             <FiRefreshCw size={16} />
@@ -230,32 +210,23 @@ export default function PropertiesListPage() {
 
   return (
     <div className="wander-properties-container">
-      {/* Cabecera */}
       <header className="wander-properties-header">
         <div>
-          <span className="wander-breadcrumb">Listings / Properties</span>
-          <h2>Properties</h2>
+          <span className="wander-breadcrumb">Listings / Luxury</span>
+          <h2>Luxury Properties</h2>
           <p className="wander-properties-subtitle">
-            {totalCount} {totalCount === 1 ? 'propiedad' : 'propiedades'} registradas
+            {totalCount} {totalCount === 1 ? 'propiedad luxury' : 'propiedades luxury'}
           </p>
         </div>
         <div className="wander-properties-actions">
           <button
-            onClick={handleSyncHostaway}
-            disabled={isSyncing}
-            className="wander-btn-secondary"
-          >
-            <FiRefreshCw size={16} />
-            {isSyncing ? 'Sincronizando...' : 'Sincronizar Hostaway'}
-          </button>
-          <button 
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Actualizar
           </button>
-          <button 
+          <button
             className="wander-btn-primary"
             onClick={() => router.push('/admin/properties/create')}
           >
@@ -265,13 +236,6 @@ export default function PropertiesListPage() {
         </div>
       </header>
 
-      {syncMsg && (
-        <div style={{ margin: '0 0 16px', padding: '10px 14px', borderRadius: '10px', background: 'rgba(212,175,55,0.12)', color: '#8a6d1a', fontSize: '13px', fontWeight: 500 }}>
-          {syncMsg}
-        </div>
-      )}
-
-      {/* Filtros y búsqueda */}
       <div className="wander-properties-filters">
         <div className="wander-search-box">
           <FiSearch size={16} />
@@ -307,14 +271,13 @@ export default function PropertiesListPage() {
         </div>
       </div>
 
-      {/* Grid de propiedades - 2 columnas */}
       <div className="wander-properties-grid">
         {properties.length === 0 ? (
           <div className="wander-properties-empty">
             <span className="wander-empty-icon">🏠</span>
-            <p>No se encontraron propiedades</p>
+            <p>No se encontraron propiedades luxury</p>
             <span className="wander-empty-desc">
-              {filters.search ? 'Prueba con otro término de búsqueda' : 'No hay propiedades registradas aún'}
+              {filters.search ? 'Prueba con otro término de búsqueda' : 'No hay propiedades luxury registradas aún'}
             </span>
           </div>
         ) : (
@@ -335,7 +298,7 @@ export default function PropertiesListPage() {
                   {getTypeBadge(property.listing_type)}
                 </div>
               </div>
-              
+
               <div className="wander-property-info">
                 <h3 className="wander-property-title">
                   {property.public_name || property.name}
@@ -369,38 +332,37 @@ export default function PropertiesListPage() {
                   )}
                 </div>
               </div>
-              
-              {/* 6 Links de acción */}
+
               <div className="wander-property-actions">
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-details"
                 >
                   <FiEye size={14} />
                   Details
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/reservations/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-reservations"
                 >
                   <FiCalendar size={14} />
                   Reservations
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/calendar/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-calendar"
                 >
                   <FiCalendar size={14} />
                   Calendar
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/invoices/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-invoices"
                 >
                   <FiFileText size={14} />
                   Invoices
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/access-links/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-access"
                 >
@@ -413,14 +375,13 @@ export default function PropertiesListPage() {
         )}
       </div>
 
-      {/* Paginación */}
       {totalPages > 0 && (
         <div className="wander-properties-pagination">
           <div className="wander-pagination-info">
-            Mostrando {((filters.page || 1) - 1) * (filters.page_size || 10) + 1} - 
+            Mostrando {((filters.page || 1) - 1) * (filters.page_size || 10) + 1} -
             {Math.min((filters.page || 1) * (filters.page_size || 10), totalCount)} de {totalCount} propiedades
           </div>
-          
+
           <div className="wander-pagination-controls">
             <button
               onClick={() => handlePageChange((filters.page || 1) - 1)}
@@ -429,11 +390,11 @@ export default function PropertiesListPage() {
             >
               <FiChevronLeft size={14} />
             </button>
-            
+
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const currentPage = filters.page || 1;
               let pageNum;
-              
+
               if (totalPages <= 5) {
                 pageNum = i + 1;
               } else if (currentPage <= 3) {
@@ -443,7 +404,7 @@ export default function PropertiesListPage() {
               } else {
                 pageNum = currentPage - 2 + i;
               }
-              
+
               return (
                 <button
                   key={pageNum}
@@ -454,7 +415,7 @@ export default function PropertiesListPage() {
                 </button>
               );
             })}
-            
+
             <button
               onClick={() => handlePageChange((filters.page || 1) + 1)}
               disabled={filters.page === totalPages}

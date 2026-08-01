@@ -313,3 +313,54 @@
 
   .fleet-grid { grid-template-columns: repeat(4, 1fr); gap: 30px 24px; }
 }
+
+/* ---- Paginacion ---- */
+.fleet-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+.fleet-pager-num,
+.fleet-pager-btn {
+  min-width: 42px;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  background: #ffffff;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.fleet-pager-num:hover:not(.active),
+.fleet-pager-btn:hover:not(:disabled) {
+  border-color: #d4af37;
+  color: #a17f1e;
+}
+.fleet-pager-num.active {
+  background: #d4af37;
+  border-color: #d4af37;
+  color: #111111;
+  cursor: default;
+}
+.fleet-pager-btn {
+  font-size: 22px;
+  line-height: 1;
+}
+.fleet-pager-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.fleet-pager-ellipsis {
+  min-width: 24px;
+  text-align: center;
+  color: #a7a199;
+  font-weight: 700;
+  align-self: flex-end;
+  padding-bottom: 10px;
+}

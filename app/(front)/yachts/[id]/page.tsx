@@ -5,7 +5,7 @@ import { StructuredData } from "@/components/seo/structured-data";
 import './yacht-detail.css';
 import Link from 'next/link';
 import { getYachtById, YachtDetail } from '../../../lib/api/yachts';
-import { sendYachtBookingRequest } from '../../../lib/api';
+import YachtBookingWidget from './YachtBookingWidget';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -96,27 +96,10 @@ export default function YachtDetailPage({ params }: PageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Formulario
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
   // Galería
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryInitialIndex, setGalleryInitialIndex] = useState(0);
-
-  // Reserva (calendario)
-  const [charterDate, setCharterDate] = useState<number | null>(null);
-  const [returnDate, setReturnDate] = useState<number | null>(null);
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-
-  // Contacto
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [specialRequests, setSpecialRequests] = useState('');
-
-  const crewFee = 500;
 
   useEffect(() => {
     async function fetchYachtData() {
@@ -138,66 +121,6 @@ export default function YachtDetailPage({ params }: PageProps) {
     }
     fetchYachtData();
   }, [id]);
-
-  const mayDays = Array.from({ length: 31 }, (_, i) => i + 1);
-  const juneDays = Array.from({ length: 30 }, (_, i) => i + 1);
-
-  const handleDayClick = (day: number, month: 'may' | 'june') => {
-    const dayIdentifier = month === 'may' ? day : day + 100;
-    if (!charterDate || (charterDate && returnDate)) {
-      setCharterDate(dayIdentifier);
-      setReturnDate(null);
-    } else if (charterDate && !returnDate) {
-      if (dayIdentifier < charterDate) {
-        setCharterDate(dayIdentifier);
-      } else {
-        setReturnDate(dayIdentifier);
-        setShowDatePicker(false);
-      }
-    }
-  };
-
-  const formatIdToText = (id: number | null) => {
-    if (!id) return 'Select date';
-    const isJune = id > 100;
-    const day = isJune ? id - 100 : id;
-    return `${isJune ? 'June' : 'May'} ${day}, 2026`;
-  };
-
-  const calculateDays = () => {
-    if (!charterDate || !returnDate) return 1;
-    return returnDate - charterDate;
-  };
-
-  const handleBookingSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!charterDate || !returnDate) {
-      setStatusMessage({ type: 'error', text: 'Please select valid Charter Start and End dates.' });
-      return;
-    }
-    setIsSubmitting(true);
-    setStatusMessage(null);
-
-    const payload = {
-      yachtId: id,
-      yachtName: yacht?.title || '',
-      charterStart: formatIdToText(charterDate),
-      charterEnd: formatIdToText(returnDate),
-      totalDays: calculateDays(),
-      client: { fullName, email, phoneNumber, specialRequests },
-    };
-
-    try {
-      const response = await sendYachtBookingRequest(payload);
-      setStatusMessage({ type: 'success', text: response.message || 'Your private charter request has been submitted successfully!' });
-      setFullName(''); setEmail(''); setPhoneNumber(''); setSpecialRequests('');
-      setCharterDate(null); setReturnDate(null);
-    } catch (err) {
-      setStatusMessage({ type: 'error', text: (err instanceof Error ? err.message : undefined) || 'Failed to process charter application. Please verify parameters.' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const openGallery = (index: number) => {
     setGalleryInitialIndex(index);
@@ -237,8 +160,6 @@ export default function YachtDetailPage({ params }: PageProps) {
 
   if (!yacht) return null;
 
-  const basePriceNum = yacht.price_full_day ? parseInt(yacht.price_full_day.replace(/[^0-9]/g, '')) : 9950;
-  const totalDays = calculateDays();
   const location = 'Miami, Florida, United States';
 
   const images = cleanGallery.length > 0
@@ -457,112 +378,7 @@ export default function YachtDetailPage({ params }: PageProps) {
                   <p className="lux-reserve-note">Half-day option: {yacht.price_half_day}</p>
                 )}
 
-                <form onSubmit={handleBookingSubmit} className="lux-form">
-                  {statusMessage && (
-                    <div className={`lux-form-status ${statusMessage.type}`}>{statusMessage.text}</div>
-                  )}
-
-                  {/* Selector de fechas */}
-                  <div className="widget-date-picker-box">
-                    <div className="date-picker-header" onClick={() => !isSubmitting && setShowDatePicker(!showDatePicker)}>
-                      <div className="picker-col">
-                        <label>Charter Start</label>
-                        <span className={charterDate ? 'selected-value' : ''}>{formatIdToText(charterDate)}</span>
-                      </div>
-                      <div className="picker-divider"></div>
-                      <div className="picker-col">
-                        <label>Charter End</label>
-                        <span className={returnDate ? 'selected-value' : ''}>{formatIdToText(returnDate)}</span>
-                      </div>
-                    </div>
-
-                    {showDatePicker && (
-                      <div className="editorial-calendar-popup">
-                        <div className="calendar-months-container">
-                          <div className="month-block">
-                            <h4>May 2026</h4>
-                            <div className="calendar-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
-                            <div className="calendar-days-grid">
-                              <span className="empty-day"></span><span className="empty-day"></span><span className="empty-day"></span><span className="empty-day"></span><span className="empty-day"></span>
-                              {mayDays.map((d) => (
-                                <button key={d} type="button"
-                                  className={`day-btn ${charterDate === d ? 'active-bound' : ''} ${returnDate === d ? 'active-bound' : ''} ${charterDate && returnDate && d > charterDate && d < returnDate ? 'in-range' : ''}`}
-                                  onClick={() => handleDayClick(d, 'may')}>{d}</button>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="month-block">
-                            <h4>June 2026</h4>
-                            <div className="calendar-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
-                            <div className="calendar-days-grid">
-                              <span className="empty-day"></span>
-                              {juneDays.map((d) => {
-                                const jid = d + 100;
-                                return (
-                                  <button key={jid} type="button"
-                                    className={`day-btn ${charterDate === jid ? 'active-bound' : ''} ${returnDate === jid ? 'active-bound' : ''} ${charterDate && returnDate && jid > charterDate && jid < returnDate ? 'in-range' : ''}`}
-                                    onClick={() => handleDayClick(d, 'june')}>{d}</button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Campos de contacto */}
-                  <div className="wander-contact-fields">
-                    <div className="wander-input-group">
-                      <label className="wander-label">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        Full Name *
-                      </label>
-                      <input type="text" className="wander-input" placeholder="Enter your full name" required disabled={isSubmitting} value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                    </div>
-                    <div className="wander-input-group">
-                      <label className="wander-label">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        Email Address *
-                      </label>
-                      <input type="email" className="wander-input" placeholder="Enter your email" required disabled={isSubmitting} value={email} onChange={(e) => setEmail(e.target.value)} />
-                    </div>
-                    <div className="wander-input-group">
-                      <label className="wander-label">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        Phone Number
-                      </label>
-                      <input type="tel" className="wander-input" placeholder="Enter your phone number" disabled={isSubmitting} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-                    </div>
-                    <div className="wander-input-group">
-                      <label className="wander-label">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        Special Requests
-                      </label>
-                      <textarea className="wander-textarea" placeholder="Tell us more about your charter needs..." rows={3} disabled={isSubmitting} value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} />
-                    </div>
-                  </div>
-
-                  {/* Desglose de precio */}
-                  <div className="pricing-breakdown-box">
-                    <div className="price-row-item">
-                      <span>Base Charter (${basePriceNum} x {totalDays} {totalDays === 1 ? 'day' : 'days'})</span>
-                      <span>${basePriceNum * totalDays}</span>
-                    </div>
-                    <div className="price-row-item">
-                      <span>Professional Crew Service</span>
-                      <span>${crewFee}</span>
-                    </div>
-                    <div className="price-row-item total-row">
-                      <span>Total Charter Price</span>
-                      <span>${(basePriceNum * totalDays) + crewFee}</span>
-                    </div>
-                  </div>
-
-                  <button type="submit" className="btn-booking-primary" disabled={isSubmitting}>
-                    {isSubmitting ? 'Requesting...' : 'Book Charter Availability'}
-                  </button>
-                </form>
+                <YachtBookingWidget yachtId={Number(id)} yachtName={yacht.title} />
 
                 <p className="lux-reserve-disclaimer">
                   You won&apos;t be charged yet. We&apos;ll review your request and reply with availability and a detailed quote.

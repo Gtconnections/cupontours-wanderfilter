@@ -201,7 +201,7 @@ export async function getProperties(filters: PropertiesFilters = {}, forceRefres
   }
 
   try {
-    const url = `${API_BASE_URL}/listings/${queryString ? `?${queryString}` : ''}`;
+    const url = `${API_BASE_URL}/listings-sync/${queryString ? `?${queryString}` : ''}`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -249,6 +249,81 @@ export async function getProperties(filters: PropertiesFilters = {}, forceRefres
     
     throw error;
   }
+}
+
+// 🔥 OBTENER LISTA DE PROPIEDADES LUXURY
+export async function getLuxuryProperties(filters: PropertiesFilters = {}): Promise<PropertiesResponse> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+  if (!token) {
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+    throw new Error('No hay sesión activa');
+  }
+
+  const params = new URLSearchParams();
+  params.append('paginated', 'True');
+  if (filters.page) params.append('page', filters.page.toString());
+  if (filters.page_size) params.append('page_size', filters.page_size.toString());
+  if (filters.status) params.append('status', filters.status);
+  if (filters.search && filters.search.trim()) {
+    params.append('name__icontains', filters.search.trim());
+  }
+
+  const queryString = params.toString();
+  const url = `${API_BASE_URL}/listings-luxury/${queryString ? `?${queryString}` : ''}`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`,
+    },
+    cache: 'no-store'
+  });
+
+  if (response.status === 401 || response.status === 403) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('isUserLoggedIn');
+      localStorage.removeItem('userData');
+      window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+    }
+    throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+  }
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar las propiedades luxury'}`);
+  }
+
+  return await response.json();
+}
+
+// 🔄 DISPARAR SINCRONIZACIÓN DE PROPIEDADES DESDE HOSTAWAY
+export async function syncHostawayProperties(): Promise<{ status: string; message?: string }> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  const response = await fetch(`${API_BASE_URL}/hostaway/sync-properties/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Error ${response.status}: ${errorText || 'No se pudo iniciar la sincronización'}`);
+  }
+
+  return await response.json();
 }
 
 // 🔥 OBTENER DETALLE DE PROPIEDAD
@@ -1086,6 +1161,40 @@ export async function getListingsNamesAndIds(): Promise<ListingSimple[]> {
 
   } catch (error) {
     console.error('❌ Error en getListingsNamesAndIds:', error);
+    throw error;
+  }
+}
+
+// 🔄 LISTA DE PROPIEDADES — SOLO SINCRONIZADAS DE HOSTAWAY (gemela para el pricing engine)
+export async function getListingsNamesAndIdsSync(): Promise<ListingSimple[]> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+  try {
+    const url = `${API_BASE_URL}/listings_names_and_ids_sync/`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
+    });
+    if (response.status === 401 || response.status === 403) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al obtener los listings'}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('❌ Error en getListingsNamesAndIdsSync:', error);
     throw error;
   }
 }

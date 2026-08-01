@@ -33,6 +33,39 @@ export interface YachtDetail {
   };
 }
 
+export interface YachtsPage {
+  items: YachtCatalogItem[];
+  count: number;
+}
+
+function mapYacht(item: RawApiItem): YachtCatalogItem {
+  const id = item.id || Math.random();
+  const title = item.name || "Luxury Yacht";
+  const length = item.length ? `${item.length}ft` : "60ft";
+  const capacity = item.capacity ? `${item.capacity} Guests` : "12 Guests";
+  const specs = `${length} \u2022 ${capacity}`;
+  const price = item.price_full_day ? `$${Math.round(parseFloat(item.price_full_day))} / day` : "$9,500 / day";
+  const img = item.principal_image || "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
+  return { id, title, specs, price, rating: "5.0", img };
+}
+
+export async function getYachtsPage(page: number): Promise<YachtsPage> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/landing/yachts/?page=${page}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) throw new Error("Failed to fetch yachts");
+    const data = await response.json();
+    const results = data.results || data.data || (Array.isArray(data) ? data : []);
+    const count = typeof data.count === "number" ? data.count : results.length;
+    return { items: results.map(mapYacht), count };
+  } catch (error) {
+    console.error("Error fetching yachts page:", error);
+    return { items: [], count: 0 };
+  }
+}
+
 export async function getYachts(): Promise<YachtCatalogItem[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/landing/yachts/`, {

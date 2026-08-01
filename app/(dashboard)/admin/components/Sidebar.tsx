@@ -24,11 +24,24 @@ export function Sidebar() {
       label: "Properties Business",
       subitems: [
         { name: "All Properties", href: "/admin/properties/list" },
+        { name: "Luxury Properties", href: "/admin/properties/luxury" },
+        { name: "Pricing Engine", href: "/admin/pricing" },
+        { name: "Market Intelligence", href: "/admin/market/intelligence" },
+        { name: "Competitive Set", href: "/admin/market/competitive-set" },
         { name: "Profit and Loss", href: "/admin/properties/profit-and-loss" },
         { name: "Create an Invoice", href: "/admin/properties/invoices/create" },
         { name: "Create a Reservation", href: "/admin/properties/reservations/create" },
         { name: "Agreements", href: "/admin/properties/agreements" },
         { name: "Create masses", href: "/admin/properties/create-masses" },
+      ]
+    },
+    {
+      id: "operations",
+      label: "Operations",
+      subitems: [
+        { name: "Maintenance", href: "/admin/operations" },
+        { name: "Inventory", href: "/admin/operations?tab=inventory" },
+        { name: "Turnovers", href: "/admin/operations/turnovers" },
       ]
     },
     {

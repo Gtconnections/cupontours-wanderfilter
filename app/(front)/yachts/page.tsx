@@ -8,7 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 // IMPORTAMOS LA FUNCIÓN DE LA API Y SU INTERFAZ CORREGIDA
-import { getYachts, YachtCatalogItem } from '../../lib/api/yachts';
+import { getYachtsPage, YachtCatalogItem } from '../../lib/api/yachts';
 
 const yachtsPageStructuredData = {
   "@context": "https://schema.org",
@@ -21,16 +21,25 @@ const yachtsPageStructuredData = {
   }
 };
 
+const FALLBACK_PAGE_SIZE = 12;
+
 export default function YachtsPage() {
   const [fleet, setFleet] = useState<YachtCatalogItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [pageSize, setPageSize] = useState(FALLBACK_PAGE_SIZE);
 
   useEffect(() => {
     async function loadYachts() {
       try {
         setIsLoading(true);
-        const yachtsData = await getYachts();
-        setFleet(yachtsData);
+        const { items, count: total } = await getYachtsPage(page);
+        setFleet(items);
+        setCount(total);
+        if (page === 1 && items.length > 0 && items.length < total) {
+          setPageSize(items.length);
+        }
       } catch (error) {
         console.error("Error loading yachts page data:", error);
       } finally {
@@ -39,7 +48,27 @@ export default function YachtsPage() {
     }
 
     loadYachts();
-  }, []);
+  }, [page]);
+
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+  const current = Math.min(page, totalPages);
+
+  const pageList: (number | string)[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= current - 1 && i <= current + 1)) {
+      pageList.push(i);
+    } else if (pageList[pageList.length - 1] !== '...') {
+      pageList.push('...');
+    }
+  }
+
+  const goPage = (p: number) => {
+    const next = Math.min(Math.max(1, p), totalPages);
+    setPage(next);
+    if (typeof document !== 'undefined') {
+      document.getElementById('marine-fleet')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <main className="marine-page-container">
@@ -54,7 +83,7 @@ export default function YachtsPage() {
       </section>
 
       {/* 2. CONTENEDOR EDITORIAL */}
-      <section className="marine-listings-section">
+      <section className="marine-listings-section" id="marine-fleet">
 
         <div className="marine-editorial-header">
           <span className="pre-title">The Fleet</span>
@@ -64,7 +93,7 @@ export default function YachtsPage() {
 
         <div className="marine-meta-row">
           <span className="marine-count">
-            Vessels docked: <strong>{isLoading ? "..." : fleet.length}</strong>
+            Vessels docked: <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
           </span>
         </div>
 
@@ -142,6 +171,20 @@ export default function YachtsPage() {
             ))
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="marine-pager">
+            <button className="marine-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">‹</button>
+            {pageList.map((n, idx) =>
+              typeof n === 'number' ? (
+                <button key={n} className={`marine-pager-num ${n === current ? 'active' : ''}`} onClick={() => goPage(n)}>{n}</button>
+              ) : (
+                <span key={`ellipsis-${idx}`} className="marine-pager-ellipsis">…</span>
+              )
+            )}
+            <button className="marine-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label="Next page">›</button>
+          </div>
+        )}
       </section>
 
       {/* 3. SECCIÓN DE MEMBRESÍAS */}

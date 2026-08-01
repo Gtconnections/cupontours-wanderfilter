@@ -1,0 +1,39 @@
+/* Market module (Competitive Set / Market Intelligence) — estilo LUX */
+.mk-container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.mk-header { margin-bottom: 24px; }
+.mk-breadcrumb { display:block; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:#9a9a9a; font-weight:600; margin-bottom:6px; }
+.mk-header h2 { font-size:24px; font-weight:700; letter-spacing:-0.5px; margin:0 0 4px; color:inherit; }
+.mk-subtitle { font-size:13px; color:#8a8a8a; }
+
+.mk-toolbar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:20px; }
+.mk-select { padding:10px 14px; border-radius:10px; border:1px solid rgba(212,175,55,0.35); background:transparent; color:inherit; font-size:14px; min-width:240px; outline:none; }
+.mk-select:focus { border-color:#d4af37; }
+
+.mk-kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:24px; }
+.mk-kpi { border:1px solid rgba(212,175,55,0.18); border-radius:14px; padding:18px; background:linear-gradient(180deg, rgba(212,175,55,0.06), transparent); transition:transform .2s ease, box-shadow .2s ease; }
+.mk-kpi:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+.mk-kpi-label { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:#9a9a9a; font-weight:600; margin-bottom:8px; }
+.mk-kpi-value { font-size:26px; font-weight:700; letter-spacing:-1px; }
+.mk-kpi-value .unit { font-size:14px; font-weight:600; color:#8a8a8a; margin-left:2px; }
+.mk-kpi-sub { font-size:11px; color:#8a8a8a; margin-top:6px; }
+
+.mk-card { border:1px solid rgba(212,175,55,0.15); border-radius:14px; padding:20px; margin-bottom:20px; }
+.mk-card-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin:0 0 4px; }
+.mk-card-desc { font-size:12px; color:#8a8a8a; margin-bottom:16px; }
+
+.mk-table { width:100%; border-collapse:collapse; font-size:13px; }
+.mk-table th { text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#9a9a9a; font-weight:600; padding:10px 12px; border-bottom:1px solid rgba(212,175,55,0.15); }
+.mk-table td { padding:12px; border-bottom:1px solid rgba(150,150,150,0.10); }
+.mk-table tr:hover td { background:rgba(212,175,55,0.04); }
+.mk-num { font-variant-numeric:tabular-nums; font-weight:600; }
+
+.mk-pending { border:1px dashed rgba(212,175,55,0.45); border-radius:14px; padding:28px; text-align:center; background:rgba(212,175,55,0.04); }
+.mk-pending-badge { display:inline-block; padding:4px 12px; border-radius:20px; background:rgba(212,175,55,0.15); color:#b8901f; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px; }
+.mk-pending h4 { margin:0 0 6px; font-size:15px; font-weight:700; }
+.mk-pending p { margin:0; font-size:13px; color:#8a8a8a; max-width:520px; margin:0 auto; line-height:1.5; }
+
+.mk-bar { height:6px; border-radius:4px; background:rgba(150,150,150,0.15); overflow:hidden; }
+.mk-bar-fill { height:100%; background:linear-gradient(90deg,#d4af37,#e8c860); border-radius:4px; }
+
+.mk-loading { padding:48px; text-align:center; color:#8a8a8a; }
+.mk-empty { padding:32px; text-align:center; color:#8a8a8a; font-size:13px; }

@@ -1,15 +1,20 @@
 // lib/api/properties.ts
+import { clientConfig } from "../config";
 import { HostawayListing } from "../../lib/services/hostaway";
+
+// Base del backend propio (mismo patrón que yachts/cars). El browser pega
+// directo aquí, no a la ruta interna /api/properties.
+const API_BASE_URL = clientConfig.api.baseUrl;
 
 export interface PropertyCardData {
   id: string;
   title: string;
   location: string;
   description: string;
-  price: { 
-    amount: number; 
-    currency: string; 
-    period: string; 
+  price: {
+    amount: number;
+    currency: string;
+    period: string;
   };
   rating: number;
   reviewCount: number;
@@ -25,20 +30,28 @@ export interface PropertyCardData {
   href: string;
 }
 
+interface BackendListingsResponse {
+  status?: string;
+  result?: HostawayListing[];
+  count?: number;
+  limit?: number;
+  offset?: number;
+}
+
 function convertHostawayToPropertyCard(listing: HostawayListing): PropertyCardData {
   return {
     id: listing.id.toString(),
     title: listing.name,
     location: listing.city || "Private Location",
     description: listing.airbnbSummary || listing.description?.substring(0, 150) + "..." || "Beautiful property available for rent",
-    price: { 
-      amount: listing.price, 
-      currency: '$', 
-      period: "night" 
+    price: {
+      amount: listing.price,
+      currency: '$',
+      period: "night"
     },
     rating: listing.starRating || 5,
     reviewCount: 0,
-    images: listing.listingImages?.length > 0 
+    images: listing.listingImages?.length > 0
       ? listing.listingImages.sort((a, b) => a.sortOrder - b.sortOrder).map(pic => pic.url)
       : ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"],
     features: {
@@ -53,7 +66,28 @@ function convertHostawayToPropertyCard(listing: HostawayListing): PropertyCardDa
   };
 }
 
-// ✅ CORREGIDO: Ahora apunta a tus propias API Routes
+// Trae listings crudos desde el backend (mirror de Hostaway + precio del motor)
+async function fetchBackendListings(query: Record<string, string | number | undefined>): Promise<HostawayListing[]> {
+  const url = new URL(`${API_BASE_URL}/hostaway/listings/`);
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      url.searchParams.append(key, String(value));
+    }
+  });
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.status}`);
+  }
+
+  const data: BackendListingsResponse = await response.json();
+  return Array.isArray(data.result) ? data.result : [];
+}
+
 export async function getProperties(params?: {
   limit?: number
   offset?: number
@@ -69,56 +103,70 @@ export async function getProperties(params?: {
   maxPrice?: number
 }): Promise<PropertyCardData[]> {
   try {
-    const searchParams = new URLSearchParams();
-    
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          searchParams.append(key, value.toString());
-        }
-      });
-    }
+    let listings = await fetchBackendListings({
+      limit: params?.limit ?? 50,
+      offset: params?.offset ?? 0,
+      city: params?.city,
+      country: params?.country,
+    });
 
-    // ✅ CAMBIADO: usar ruta local en lugar de cupontours.com
-    const response = await fetch(`/api/properties?${searchParams.toString()}`);
-    
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to fetch properties');
-    }
-    
-    return data.data.map((listing: HostawayListing) => convertHostawayToPropertyCard(listing));
+    // Filtros que el backend no aplica (se resuelven en cliente)
+    if (params?.guests) listings = listings.filter(l => (l.personCapacity ?? 0) >= params.guests!);
+    if (params?.bedrooms) listings = listings.filter(l => (l.bedroomsNumber ?? 0) >= params.bedrooms!);
+    if (params?.bathrooms) listings = listings.filter(l => (l.bathroomsNumber ?? 0) >= params.bathrooms!);
+    if (params?.minPrice) listings = listings.filter(l => (l.price ?? 0) >= params.minPrice!);
+    if (params?.maxPrice) listings = listings.filter(l => (l.price ?? 0) <= params.maxPrice!);
+
+    return listings.map(convertHostawayToPropertyCard);
   } catch (error) {
     console.error('Error fetching properties:', error);
     return [];
   }
 }
 
-// lib/api/properties.ts
+export interface PropertiesPage {
+  items: PropertyCardData[];
+  count: number;
+}
+
+// Paginado numerado del servidor (offset/limit) devolviendo el total (count)
+export async function getPropertiesPage(params: {
+  page: number;
+  pageSize: number;
+  city?: string;
+  country?: string;
+}): Promise<PropertiesPage> {
+  try {
+    const offset = (params.page - 1) * params.pageSize;
+    const url = new URL(`${API_BASE_URL}/hostaway/listings/`);
+    url.searchParams.append('limit', String(params.pageSize));
+    url.searchParams.append('offset', String(offset));
+    if (params.city) url.searchParams.append('city', params.city);
+    if (params.country) url.searchParams.append('country', params.country);
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+    const data: BackendListingsResponse = await response.json();
+    const listings = Array.isArray(data.result) ? data.result : [];
+    const count = typeof data.count === 'number' ? data.count : listings.length;
+    return { items: listings.map(convertHostawayToPropertyCard), count };
+  } catch (error) {
+    console.error('Error fetching properties page:', error);
+    return { items: [], count: 0 };
+  }
+}
 
 /**
  * Obtener propiedades para el home (solo 8)
  */
 export async function getHomeProperties(): Promise<PropertyCardData[]> {
   try {
-    const response = await fetch(`/api/properties?limit=8`);
-    
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to fetch properties');
-    }
-    
-    return data.data.map((listing: HostawayListing) => convertHostawayToPropertyCard(listing));
+    const listings = await fetchBackendListings({ limit: 8, offset: 0 });
+    return listings.map(convertHostawayToPropertyCard);
   } catch (error) {
     console.error('Error fetching home properties:', error);
     return [];
@@ -127,23 +175,20 @@ export async function getHomeProperties(): Promise<PropertyCardData[]> {
 
 export async function getPropertyById(id: string): Promise<HostawayListing | null> {
   try {
-    // ✅ CAMBIADO: usar ruta local
-    const response = await fetch(`/api/properties/${id}`);
-    
+    const response = await fetch(`${API_BASE_URL}/hostaway/listings/${id}/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
     if (!response.ok) {
       if (response.status === 404) {
         return null;
       }
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to fetch property');
-    }
-    
-    return data.data;
+    return data.result ?? null;
   } catch (error) {
     console.error('Error fetching property:', error);
     return null;
@@ -172,27 +217,16 @@ export interface PropertySearchParams {
 
 export async function searchProperties(params: PropertySearchParams = {}): Promise<PropertyCardData[]> {
   try {
-    const searchParams = new URLSearchParams();
-    
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        searchParams.append(key, value.toString());
-      }
+    let listings = await fetchBackendListings({
+      limit: params.limit ?? 50,
+      offset: params.offset ?? 0,
+      city: params.city,
+      country: params.country,
     });
 
-    // ✅ CAMBIADO: usar ruta local
-    const response = await fetch(`/api/properties/search?${searchParams}`);
-    const data = await response.json();
+    if (params.guests) listings = listings.filter(l => (l.personCapacity ?? 0) >= params.guests!);
 
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
-    }
-
-    if (!data.success) {
-      throw new Error(data.error || 'Search failed');
-    }
-
-    return data.data.result.map((listing: HostawayListing) => convertHostawayToPropertyCard(listing));
+    return listings.map(convertHostawayToPropertyCard);
   } catch (error) {
     console.error('Error searching properties:', error);
     return [];
@@ -201,19 +235,10 @@ export async function searchProperties(params: PropertySearchParams = {}): Promi
 
 export async function getAvailableCities(): Promise<string[]> {
   try {
-    // ✅ CAMBIADO: usar ruta local
-    const response = await fetch('/api/properties/cities');
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
-    }
-
-    if (!data.success) {
-      throw new Error(data.error || 'Failed to fetch cities');
-    }
-
-    return data.data.cities || [];
+    const listings = await fetchBackendListings({ limit: 1000, offset: 0 });
+    const cities = new Set<string>();
+    listings.forEach(l => { if (l.city) cities.add(l.city); });
+    return Array.from(cities).sort();
   } catch (error) {
     console.error('Error fetching cities:', error);
     return [];

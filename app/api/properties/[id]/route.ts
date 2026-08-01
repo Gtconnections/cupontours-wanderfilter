@@ -1,57 +1,43 @@
 // app/api/properties/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { hostawayService } from '@/app/lib/services/hostaway';
+import { getBackendListing } from '@/app/lib/services/backend-properties';
 
-// ✅ CORREGIDO: params es una Promesa
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // ✅ Esperar a que params se resuelva
     const { id } = await params;
-    
-    const listing = await hostawayService.getListing(id);
+
+    const listing = await getBackendListing(id);
+
+    if (!listing.result) {
+      return NextResponse.json(
+        { success: false, error: 'Property not found' },
+        { status: 404, headers: { 'Access-Control-Allow-Origin': '*' } }
+      );
+    }
 
     return NextResponse.json(
-      {
-        success: true,
-        data: listing.result,
-      },
-      {
-        status: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
+      { success: true, data: listing.result },
+      { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } }
     );
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to fetch property';
     const status = errorMessage.includes('404') ? 404 : 500;
 
     return NextResponse.json(
-      {
-        success: false,
-        error: errorMessage,
-      },
-      { 
-        status,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
+      { success: false, error: errorMessage },
+      { status, headers: { 'Access-Control-Allow-Origin': '*' } }
     );
   }
 }
 
-// ✅ CORREGIDO: OPTIONS también necesita Promise
 export async function OPTIONS(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Esperar a que params se resuelva (aunque no lo usemos)
   await params;
-  
   return new NextResponse(null, {
     status: 204,
     headers: {

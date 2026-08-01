@@ -7,6 +7,7 @@ import './property-detail.css';
 import Link from 'next/link';
 import { getPropertyById } from '../../../lib/api/properties';
 import { HostawayListing } from '../../../lib/services/hostaway';
+import BookingWidget from './BookingWidget';
 import { useTheme } from '@/components/theme/ThemeProvider';
 
 // ============================================
@@ -183,7 +184,7 @@ export default function PropertyDetailPage() {
       const w = window as unknown as { hostawayCalendarWidget?: (config: unknown) => void };
       const container = document.getElementById('hostaway-calendar-widget');
       if (container) container.innerHTML = '';
-      if (typeof w.hostawayCalendarWidget === 'function') {
+      if (container && typeof w.hostawayCalendarWidget === 'function') {
         w.hostawayCalendarWidget(config);
       }
     };
@@ -591,9 +592,12 @@ export default function PropertyDetailPage() {
                   <span className="lux-reserve-per">per night</span>
                 </div>
 
-                {/* Widget de calendario/checkout de Hostaway */}
+                {/* Widget de reserva propio */}
                 <div className="lux-widget-mount">
-                  <div id="hostaway-calendar-widget" style={{ minWidth: 0 }} />
+                  <BookingWidget
+                    listingId={Number(id)}
+                    propertyName={property?.name || ""}
+                  />
                 </div>
 
                 <p className="lux-reserve-disclaimer">

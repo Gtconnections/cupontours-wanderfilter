@@ -1,0 +1,65 @@
+/* Yacht booking widget — day + slot picker (LUX gold #d4af37) */
+.ybw { width: 100%; color: inherit; }
+
+.ybw-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ybw-cal-title { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+.ybw-nav { width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(150,150,150,0.28); background: transparent; color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .2s ease; }
+.ybw-nav:hover { border-color: #d4af37; color: #d4af37; }
+
+.ybw-wd { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 6px; }
+.ybw-wd span { text-align: center; font-size: 11px; font-weight: 700; color: #9a9a9a; text-transform: uppercase; letter-spacing: .5px; }
+
+.ybw-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; transition: opacity .15s ease; }
+.ybw-grid--loading { opacity: .5; pointer-events: none; }
+.ybw-cell { aspect-ratio: 1 / 1; border-radius: 10px; border: 1px solid transparent; background: transparent; color: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; transition: background .15s ease, border-color .15s ease, transform .1s ease; }
+.ybw-cell--empty { border: none; cursor: default; }
+.ybw-cell--free { background: rgba(212,175,55,0.10); border-color: rgba(212,175,55,0.28); }
+.ybw-cell--free:hover { background: rgba(212,175,55,0.20); transform: translateY(-1px); }
+.ybw-cell--partial::after { content: ''; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: #e8952e; }
+.ybw-cell--booked { color: #b9b9b9; text-decoration: line-through; background: repeating-linear-gradient(45deg, rgba(150,150,150,0.10), rgba(150,150,150,0.10) 4px, transparent 4px, transparent 8px); cursor: not-allowed; }
+.ybw-cell--past { color: #c8c8c8; opacity: .45; cursor: not-allowed; }
+.ybw-cell--sel { background: #d4af37 !important; border-color: #d4af37 !important; color: #14202e !important; }
+
+.ybw-legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 12px 2px 0; font-size: 11.5px; color: #9a9a9a; }
+.ybw-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.ybw-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.ybw-dot--free { background: rgba(212,175,55,0.55); }
+.ybw-dot--partial { background: #e8952e; }
+.ybw-dot--booked { background: rgba(150,150,150,0.5); }
+
+.ybw-slots { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(150,150,150,0.16); }
+.ybw-slots-label { font-size: 12px; font-weight: 700; color: #9a9a9a; text-transform: uppercase; letter-spacing: .4px; }
+.ybw-slot-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 12px; }
+.ybw-slot { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(150,150,150,0.26); background: transparent; color: inherit; cursor: pointer; text-align: left; transition: border-color .15s ease, background .15s ease; }
+.ybw-slot:hover:not(:disabled) { border-color: #d4af37; }
+.ybw-slot.active { border-color: #d4af37; background: rgba(212,175,55,0.12); }
+.ybw-slot:disabled { opacity: .4; cursor: not-allowed; text-decoration: line-through; }
+.ybw-slot-label { font-size: 12px; font-weight: 700; }
+.ybw-slot-price { font-size: 13px; font-weight: 700; color: #d4af37; }
+
+.ybw-btn { width: auto; padding: 12px 18px; border-radius: 12px; border: none; background: #d4af37; color: #14202e; font-size: 14px; font-weight: 700; cursor: pointer; transition: filter .2s ease, opacity .2s ease; }
+.ybw-btn:hover:not(:disabled) { filter: brightness(1.06); }
+.ybw-btn:disabled { opacity: .5; cursor: not-allowed; }
+.ybw-btn--full { width: 100%; }
+.ybw-btn--ghost { background: transparent; color: inherit; border: 1px solid rgba(150,150,150,0.3); }
+
+.ybw-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 14px; background: rgba(212,175,55,0.10); border: 1px solid rgba(212,175,55,0.28); margin-bottom: 16px; }
+.ybw-summary-label { font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: #9a9a9a; font-weight: 700; }
+.ybw-summary-main { font-size: 15px; font-weight: 700; margin-top: 2px; }
+.ybw-summary-price { font-size: 20px; font-weight: 800; color: #d4af37; white-space: nowrap; }
+
+.ybw-fields { display: flex; flex-direction: column; gap: 10px; }
+.ybw-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ybw-input { width: 100%; padding: 11px 13px; border-radius: 11px; border: 1px solid rgba(150,150,150,0.28); background: rgba(150,150,150,0.05); color: inherit; font-size: 14px; outline: none; font-family: inherit; }
+.ybw-input:focus { border-color: #d4af37; }
+.ybw-textarea { min-height: 84px; resize: vertical; }
+
+.ybw-actions { display: flex; gap: 10px; margin-top: 16px; }
+.ybw-actions .ybw-btn { flex: 1; }
+.ybw-disclaimer { font-size: 11.5px; color: #9a9a9a; text-align: center; margin-top: 12px; }
+.ybw-error { font-size: 13px; color: #c0392b; margin-top: 12px; background: rgba(224,82,82,0.1); padding: 9px 12px; border-radius: 9px; }
+
+.ybw-done { text-align: center; padding: 20px 6px; }
+.ybw-done-check { width: 60px; height: 60px; border-radius: 50%; background: rgba(46,143,85,0.14); color: #2e8f55; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+.ybw-done h3 { font-size: 19px; font-weight: 800; margin: 0 0 8px; }
+.ybw-done p { font-size: 14px; color: #8a8a8a; line-height: 1.5; margin: 0 0 18px; }

@@ -7,7 +7,7 @@ import './properties.css';
 import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
-import { getProperties, searchProperties, PropertyCardData } from '../../lib/api/properties';
+import { getPropertiesPage, searchProperties, PropertyCardData } from '../../lib/api/properties';
 
 const PAGE_SIZE = 8;
 
@@ -26,9 +26,8 @@ function PropertiesCatalogContent() {
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<PropertyCardData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
   const [hasSearched, setHasSearched] = useState(false);
   const [sortOption, setSortOption] = useState('featured');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
@@ -59,6 +58,8 @@ function PropertiesCatalogContent() {
   }, [allProperties, sortOption]);
 
   // Carga inicial / reset al cambiar búsqueda
+  useEffect(() => { setPage(1); }, [searchParams]);
+
   useEffect(() => {
     let active = true;
 
@@ -83,23 +84,21 @@ function PropertiesCatalogContent() {
           if (!active) return;
           setHasSearched(true);
           setAllProperties(searchData);
-          setOffset(0);
-          setHasMore(false);
+          setCount(searchData.length);
         } else {
-          // Modo catálogo: paginado de 8 en 8
-          const propertiesData = await getProperties({ limit: PAGE_SIZE, offset: 0 });
+          // Modo catálogo: paginado numerado del servidor
+          const { items, count: total } = await getPropertiesPage({ page, pageSize: PAGE_SIZE });
           if (!active) return;
           setHasSearched(false);
-          setAllProperties(propertiesData);
-          setOffset(PAGE_SIZE);
-          setHasMore(propertiesData.length === PAGE_SIZE);
+          setAllProperties(items);
+          setCount(total);
         }
       } catch (error) {
         console.error("Error loading properties data:", error);
         if (active) {
           setAllProperties([]);
           setFilteredProperties([]);
-          setHasMore(false);
+          setCount(0);
         }
       } finally {
         if (active) setIsLoading(false);
@@ -108,26 +107,25 @@ function PropertiesCatalogContent() {
 
     loadPropertiesData();
     return () => { active = false; };
-  }, [searchParams]);
+  }, [searchParams, page]);
 
-  // Cargar 8 propiedades más (solo en modo catálogo)
-  const loadMore = async () => {
-    if (isLoadingMore || !hasMore) return;
-    setIsLoadingMore(true);
-    try {
-      const data = await getProperties({ limit: PAGE_SIZE, offset });
-      setAllProperties((prev) => {
-        const seen = new Set(prev.map((p) => p.id));
-        const fresh = data.filter((p) => !seen.has(p.id));
-        return [...prev, ...fresh];
-      });
-      setOffset((prev) => prev + PAGE_SIZE);
-      setHasMore(data.length === PAGE_SIZE);
-    } catch (error) {
-      console.error("Error loading more properties:", error);
-      setHasMore(false);
-    } finally {
-      setIsLoadingMore(false);
+  const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
+  const current = Math.min(page, totalPages);
+
+  const pageList: (number | string)[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= current - 1 && i <= current + 1)) {
+      pageList.push(i);
+    } else if (pageList[pageList.length - 1] !== '...') {
+      pageList.push('...');
+    }
+  }
+
+  const goPage = (p: number) => {
+    const next = Math.min(Math.max(1, p), totalPages);
+    setPage(next);
+    if (typeof document !== 'undefined') {
+      document.getElementById('catalog-listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -183,7 +181,7 @@ function PropertiesCatalogContent() {
       </section>
 
       {/* 2. SECCIÓN DE LISTADOS */}
-      <section className="catalog-listings-section">
+      <section className="catalog-listings-section" id="catalog-listings">
 
         <div className="listings-editorial-header">
           <span className="pre-title">The Collection</span>
@@ -193,7 +191,7 @@ function PropertiesCatalogContent() {
 
         <div className="catalog-meta-row">
           <span className="properties-count">
-            Showing <strong>{isLoading ? "..." : filteredProperties.length}</strong> extraordinary spaces
+            Showing <strong>{isLoading ? "..." : (hasSearched ? filteredProperties.length : count)}</strong> extraordinary spaces
           </span>
 
           {/* SORT DROPDOWN (funcional, client-side) */}
@@ -307,12 +305,18 @@ function PropertiesCatalogContent() {
           )}
         </div>
 
-        {/* PAGINACIÓN 8 EN 8 (solo catálogo, no búsqueda) */}
-        {!isLoading && !hasSearched && hasMore && (
-          <div className="catalog-pagination-container">
-            <button className="btn-load-more" type="button" onClick={loadMore} disabled={isLoadingMore}>
-              {isLoadingMore ? 'Loading…' : 'Load more properties'}
-            </button>
+        {/* PAGINACIÓN NUMERADA (solo catálogo, no búsqueda) */}
+        {!hasSearched && totalPages > 1 && (
+          <div className="catprop-pager">
+            <button className="catprop-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">‹</button>
+            {pageList.map((n, idx) =>
+              typeof n === 'number' ? (
+                <button key={n} className={`catprop-pager-num ${n === current ? 'active' : ''}`} onClick={() => goPage(n)}>{n}</button>
+              ) : (
+                <span key={`ellipsis-${idx}`} className="catprop-pager-ellipsis">…</span>
+              )
+            )}
+            <button className="catprop-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label="Next page">›</button>
           </div>
         )}
       </section>

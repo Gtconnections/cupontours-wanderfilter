@@ -8,7 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 // IMPORTAMOS LA FUNCIÓN DE LA API Y SU INTERFAZ CORREGIDA
-import { getCars, CarCatalogItem } from '../../lib/api/cars';
+import { getCarsPage, CarCatalogItem } from '../../lib/api/cars';
 
 const carsPageStructuredData = {
   "@context": "https://schema.org",
@@ -21,16 +21,25 @@ const carsPageStructuredData = {
   }
 };
 
+const FALLBACK_PAGE_SIZE = 12;
+
 export default function CarsPage() {
   const [fleet, setFleet] = useState<CarCatalogItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [pageSize, setPageSize] = useState(FALLBACK_PAGE_SIZE);
 
   useEffect(() => {
     async function loadCars() {
       try {
         setIsLoading(true);
-        const carsData = await getCars();
-        setFleet(carsData);
+        const { items, count: total } = await getCarsPage(page);
+        setFleet(items);
+        setCount(total);
+        if (page === 1 && items.length > 0 && items.length < total) {
+          setPageSize(items.length);
+        }
       } catch (error) {
         console.error("Error loading fleet page data:", error);
       } finally {
@@ -39,7 +48,27 @@ export default function CarsPage() {
     }
 
     loadCars();
-  }, []);
+  }, [page]);
+
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+  const current = Math.min(page, totalPages);
+
+  const pageList: (number | string)[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= current - 1 && i <= current + 1)) {
+      pageList.push(i);
+    } else if (pageList[pageList.length - 1] !== '...') {
+      pageList.push('...');
+    }
+  }
+
+  const goPage = (p: number) => {
+    const next = Math.min(Math.max(1, p), totalPages);
+    setPage(next);
+    if (typeof document !== 'undefined') {
+      document.getElementById('fleet-listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <main className="fleet-page-container">
@@ -55,7 +84,7 @@ export default function CarsPage() {
       </section>
 
       {/* 2. CONTENEDOR DEL CATÁLOGO DE AUTOS */}
-      <section className="fleet-listings-section">
+      <section className="fleet-listings-section" id="fleet-listings">
 
         {/* Cabecera Editorial */}
         <div className="fleet-editorial-header">
@@ -66,7 +95,7 @@ export default function CarsPage() {
 
         <div className="fleet-meta-row">
           <span className="fleet-count">
-            Available vehicles: <strong>{isLoading ? "..." : fleet.length}</strong>
+            Available vehicles: <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
           </span>
         </div>
 
@@ -135,6 +164,20 @@ export default function CarsPage() {
             ))
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="fleet-pager">
+            <button className="fleet-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">‹</button>
+            {pageList.map((n, idx) =>
+              typeof n === 'number' ? (
+                <button key={n} className={`fleet-pager-num ${n === current ? 'active' : ''}`} onClick={() => goPage(n)}>{n}</button>
+              ) : (
+                <span key={`ellipsis-${idx}`} className="fleet-pager-ellipsis">…</span>
+              )
+            )}
+            <button className="fleet-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label="Next page">›</button>
+          </div>
+        )}
       </section>
 
       {/* 3. SECCIÓN DE MEMBRESÍAS */}
