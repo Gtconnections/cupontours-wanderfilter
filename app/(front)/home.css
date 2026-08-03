@@ -910,3 +910,19 @@
 [data-theme="dark"] .prop-specs { color: #a7a199; }
 [data-theme="dark"] .price { color: #ece7dd; }
 [data-theme="dark"] .rating { color: #ece7dd; }
+
+.row-see-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 6px 2px;
+  transition: color .2s ease, gap .2s ease;
+}
+.row-see-more:hover { color: #d4af37; gap: 8px; }
+[data-theme="dark"] .row-see-more { color: #ece7dd; }
+[data-theme="dark"] .row-see-more:hover { color: #d4af37; }

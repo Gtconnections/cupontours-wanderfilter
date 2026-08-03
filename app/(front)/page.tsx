@@ -46,6 +46,10 @@ function RenderRow({ title, pretitle, data, type, isLoading }: RenderRowProps) {
           <span className="row-pretitle">{pretitle}</span>
           <h3>{title}</h3>
         </div>
+        <Link href={`/${routePrefix}`} className="row-see-more">
+          See more
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+        </Link>
       </div>
 
       <div className="property-carousel">
