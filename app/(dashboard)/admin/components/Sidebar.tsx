@@ -25,6 +25,7 @@ export function Sidebar() {
       subitems: [
         { name: "All Properties", href: "/admin/properties/list" },
         { name: "Luxury Properties", href: "/admin/properties/luxury" },
+        { name: "Guests (CRM)", href: "/admin/guests" },
         { name: "Pricing Engine", href: "/admin/pricing" },
         { name: "Market Intelligence", href: "/admin/market/intelligence" },
         { name: "Competitive Set", href: "/admin/market/competitive-set" },

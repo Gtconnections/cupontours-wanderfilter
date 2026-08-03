@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import './dashboard.css';
+import Link from 'next/link';
 import { getDashboardData, DashboardData, Reservation, ReservationData, MonthlyReservation } from '@/app/lib/api/dashboard';
+import { getAttention, AttentionData } from '@/app/lib/api/operations';
 import { useAuth } from '@/app/lib/utils/useAuth';
 
 export default function AdminDashboardPage() {
@@ -13,6 +15,7 @@ export default function AdminDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [attention, setAttention] = useState<AttentionData | null>(null);
 
   useEffect(() => {
     async function loadDashboard() {
@@ -24,6 +27,7 @@ export default function AdminDashboardPage() {
         
         const data = await getDashboardData();
         setDashboardData(data);
+        try { setAttention(await getAttention()); } catch { /* attention es best-effort */ }
       } catch (err) {
         console.error('Error al cargar datos del dashboard:', err);
         setError(`Error al cargar datos: ${(err instanceof Error ? err.message : undefined)}`);
@@ -34,6 +38,8 @@ export default function AdminDashboardPage() {
 
     loadDashboard();
   }, [token, isChecking]);
+
+  const shortDate = (sv: string) => new Date(`${sv}T00:00:00`).toLocaleDateString('en', { month: 'short', day: '2-digit' });
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -289,6 +295,99 @@ export default function AdminDashboardPage() {
           </button>
         </div>
       </header>
+
+      {attention && (
+        <section className="att-section">
+          <div className="att-head">
+            <span className="att-eyebrow">Action center</span>
+            <h3>Requires your attention</h3>
+          </div>
+          <div className="att-grid">
+            <div className="att-panel att-panel--turn">
+              <div className="att-panel-head">
+                <span className="att-panel-title">Turnovers</span>
+                <span className="att-badge att-badge--turn">{attention.counts.turnovers_today + attention.counts.same_day}</span>
+              </div>
+              {attention.turnovers.length === 0 ? (
+                <div className="att-empty">All clear</div>
+              ) : (
+                <ul className="att-list">
+                  {attention.turnovers.slice(0, 5).map((t, i) => (
+                    <li key={i} className="att-item">
+                      <span className="att-item-main">{t.listing_name}</span>
+                      <span className="att-item-sub">
+                        {t.same_day ? <b className="att-tag att-tag--red">Same-day</b> : <b className="att-tag">Checkout today</b>}
+                        {t.cleaner_name ? ` · ${t.cleaner_name}` : ' · Unassigned'}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link href="/admin/operations/turnovers" className="att-link">View turnovers →</Link>
+            </div>
+
+            <div className="att-panel att-panel--ticket">
+              <div className="att-panel-head">
+                <span className="att-panel-title">Urgent tickets</span>
+                <span className="att-badge att-badge--ticket">{attention.counts.urgent_tickets}</span>
+              </div>
+              {attention.tickets.length === 0 ? (
+                <div className="att-empty">All clear</div>
+              ) : (
+                <ul className="att-list">
+                  {attention.tickets.slice(0, 5).map((t) => (
+                    <li key={t.id} className="att-item">
+                      <span className="att-item-main">{t.title}</span>
+                      <span className="att-item-sub">{t.listing_name}{t.vendor_name ? ` · ${t.vendor_name}` : ''}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link href="/admin/operations" className="att-link">View maintenance →</Link>
+            </div>
+
+            <div className="att-panel att-panel--stock">
+              <div className="att-panel-head">
+                <span className="att-panel-title">Low stock</span>
+                <span className="att-badge att-badge--stock">{attention.counts.low_stock}</span>
+              </div>
+              {attention.low_stock.length === 0 ? (
+                <div className="att-empty">All clear</div>
+              ) : (
+                <ul className="att-list">
+                  {attention.low_stock.slice(0, 5).map((it) => (
+                    <li key={it.id} className="att-item">
+                      <span className="att-item-main">{it.name}</span>
+                      <span className="att-item-sub">{it.listing_name} · {Number(it.current_qty)}/{Number(it.min_qty)} {it.unit}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link href="/admin/operations?tab=inventory" className="att-link">View inventory →</Link>
+            </div>
+
+            <div className="att-panel att-panel--checkin">
+              <div className="att-panel-head">
+                <span className="att-panel-title">Check-ins soon</span>
+                <span className="att-badge att-badge--checkin">{attention.counts.checkins_soon}</span>
+              </div>
+              {attention.checkins.length === 0 ? (
+                <div className="att-empty">Nothing in 3 days</div>
+              ) : (
+                <ul className="att-list">
+                  {attention.checkins.slice(0, 5).map((c, i) => (
+                    <li key={i} className="att-item">
+                      <span className="att-item-main">{c.listing_name}</span>
+                      <span className="att-item-sub">{shortDate(c.start_date)} · {c.guests} guests · {c.confirmation_code}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link href="/admin/properties/list" className="att-link">View properties →</Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="wander-metrics-grid">
         {metrics.map((metric, i) => (

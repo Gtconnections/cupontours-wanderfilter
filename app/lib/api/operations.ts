@@ -245,3 +245,83 @@ export function updateTurnover(payload: {
 }): Promise<TurnoverOverlay> {
   return request('/ops/turnovers/', { method: 'PATCH', body: JSON.stringify(payload) });
 }
+
+export interface AttentionTurnover { listing_name: string; checkout_date: string; next_checkin: string | null; same_day: boolean; is_today: boolean; status: string; cleaner_name: string | null; }
+export interface AttentionTicket { id: number; title: string; listing_name: string; priority: string; status: string; category: string; vendor_name: string | null; }
+export interface AttentionLowStock { id: number; name: string; listing_name: string; current_qty: string; min_qty: string; unit: string; }
+export interface AttentionCheckin { listing_name: string; start_date: string; confirmation_code: string; guests: number; }
+export interface AttentionCounts { turnovers_today: number; same_day: number; urgent_tickets: number; open_tickets: number; low_stock: number; checkins_soon: number; }
+export interface AttentionData {
+  turnovers: AttentionTurnover[];
+  tickets: AttentionTicket[];
+  low_stock: AttentionLowStock[];
+  checkins: AttentionCheckin[];
+  counts: AttentionCounts;
+}
+
+export function getAttention(): Promise<AttentionData> {
+  return request('/ops/attention/');
+}
+
+export interface GuestListItem {
+  id: number;
+  full_name: string;
+  email: string;
+  phone: string;
+  reservations: number;
+  property_reservations: number;
+  yacht_reservations: number;
+  total_spend: string;
+  incidentals_total: string;
+}
+export interface GuestReservation {
+  type: 'property' | 'yacht';
+  listing_name?: string;
+  yacht_name?: string;
+  confirmation_code?: string;
+  start_date?: string;
+  end_date?: string | null;
+  date?: string;
+  duration?: string;
+  nights?: number;
+  guests?: number;
+  earnings: string;
+  status?: string;
+  occasion?: string;
+}
+export interface GuestIncidental { id: number; title: string; amount: string; date: string | null; notes: string; created_at: string; }
+export interface GuestDetail {
+  id: number;
+  full_name: string;
+  email: string;
+  phone: string;
+  notes: string;
+  created_at: string;
+  property_reservations: GuestReservation[];
+  yacht_reservations: GuestReservation[];
+  incidentals: GuestIncidental[];
+  totals: { reservations: number; total_spend: string; incidentals_total: string };
+}
+
+export function getGuests(search?: string): Promise<{ guests: GuestListItem[] }> {
+  const q = search ? `?search=${encodeURIComponent(search)}` : '';
+  return request(`/ops/guests/${q}`);
+}
+export function createGuest(payload: { full_name: string; email: string; phone?: string; notes?: string }): Promise<GuestListItem> {
+  return request('/ops/guests/', { method: 'POST', body: JSON.stringify(payload) });
+}
+export function getGuest(id: number): Promise<GuestDetail> {
+  return request(`/ops/guests/${id}/`);
+}
+export function updateGuest(id: number, payload: Partial<{ full_name: string; phone: string; notes: string }>): Promise<GuestDetail> {
+  return request(`/ops/guests/${id}/`, { method: 'PATCH', body: JSON.stringify(payload) });
+}
+export function deleteGuest(id: number): Promise<null> {
+  return request(`/ops/guests/${id}/`, { method: 'DELETE' });
+}
+export function addIncidental(guestId: number, payload: { title: string; amount?: number; date?: string; notes?: string }): Promise<GuestIncidental> {
+  return request(`/ops/guests/${guestId}/incidentals/`, { method: 'POST', body: JSON.stringify(payload) });
+}
+export function deleteIncidental(incidentalId: number): Promise<null> {
+  return request(`/ops/guests/incidentals/${incidentalId}/`, { method: 'DELETE' });
+}

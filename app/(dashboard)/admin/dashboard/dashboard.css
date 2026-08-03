@@ -264,3 +264,31 @@
   .wander-calendar-day.has-reservation:hover,
   .wander-chart-bar:hover { transform: none !important; }
 }
+
+/* ---- Action center (Requires your attention) ---- */
+.att-section { margin-bottom: 32px; }
+.att-head { margin-bottom: 14px; }
+.att-eyebrow { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-gold, #d4af37); font-weight: 700; margin-bottom: 4px; }
+.att-head h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-main, #111111); margin: 0; }
+.att-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.att-panel { background-color: var(--bg-main, #ffffff); border: 1px solid rgba(150,150,150,0.16); border-top: 3px solid rgba(150,150,150,0.3); border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; }
+.att-panel--turn { border-top-color: #d4af37; }
+.att-panel--ticket { border-top-color: #e05252; }
+.att-panel--stock { border-top-color: #e8952e; }
+.att-panel--checkin { border-top-color: #2563eb; }
+.att-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.att-panel-title { font-size: 13px; font-weight: 700; color: var(--text-main, #111111); text-transform: uppercase; letter-spacing: .4px; }
+.att-badge { min-width: 24px; height: 24px; padding: 0 8px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; }
+.att-badge--turn { background: #d4af37; color: #1a1a1a; }
+.att-badge--ticket { background: #e05252; }
+.att-badge--stock { background: #e8952e; }
+.att-badge--checkin { background: #2563eb; }
+.att-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+.att-item { display: flex; flex-direction: column; gap: 2px; }
+.att-item-main { font-size: 13.5px; font-weight: 600; color: var(--text-main, #111111); line-height: 1.25; }
+.att-item-sub { font-size: 11.5px; color: #8a8a8a; }
+.att-tag { font-weight: 700; color: #6b7280; }
+.att-tag--red { color: #c0392b; }
+.att-empty { flex: 1; display: flex; align-items: center; justify-content: center; padding: 18px 0; font-size: 12.5px; color: #9a9a9a; }
+.att-link { display: inline-block; margin-top: 14px; font-size: 12px; font-weight: 700; color: var(--accent-gold, #d4af37); text-decoration: none; }
+.att-link:hover { text-decoration: underline; }
