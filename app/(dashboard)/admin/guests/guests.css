@@ -69,3 +69,12 @@
   .crm-row { grid-template-columns: 1.6fr 1fr; }
   .crm-stats { grid-template-columns: 1fr; }
 }
+
+/* ---- Pagination ---- */
+.crm-pager { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+.crm-pager-num, .crm-pager-btn { min-width: 38px; height: 38px; padding: 0 11px; border-radius: 999px; border: 1px solid rgba(150,150,150,0.28); background: transparent; color: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: border-color .2s ease, background .2s ease, color .2s ease; }
+.crm-pager-num:hover:not(.active), .crm-pager-btn:hover:not(:disabled) { border-color: #d4af37; color: #a17f1e; }
+.crm-pager-num.active { background: #d4af37; border-color: #d4af37; color: #1a1a1a; cursor: default; }
+.crm-pager-btn { font-size: 20px; line-height: 1; }
+.crm-pager-btn:disabled { opacity: .4; cursor: not-allowed; }
+.crm-pager-ellipsis { min-width: 22px; text-align: center; color: #9a9a9a; font-weight: 700; align-self: flex-end; padding-bottom: 8px; }

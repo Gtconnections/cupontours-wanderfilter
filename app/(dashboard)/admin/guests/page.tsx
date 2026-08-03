@@ -47,6 +47,8 @@ function NewGuestModal({ onClose, onCreated }: { onClose: () => void; onCreated:
   );
 }
 
+const GUESTS_PER_PAGE = 12;
+
 export default function GuestsPage() {
   const router = useRouter();
   const { isChecking, checkAuth } = useAuth();
@@ -55,6 +57,7 @@ export default function GuestsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [page, setPage] = useState(1);
 
   const load = useCallback(async () => {
     setLoading(true); setError(null);
@@ -75,6 +78,20 @@ export default function GuestsPage() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChecking, load]);
+
+  useEffect(() => { setPage(1); }, [search]);
+
+  const totalPages = Math.max(1, Math.ceil(guests.length / GUESTS_PER_PAGE));
+  const current = Math.min(page, totalPages);
+  const pageItems = guests.slice((current - 1) * GUESTS_PER_PAGE, current * GUESTS_PER_PAGE);
+  const pageList: (number | string)[] = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= current - 1 && i <= current + 1)) {
+      pageList.push(i);
+    } else if (pageList[pageList.length - 1] !== '...') {
+      pageList.push('...');
+    }
+  }
 
   return (
     <div className="crm-container">
@@ -102,7 +119,7 @@ export default function GuestsPage() {
           <div className="crm-row crm-row--head">
             <div>Guest</div><div>Reservations</div><div>Total spend</div><div>Incidentals</div>
           </div>
-          {guests.map((g) => (
+          {pageItems.map((g) => (
             <Link key={g.id} href={`/admin/guests/${g.id}`} className="crm-row crm-row--link">
               <div>
                 <div className="crm-name">{g.full_name}</div>
@@ -116,6 +133,20 @@ export default function GuestsPage() {
               <div>{Number(g.incidentals_total) > 0 ? <span className="crm-inc">{money(g.incidentals_total)}</span> : <span className="crm-muted">—</span>}</div>
             </Link>
           ))}
+        </div>
+      )}
+
+      {!loading && totalPages > 1 && (
+        <div className="crm-pager">
+          <button className="crm-pager-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={current === 1} aria-label="Previous page">‹</button>
+          {pageList.map((n, idx) =>
+            typeof n === 'number' ? (
+              <button key={n} className={`crm-pager-num ${n === current ? 'active' : ''}`} onClick={() => setPage(n)}>{n}</button>
+            ) : (
+              <span key={`ellipsis-${idx}`} className="crm-pager-ellipsis">…</span>
+            )
+          )}
+          <button className="crm-pager-btn" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={current === totalPages} aria-label="Next page">›</button>
         </div>
       )}
 
