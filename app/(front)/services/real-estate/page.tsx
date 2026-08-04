@@ -92,7 +92,7 @@ export default function RealEstatePage() {
                 <div key={item.id} className="re-card">
                   <Link href={`/services/real-estate/${item.id}`} className="re-img-container">
                     <img 
-                      src={`https://images.unsplash.com/photo-1613490908679-fd39d899ec85?auto=format&fit=crop&w=800&q=80`} 
+                      src={item.principal_image} 
                       alt={item.name} 
                       className="re-img"
                       loading="lazy" 
