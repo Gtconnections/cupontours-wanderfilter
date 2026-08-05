@@ -139,16 +139,22 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
 
             {/* Tira de Miniaturas (Se oculta por completo si no hay galería extra en la BD) */}
             {allImages.length > 1 && (
-              <div className="re-gallery-strip">
-                {allImages.slice(1, 5).map((img, idx) => (
-                  <div key={idx} className="re-thumb" onClick={() => openLightbox(idx + 1)}>
-                    <img src={img} alt={`Gallery ${idx + 1}`} />
-                    {idx === 3 && allImages.length > 5 && (
-                      <div className="re-thumb-overlay">+{allImages.length - 5}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
+              <>
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+                  .re-gallery-grid .re-gtile { cursor: pointer; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; background: rgba(140,140,140,0.12); }
+                  .re-gallery-grid .re-gtile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+                  .re-gallery-grid .re-gtile:hover img { transform: scale(1.06); }
+                  @media (max-width: 640px) { .re-gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+                ` }} />
+                <div className="re-gallery-grid">
+                  {allImages.slice(1).map((img, idx) => (
+                    <div key={idx} className="re-gtile" onClick={() => openLightbox(idx + 1)}>
+                      <img src={img} alt={`Gallery ${idx + 1}`} />
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
 
             <hr className="re-divider" />
@@ -176,7 +182,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   <table className="re-units-table">
                     <thead>
                       <tr>
-                        <th>Tower</th>
+                        <th>Type</th>
                         <th>Unit</th>
                         <th>Size</th>
                         <th className="ru-price">Price</th>
