@@ -65,7 +65,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
   const allImages = [
     property.principal_image,
     ...(property.galeria?.map(g => g.url) || [])
-  ].filter(Boolean);
+  ].filter((u) => typeof u === 'string' && /^https?:\/\//.test(u));
 
   // Link dinámico a WhatsApp
   const whatsappNumber = "17866566582";
@@ -163,6 +163,14 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
 
             {property.units && property.units.length > 0 && (
               <section className="re-section">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-units-wrap { overflow-x: auto; margin-top: 4px; }
+                  .re-units-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+                  .re-units-table th { text-align: left; padding: 12px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #8f897f; font-weight: 600; border-bottom: 1px solid rgba(140,140,140,0.35); }
+                  .re-units-table td { padding: 12px; border-bottom: 1px solid rgba(140,140,140,0.2); color: inherit; }
+                  .re-units-table th.ru-price, .re-units-table td.ru-price { text-align: right; font-weight: 700; color: #d4af37; white-space: nowrap; }
+                  .re-units-table tbody tr:hover td { background: rgba(212,175,55,0.06); }
+                ` }} />
                 <h2 className="re-section-title">Available Units</h2>
                 <div className="re-units-wrap">
                   <table className="re-units-table">
