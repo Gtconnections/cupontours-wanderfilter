@@ -71,9 +71,15 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
   const whatsappMessage = encodeURIComponent(`Hello, I'm interested in the property "${property.name}" located in ${property.location}.`);
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
-  const formatPrice = (priceStr: string) => {
+  const formatMoney = (priceStr: string, currency?: string) => {
     const num = parseFloat(priceStr);
-    return new Intl.NumberFormat('en-US').format(num);
+    if (!num || num <= 0) return 'Price on request';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency || 'USD',
+      currencyDisplay: 'code',
+      maximumFractionDigits: 0,
+    }).format(num);
   };
 
   const openLightbox = (index: number) => {
@@ -159,7 +165,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
           <aside className="re-sidebar">
             <div className="re-booking-widget">
               <div className="widget-header">
-                <span className="widget-price">${formatPrice(property.price)}</span>
+                <span className="widget-price">{formatMoney(property.price, property.currency)}</span>
                 <span className="widget-unit">
                   {property.operation_type.toLowerCase() === 'renta' ? '/ Month' : ''}
                 </span>
@@ -269,7 +275,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
             "offers": {
               "@type": "Offer",
               "price": property.price,
-              "priceCurrency": "USD"
+              "priceCurrency": property.currency || "USD"
             }
           }}
         />

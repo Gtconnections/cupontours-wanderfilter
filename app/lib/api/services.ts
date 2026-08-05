@@ -101,6 +101,7 @@ export interface RealEstateItem {
   slug: string;
   principal_image: string;
   price: string;
+  currency: string;
   operation_type: string;
   property_type: string;
   bedrooms: number;

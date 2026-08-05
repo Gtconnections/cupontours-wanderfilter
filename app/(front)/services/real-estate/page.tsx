@@ -44,9 +44,15 @@ export default function RealEstatePage() {
     window.scrollTo({ top: (document.getElementById('catalog-start')?.offsetTop ?? 0) - 100, behavior: 'smooth' });
   };
 
-  const formatPrice = (priceStr: string) => {
+  const formatMoney = (priceStr: string, currency?: string) => {
     const num = parseFloat(priceStr);
-    return new Intl.NumberFormat('en-US').format(num);
+    if (!num || num <= 0) return 'Price on request';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency || 'USD',
+      currencyDisplay: 'code',
+      maximumFractionDigits: 0,
+    }).format(num);
   };
 
   return (
@@ -109,7 +115,7 @@ export default function RealEstatePage() {
                   
                   <div className="re-info">
                     <div className="re-price-row">
-                      <span className="re-price">${formatPrice(item.price)}</span>
+                      <span className="re-price">{formatMoney(item.price, item.currency)}</span>
                       <span className="re-location">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         {item.location}
