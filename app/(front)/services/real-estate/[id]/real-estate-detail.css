@@ -422,10 +422,11 @@
 .re-detail-page .re-units-table th, .re-detail-page .re-units-table td { text-align: left; padding: 12px 12px; border-bottom: 1px solid #ececec; }
 .re-detail-page .re-units-table th { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #717171; font-weight: 600; }
 .re-detail-page .re-units-table td { color: #333333; }
-.re-detail-page .re-units-table th.ru-price, .re-detail-page .re-units-table td.ru-price { text-align: right; font-weight: 700; color: #111111; white-space: nowrap; }
+.re-detail-page .re-units-table th.ru-price, .re-detail-page .re-units-table td.ru-price { text-align: right; white-space: nowrap; }
+.re-detail-page .re-units-table td.ru-price { font-weight: 700; color: #d4af37; }
 .re-detail-page .re-units-table tbody tr:hover td { background: #faf7f0; }
 [data-theme="dark"] .re-detail-page .re-units-table th { color: #a7a199; }
 [data-theme="dark"] .re-detail-page .re-units-table td { color: #cfc9bf; border-bottom-color: rgba(255,255,255,0.08); }
-[data-theme="dark"] .re-detail-page .re-units-table td.ru-price { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-units-table td.ru-price { color: #d4af37; }
 [data-theme="dark"] .re-detail-page .re-units-table tbody tr:hover td { background: rgba(212,175,55,0.06); }
 
