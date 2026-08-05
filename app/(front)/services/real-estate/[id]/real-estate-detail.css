@@ -1,37 +1,31 @@
-/* ==========================================================================
-   WANDER FILTER - REAL ESTATE DETAIL STYLES
-   ========================================================================== */
-.re-page {
+
+.re-detail-page {
   background-color: #ffffff;
   min-height: 100vh;
   padding-top: 120px;
   padding-bottom: 80px;
 }
 
-.re-container {
+.re-detail-page .re-container {
   max-width: 1140px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* ============================================
-   ESTADOS (LOADING / ERROR)
-   ============================================ */
-.re-skeleton {
+
+.re-detail-page .re-skeleton {
   height: 400px;
   background-color: #eaeaea;
   border-radius: 12px;
   margin-top: 120px;
 }
 
-.re-error-container {
+.re-detail-page .re-error-container {
   margin-top: 120px;
 }
 
-/* ============================================
-   HEADER & BREADCRUMB
-   ============================================ */
-.re-breadcrumb {
+
+.re-detail-page .re-breadcrumb {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -42,26 +36,26 @@
   gap: 8px;
 }
 
-.re-breadcrumb a {
+.re-detail-page .re-breadcrumb a {
   color: #111111;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s;
 }
 
-.re-breadcrumb a:hover {
+.re-detail-page .re-breadcrumb a:hover {
   color: #d4af37;
 }
 
-.re-breadcrumb .current {
+.re-detail-page .re-breadcrumb .current {
   color: #aaaaaa;
 }
 
-.re-header {
+.re-detail-page .re-header {
   margin-bottom: 40px;
 }
 
-.re-category {
+.re-detail-page .re-category {
   display: inline-block;
   font-size: 11px;
   color: #d4af37;
@@ -71,7 +65,7 @@
   margin-bottom: 12px;
 }
 
-.re-title {
+.re-detail-page .re-title {
   font-family: 'Times New Roman', Times, serif;
   font-size: 42px;
   font-weight: 400;
@@ -80,20 +74,16 @@
   line-height: 1.1;
 }
 
-/* ============================================
-   LAYOUT GRID (2 COLUMNAS)
-   ============================================ */
-.re-grid {
+
+.re-detail-page .re-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 48px;
   align-items: start;
 }
 
-/* ============================================
-   GALERÍA E IMÁGENES
-   ============================================ */
-.re-main-image {
+
+.re-detail-page .re-main-image {
   width: 100%;
   aspect-ratio: 16/10;
   border-radius: 12px;
@@ -104,18 +94,18 @@
   margin-bottom: 16px;
 }
 
-.re-main-image img {
+.re-detail-page .re-main-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.re-main-image:hover img {
+.re-detail-page .re-main-image:hover img {
   transform: scale(1.02);
 }
 
-.expand-hint {
+.re-detail-page .expand-hint {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -129,18 +119,18 @@
   transition: opacity 0.3s ease;
 }
 
-.re-main-image:hover .expand-hint {
+.re-detail-page .re-main-image:hover .expand-hint {
   opacity: 1;
 }
 
-.re-gallery-strip {
+.re-detail-page .re-gallery-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 48px;
 }
 
-.re-thumb {
+.re-detail-page .re-thumb {
   aspect-ratio: 4/3;
   border-radius: 8px;
   overflow: hidden;
@@ -148,18 +138,18 @@
   position: relative;
 }
 
-.re-thumb img {
+.re-detail-page .re-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: opacity 0.3s ease;
 }
 
-.re-thumb:hover img {
+.re-detail-page .re-thumb:hover img {
   opacity: 0.8;
 }
 
-.re-thumb-overlay {
+.re-detail-page .re-thumb-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.6);
@@ -171,14 +161,12 @@
   font-weight: 500;
 }
 
-/* ============================================
-   CONTENIDO PRINCIPAL
-   ============================================ */
-.re-section {
+
+.re-detail-page .re-section {
   margin-bottom: 90px;
 }
 
-.re-section-title {
+.re-detail-page .re-section-title {
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.3px;
@@ -186,23 +174,21 @@
   margin-bottom: 16px;
 }
 
-.re-divider {
+.re-detail-page .re-divider {
   border: 0;
   height: 1px;
   background-color: #eaeaea;
   margin: 32px 0;
 }
 
-.re-description {
+.re-detail-page .re-description {
   font-size: 15px;
   line-height: 1.8;
   color: #555555;
 }
 
-/* ============================================
-   WIDGET DE RESERVA (STICKY)
-   ============================================ */
-.re-booking-widget {
+
+.re-detail-page .re-booking-widget {
   background: #ffffff;
   border: 1px solid #eaeaea;
   border-radius: 16px;
@@ -212,45 +198,45 @@
   top: 100px;
 }
 
-.widget-header {
+.re-detail-page .widget-header {
   padding-bottom: 0;
   margin-bottom: 16px;
   border-bottom: none;
 }
 
-.widget-price {
+.re-detail-page .widget-price {
   font-size: 32px;
   font-weight: 700;
   color: #111111;
   letter-spacing: -1px;
 }
 
-.widget-unit {
+.re-detail-page .widget-unit {
   font-size: 14px;
   color: #717171;
   font-weight: 500;
   margin-left: 4px;
 }
 
-/* Especificaciones dentro del widget */
-.widget-specs {
+
+.re-detail-page .widget-specs {
   padding: 20px 0;
   border-top: 1px solid #eaeaea;
   border-bottom: 1px solid #eaeaea;
   margin-bottom: 24px;
 }
 
-.widget-spec-row {
+.re-detail-page .widget-spec-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.widget-spec-row:last-child {
+.re-detail-page .widget-spec-row:last-child {
   margin-bottom: 0;
 }
 
-.widget-spec-label {
+.re-detail-page .widget-spec-label {
   font-size: 13px;
   color: #888888;
   text-transform: uppercase;
@@ -258,7 +244,7 @@
   font-weight: 600;
 }
 
-.widget-spec-value {
+.re-detail-page .widget-spec-value {
   font-size: 14px;
   font-weight: 600;
   color: #111111;
@@ -266,15 +252,15 @@
   max-width: 60%;
 }
 
-.widget-info p {
+.re-detail-page .widget-info p {
   font-size: 12px;
   color: #717171;
   line-height: 1.5;
   margin-bottom: 24px;
 }
 
-/* Botones */
-.btn-black-pill, .btn-outline-pill {
+
+.re-detail-page .btn-black-pill, .re-detail-page .btn-outline-pill {
   display: inline-block;
   padding: 14px 24px;
   border-radius: 40px;
@@ -286,16 +272,16 @@
   transition: all 0.2s ease;
 }
 
-.btn-black-pill { background-color: #111111; color: #ffffff; border: none; }
-.btn-black-pill:hover { background-color: #333333; }
-.btn-outline-pill { background-color: transparent; color: #111111; border: 1px solid #eaeaea; }
-.btn-outline-pill:hover { background-color: #fafafa; border-color: #111111; }
+.re-detail-page .btn-black-pill { background-color: #111111; color: #ffffff; border: none; }
+.re-detail-page .btn-black-pill:hover { background-color: #333333; }
+.re-detail-page .btn-outline-pill { background-color: transparent; color: #111111; border: 1px solid #eaeaea; }
+.re-detail-page .btn-outline-pill:hover { background-color: #fafafa; border-color: #111111; }
 
-.full-width {
+.re-detail-page .full-width {
   width: 100%;
 }
 
-.btn-whatsapp {
+.re-detail-page .btn-whatsapp {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -303,11 +289,11 @@
   text-decoration: none;
 }
 
-.mt-2 {
+.re-detail-page .mt-2 {
   margin-top: 12px;
 }
 
-.widget-assurance {
+.re-detail-page .widget-assurance {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,10 +303,8 @@
   font-size: 11px;
 }
 
-/* ============================================
-   LIGHTBOX OVERLAY
-   ============================================ */
-.re-lightbox-overlay {
+
+.re-detail-page .re-lightbox-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.95);
@@ -332,7 +316,7 @@
   -webkit-backdrop-filter: blur(8px);
 }
 
-.lb-image {
+.re-detail-page .lb-image {
   max-width: 90vw;
   max-height: 85vh;
   object-fit: contain;
@@ -346,7 +330,7 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-.lb-close {
+.re-detail-page .lb-close {
   position: absolute;
   top: 32px;
   right: 32px;
@@ -358,12 +342,12 @@
   transition: transform 0.2s;
 }
 
-.lb-close:hover {
+.re-detail-page .lb-close:hover {
   transform: scale(1.1);
   color: #d4af37;
 }
 
-.lb-nav {
+.re-detail-page .lb-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -380,14 +364,14 @@
   transition: background 0.3s;
 }
 
-.lb-nav:hover {
+.re-detail-page .lb-nav:hover {
   background: rgba(212, 175, 55, 0.8);
 }
 
-.lb-prev { left: 40px; }
-.lb-next { right: 40px; }
+.re-detail-page .lb-prev { left: 40px; }
+.re-detail-page .lb-next { right: 40px; }
 
-.lb-counter {
+.re-detail-page .lb-counter {
   position: absolute;
   bottom: 32px;
   color: #ffffff;
@@ -395,40 +379,53 @@
   letter-spacing: 2px;
 }
 
-/* ============================================
-   MEDIA QUERIES
-   ============================================ */
+
 @media (min-width: 1024px) {
-  .re-header { margin-bottom: 56px; }
-  .re-title { font-size: 56px; }
+  .re-detail-page .re-header { margin-bottom: 56px; }
+  .re-detail-page .re-title { font-size: 56px; }
   
-  /* Activar layout asimétrico de 2 columnas */
-  .re-grid {
+  
+  .re-detail-page .re-grid {
     grid-template-columns: 1.8fr 1fr;
     gap: 64px;
   }
 }
-/* ========================= DARK THEME — /services/real-estate/[id] (.re-page) ========================= */
-[data-theme="dark"] .re-page { background-color: #0a0a0b; color: #ece7dd; }
-[data-theme="dark"] .re-page .re-skeleton { background-color: #1c1c20; }
-[data-theme="dark"] .re-page .re-breadcrumb { color: #8f897f; }
-[data-theme="dark"] .re-page .re-breadcrumb a { color: #ece7dd; }
-[data-theme="dark"] .re-page .re-breadcrumb .current { color: #726c63; }
-[data-theme="dark"] .re-page .re-title { color: #ece7dd; }
-[data-theme="dark"] .re-page .re-main-image { background-color: #141416; }
-[data-theme="dark"] .re-page .expand-hint { background: rgba(20,20,22,0.82); color: #ece7dd; }
-[data-theme="dark"] .re-page .re-section-title { color: #ece7dd; }
-[data-theme="dark"] .re-page .re-divider { background-color: rgba(255,255,255,0.10); }
-[data-theme="dark"] .re-page .re-description { color: #b8b2a8; }
-[data-theme="dark"] .re-page .re-booking-widget { background: #141416; border-color: rgba(255,255,255,0.08); }
-[data-theme="dark"] .re-page .widget-price { color: #ece7dd; }
-[data-theme="dark"] .re-page .widget-unit { color: #a7a199; }
-[data-theme="dark"] .re-page .widget-specs { border-top-color: rgba(255,255,255,0.10); border-bottom-color: rgba(255,255,255,0.10); }
-[data-theme="dark"] .re-page .widget-spec-label { color: #8f897f; }
-[data-theme="dark"] .re-page .widget-spec-value { color: #ece7dd; }
-[data-theme="dark"] .re-page .widget-info p { color: #a7a199; }
-[data-theme="dark"] .re-page .widget-assurance { color: #8f897f; }
-[data-theme="dark"] .re-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; }
-[data-theme="dark"] .re-page .btn-black-pill:hover { background-color: #e8c766; }
-[data-theme="dark"] .re-page .btn-outline-pill { color: #ece7dd; border-color: rgba(255,255,255,0.16); }
-[data-theme="dark"] .re-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: #ece7dd; }
+
+[data-theme="dark"] .re-detail-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-skeleton { background-color: #1c1c20; }
+[data-theme="dark"] .re-detail-page .re-breadcrumb { color: #8f897f; }
+[data-theme="dark"] .re-detail-page .re-breadcrumb a { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-breadcrumb .current { color: #726c63; }
+[data-theme="dark"] .re-detail-page .re-title { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-main-image { background-color: #141416; }
+[data-theme="dark"] .re-detail-page .expand-hint { background: rgba(20,20,22,0.82); color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-section-title { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-divider { background-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .re-detail-page .re-description { color: #b8b2a8; }
+[data-theme="dark"] .re-detail-page .re-booking-widget { background: #141416; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .re-detail-page .widget-price { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .widget-unit { color: #a7a199; }
+[data-theme="dark"] .re-detail-page .widget-specs { border-top-color: rgba(255,255,255,0.10); border-bottom-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .re-detail-page .widget-spec-label { color: #8f897f; }
+[data-theme="dark"] .re-detail-page .widget-spec-value { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .widget-info p { color: #a7a199; }
+[data-theme="dark"] .re-detail-page .widget-assurance { color: #8f897f; }
+[data-theme="dark"] .re-detail-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; }
+[data-theme="dark"] .re-detail-page .btn-black-pill:hover { background-color: #e8c766; }
+[data-theme="dark"] .re-detail-page .btn-outline-pill { color: #ece7dd; border-color: rgba(255,255,255,0.16); }
+[data-theme="dark"] .re-detail-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: #ece7dd; }
+
+
+
+.re-detail-page .re-units-wrap { overflow-x: auto; margin-top: 4px; }
+.re-detail-page .re-units-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.re-detail-page .re-units-table th, .re-detail-page .re-units-table td { text-align: left; padding: 12px 12px; border-bottom: 1px solid #ececec; }
+.re-detail-page .re-units-table th { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #717171; font-weight: 600; }
+.re-detail-page .re-units-table td { color: #333333; }
+.re-detail-page .re-units-table th.ru-price, .re-detail-page .re-units-table td.ru-price { text-align: right; font-weight: 700; color: #111111; white-space: nowrap; }
+.re-detail-page .re-units-table tbody tr:hover td { background: #faf7f0; }
+[data-theme="dark"] .re-detail-page .re-units-table th { color: #a7a199; }
+[data-theme="dark"] .re-detail-page .re-units-table td { color: #cfc9bf; border-bottom-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .re-detail-page .re-units-table td.ru-price { color: #ece7dd; }
+[data-theme="dark"] .re-detail-page .re-units-table tbody tr:hover td { background: rgba(212,175,55,0.06); }
+

@@ -41,7 +41,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
 
   if (isLoading) {
     return (
-      <main className="re-page loading-state">
+      <main className="re-detail-page loading-state">
         <div className="re-container">
           <div className="re-skeleton animate-pulse"></div>
         </div>
@@ -51,7 +51,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
 
   if (!property) {
     return (
-      <main className="re-page error-state">
+      <main className="re-detail-page error-state">
         <div className="re-container re-error-container text-center">
           <h2>Property Not Found</h2>
           <p>The exclusive property you are looking for is not available.</p>
@@ -107,7 +107,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
   };
 
   return (
-    <main className="re-page">
+    <main className="re-detail-page">
       <div className="re-container">
         
         <nav className="re-breadcrumb">

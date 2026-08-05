@@ -56,7 +56,7 @@ export default function RealEstatePage() {
   };
 
   return (
-    <main className="re-page">
+    <main className="re-list-page">
       <section className="re-hero">
         <div className="hero-overlay"></div>
         <div className="hero-container">

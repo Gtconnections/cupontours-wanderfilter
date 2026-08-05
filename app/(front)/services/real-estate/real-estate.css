@@ -1,44 +1,40 @@
-/* ==========================================================================
-   WANDER FILTER - REAL ESTATE STYLES (LUXURY EDITION V2)
-   ========================================================================== */
-.re-page {
+
+.re-list-page {
   background-color: #ffffff;
   min-height: 100vh;
 }
 
-.inner-container {
+.re-list-page .inner-container {
   max-width: var(--max-width, 1280px);
   margin: 0 auto;
 }
 
-.bg-gray-light {
+.re-list-page .bg-gray-light {
   background: radial-gradient(ellipse 1400px 700px at 50% 0%, #ffffff 0%, #f8f6f1 55%, #f3efe6 100%);
 }
 
-.text-center {
+.re-list-page .text-center {
   text-align: center;
 }
-.text-center p {
+.re-list-page .text-center p {
   margin-left: auto;
   margin-right: auto;
 }
 
-.w-full {
+.re-list-page .w-full {
   width: 100%;
   display: block;
 }
 
-.accent-word {
+.re-list-page .accent-word {
   color: #d4af37;
   font-family: 'Times New Roman', Times, serif;
   font-style: italic;
   font-weight: 400;
 }
 
-/* ============================================
-   HERO BANNER
-   ============================================ */
-.re-hero {
+
+.re-list-page .re-hero {
   position: relative;
   height: 62vh;
   min-height: 480px;
@@ -50,21 +46,21 @@
   padding: 0 20px;
 }
 
-.re-hero .hero-overlay {
+.re-list-page .re-hero .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(8,8,10,0.3) 0%, rgba(8,8,10,0.55) 55%, rgba(8,8,10,0.85) 100%);
   z-index: 1;
 }
 
-.re-hero .hero-container {
+.re-list-page .re-hero .hero-container {
   position: relative;
   z-index: 2;
   color: #ffffff;
   max-width: 820px;
 }
 
-.re-hero .pre-title {
+.re-list-page .re-hero .pre-title {
   color: #d4af37;
   font-size: 11px;
   letter-spacing: 4px;
@@ -74,7 +70,7 @@
   font-weight: 700;
 }
 
-.re-hero .hero-divider {
+.re-list-page .re-hero .hero-divider {
   display: block;
   width: 60px;
   height: 1px;
@@ -82,7 +78,7 @@
   margin: 0 auto 22px;
 }
 
-.re-hero .massive-heading {
+.re-list-page .re-hero .massive-heading {
   font-family: 'Times New Roman', Times, serif;
   font-weight: 400;
   font-style: italic;
@@ -92,25 +88,23 @@
   color: #ffffff;
 }
 
-.re-hero .hero-subtitle {
+.re-list-page .re-hero .hero-subtitle {
   font-size: 15px;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.85);
   font-weight: 300;
 }
 
-/* ============================================
-   CATÁLOGO DE PROPIEDADES
-   ============================================ */
-.re-catalog-section {
+
+.re-list-page .re-catalog-section {
   padding: 72px 28px;
 }
 
-.re-catalog-section .section-header {
+.re-list-page .re-catalog-section .section-header {
   margin-bottom: 56px;
 }
 
-.re-catalog-section .section-header .pre-title {
+.re-list-page .re-catalog-section .section-header .pre-title {
   color: #d4af37;
   font-size: 11px;
   letter-spacing: 3px;
@@ -122,15 +116,14 @@
   gap: 14px;
 }
 
-.re-catalog-section .section-header .pre-title::before,
-.re-catalog-section .section-header .pre-title::after {
+.re-list-page .re-catalog-section .section-header .pre-title::before, .re-list-page .re-catalog-section .section-header .pre-title::after {
   content: '';
   width: 28px;
   height: 1px;
   background: #d4af37;
 }
 
-.re-catalog-section .section-header h2 {
+.re-list-page .re-catalog-section .section-header h2 {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -138,20 +131,20 @@
   color: #111111;
 }
 
-.re-catalog-section .section-header p {
+.re-list-page .re-catalog-section .section-header p {
   font-size: 15px;
   color: #717171;
   max-width: 600px;
   font-weight: 300;
 }
 
-.re-grid {
+.re-list-page .re-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 28px;
 }
 
-.re-card {
+.re-list-page .re-card {
   background-color: #ffffff;
   border: 1px solid #ececec;
   border-radius: 4px;
@@ -162,8 +155,7 @@
   position: relative;
 }
 
-.re-card::before,
-.re-card::after {
+.re-list-page .re-card::before, .re-list-page .re-card::after {
   content: '';
   position: absolute;
   width: 26px;
@@ -174,39 +166,39 @@
   transition: opacity 0.4s ease, top 0.4s ease, left 0.4s ease, right 0.4s ease, bottom 0.4s ease;
 }
 
-.re-card::before {
+.re-list-page .re-card::before {
   top: 12px;
   left: 12px;
   border-top: 1.5px solid #d4af37;
   border-left: 1.5px solid #d4af37;
 }
 
-.re-card::after {
+.re-list-page .re-card::after {
   bottom: 12px;
   right: 12px;
   border-bottom: 1.5px solid #d4af37;
   border-right: 1.5px solid #d4af37;
 }
 
-.re-card:hover {
+.re-list-page .re-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 28px 54px rgba(90, 68, 15, 0.16);
   border-color: #f2f2f2;
 }
 
-.re-card:hover::before {
+.re-list-page .re-card:hover::before {
   opacity: 1;
   top: 8px;
   left: 8px;
 }
 
-.re-card:hover::after {
+.re-list-page .re-card:hover::after {
   opacity: 1;
   bottom: 8px;
   right: 8px;
 }
 
-.re-img-container {
+.re-list-page .re-img-container {
   position: relative;
   width: 100%;
   aspect-ratio: 16/10;
@@ -215,7 +207,7 @@
   display: block;
 }
 
-.re-img-container::before {
+.re-list-page .re-img-container::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -225,22 +217,22 @@
   transition: opacity 0.35s ease;
 }
 
-.re-card:hover .re-img-container::before {
+.re-list-page .re-card:hover .re-img-container::before {
   opacity: 1;
 }
 
-.re-img {
+.re-list-page .re-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.re-card:hover .re-img {
+.re-list-page .re-card:hover .re-img {
   transform: scale(1.06);
 }
 
-.badges-container {
+.re-list-page .badges-container {
   position: absolute;
   top: 14px;
   left: 14px;
@@ -251,7 +243,7 @@
   gap: 8px;
 }
 
-.re-badge {
+.re-list-page .re-badge {
   padding: 7px 13px;
   border-radius: 4px;
   font-size: 10px;
@@ -262,30 +254,30 @@
   -webkit-backdrop-filter: blur(6px);
 }
 
-.re-badge.gold {
+.re-list-page .re-badge.gold {
   background: #d4af37;
   color: #111111;
 }
 
-.re-badge.dark {
+.re-list-page .re-badge.dark {
   background: rgba(13, 13, 15, 0.8);
   color: #ffffff;
   border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-.re-badge.glass {
+.re-list-page .re-badge.glass {
   background: rgba(255,255,255,0.9);
   color: #111111;
 }
 
-.re-info {
+.re-list-page .re-info {
   padding: 28px 26px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.re-price-row {
+.re-list-page .re-price-row {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -293,14 +285,14 @@
   margin-bottom: 14px;
 }
 
-.re-price {
+.re-list-page .re-price {
   font-size: 25px;
   font-weight: 700;
   color: #111111;
   letter-spacing: -0.5px;
 }
 
-.re-location {
+.re-list-page .re-location {
   font-size: 11px;
   color: #717171;
   display: flex;
@@ -311,7 +303,7 @@
   letter-spacing: 0.3px;
 }
 
-.re-info h3 {
+.re-list-page .re-info h3 {
   font-family: 'Times New Roman', Times, serif;
   font-size: 20px;
   font-weight: 400;
@@ -319,7 +311,7 @@
   color: #111111;
 }
 
-.re-address {
+.re-list-page .re-address {
   font-size: 13px;
   color: #888888;
   margin-bottom: 22px;
@@ -329,7 +321,7 @@
   font-weight: 300;
 }
 
-.re-specs {
+.re-list-page .re-specs {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -339,7 +331,7 @@
   border-bottom: 1px dashed rgba(212, 175, 55, 0.4);
 }
 
-.spec-item {
+.re-list-page .spec-item {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -348,18 +340,16 @@
   font-weight: 500;
 }
 
-.spec-item svg {
+.re-list-page .spec-item svg {
   color: #d4af37;
 }
 
-.re-footer {
+.re-list-page .re-footer {
   margin-top: auto;
 }
 
-/* ============================================
-   PAGINACIÓN Y BOTONES
-   ============================================ */
-.pagination-wrapper {
+
+.re-list-page .pagination-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -369,12 +359,12 @@
   border-top: 1px solid #ececec;
 }
 
-.page-numbers {
+.re-list-page .page-numbers {
   display: flex;
   gap: 8px;
 }
 
-.page-nav-btn, .page-num-btn {
+.re-list-page .page-nav-btn, .re-list-page .page-num-btn {
   background: transparent;
   border: 1px solid #ececec;
   color: #111111;
@@ -388,17 +378,17 @@
   font-size: 13px;
 }
 
-.page-nav-btn { width: 38px; height: 38px; }
-.page-num-btn { width: 38px; height: 38px; }
+.re-list-page .page-nav-btn { width: 38px; height: 38px; }
+.re-list-page .page-num-btn { width: 38px; height: 38px; }
 
-.page-nav-btn:hover:not(:disabled), .page-num-btn:hover:not(.active) {
+.re-list-page .page-nav-btn:hover:not(:disabled), .re-list-page .page-num-btn:hover:not(.active) {
   border-color: #d4af37;
   color: #d4af37;
 }
-.page-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.page-num-btn.active { background-color: #111111; color: #d4af37; border-color: #111111; }
+.re-list-page .page-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.re-list-page .page-num-btn.active { background-color: #111111; color: #d4af37; border-color: #111111; }
 
-.btn-black-pill, .btn-outline-pill {
+.re-list-page .btn-black-pill, .re-list-page .btn-outline-pill {
   display: inline-block;
   padding: 13px 30px;
   border-radius: 40px;
@@ -411,14 +401,14 @@
   transition: all 0.3s ease;
 }
 
-.btn-black-pill { background-color: #111111; color: #ffffff; border: 1px solid #111111; }
-.btn-black-pill:hover { background-color: #d4af37; border-color: #d4af37; color: #111111; }
-.btn-outline-pill { background-color: transparent; color: #111111; border: 1px solid #dcdcdc; }
-.btn-outline-pill:hover { background-color: #111111; border-color: #111111; color: #d4af37; }
+.re-list-page .btn-black-pill { background-color: #111111; color: #ffffff; border: 1px solid #111111; }
+.re-list-page .btn-black-pill:hover { background-color: #d4af37; border-color: #d4af37; color: #111111; }
+.re-list-page .btn-outline-pill { background-color: transparent; color: #111111; border: 1px solid #dcdcdc; }
+.re-list-page .btn-outline-pill:hover { background-color: #111111; border-color: #111111; color: #d4af37; }
 
-.small-btn { padding: 11px 18px; font-size: 12px; }
+.re-list-page .small-btn { padding: 11px 18px; font-size: 12px; }
 
-.empty-state {
+.re-list-page .empty-state {
   grid-column: 1 / -1;
   text-align: center;
   padding: 60px 20px;
@@ -429,13 +419,11 @@
   border-radius: 12px;
 }
 
-.animate-pulse { animation: pulse 1.5s ease-in-out infinite; }
+.re-list-page .animate-pulse { animation: pulse 1.5s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.8; } }
 
-/* ============================================
-   CALL TO ACTION INFERIOR
-   ============================================ */
-.re-cta {
+
+.re-list-page .re-cta {
   padding: 90px 28px;
   text-align: center;
   background-color: #0d0d0f;
@@ -443,7 +431,7 @@
   overflow: hidden;
 }
 
-.re-cta::before {
+.re-list-page .re-cta::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -456,8 +444,8 @@
   z-index: 0;
 }
 
-.re-cta .cta-container { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
-.re-cta .cta-container::before {
+.re-list-page .re-cta .cta-container { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+.re-list-page .re-cta .cta-container::before {
   content: '';
   display: block;
   width: 50px;
@@ -465,7 +453,7 @@
   background: linear-gradient(90deg, transparent, #d4af37, transparent);
   margin: 0 auto 24px;
 }
-.re-cta h2 {
+.re-list-page .re-cta h2 {
   font-family: 'Times New Roman', Times, serif;
   font-style: italic;
   font-weight: 400;
@@ -474,70 +462,66 @@
   margin-bottom: 16px;
   color: #ffffff;
 }
-.re-cta p {
+.re-list-page .re-cta p {
   font-size: 15px;
   color: rgba(255,255,255,0.6);
   line-height: 1.7;
   margin-bottom: 32px;
   font-weight: 300;
 }
-.re-cta .btn-outline-pill { color: #ffffff; border-color: rgba(255,255,255,0.25); }
-.re-cta .btn-outline-pill:hover { background-color: #d4af37; border-color: #d4af37; color: #111111; }
+.re-list-page .re-cta .btn-outline-pill { color: #ffffff; border-color: rgba(255,255,255,0.25); }
+.re-list-page .re-cta .btn-outline-pill:hover { background-color: #d4af37; border-color: #d4af37; color: #111111; }
 
-/* ============================================
-   MEDIA QUERIES
-   ============================================ */
+
 @media (min-width: 768px) {
-  .re-hero .massive-heading { font-size: 58px; }
-  .re-hero .hero-subtitle { font-size: 18px; }
+  .re-list-page .re-hero .massive-heading { font-size: 58px; }
+  .re-list-page .re-hero .hero-subtitle { font-size: 18px; }
 
-  .re-catalog-section { padding: 88px 56px; }
-  .re-grid { grid-template-columns: repeat(2, 1fr); gap: 34px; }
+  .re-list-page .re-catalog-section { padding: 88px 56px; }
+  .re-list-page .re-grid { grid-template-columns: repeat(2, 1fr); gap: 34px; }
 
-  .re-cta { padding: 110px 56px; }
+  .re-list-page .re-cta { padding: 110px 56px; }
 }
 
 @media (min-width: 1024px) {
-  .re-hero { height: 68vh; min-height: 580px; }
-  .re-hero .massive-heading { font-size: 66px; }
+  .re-list-page .re-hero { height: 68vh; min-height: 580px; }
+  .re-list-page .re-hero .massive-heading { font-size: 66px; }
 
-  .re-catalog-section { padding: 110px 100px; }
-  .re-catalog-section .section-header h2 { font-size: 38px; }
+  .re-list-page .re-catalog-section { padding: 110px 100px; }
+  .re-list-page .re-catalog-section .section-header h2 { font-size: 38px; }
 
-  /* 3 columnas para escritorio */
-  .re-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  
+  .re-list-page .re-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
 
-  .re-cta { padding: 130px 100px; }
-  .re-cta h2 { font-size: 38px; }
+  .re-list-page .re-cta { padding: 130px 100px; }
+  .re-list-page .re-cta h2 { font-size: 38px; }
 }
 
 @media (min-width: 1440px) {
-  .re-catalog-section { padding: 130px 160px; }
-  .re-grid { gap: 46px; }
-  .re-cta { padding: 150px 160px; }
+  .re-list-page .re-catalog-section { padding: 130px 160px; }
+  .re-list-page .re-grid { gap: 46px; }
+  .re-list-page .re-cta { padding: 150px 160px; }
 }
 
-/* ==========================================================================
-   DARK THEME — /services/real-estate (scopeado bajo .re-page)
-   ========================================================================== */
-[data-theme="dark"] .re-page { background-color: #0a0a0b; color: #ece7dd; }
-[data-theme="dark"] .re-page .bg-gray-light { background: radial-gradient(ellipse 1400px 700px at 50% 0%, #101013 0%, #0c0c0e 55%, #0a0a0b 100%); }
-[data-theme="dark"] .re-page .re-catalog-section .section-header h2 { color: #ece7dd; }
-[data-theme="dark"] .re-page .re-catalog-section .section-header p { color: #a7a199; }
-[data-theme="dark"] .re-page .re-card { background-color: #141416; border-color: rgba(255,255,255,0.08); }
-[data-theme="dark"] .re-page .re-card:hover { border-color: rgba(212,175,55,0.35); }
-[data-theme="dark"] .re-page .re-img-container { background-color: #1c1c20; }
-[data-theme="dark"] .re-page .re-price { color: #ece7dd; }
-[data-theme="dark"] .re-page .re-location { color: #a7a199; }
-[data-theme="dark"] .re-page .re-info h3 { color: #ece7dd; }
-[data-theme="dark"] .re-page .re-address { color: #8f897f; }
-[data-theme="dark"] .re-page .spec-item { color: #b8b2a8; }
-[data-theme="dark"] .re-page .pagination-wrapper { border-top-color: rgba(255,255,255,0.10); }
-[data-theme="dark"] .re-page .page-nav-btn, [data-theme="dark"] .re-page .page-num-btn { border-color: rgba(255,255,255,0.12); color: #ece7dd; }
-[data-theme="dark"] .re-page .page-nav-btn:hover:not(:disabled), [data-theme="dark"] .re-page .page-num-btn:hover:not(.active) { border-color: #d4af37; color: #d4af37; }
-[data-theme="dark"] .re-page .page-num-btn.active { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
-[data-theme="dark"] .re-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
-[data-theme="dark"] .re-page .btn-black-pill:hover { background-color: #e8c766; border-color: #e8c766; color: #0a0a0b; }
-[data-theme="dark"] .re-page .btn-outline-pill { border-color: rgba(255,255,255,0.16); color: #ece7dd; }
-[data-theme="dark"] .re-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: rgba(255,255,255,0.16); color: #ece7dd; }
-[data-theme="dark"] .re-page .empty-state { background: #141416; border-color: rgba(255,255,255,0.10); color: #a7a199; }
+
+[data-theme="dark"] .re-list-page { background-color: #0a0a0b; color: #ece7dd; }
+[data-theme="dark"] .re-list-page .bg-gray-light { background: radial-gradient(ellipse 1400px 700px at 50% 0%, #101013 0%, #0c0c0e 55%, #0a0a0b 100%); }
+[data-theme="dark"] .re-list-page .re-catalog-section .section-header h2 { color: #ece7dd; }
+[data-theme="dark"] .re-list-page .re-catalog-section .section-header p { color: #a7a199; }
+[data-theme="dark"] .re-list-page .re-card { background-color: #141416; border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .re-list-page .re-card:hover { border-color: rgba(212,175,55,0.35); }
+[data-theme="dark"] .re-list-page .re-img-container { background-color: #1c1c20; }
+[data-theme="dark"] .re-list-page .re-price { color: #ece7dd; }
+[data-theme="dark"] .re-list-page .re-location { color: #a7a199; }
+[data-theme="dark"] .re-list-page .re-info h3 { color: #ece7dd; }
+[data-theme="dark"] .re-list-page .re-address { color: #8f897f; }
+[data-theme="dark"] .re-list-page .spec-item { color: #b8b2a8; }
+[data-theme="dark"] .re-list-page .pagination-wrapper { border-top-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .re-list-page .page-nav-btn, [data-theme="dark"] .re-list-page .page-num-btn { border-color: rgba(255,255,255,0.12); color: #ece7dd; }
+[data-theme="dark"] .re-list-page .page-nav-btn:hover:not(:disabled), [data-theme="dark"] .re-list-page .page-num-btn:hover:not(.active) { border-color: #d4af37; color: #d4af37; }
+[data-theme="dark"] .re-list-page .page-num-btn.active { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .re-list-page .btn-black-pill { background-color: #d4af37; color: #0a0a0b; border-color: #d4af37; }
+[data-theme="dark"] .re-list-page .btn-black-pill:hover { background-color: #e8c766; border-color: #e8c766; color: #0a0a0b; }
+[data-theme="dark"] .re-list-page .btn-outline-pill { border-color: rgba(255,255,255,0.16); color: #ece7dd; }
+[data-theme="dark"] .re-list-page .btn-outline-pill:hover { background-color: #1c1c20; border-color: rgba(255,255,255,0.16); color: #ece7dd; }
+[data-theme="dark"] .re-list-page .empty-state { background: #141416; border-color: rgba(255,255,255,0.10); color: #a7a199; }
