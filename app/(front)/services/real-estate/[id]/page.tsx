@@ -10,6 +10,7 @@ import Membership from '@/components/Membership';
 // Extendemos la interfaz localmente para incluir la galería
 interface RealEstateDetail extends RealEstateItem {
   galeria?: { url: string }[];
+  units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
 }
 
 export default function RealEstateDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -159,6 +160,34 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                 {property.descripcion}
               </p>
             </section>
+
+            {property.units && property.units.length > 0 && (
+              <section className="re-section">
+                <h2 className="re-section-title">Available Units</h2>
+                <div className="re-units-wrap">
+                  <table className="re-units-table">
+                    <thead>
+                      <tr>
+                        <th>Tower</th>
+                        <th>Unit</th>
+                        <th>Size</th>
+                        <th className="ru-price">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {property.units.map((u, i) => (
+                        <tr key={i}>
+                          <td>{u.tower}</td>
+                          <td>{u.unit_code}</td>
+                          <td>{u.size}</td>
+                          <td className="ru-price">{formatMoney(u.price, u.currency)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
 
           </div>
 
