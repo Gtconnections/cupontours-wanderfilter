@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import './CreateRealEstateForm.css';
-import { RealEstateDynamicFields, ExtraField, UnitRow } from './RealEstateDynamicFields';
+import { RealEstateDynamicFields, ExtraField, UnitRow, PaymentRow, NearbyRow } from './RealEstateDynamicFields';
 
 interface CreateRealEstateFormProps {
   onSubmit: (data: { name: string }) => Promise<void>;
@@ -23,6 +23,8 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
     price: '',
     operation_type: 'venta',
     currency: 'USD',
+    latitude: '',
+    longitude: '',
     property_type: '',
     bedrooms: '',
     bathrooms: '',
@@ -37,6 +39,8 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
   const [extraInfo, setExtraInfo] = useState<ExtraField[]>([]);
   const [amenities, setAmenities] = useState<string[]>([]);
   const [units, setUnits] = useState<UnitRow[]>([]);
+  const [paymentPlan, setPaymentPlan] = useState<PaymentRow[]>([]);
+  const [nearby, setNearby] = useState<NearbyRow[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -63,6 +67,10 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
       extra_info: extraInfo.filter((f) => f.label.trim() || f.value.trim()),
       amenities: amenities,
       units: units.filter((u) => u.tower.trim() || u.unit_code.trim() || String(u.price).trim()),
+      payment_plan: paymentPlan.filter((p) => p.stage.trim() || p.value.trim()),
+      nearby: nearby.filter((n) => n.place.trim() || n.time.trim()),
+      latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+      longitude: formData.longitude ? parseFloat(formData.longitude) : null,
     };
     
     onSubmit(payload);
@@ -233,6 +241,17 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
           />
         </div>
 
+        {/* Coordinates (for map) */}
+        <div className="wander-form-group">
+          <label htmlFor="latitude" className="wander-form-label">Latitude (mapa)</label>
+          <input type="number" step="any" id="latitude" name="latitude" value={formData.latitude} onChange={handleChange} className="wander-form-input" placeholder="25.7617" />
+        </div>
+
+        <div className="wander-form-group">
+          <label htmlFor="longitude" className="wander-form-label">Longitude (mapa)</label>
+          <input type="number" step="any" id="longitude" name="longitude" value={formData.longitude} onChange={handleChange} className="wander-form-input" placeholder="-80.1918" />
+        </div>
+
         {/* Description */}
         <div className="wander-form-group full-width">
           <label htmlFor="descripcion" className="wander-form-label">Description</label>
@@ -263,7 +282,7 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
         </div>
       </div>
 
-      <RealEstateDynamicFields extraInfo={extraInfo} setExtraInfo={setExtraInfo} amenities={amenities} setAmenities={setAmenities} units={units} setUnits={setUnits} />
+      <RealEstateDynamicFields extraInfo={extraInfo} setExtraInfo={setExtraInfo} amenities={amenities} setAmenities={setAmenities} paymentPlan={paymentPlan} setPaymentPlan={setPaymentPlan} nearby={nearby} setNearby={setNearby} units={units} setUnits={setUnits} />
 
       <div className="wander-form-actions">
         <button

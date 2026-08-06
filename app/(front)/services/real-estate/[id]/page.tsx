@@ -12,6 +12,10 @@ interface RealEstateDetail extends RealEstateItem {
   galeria?: { url: string }[];
   extra_info?: string;
   amenities?: string;
+  payment_plan?: string;
+  nearby?: string;
+  latitude?: number | string;
+  longitude?: number | string;
   units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
 }
 
@@ -75,6 +79,13 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
   const amenityList: string[] = (() => {
     try { return property.amenities ? JSON.parse(property.amenities) : []; } catch { return []; }
   })();
+  const paymentRows: { stage: string; value: string }[] = (() => {
+    try { return property.payment_plan ? JSON.parse(property.payment_plan) : []; } catch { return []; }
+  })();
+  const nearbyRows: { place: string; time: string }[] = (() => {
+    try { return property.nearby ? JSON.parse(property.nearby) : []; } catch { return []; }
+  })();
+  const mapQuery = (property.latitude && property.longitude) ? `${property.latitude},${property.longitude}` : (property.address || property.location || '');
 
   // Link dinámico a WhatsApp
   const whatsappNumber = "17866566582";
@@ -204,6 +215,45 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                 <div className="re-amenities">
                   {amenityList.map((a, i) => (<span className="re-amenity" key={i}>{a}</span>))}
                 </div>
+              </section>
+            )}
+
+            {paymentRows.length > 0 && (
+              <section className="re-section">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-pay-list { display: flex; flex-direction: column; }
+                  .re-pay-item { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(140,140,140,0.18); }
+                  .re-pay-item .v { font-weight: 700; color: #d4af37; white-space: nowrap; }
+                ` }} />
+                <h2 className="re-section-title">Payment Plan</h2>
+                <div className="re-pay-list">
+                  {paymentRows.map((p, i) => (
+                    <div className="re-pay-item" key={i}><span>{p.stage}</span><span className="v">{p.value}</span></div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {(mapQuery || nearbyRows.length > 0) && (
+              <section className="re-section">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-map { width: 100%; height: 320px; border: 0; border-radius: 12px; display: block; }
+                  .re-near-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; margin-top: 16px; }
+                  .re-near-item { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(140,140,140,0.18); }
+                  .re-near-item .v { font-weight: 600; color: #d4af37; white-space: nowrap; }
+                  @media (max-width: 640px) { .re-near-list { grid-template-columns: 1fr; } }
+                ` }} />
+                <h2 className="re-section-title">Location</h2>
+                {mapQuery && (
+                  <iframe className="re-map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`} title="Map" />
+                )}
+                {nearbyRows.length > 0 && (
+                  <div className="re-near-list">
+                    {nearbyRows.map((n, i) => (
+                      <div className="re-near-item" key={i}><span>{n.place}</span><span className="v">{n.time}</span></div>
+                    ))}
+                  </div>
+                )}
               </section>
             )}
 

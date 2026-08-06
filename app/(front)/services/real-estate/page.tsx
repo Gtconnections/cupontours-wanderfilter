@@ -19,6 +19,9 @@ export default function RealEstatePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [filterOp, setFilterOp] = useState('all');
+  const [filterLoc, setFilterLoc] = useState('');
+  const [filterBeds, setFilterBeds] = useState('0');
 
   useEffect(() => {
     async function loadData() {
@@ -35,9 +38,18 @@ export default function RealEstatePage() {
     loadData();
   }, []);
 
-  const totalPages = Math.ceil(properties.length / itemsPerPage);
+  const filtered = properties.filter((p) => {
+    if (filterOp !== 'all' && (p.operation_type || '').toLowerCase() !== filterOp) return false;
+    if (filterLoc.trim() && !(`${p.location} ${p.name}`).toLowerCase().includes(filterLoc.trim().toLowerCase())) return false;
+    if (filterBeds !== '0' && (p.bedrooms || 0) < parseInt(filterBeds)) return false;
+    return true;
+  });
+
+  useEffect(() => { setCurrentPage(1); }, [filterOp, filterLoc, filterBeds]);
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProperties = properties.slice(startIndex, startIndex + itemsPerPage);
+  const currentProperties = filtered.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -75,6 +87,28 @@ export default function RealEstatePage() {
             <span className="pre-title">The Collection</span>
             <h2>Select your <span className="accent-word">property.</span></h2>
             <p>Browse our curated selection of high-end real estate available for rent and sale.</p>
+          </div>
+
+          <div className="re-filters">
+            <style dangerouslySetInnerHTML={{ __html: `
+              .re-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; align-items: center; justify-content: center; }
+              .re-filters select, .re-filters input { padding: 10px 16px; border: 1px solid rgba(140,140,140,0.35); border-radius: 999px; background: transparent; color: inherit; font-size: 13px; }
+              .re-filters input { min-width: 240px; }
+              .re-filters option { color: #111; }
+            ` }} />
+            <input placeholder="Buscar por ubicación o nombre…" value={filterLoc} onChange={(e) => setFilterLoc(e.target.value)} />
+            <select value={filterOp} onChange={(e) => setFilterOp(e.target.value)}>
+              <option value="all">Venta y Renta</option>
+              <option value="venta">Venta</option>
+              <option value="renta">Renta</option>
+            </select>
+            <select value={filterBeds} onChange={(e) => setFilterBeds(e.target.value)}>
+              <option value="0">Recámaras</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+              <option value="4">4+</option>
+            </select>
           </div>
 
           <div className="re-grid">

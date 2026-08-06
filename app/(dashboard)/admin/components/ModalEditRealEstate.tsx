@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiX, FiSave } from 'react-icons/fi';
 import { updateRealEstate, getRealEstateDetail, RealEstate } from '@/app/lib/api/realAdmin';
-import { RealEstateDynamicFields, ExtraField, UnitRow } from './RealEstateDynamicFields';
+import { RealEstateDynamicFields, ExtraField, UnitRow, PaymentRow, NearbyRow } from './RealEstateDynamicFields';
 import './ModalEditService.css';
 
 interface ModalEditRealEstateProps {
@@ -21,6 +21,8 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
     price: '',
     operation_type: 'venta',
     currency: 'USD',
+    latitude: '',
+    longitude: '',
     property_type: '',
     bedrooms: '',
     bathrooms: '',
@@ -36,6 +38,8 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
   const [extraInfo, setExtraInfo] = useState<ExtraField[]>([]);
   const [amenities, setAmenities] = useState<string[]>([]);
   const [units, setUnits] = useState<UnitRow[]>([]);
+  const [paymentPlan, setPaymentPlan] = useState<PaymentRow[]>([]);
+  const [nearby, setNearby] = useState<NearbyRow[]>([]);
 
   // Pre-fills the form from the record being edited when the modal opens.
   useEffect(() => {
@@ -46,6 +50,8 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
         price: item.price?.toString() || '',
         operation_type: item.operation_type || 'venta',
         currency: item.currency || 'USD',
+        latitude: item.latitude != null ? String(item.latitude) : '',
+        longitude: item.longitude != null ? String(item.longitude) : '',
         property_type: item.property_type || '',
         bedrooms: item.bedrooms?.toString() || '',
         bathrooms: item.bathrooms?.toString() || '',
@@ -59,6 +65,8 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
       setError(null);
       try { setExtraInfo(item.extra_info ? JSON.parse(item.extra_info) : []); } catch { setExtraInfo([]); }
       try { setAmenities(item.amenities ? JSON.parse(item.amenities) : []); } catch { setAmenities([]); }
+      try { setPaymentPlan(item.payment_plan ? JSON.parse(item.payment_plan) : []); } catch { setPaymentPlan([]); }
+      try { setNearby(item.nearby ? JSON.parse(item.nearby) : []); } catch { setNearby([]); }
       getRealEstateDetail(item.id)
         .then((d) => setUnits((d.units || []).map((u) => ({ tower: u.tower || '', unit_code: u.unit_code || '', size: u.size || '', price: String(u.price ?? ''), currency: u.currency || 'USD' }))))
         .catch(() => setUnits([]));
@@ -103,6 +111,10 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
         extra_info: extraInfo.filter((f) => f.label.trim() || f.value.trim()),
         amenities: amenities,
         units: units.filter((u) => u.tower.trim() || u.unit_code.trim() || String(u.price).trim()),
+        payment_plan: paymentPlan.filter((p) => p.stage.trim() || p.value.trim()),
+        nearby: nearby.filter((n) => n.place.trim() || n.time.trim()),
+        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
       });
       onSuccess();
       onClose();
@@ -191,6 +203,16 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
                   <option value="USD">USD</option>
                   <option value="MXN">MXN</option>
                 </select>
+              </div>
+
+              {/* Coordinates */}
+              <div className="wander-edit-service-group">
+                <label htmlFor="latitude" className="wander-edit-service-label">Latitude (mapa)</label>
+                <input type="number" step="any" id="latitude" name="latitude" value={formData.latitude} onChange={handleChange} className="wander-edit-service-input" placeholder="25.7617" disabled={isLoading} />
+              </div>
+              <div className="wander-edit-service-group">
+                <label htmlFor="longitude" className="wander-edit-service-label">Longitude (mapa)</label>
+                <input type="number" step="any" id="longitude" name="longitude" value={formData.longitude} onChange={handleChange} className="wander-edit-service-input" placeholder="-80.1918" disabled={isLoading} />
               </div>
 
               <div className="wander-edit-service-group full-width">
@@ -328,7 +350,7 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
               </div>
             </div>
 
-            <RealEstateDynamicFields extraInfo={extraInfo} setExtraInfo={setExtraInfo} amenities={amenities} setAmenities={setAmenities} units={units} setUnits={setUnits} />
+            <RealEstateDynamicFields extraInfo={extraInfo} setExtraInfo={setExtraInfo} amenities={amenities} setAmenities={setAmenities} paymentPlan={paymentPlan} setPaymentPlan={setPaymentPlan} nearby={nearby} setNearby={setNearby} units={units} setUnits={setUnits} />
 
             {error && (
               <div className="wander-edit-service-error">

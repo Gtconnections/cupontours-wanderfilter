@@ -4,12 +4,18 @@ import React, { useState } from 'react';
 
 export interface ExtraField { label: string; value: string; }
 export interface UnitRow { tower: string; unit_code: string; size: string; price: string; currency: string; }
+export interface PaymentRow { stage: string; value: string; }
+export interface NearbyRow { place: string; time: string; }
 
 interface Props {
   extraInfo: ExtraField[];
   setExtraInfo: (v: ExtraField[]) => void;
   amenities: string[];
   setAmenities: (v: string[]) => void;
+  paymentPlan: PaymentRow[];
+  setPaymentPlan: (v: PaymentRow[]) => void;
+  nearby: NearbyRow[];
+  setNearby: (v: NearbyRow[]) => void;
   units: UnitRow[];
   setUnits: (v: UnitRow[]) => void;
 }
@@ -37,7 +43,8 @@ const STYLE = `
 `;
 
 export const RealEstateDynamicFields: React.FC<Props> = ({
-  extraInfo, setExtraInfo, amenities, setAmenities, units, setUnits,
+  extraInfo, setExtraInfo, amenities, setAmenities,
+  paymentPlan, setPaymentPlan, nearby, setNearby, units, setUnits,
 }) => {
   const [amenityInput, setAmenityInput] = useState('');
 
@@ -52,6 +59,16 @@ export const RealEstateDynamicFields: React.FC<Props> = ({
     setAmenityInput('');
   };
   const rmAmenity = (i: number) => setAmenities(amenities.filter((_, idx) => idx !== i));
+
+  const addPay = () => setPaymentPlan([...paymentPlan, { stage: '', value: '' }]);
+  const updPay = (i: number, key: keyof PaymentRow, val: string) =>
+    setPaymentPlan(paymentPlan.map((p, idx) => (idx === i ? { ...p, [key]: val } : p)));
+  const rmPay = (i: number) => setPaymentPlan(paymentPlan.filter((_, idx) => idx !== i));
+
+  const addNear = () => setNearby([...nearby, { place: '', time: '' }]);
+  const updNear = (i: number, key: keyof NearbyRow, val: string) =>
+    setNearby(nearby.map((n, idx) => (idx === i ? { ...n, [key]: val } : n)));
+  const rmNear = (i: number) => setNearby(nearby.filter((_, idx) => idx !== i));
 
   const addUnit = () => setUnits([...units, { tower: '', unit_code: '', size: '', price: '', currency: 'USD' }]);
   const updUnit = (i: number, key: keyof UnitRow, val: string) =>
@@ -68,14 +85,12 @@ export const RealEstateDynamicFields: React.FC<Props> = ({
           <h4>Ficha técnica</h4>
           <button type="button" className="re-dyn-add" onClick={addField}>+ Agregar campo</button>
         </div>
-        <p className="re-dyn-hint">Cualquier dato extra (Developer, Arquitecto, Pisos, Vistas, Entrega…). Se muestra en el detalle.</p>
+        <p className="re-dyn-hint">Cualquier dato extra (Developer, Arquitecto, Pisos, Vistas, Entrega, Acabados…).</p>
         {extraInfo.length === 0 && <p className="re-dyn-empty">Sin campos todavía.</p>}
         {extraInfo.map((f, i) => (
           <div className="re-dyn-row" key={i}>
-            <input className="wander-form-input" placeholder="Etiqueta (ej. Developer)"
-              value={f.label} onChange={(e) => updField(i, 'label', e.target.value)} />
-            <input className="wander-form-input" placeholder="Valor (ej. Related Group)"
-              value={f.value} onChange={(e) => updField(i, 'value', e.target.value)} />
+            <input className="wander-form-input" placeholder="Etiqueta (ej. Developer)" value={f.label} onChange={(e) => updField(i, 'label', e.target.value)} />
+            <input className="wander-form-input" placeholder="Valor (ej. Related Group)" value={f.value} onChange={(e) => updField(i, 'value', e.target.value)} />
             <button type="button" className="re-dyn-rm" onClick={() => rmField(i)} aria-label="Eliminar">×</button>
           </div>
         ))}
@@ -85,8 +100,7 @@ export const RealEstateDynamicFields: React.FC<Props> = ({
       <div className="re-dyn-section">
         <div className="re-dyn-head"><h4>Amenidades</h4></div>
         <div className="re-dyn-row">
-          <input className="wander-form-input" placeholder="Ej. Beach club, Spa, Golf…"
-            value={amenityInput}
+          <input className="wander-form-input" placeholder="Ej. Beach club, Spa, Golf…" value={amenityInput}
             onChange={(e) => setAmenityInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addAmenity(); } }} />
           <button type="button" className="re-dyn-add" onClick={addAmenity}>Agregar</button>
@@ -94,12 +108,44 @@ export const RealEstateDynamicFields: React.FC<Props> = ({
         {amenities.length > 0 && (
           <div className="re-dyn-chips">
             {amenities.map((a, i) => (
-              <span className="re-dyn-chip" key={i}>{a}
-                <button type="button" onClick={() => rmAmenity(i)} aria-label="Quitar">×</button>
-              </span>
+              <span className="re-dyn-chip" key={i}>{a}<button type="button" onClick={() => rmAmenity(i)} aria-label="Quitar">×</button></span>
             ))}
           </div>
         )}
+      </div>
+
+      {/* Plan de pagos */}
+      <div className="re-dyn-section">
+        <div className="re-dyn-head">
+          <h4>Plan de pagos</h4>
+          <button type="button" className="re-dyn-add" onClick={addPay}>+ Agregar etapa</button>
+        </div>
+        <p className="re-dyn-hint">Etapa y monto/porcentaje (ej. &quot;Al contrato&quot; → &quot;15%&quot;).</p>
+        {paymentPlan.length === 0 && <p className="re-dyn-empty">Sin plan de pagos.</p>}
+        {paymentPlan.map((p, i) => (
+          <div className="re-dyn-row" key={i}>
+            <input className="wander-form-input" placeholder="Etapa (ej. Al contrato)" value={p.stage} onChange={(e) => updPay(i, 'stage', e.target.value)} />
+            <input className="wander-form-input" placeholder="Valor (ej. 15%)" value={p.value} onChange={(e) => updPay(i, 'value', e.target.value)} />
+            <button type="button" className="re-dyn-rm" onClick={() => rmPay(i)} aria-label="Eliminar">×</button>
+          </div>
+        ))}
+      </div>
+
+      {/* Puntos cercanos */}
+      <div className="re-dyn-section">
+        <div className="re-dyn-head">
+          <h4>Puntos cercanos</h4>
+          <button type="button" className="re-dyn-add" onClick={addNear}>+ Agregar lugar</button>
+        </div>
+        <p className="re-dyn-hint">Lugar y distancia/tiempo (ej. &quot;Aeropuerto&quot; → &quot;45 min&quot;).</p>
+        {nearby.length === 0 && <p className="re-dyn-empty">Sin puntos cercanos.</p>}
+        {nearby.map((n, i) => (
+          <div className="re-dyn-row" key={i}>
+            <input className="wander-form-input" placeholder="Lugar (ej. Aeropuerto PVR)" value={n.place} onChange={(e) => updNear(i, 'place', e.target.value)} />
+            <input className="wander-form-input" placeholder="Tiempo (ej. 45 min)" value={n.time} onChange={(e) => updNear(i, 'time', e.target.value)} />
+            <button type="button" className="re-dyn-rm" onClick={() => rmNear(i)} aria-label="Eliminar">×</button>
+          </div>
+        ))}
       </div>
 
       {/* Unidades */}

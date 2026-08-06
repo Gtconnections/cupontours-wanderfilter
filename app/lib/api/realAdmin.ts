@@ -19,6 +19,10 @@ export interface RealEstate {
   currency?: string;
   extra_info?: string;
   amenities?: string;
+  latitude?: number | string | null;
+  longitude?: number | string | null;
+  payment_plan?: string;
+  nearby?: string;
   units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
   created_at: string;
   updated_at: string;
@@ -41,6 +45,10 @@ export interface UpdateRealEstateData {
   extra_info?: { label: string; value: string }[];
   amenities?: string[];
   units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
+  payment_plan?: { stage: string; value: string }[];
+  nearby?: { place: string; time: string }[];
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export interface RealEstateResponse {
