@@ -4,7 +4,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { FiX, FiSave } from 'react-icons/fi';
-import { updateRealEstate, RealEstate } from '@/app/lib/api/realAdmin';
+import { updateRealEstate, getRealEstateDetail, RealEstate } from '@/app/lib/api/realAdmin';
+import { RealEstateDynamicFields, ExtraField, UnitRow } from './RealEstateDynamicFields';
 import './ModalEditService.css';
 
 interface ModalEditRealEstateProps {
@@ -19,6 +20,7 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
     name: '',
     price: '',
     operation_type: 'venta',
+    currency: 'USD',
     property_type: '',
     bedrooms: '',
     bathrooms: '',
@@ -31,6 +33,9 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [extraInfo, setExtraInfo] = useState<ExtraField[]>([]);
+  const [amenities, setAmenities] = useState<string[]>([]);
+  const [units, setUnits] = useState<UnitRow[]>([]);
 
   // Pre-fills the form from the record being edited when the modal opens.
   useEffect(() => {
@@ -40,6 +45,7 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
         name: item.name || '',
         price: item.price?.toString() || '',
         operation_type: item.operation_type || 'venta',
+        currency: item.currency || 'USD',
         property_type: item.property_type || '',
         bedrooms: item.bedrooms?.toString() || '',
         bathrooms: item.bathrooms?.toString() || '',
@@ -51,6 +57,11 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
         status: item.status || 'activo'
       });
       setError(null);
+      try { setExtraInfo(item.extra_info ? JSON.parse(item.extra_info) : []); } catch { setExtraInfo([]); }
+      try { setAmenities(item.amenities ? JSON.parse(item.amenities) : []); } catch { setAmenities([]); }
+      getRealEstateDetail(item.id)
+        .then((d) => setUnits((d.units || []).map((u) => ({ tower: u.tower || '', unit_code: u.unit_code || '', size: u.size || '', price: String(u.price ?? ''), currency: u.currency || 'USD' }))))
+        .catch(() => setUnits([]));
     }
   }, [isOpen, item]);
 
@@ -87,7 +98,11 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
         address: formData.address,
         parking_spaces: parseInt(formData.parking_spaces) || 0,
         descripcion: formData.descripcion,
-        status: formData.status
+        status: formData.status,
+        currency: formData.currency,
+        extra_info: extraInfo.filter((f) => f.label.trim() || f.value.trim()),
+        amenities: amenities,
+        units: units.filter((u) => u.tower.trim() || u.unit_code.trim() || String(u.price).trim()),
       });
       onSuccess();
       onClose();
@@ -166,6 +181,15 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
                   <option value="venta">For Sale</option>
                   <option value="renta">For Rent</option>
                   <option value="alquiler">For Lease</option>
+                </select>
+              </div>
+
+              {/* Currency */}
+              <div className="wander-edit-service-group">
+                <label htmlFor="currency" className="wander-edit-service-label">Currency</label>
+                <select id="currency" name="currency" value={formData.currency} onChange={handleChange} className="wander-edit-service-select" disabled={isLoading}>
+                  <option value="USD">USD</option>
+                  <option value="MXN">MXN</option>
                 </select>
               </div>
 
@@ -303,6 +327,8 @@ export default function ModalEditRealEstate({ isOpen, onClose, onSuccess, item }
                 </select>
               </div>
             </div>
+
+            <RealEstateDynamicFields extraInfo={extraInfo} setExtraInfo={setExtraInfo} amenities={amenities} setAmenities={setAmenities} units={units} setUnits={setUnits} />
 
             {error && (
               <div className="wander-edit-service-error">

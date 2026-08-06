@@ -10,6 +10,8 @@ import Membership from '@/components/Membership';
 // Extendemos la interfaz localmente para incluir la galería
 interface RealEstateDetail extends RealEstateItem {
   galeria?: { url: string }[];
+  extra_info?: string;
+  amenities?: string;
   units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
 }
 
@@ -66,6 +68,13 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
     property.principal_image,
     ...(property.galeria?.map(g => g.url) || [])
   ].filter((u) => typeof u === 'string' && /^https?:\/\//.test(u));
+
+  const extraFields: { label: string; value: string }[] = (() => {
+    try { return property.extra_info ? JSON.parse(property.extra_info) : []; } catch { return []; }
+  })();
+  const amenityList: string[] = (() => {
+    try { return property.amenities ? JSON.parse(property.amenities) : []; } catch { return []; }
+  })();
 
   // Link dinámico a WhatsApp
   const whatsappNumber = "17866566582";
@@ -166,6 +175,37 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                 {property.descripcion}
               </p>
             </section>
+
+            {extraFields.length > 0 && (
+              <section className="re-section">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-specs-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; }
+                  .re-spec-item { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(140,140,140,0.18); }
+                  .re-spec-item .k { color: #8f897f; font-size: 13.5px; }
+                  .re-spec-item .v { font-weight: 600; text-align: right; }
+                  @media (max-width: 640px) { .re-specs-list { grid-template-columns: 1fr; } }
+                ` }} />
+                <h2 className="re-section-title">Details</h2>
+                <div className="re-specs-list">
+                  {extraFields.map((f, i) => (
+                    <div className="re-spec-item" key={i}><span className="k">{f.label}</span><span className="v">{f.value}</span></div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {amenityList.length > 0 && (
+              <section className="re-section">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-amenities { display: flex; flex-wrap: wrap; gap: 10px; }
+                  .re-amenity { border: 1px solid rgba(212,175,55,0.4); color: #d4af37; border-radius: 999px; padding: 7px 14px; font-size: 13px; }
+                ` }} />
+                <h2 className="re-section-title">Amenities</h2>
+                <div className="re-amenities">
+                  {amenityList.map((a, i) => (<span className="re-amenity" key={i}>{a}</span>))}
+                </div>
+              </section>
+            )}
 
             {property.units && property.units.length > 0 && (
               <section className="re-section">

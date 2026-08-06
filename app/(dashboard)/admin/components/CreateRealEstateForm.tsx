@@ -5,6 +5,7 @@
 import React, { useState } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import './CreateRealEstateForm.css';
+import { RealEstateDynamicFields, ExtraField, UnitRow } from './RealEstateDynamicFields';
 
 interface CreateRealEstateFormProps {
   onSubmit: (data: { name: string }) => Promise<void>;
@@ -21,6 +22,7 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
     name: '',
     price: '',
     operation_type: 'venta',
+    currency: 'USD',
     property_type: '',
     bedrooms: '',
     bathrooms: '',
@@ -31,6 +33,10 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
     descripcion: '',
     status: 'activo'
   });
+
+  const [extraInfo, setExtraInfo] = useState<ExtraField[]>([]);
+  const [amenities, setAmenities] = useState<string[]>([]);
+  const [units, setUnits] = useState<UnitRow[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -52,7 +58,11 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
       address: formData.address,
       parking_spaces: parseInt(formData.parking_spaces) || 0,
       descripcion: formData.descripcion,
-      status: formData.status
+      status: formData.status,
+      currency: formData.currency,
+      extra_info: extraInfo.filter((f) => f.label.trim() || f.value.trim()),
+      amenities: amenities,
+      units: units.filter((u) => u.tower.trim() || u.unit_code.trim() || String(u.price).trim()),
     };
     
     onSubmit(payload);
@@ -111,6 +121,15 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
           >
             <option value="venta">For Sale</option>
             <option value="renta">For Rent</option>
+          </select>
+        </div>
+
+        {/* Currency */}
+        <div className="wander-form-group">
+          <label htmlFor="currency" className="wander-form-label">Currency</label>
+          <select id="currency" name="currency" value={formData.currency} onChange={handleChange} className="wander-form-select">
+            <option value="USD">USD</option>
+            <option value="MXN">MXN</option>
           </select>
         </div>
 
@@ -243,6 +262,8 @@ export const CreateRealEstateForm: React.FC<CreateRealEstateFormProps> = ({
           </select>
         </div>
       </div>
+
+      <RealEstateDynamicFields extraInfo={extraInfo} setExtraInfo={setExtraInfo} amenities={amenities} setAmenities={setAmenities} units={units} setUnits={setUnits} />
 
       <div className="wander-form-actions">
         <button

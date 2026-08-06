@@ -16,6 +16,10 @@ export interface RealEstate {
   parking_spaces: number;
   descripcion: string;
   status: 'activo' | 'inactivo' | 'vendido' | 'alquilado' | string;
+  currency?: string;
+  extra_info?: string;
+  amenities?: string;
+  units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
   created_at: string;
   updated_at: string;
 }
@@ -33,6 +37,10 @@ export interface UpdateRealEstateData {
   parking_spaces?: number;
   descripcion?: string;
   status?: string;
+  currency?: string;
+  extra_info?: { label: string; value: string }[];
+  amenities?: string[];
+  units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
 }
 
 export interface RealEstateResponse {
