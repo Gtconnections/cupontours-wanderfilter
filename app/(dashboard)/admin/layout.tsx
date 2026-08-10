@@ -6,6 +6,7 @@ import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   icons: { icon: "/icon_cupon.svg" },
@@ -40,6 +41,7 @@ export default function AdminLayout({
           </div>
         </div>
       <SpeedInsights />
+      <Analytics />
       </body>
     </html>
   );

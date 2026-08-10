@@ -6,6 +6,7 @@ import { WishlistProvider } from "@/components/wishlist/WishlistProvider";
 import WishlistDrawer from "@/components/wishlist/WishlistDrawer";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   icons: { icon: "/icon_cupon.svg" },
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </WishlistProvider>
         </ThemeProvider>
       <SpeedInsights />
+      <Analytics />
       </body>
     </html>
   );
