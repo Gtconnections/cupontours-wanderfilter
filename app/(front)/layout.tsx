@@ -6,6 +6,7 @@ import { WishlistProvider } from "@/components/wishlist/WishlistProvider";
 import WishlistDrawer from "@/components/wishlist/WishlistDrawer";
 
 export const metadata = {
+  icons: { icon: "/icon_cupon.svg" },
   title: "Cupontours | Luxury Vacation Rentals, Car & Yacht Charters",
   description: "Book exclusive luxury vacation rentals, premium car rentals, and yacht charters worldwide with Cupontours.",
 };

@@ -6,6 +6,7 @@ import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 
 export const metadata = {
+  icons: { icon: "/icon_cupon.svg" },
   title: "Cupontours Back Office - Wander Style",
   description: "Ecosistema premium de administración integrada.",
 };
