@@ -14,8 +14,10 @@ export default function VerifyLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}<SpeedInsights />
-      <body>{children}</body>
+      <body>
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
