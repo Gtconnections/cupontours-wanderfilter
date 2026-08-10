@@ -5,6 +5,8 @@ import { Sidebar } from "./components/Sidebar";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export const metadata = {
   icons: { icon: "/icon_cupon.svg" },
   title: "Cupontours Back Office - Wander Style",
@@ -37,6 +39,7 @@ export default function AdminLayout({
             <Footer />
           </div>
         </div>
+      <SpeedInsights />
       </body>
     </html>
   );

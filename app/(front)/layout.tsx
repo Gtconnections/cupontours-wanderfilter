@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { WishlistProvider } from "@/components/wishlist/WishlistProvider";
 import WishlistDrawer from "@/components/wishlist/WishlistDrawer";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export const metadata = {
   icons: { icon: "/icon_cupon.svg" },
   title: "Cupontours | Luxury Vacation Rentals, Car & Yacht Charters",
@@ -34,6 +36,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <WishlistDrawer />
           </WishlistProvider>
         </ThemeProvider>
+      <SpeedInsights />
       </body>
     </html>
   );
