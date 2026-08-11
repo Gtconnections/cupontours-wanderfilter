@@ -88,7 +88,7 @@ export function Sidebar() {
       id: "students",
       label: "Students",
       subitems: [
-        { name: "BNB Calculator", href: "/admin/students/bnb-calculator" },
+        // { name: "BNB Calculator", href: "/admin/students/bnb-calculator" }, // oculto temporalmente
         { name: "Furniture Standard", href: "/admin/students/furnish" },
         { name: "Cleaning Standard", href: "/admin/students/cleaning" },
       ]
@@ -136,7 +136,7 @@ export function Sidebar() {
 
   const bottomMenuItems = [
     { name: "Claims", href: "/admin/claims" },
-    { name: "Cupon Tours Chat", href: "/admin/chat" },
+    // { name: "Cupon Tours Chat", href: "/admin/chat" }, // oculto temporalmente
   ];
 
   return (
