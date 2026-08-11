@@ -121,8 +121,8 @@ export default function KillSwitchPage() {
             <h3>{b.name}</h3>
             {pill(state[b.key])}
             <div className="ks-btns">
-              <button className="ks-btn stop" disabled={busy === b.key} onClick={() => toggle(b, true)}>Detener</button>
-              <button className="ks-btn go" disabled={busy === b.key} onClick={() => toggle(b, false)}>Reactivar</button>
+              <button className="ks-btn stop" disabled={busy === b.key || state[b.key] === true} onClick={() => toggle(b, true)}>Detener</button>
+              <button className="ks-btn go" disabled={busy === b.key || state[b.key] === false} onClick={() => toggle(b, false)}>Reactivar</button>
             </div>
           </div>
         ))}
