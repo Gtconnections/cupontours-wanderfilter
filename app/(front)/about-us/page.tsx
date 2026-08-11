@@ -328,7 +328,7 @@ export default function AboutPage() {
                 </div>
                 <div className="touch-text-node">
                   <h4>Phone</h4>
-                  <a href="tel:+17866866582">+1 (786) 686-6582</a>
+                  <a href="tel:+17866566582">+1 (786) 656-6582</a>
                 </div>
               </div>
             </div>

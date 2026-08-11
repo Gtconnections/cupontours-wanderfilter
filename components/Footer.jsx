@@ -44,9 +44,9 @@ export default function Footer() {
       <div className="footer-top">
         <span className="follow-text">Follow us @CuponTours</span>
         <div className="social-links">
-          <a href={`tel:${process.env.NEXT_PUBLIC_TWITTER_URL || ''}`} target="_blank">X (Twitter)</a>
-          <a href={`tel:${process.env.NEXT_PUBLIC_INSTAGRAM_URL || ''}`} target="_blank">Instagram</a>
-          <a href={`tel:${process.env.NEXT_PUBLIC_FACEBOOK_URL || ''}`} target="_blank">Facebook</a>
+          <a href={process.env.NEXT_PUBLIC_TWITTER_URL || 'https://x.com/cupontours'} target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+          <a href={process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/cupontours'} target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href={process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/cupontours'} target="_blank" rel="noopener noreferrer">Facebook</a>
         </div>
       </div>
 
@@ -100,13 +100,13 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Popular Destinations</h4>
             <ul>
-              <li><Link href="#">Miami, Florida, USA</Link></li>
-              <li><Link href="#">Hallandale, Florida, USA</Link></li>
-              <li><Link href="#">Orlando, Florida, USA</Link></li>
-              <li><Link href="#">Atlanta, Georgia, USA</Link></li>
-              <li><Link href="#">Cali, Colombia</Link></li>
-              <li><Link href="#">Lago Camila, Colombia</Link></li>
-              <li><Link href="#">Valledupar, Colombia</Link></li>
+              <li><Link href="/properties?city=Miami">Miami, Florida, USA</Link></li>
+              <li><Link href="/properties?city=Hallandale">Hallandale, Florida, USA</Link></li>
+              <li><Link href="/properties?city=Orlando">Orlando, Florida, USA</Link></li>
+              <li><Link href="/properties?city=Atlanta">Atlanta, Georgia, USA</Link></li>
+              <li><Link href="/properties?city=Cali">Cali, Colombia</Link></li>
+              <li><Link href="/properties?city=Lago%20Calima">Lago Calima, Colombia</Link></li>
+              <li><Link href="/properties?city=Valledupar">Valledupar, Colombia</Link></li>
             </ul>
           </div>
           <div className="footer-col">
@@ -122,7 +122,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2026 <a href="https://gtconnections.com" className='link-footer'>GT Connections LLC</a>. All rights reserved.®</p>
+        <p>&copy; 2026 <a href="https://www.cupontours.com" className='link-footer'>Cupontours LLC</a>. All rights reserved.®</p>
         <button className="btn-circle" aria-label="Copy Link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>

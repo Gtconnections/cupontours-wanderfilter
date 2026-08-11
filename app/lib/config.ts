@@ -43,7 +43,7 @@ export const clientConfig = {
 
   // Site Configuration
   site: {
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.cupontours.com',
     name: process.env.NEXT_PUBLIC_SITE_NAME || 'Cupon Tours',
     description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Discover amazing deals on luxury properties, cars, and yachts',
   },
@@ -51,7 +51,7 @@ export const clientConfig = {
   // Company Information
   company: {
     name: process.env.NEXT_PUBLIC_COMPANY_NAME || 'Cupon Tours',
-    phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || '+1 (754) 247-1333',
+    phone: process.env.NEXT_PUBLIC_COMPANY_PHONE || '+1 (786) 656-6582',
     email: process.env.NEXT_PUBLIC_COMPANY_EMAIL || 'info@cupontours.com',
     address: process.env.NEXT_PUBLIC_COMPANY_ADDRESS || 'Miami Florida',
   },
