@@ -454,15 +454,17 @@ export default function Header() {
             <ul>
               <li><Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
               <li className="menu-divider"></li>
+              {/* Verticales B2C (reservar) */}
               <li><Link href="https://luxury.cupontours.com" target="_blank">Luxury Villas</Link></li>
-              <li><Link href="/services" onClick={() => setIsMenuOpen(false)}>Services</Link></li>
               <li><Link href="/properties" onClick={() => setIsMenuOpen(false)}>Properties</Link></li>
               <li><Link href="/cars" onClick={() => setIsMenuOpen(false)}>Cars</Link></li>
               <li><Link href="/yachts" onClick={() => setIsMenuOpen(false)}>Yachts</Link></li>
-              <li><Link href="/invest-with-us" onClick={() => setIsMenuOpen(false)}>Invest</Link></li>
-              <li><Link href="/about-us" onClick={() => setIsMenuOpen(false)}>About</Link></li>
-              <li><Link href="/work-with-us" onClick={() => setIsMenuOpen(false)}>Team</Link></li>
+              <li><Link href="/services" onClick={() => setIsMenuOpen(false)}>Services</Link></li>
               <li className="menu-divider"></li>
+              {/* Puerta única B2B (dueños) */}
+              <li><Link href="/invest-with-us" onClick={() => setIsMenuOpen(false)}>List your property</Link></li>
+              <li className="menu-divider"></li>
+              <li><Link href="/about-us" onClick={() => setIsMenuOpen(false)}>About</Link></li>
               <li><Link href="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
             </ul>
           </nav>

@@ -4,6 +4,7 @@ import { StructuredData } from "@/components/seo/structured-data";
 import './about.css';
 import Link from 'next/link';
 import { sendAboutContactRequest } from '../../lib/api'; // Importación desacoplada local
+import { TRUST_STATS } from '../../lib/trust'; // Fuente única de métricas de confianza
 
 const aboutPageStructuredData = {
   "@context": "https://schema.org",
@@ -24,10 +25,10 @@ export default function AboutPage() {
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const stats = [
-    { value: '100+ Luxury', label: 'Luxury Properties Managed' },
-    { value: '65K+ Nights', label: 'Nights Booked' },
-    { value: '98% Guest', label: 'Guest Satisfaction' },
-    { value: '24/7 Dedicated', label: 'Dedicated Concierge' }
+    { value: TRUST_STATS.propertiesManaged, label: 'Luxury Properties Managed' },
+    { value: TRUST_STATS.nightsBooked, label: 'Nights Booked' },
+    { value: TRUST_STATS.guestSatisfaction, label: 'Guest Satisfaction' },
+    { value: '24/7', label: 'Dedicated Concierge' }
   ];
 
   const benefits = [

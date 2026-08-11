@@ -171,9 +171,9 @@ export default function HomePage() {
       <section className="home-hero">
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <div className="hero-badge">Luxury Vacation Rentals, Cars & Yachts</div>
-          <h1 className="hero-title">Experience the world<br />in absolute <span className="hero-accent">style.</span></h1>
-          <p className="hero-subtitle">Handcrafted experiences combining institutional-grade real estate assets, exotic car rentals, and elite yacht charters.</p>
+          <div className="hero-badge">Villas · Cars · Yachts · Jets · Concierge</div>
+          <h1 className="hero-title">Miami luxury,<br />fully <span className="hero-accent">managed.</span></h1>
+          <p className="hero-subtitle">Book villas, cars, yachts and jets from one concierge — or let us run your property: dynamic pricing, Airbnb/Vrbo/Booking distribution and a real-time owner dashboard.</p>
         </div>
       </section>
 

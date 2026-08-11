@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import { sendInvestRequest } from '../../lib/api';
+import { TRUST_STATS } from '../../lib/trust'; // Fuente única de métricas de confianza
 import './invest.css';
 
 const investPageStructuredData = {
@@ -61,10 +62,10 @@ export default function InvestPage() {
   ];
 
   const stats = [
-    { value: '500+', label: 'Properties Managed' },
-    { value: '95%', label: 'Client Satisfaction' },
-    { value: '$2M+', label: 'Revenue Generated' },
-    { value: '10+', label: 'Years Experience' }
+    { value: TRUST_STATS.propertiesManaged, label: 'Properties Managed' },
+    { value: TRUST_STATS.guestSatisfaction, label: 'Client Satisfaction' },
+    { value: TRUST_STATS.revenueGenerated, label: 'Revenue Generated' },
+    { value: TRUST_STATS.yearsExperience, label: 'Years Experience' }
   ];
 
   const handleInvestSubmit = async (e: React.FormEvent) => {
@@ -247,6 +248,10 @@ export default function InvestPage() {
               </div>
             </div>
             <button className="btn-black-pill mt-4" type="button" onClick={() => document.getElementById('invest-form-block')?.scrollIntoView({ behavior: 'smooth' })}>Contact Us</button>
+            <p className="mt-4" style={{ fontSize: '0.9rem', opacity: 0.85 }}>
+              Are you a real-estate agent or referral partner?{' '}
+              <a href="/work-with-us" className="text-link">Join our allies &rarr;</a>
+            </p>
           </div>
         </div>
       </section>
