@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 
+// OJO: NEXT_PUBLIC_API_URL_LOCAL apunta al backend PHP (gthomework.com), NO a Django.
+// Por eso la tarjeta de Django usa su propia URL fija hacia el backend Django real.
 const DJANGO_BASE =
-  process.env.NEXT_PUBLIC_API_URL_LOCAL ||
+  process.env.NEXT_PUBLIC_DJANGO_API_URL ||
   'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api';
 const PHP_BASE =
   process.env.NEXT_PUBLIC_PHP_API_URL || 'https://gthomework.com/api';
