@@ -233,7 +233,7 @@ export async function generateYachtInvoicePDF(invoice: YachtInvoicePDFData): Pro
   doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor('#999999');
-  doc.text('Generated from GT Connections', margin, footerY + 2);
+  doc.text('GT Connections LLC, dba Cupon Tours', margin, footerY + 2);
 
   doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');

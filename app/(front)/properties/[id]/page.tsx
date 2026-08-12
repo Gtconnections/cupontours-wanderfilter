@@ -354,7 +354,7 @@ export default function PropertyDetailPage() {
   // Tarjetas de specs (solo datos reales)
   const statCards = [
     {
-      label: 'Bedrooms',
+      label: t.chipBedrooms,
       value: bedrooms,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -363,7 +363,7 @@ export default function PropertyDetailPage() {
       ),
     },
     {
-      label: 'Bathrooms',
+      label: t.chipBathrooms,
       value: bathrooms,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -373,7 +373,7 @@ export default function PropertyDetailPage() {
       ),
     },
     {
-      label: 'Max Guests',
+      label: t.chipMaxGuests,
       value: maxGuests,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -386,7 +386,7 @@ export default function PropertyDetailPage() {
 
   const trustBadges = [
     {
-      label: 'Verified',
+      label: t.bVerified,
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" />
@@ -394,7 +394,7 @@ export default function PropertyDetailPage() {
       ),
     },
     {
-      label: 'Five-Star',
+      label: t.bFiveStar,
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -402,7 +402,7 @@ export default function PropertyDetailPage() {
       ),
     },
     {
-      label: 'Premium',
+      label: t.bPremium,
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" /><polyline points="8 12 11 15 16 9" />
@@ -586,13 +586,13 @@ export default function PropertyDetailPage() {
                 <div className="lux-reserve-trust">
                   <span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-                    Secure
+                    {t.secure}
                   </span>
                   <span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-                    Five-Star
+                    {t.bFiveStar}
                   </span>
-                  <span>24/7 Support</span>
+                  <span>{t.support}</span>
                 </div>
 
                 <div className="lux-reserve-price">
@@ -609,7 +609,7 @@ export default function PropertyDetailPage() {
                 </div>
 
                 <p className="lux-reserve-disclaimer">
-                  You won&apos;t be charged yet. Availability and secure checkout are handled by our verified booking engine.
+                  {t.disclaimer}
                 </p>
               </div>
 
@@ -632,11 +632,11 @@ export default function PropertyDetailPage() {
                   </div>
                   <div className="lux-pricing-row">
                     <span>{t.minStay}</span>
-                    <strong>{minNights} {minNights === 1 ? 'night' : 'nights'}</strong>
+                    <strong>{minNights} {minNights === 1 ? t.night : t.nights}</strong>
                   </div>
                   <div className="lux-pricing-row">
                     <span>{t.maxGuests}</span>
-                    <strong>{maxGuests} guests</strong>
+                    <strong>{maxGuests} {t.guestsUnit}</strong>
                   </div>
                   {beds > 0 && (
                     <div className="lux-pricing-row">

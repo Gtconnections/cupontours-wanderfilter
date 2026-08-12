@@ -658,7 +658,7 @@ export const termsDict = {
     s6h: "6. Limits of Liability",
     s6p1: "Cupontours provides its digital solutions and marketplace services on an “as-is” and “as-available” basis. We do not assume direct liability for unforeseen structural accidents, local power failures, guest personal injury during external activities, or asset wear-and-tear inside managed real estate properties beyond standard maintenance guarantees.",
     s7h: "7. Intellectual Property",
-    s7p1: "All software infrastructure, design elements, structural code, visual media, photographic content, logos, and written copy published across our platform remain the exclusive property of Cupontours LLC. Unauthorized duplication, modification, data scraping, or syndication without written consent is strictly prohibited and subject to legal action.",
+    s7p1: "All software infrastructure, design elements, structural code, visual media, photographic content, logos, and written copy published across our platform remain the exclusive property of GT Connections LLC, dba Cupon Tours. Unauthorized duplication, modification, data scraping, or syndication without written consent is strictly prohibited and subject to legal action.",
   },
   es: {
     navTitle: "Legal",
@@ -681,7 +681,7 @@ export const termsDict = {
     s6h: "6. Límites de Responsabilidad",
     s6p1: "Cupontours ofrece sus soluciones digitales y servicios de marketplace “tal cual” y “según disponibilidad”. No asumimos responsabilidad directa por accidentes estructurales imprevistos, cortes de energía locales, lesiones personales de huéspedes durante actividades externas o el desgaste de activos dentro de las propiedades gestionadas más allá de las garantías de mantenimiento estándar.",
     s7h: "7. Propiedad Intelectual",
-    s7p1: "Toda la infraestructura de software, los elementos de diseño, el código estructural, el contenido visual, el material fotográfico, los logotipos y los textos publicados en nuestra plataforma son propiedad exclusiva de Cupontours LLC. La duplicación, modificación, extracción de datos o redistribución no autorizadas sin consentimiento por escrito están estrictamente prohibidas y sujetas a acciones legales.",
+    s7p1: "Toda la infraestructura de software, los elementos de diseño, el código estructural, el contenido visual, el material fotográfico, los logotipos y los textos publicados en nuestra plataforma son propiedad exclusiva de GT Connections LLC, dba Cupon Tours. La duplicación, modificación, extracción de datos o redistribución no autorizadas sin consentimiento por escrito están estrictamente prohibidas y sujetas a acciones legales.",
   },
 };
 export function getTerms(locale: Locale) { return termsDict[locale] ?? termsDict.en; }
@@ -871,6 +871,11 @@ export const detailDict = {
       secDescription: "Description", secAmenities: "Amenities", secPricing: "Pricing Details", secRules: "House Rules",
       nightlyRate: "Nightly Rate", cleaningFee: "Cleaning Fee", minStay: "Minimum Stay", maxGuests: "Maximum Guests", beds: "Beds",
       checkIn: "Check-in:", checkOut: "Check-out:", after: "After", before: "Before",
+      chipBedrooms: "Bedrooms", chipBathrooms: "Bathrooms", chipMaxGuests: "Max Guests",
+      bVerified: "Verified", bFiveStar: "Five-Star", bPremium: "Premium",
+      secure: "Secure", support: "24/7 Support",
+      disclaimer: "You won\u2019t be charged yet. Availability and secure checkout are handled by our verified booking engine.",
+      night: "night", nights: "nights", guestsUnit: "guests",
     },
     cars: {
       eyebrow: "Luxury Vehicle", backTo: "Back to Fleet", loading: "Loading vehicle details...", notFound: "Vehicle Not Found",
@@ -884,6 +889,11 @@ export const detailDict = {
       insurance: "Premium Fleet Insurance", totalBeforeTax: "Total before taxes",
       secDeposit: "Security Deposit:", fuelPolicy: "Fuel Policy:", prohibitions: "Prohibitions:",
       monthA: "May 2026", monthB: "June 2026",
+      chipModelYear: "Model Year", chipPassengers: "Passengers", chipTransmission: "Transmission",
+      bVerified: "Verified", bFiveStar: "Five-Star", bInsured: "Insured", support: "24/7 Support",
+      specFuelType: "Fuel Type", specCategory: "Category", specMinRental: "Minimum Rental", specDailyRate: "Daily Rate",
+      valPremiumGas: "Premium Gasoline", valLuxurySUV: "Luxury SUV", val1day: "1 day",
+      day: "day", days: "days",
     },
     yachts: {
       eyebrow: "Luxury Yacht Charter", backTo: "Back to Fleet", loading: "Loading charter details...", notFound: "Vessel Not Found",
@@ -891,6 +901,9 @@ export const detailDict = {
       tabEnquire: "Enquire", reserveTitle: "Reserve This Yacht", perFullDay: "per full day", secure: "Secure", fiveStar: "Five-Star",
       secAbout: "About This Yacht", secFeatures: "Features & Inclusions", secDetails: "Charter Details", secTerms: "Charter Terms",
       certifiedCrew: "Certified Crew:", secDeposit: "Security Deposit:", fuelPolicy: "Fuel Policy:", safetyFirst: "Safety First:",
+      chipLength: "Length", chipCapacity: "Capacity", chipStaterooms: "Staterooms",
+      bVerified: "Verified", bFiveStar: "Five-Star", bCaptained: "Captained", support: "24/7 Support",
+      specLength: "Length", specCapacity: "Capacity", specStaterooms: "Staterooms", specBathrooms: "Bathrooms", specFullDayRate: "Full-day Rate",
     },
   },
   es: {
@@ -952,6 +965,11 @@ export const detailDict = {
       secDescription: "Descripción", secAmenities: "Amenidades", secPricing: "Detalles de precio", secRules: "Reglas de la casa",
       nightlyRate: "Tarifa por noche", cleaningFee: "Tarifa de limpieza", minStay: "Estancia mínima", maxGuests: "Huéspedes máximos", beds: "Camas",
       checkIn: "Entrada:", checkOut: "Salida:", after: "Después de", before: "Antes de",
+      chipBedrooms: "Habitaciones", chipBathrooms: "Baños", chipMaxGuests: "Huéspedes máx.",
+      bVerified: "Verificado", bFiveStar: "Cinco estrellas", bPremium: "Premium",
+      secure: "Seguro", support: "Soporte 24/7",
+      disclaimer: "Aún no se te cobrará. La disponibilidad y el pago seguro se gestionan mediante nuestro motor de reservas verificado.",
+      night: "noche", nights: "noches", guestsUnit: "huéspedes",
     },
     cars: {
       eyebrow: "Vehículo de Lujo", backTo: "Volver a la flota", loading: "Cargando detalles del vehículo...", notFound: "Vehículo no encontrado",
@@ -965,6 +983,11 @@ export const detailDict = {
       insurance: "Seguro Premium de Flota", totalBeforeTax: "Total antes de impuestos",
       secDeposit: "Depósito de seguridad:", fuelPolicy: "Política de combustible:", prohibitions: "Prohibiciones:",
       monthA: "Mayo 2026", monthB: "Junio 2026",
+      chipModelYear: "Año", chipPassengers: "Pasajeros", chipTransmission: "Transmisión",
+      bVerified: "Verificado", bFiveStar: "Cinco estrellas", bInsured: "Asegurado", support: "Soporte 24/7",
+      specFuelType: "Combustible", specCategory: "Categoría", specMinRental: "Renta mínima", specDailyRate: "Tarifa diaria",
+      valPremiumGas: "Gasolina Premium", valLuxurySUV: "SUV de Lujo", val1day: "1 día",
+      day: "día", days: "días",
     },
     yachts: {
       eyebrow: "Chárter de Yate de Lujo", backTo: "Volver a la flota", loading: "Cargando detalles del chárter...", notFound: "Embarcación no encontrada",
@@ -972,7 +995,80 @@ export const detailDict = {
       tabEnquire: "Consultar", reserveTitle: "Reserva este yate", perFullDay: "por día completo", secure: "Seguro", fiveStar: "Cinco estrellas",
       secAbout: "Sobre este yate", secFeatures: "Características e inclusiones", secDetails: "Detalles del chárter", secTerms: "Términos del chárter",
       certifiedCrew: "Tripulación certificada:", secDeposit: "Depósito de seguridad:", fuelPolicy: "Política de combustible:", safetyFirst: "Seguridad ante todo:",
+      chipLength: "Eslora", chipCapacity: "Capacidad", chipStaterooms: "Camarotes",
+      bVerified: "Verificado", bFiveStar: "Cinco estrellas", bCaptained: "Con capitán", support: "Soporte 24/7",
+      specLength: "Eslora", specCapacity: "Capacidad", specStaterooms: "Camarotes", specBathrooms: "Baños", specFullDayRate: "Tarifa día completo",
     },
   },
 };
 export function getDetail(locale: Locale) { return detailDict[locale] ?? detailDict.en; }
+
+// Widget de reserva de PROPIEDADES (EN primario + ES).
+export const bwDict = {
+  en: {
+    months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    weekdays: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+    confirmed: "Booking confirmed!", code: "Code:", total: "Total:",
+    doneNoteA: "We'll send the details to ", doneNoteB: ". No charge has been made yet.",
+    prevMonth: "Previous month", nextMonth: "Next month",
+    available: "Available", occupied: "Occupied",
+    loadingAvail: "Loading availability…", pickArrival: "Choose your arrival date", pickDeparture: "Now choose your departure date",
+    rangeOccupied: "Some nights in that range are booked. Please pick other dates.", errChecking: "Error checking availability", calcTotal: "Calculating total…",
+    night: "night", nights: "nights", cleaning: "Cleaning", totalWord: "Total", guests: "Guests", cont: "Continue",
+    lblFirst: "First name *", lblLast: "Last name *", lblEmail: "Email *", lblPhone: "Phone", lblMsg: "Message (optional)", phMsg: "Special requests",
+    errRequired: "Please enter first name, last name and email.", errCreate: "Could not create the reservation.",
+    booking: "Booking…", confirmBooking: "Confirm booking", back: "Back",
+  },
+  es: {
+    months: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    weekdays: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"],
+    confirmed: "¡Reserva confirmada!", code: "Código:", total: "Total:",
+    doneNoteA: "Te enviaremos los detalles a ", doneNoteB: ". No se realizó ningún cargo todavía.",
+    prevMonth: "Mes anterior", nextMonth: "Mes siguiente",
+    available: "Disponible", occupied: "Ocupado",
+    loadingAvail: "Cargando disponibilidad…", pickArrival: "Elige tu fecha de llegada", pickDeparture: "Ahora elige la fecha de salida",
+    rangeOccupied: "Hay noches ocupadas en ese rango. Elige otras fechas.", errChecking: "Error verificando disponibilidad", calcTotal: "Calculando total…",
+    night: "noche", nights: "noches", cleaning: "Limpieza", totalWord: "Total", guests: "Huéspedes", cont: "Continuar",
+    lblFirst: "Nombre *", lblLast: "Apellido *", lblEmail: "Email *", lblPhone: "Teléfono", lblMsg: "Mensaje (opcional)", phMsg: "Solicitudes especiales",
+    errRequired: "Completa nombre, apellido y email.", errCreate: "No se pudo crear la reserva.",
+    booking: "Reservando…", confirmBooking: "Confirmar reserva", back: "Volver",
+  },
+};
+export function getBW(locale: Locale) { return bwDict[locale] ?? bwDict.en; }
+
+// Widget de reserva de YATES (EN primario + ES).
+export const ybwDict = {
+  en: {
+    months: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    weekdays: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+    occ: { fun_day_at_sea: "Fun day at sea", birthday: "Birthday", family_trip: "Family trip", bachelorette: "Bachelorette", business_lunch: "Business lunch", other: "Other" },
+    dur: { full_day: "Full day", half_day_in_the_morning: "Half day · Morning", half_day_in_the_afternoon: "Half day · Afternoon" },
+    charterRequested: "Charter requested", thisYacht: "this yacht",
+    doneNoteA: "Your reservation for ", doneNoteB: " on ", doneNoteC: " is booked. Our concierge will confirm the details shortly.",
+    bookAnother: "Book another date", selectedCharter: "Selected charter",
+    phFirst: "First name *", phLast: "Last name", phEmail: "Email *", phPhone: "Phone", phMsg: "Special requests (catering, decoration, etc.)",
+    back: "Back", booking: "Booking…", confirmReservation: "Confirm reservation",
+    disclaimer: "No payment is charged now. This request also reaches our concierge by email.",
+    prevMonth: "Previous month", nextMonth: "Next month",
+    available: "Available", partlyBooked: "Partly booked", booked: "Booked",
+    chooseSlot: "Choose a slot for", cont: "Continue",
+    errRequired: "First name and email are required.", errComplete: "Could not complete the reservation.",
+  },
+  es: {
+    months: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    weekdays: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"],
+    occ: { fun_day_at_sea: "Día de diversión en el mar", birthday: "Cumpleaños", family_trip: "Viaje familiar", bachelorette: "Despedida de soltera", business_lunch: "Almuerzo de negocios", other: "Otro" },
+    dur: { full_day: "Día completo", half_day_in_the_morning: "Medio día · Mañana", half_day_in_the_afternoon: "Medio día · Tarde" },
+    charterRequested: "Chárter solicitado", thisYacht: "este yate",
+    doneNoteA: "Tu reserva para ", doneNoteB: " el ", doneNoteC: " está confirmada. Nuestro concierge confirmará los detalles en breve.",
+    bookAnother: "Reservar otra fecha", selectedCharter: "Chárter seleccionado",
+    phFirst: "Nombre *", phLast: "Apellido", phEmail: "Email *", phPhone: "Teléfono", phMsg: "Solicitudes especiales (catering, decoración, etc.)",
+    back: "Volver", booking: "Reservando…", confirmReservation: "Confirmar reserva",
+    disclaimer: "No se realiza ningún cargo ahora. Esta solicitud también llega a nuestro concierge por correo.",
+    prevMonth: "Mes anterior", nextMonth: "Mes siguiente",
+    available: "Disponible", partlyBooked: "Parcialmente reservado", booked: "Reservado",
+    chooseSlot: "Elige un horario para", cont: "Continuar",
+    errRequired: "Nombre y email son obligatorios.", errComplete: "No se pudo completar la reserva.",
+  },
+};
+export function getYBW(locale: Locale) { return ybwDict[locale] ?? ybwDict.en; }

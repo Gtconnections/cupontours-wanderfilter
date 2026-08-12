@@ -130,7 +130,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2026 <a href="https://www.cupontours.com" className='link-footer'>Cupontours LLC</a>. {t.rights}®</p>
+        <p>&copy; 2026 <a href="https://www.cupontours.com" className='link-footer'>GT Connections LLC, dba Cupon Tours</a>. {t.rights}®</p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <LanguageSwitcher />
           <button className="btn-circle" aria-label="Copy Link">

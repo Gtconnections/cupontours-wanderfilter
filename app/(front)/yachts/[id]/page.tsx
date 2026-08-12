@@ -178,7 +178,7 @@ export default function YachtDetailPage({ params }: PageProps) {
   // Tarjetas de specs
   const statCards = [
     {
-      label: 'Length',
+      label: t.specLength,
       value: yacht.length,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -187,7 +187,7 @@ export default function YachtDetailPage({ params }: PageProps) {
       ),
     },
     {
-      label: 'Capacity',
+      label: t.specCapacity,
       value: yacht.capacity,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -196,7 +196,7 @@ export default function YachtDetailPage({ params }: PageProps) {
       ),
     },
     {
-      label: 'Staterooms',
+      label: t.specStaterooms,
       value: yacht.staterooms,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -207,9 +207,9 @@ export default function YachtDetailPage({ params }: PageProps) {
   ];
 
   const trustBadges = [
-    { label: 'Verified', icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>) },
-    { label: 'Five-Star', icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>) },
-    { label: 'Captained', icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg>) },
+    { label: t.bVerified, icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>) },
+    { label: t.bFiveStar, icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>) },
+    { label: t.bCaptained, icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 12 0v1" /></svg>) },
   ];
 
   // Inclusiones dinámicas (features en chips)
@@ -227,11 +227,11 @@ export default function YachtDetailPage({ params }: PageProps) {
   ];
 
   const charterDetails = [
-    { label: 'Length', value: yacht.length },
-    { label: 'Capacity', value: yacht.capacity },
-    { label: 'Staterooms', value: yacht.staterooms },
-    { label: 'Bathrooms', value: yacht.bathrooms },
-    { label: 'Full-day Rate', value: yacht.price_full_day, accent: true },
+    { label: t.specLength, value: yacht.length },
+    { label: t.specCapacity, value: yacht.capacity },
+    { label: t.specStaterooms, value: yacht.staterooms },
+    { label: t.specBathrooms, value: yacht.bathrooms },
+    { label: t.specFullDayRate, value: yacht.price_full_day, accent: true },
   ];
 
   return (
@@ -375,7 +375,7 @@ export default function YachtDetailPage({ params }: PageProps) {
                 <div className="lux-reserve-trust">
                   <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>{t.secure}</span>
                   <span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>{t.fiveStar}</span>
-                  <span>24/7 Support</span>
+                  <span>{t.support}</span>
                 </div>
 
                 <div className="lux-reserve-price">

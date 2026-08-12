@@ -9,26 +9,20 @@ import {
 } from '@/app/lib/api/yachtBooking';
 import { sendYachtBookingRequest } from '@/app/lib/api';
 import './yacht-booking-widget.css';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getYBW } from '@/app/i18n/dictionaries';
 
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const WD = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 const pad = (n: number) => String(n).padStart(2, '0');
 const ds = (y: number, m: number, d: number) => `${y}-${pad(m)}-${pad(d)}`;
 const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n || 0);
 
-const OCCASIONS = [
-  { value: 'fun_day_at_sea', label: 'Fun day at sea' },
-  { value: 'birthday', label: 'Birthday' },
-  { value: 'family_trip', label: 'Family trip' },
-  { value: 'bachelorette', label: 'Bachelorette' },
-  { value: 'business_lunch', label: 'Business lunch' },
-  { value: 'other', label: 'Other' },
-];
+const OCCASION_VALUES = ['fun_day_at_sea','birthday','family_trip','bachelorette','business_lunch','other'] as const;
 
-const DURATIONS: { value: YachtDuration; label: string; kind: 'full' | 'morning' | 'afternoon' }[] = [
-  { value: 'full_day', label: 'Full day', kind: 'full' },
-  { value: 'half_day_in_the_morning', label: 'Half day · Morning', kind: 'morning' },
-  { value: 'half_day_in_the_afternoon', label: 'Half day · Afternoon', kind: 'afternoon' },
+const DURATION_DEFS: { value: YachtDuration; kind: 'full' | 'morning' | 'afternoon' }[] = [
+  { value: 'full_day', kind: 'full' },
+  { value: 'half_day_in_the_morning', kind: 'morning' },
+  { value: 'half_day_in_the_afternoon', kind: 'afternoon' },
 ];
 
 interface Props { yachtId: number; yachtName?: string; }
@@ -38,6 +32,12 @@ const Chevron = ({ left }: { left?: boolean }) => (
 );
 
 export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getYBW(locale);
+  const M = t.months;
+  const W = t.weekdays;
+  const OCCASIONS = OCCASION_VALUES.map((value) => ({ value, label: t.occ[value] }));
+  const DURATIONS = DURATION_DEFS.map((d) => ({ ...d, label: t.dur[d.value] }));
   const now = new Date();
   const [viewYear, setViewYear] = useState(now.getFullYear());
   const [viewMonth, setViewMonth] = useState(now.getMonth() + 1);
@@ -96,7 +96,7 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
 
   const submit = async () => {
     if (!selDate || !duration) return;
-    if (!form.first_name.trim() || !form.email.trim()) { setError('First name and email are required.'); return; }
+    if (!form.first_name.trim() || !form.email.trim()) { setError(t.errRequired); return; }
     setSubmitting(true); setError(null);
     try {
       const durLabel = DURATIONS.find((d) => d.value === duration)?.label || duration;
@@ -128,7 +128,7 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
       } catch { /* email best-effort; the DB reservation already succeeded */ }
       setStep('done');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not complete the reservation.');
+      setError(e instanceof Error ? e.message : t.errComplete);
     } finally {
       setSubmitting(false);
     }
@@ -148,10 +148,10 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
           <div className="ybw-done-check">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           </div>
-          <h3>Charter requested</h3>
-          <p>Your reservation for {yachtName || 'this yacht'} on <strong>{selDate}</strong> is booked. Our concierge will confirm the details shortly.</p>
+          <h3>{t.charterRequested}</h3>
+          <p>{t.doneNoteA}{yachtName || t.thisYacht}{t.doneNoteB}<strong>{selDate}</strong>{t.doneNoteC}</p>
           <button className="ybw-btn" onClick={() => { setStep('calendar'); resetSel(); setForm({ first_name: '', last_name: '', email: '', phone: '', occasion: 'fun_day_at_sea', message: '' }); loadMonth(); }}>
-            Book another date
+            {t.bookAnother}
           </button>
         </div>
       </div>
@@ -165,7 +165,7 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
       <div className="ybw">
         <div className="ybw-summary">
           <div>
-            <span className="ybw-summary-label">Selected charter</span>
+            <span className="ybw-summary-label">{t.selectedCharter}</span>
             <div className="ybw-summary-main">{selDate} · {durLabel}</div>
           </div>
           <div className="ybw-summary-price">{fmt(selPrice)}</div>
@@ -173,24 +173,24 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
 
         <div className="ybw-fields">
           <div className="ybw-row2">
-            <input className="ybw-input" placeholder="First name *" value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} />
-            <input className="ybw-input" placeholder="Last name" value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} />
+            <input className="ybw-input" placeholder={t.phFirst} value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} />
+            <input className="ybw-input" placeholder={t.phLast} value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} />
           </div>
-          <input className="ybw-input" type="email" placeholder="Email *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-          <input className="ybw-input" placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+          <input className="ybw-input" type="email" placeholder={t.phEmail} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          <input className="ybw-input" placeholder={t.phPhone} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
           <select className="ybw-input" value={form.occasion} onChange={(e) => setForm({ ...form, occasion: e.target.value })}>
             {OCCASIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
-          <textarea className="ybw-input ybw-textarea" placeholder="Special requests (catering, decoration, etc.)" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+          <textarea className="ybw-input ybw-textarea" placeholder={t.phMsg} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
         </div>
 
         {error && <div className="ybw-error">{error}</div>}
 
         <div className="ybw-actions">
-          <button className="ybw-btn ybw-btn--ghost" onClick={() => { setStep('calendar'); setError(null); }} disabled={submitting}>Back</button>
-          <button className="ybw-btn" onClick={submit} disabled={submitting}>{submitting ? 'Booking…' : 'Confirm reservation'}</button>
+          <button className="ybw-btn ybw-btn--ghost" onClick={() => { setStep('calendar'); setError(null); }} disabled={submitting}>{t.back}</button>
+          <button className="ybw-btn" onClick={submit} disabled={submitting}>{submitting ? t.booking : t.confirmReservation}</button>
         </div>
-        <p className="ybw-disclaimer">No payment is charged now. This request also reaches our concierge by email.</p>
+        <p className="ybw-disclaimer">{t.disclaimer}</p>
       </div>
     );
   }
@@ -199,12 +199,12 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
   return (
     <div className="ybw">
       <div className="ybw-cal-head">
-        <button className="ybw-nav" onClick={prevMonth} aria-label="Previous month"><Chevron left /></button>
-        <span className="ybw-cal-title">{MONTHS[viewMonth - 1]} {viewYear}</span>
-        <button className="ybw-nav" onClick={nextMonth} aria-label="Next month"><Chevron /></button>
+        <button className="ybw-nav" onClick={prevMonth} aria-label={t.prevMonth}><Chevron left /></button>
+        <span className="ybw-cal-title">{M[viewMonth - 1]} {viewYear}</span>
+        <button className="ybw-nav" onClick={nextMonth} aria-label={t.nextMonth}><Chevron /></button>
       </div>
 
-      <div className="ybw-wd">{WD.map((w) => <span key={w}>{w}</span>)}</div>
+      <div className="ybw-wd">{W.map((w) => <span key={w}>{w}</span>)}</div>
 
       <div className={`ybw-grid ${loadingMonth ? 'ybw-grid--loading' : ''}`}>
         {cells.map((d, i) => {
@@ -229,14 +229,14 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
       </div>
 
       <div className="ybw-legend">
-        <span><i className="ybw-dot ybw-dot--free" /> Available</span>
-        <span><i className="ybw-dot ybw-dot--partial" /> Partly booked</span>
-        <span><i className="ybw-dot ybw-dot--booked" /> Booked</span>
+        <span><i className="ybw-dot ybw-dot--free" /> {t.available}</span>
+        <span><i className="ybw-dot ybw-dot--partial" /> {t.partlyBooked}</span>
+        <span><i className="ybw-dot ybw-dot--booked" /> {t.booked}</span>
       </div>
 
       {selDate && (
         <div className="ybw-slots">
-          <span className="ybw-slots-label">Choose a slot for {selDate}</span>
+          <span className="ybw-slots-label">{t.chooseSlot} {selDate}</span>
           <div className="ybw-slot-row">
             {DURATIONS.map((d) => {
               const on = durationEnabled(d.kind);
@@ -254,7 +254,7 @@ export default function YachtBookingWidget({ yachtId, yachtName }: Props) {
             })}
           </div>
           <button className="ybw-btn ybw-btn--full" disabled={!duration} onClick={() => { setStep('details'); setError(null); }}>
-            Continue
+            {t.cont}
           </button>
         </div>
       )}

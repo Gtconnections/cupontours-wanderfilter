@@ -13,7 +13,7 @@ export function StructuredData({ type = 'Organization', data = {} }: StructuredD
     "name": "Cupontours",
     // legalName = razón social registrada. Consistente con el footer.
     // Si la entidad registrada real es "GT Connections LLC", cambia esta línea.
-    "legalName": "Cupontours LLC",
+    "legalName": "GT Connections LLC, dba Cupon Tours",
     "url": clientConfig.site.url,
     "logo": clientConfig.brand.logo,
     "image": clientConfig.brand.logo,

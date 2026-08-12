@@ -257,7 +257,7 @@ export default function CarDetailPage({ params }: PageProps) {
   // Tarjetas de specs
   const statCards = [
     {
-      label: 'Model Year',
+      label: t.chipModelYear,
       value: String(car.year),
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -266,7 +266,7 @@ export default function CarDetailPage({ params }: PageProps) {
       ),
     },
     {
-      label: 'Passengers',
+      label: t.chipPassengers,
       value: '4-5',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -275,7 +275,7 @@ export default function CarDetailPage({ params }: PageProps) {
       ),
     },
     {
-      label: 'Transmission',
+      label: t.chipTransmission,
       value: 'Auto',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -286,9 +286,9 @@ export default function CarDetailPage({ params }: PageProps) {
   ];
 
   const trustBadges = [
-    { label: 'Verified', icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>) },
-    { label: 'Five-Star', icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>) },
-    { label: 'Insured', icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>) },
+    { label: t.bVerified, icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>) },
+    { label: t.bFiveStar, icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>) },
+    { label: t.bInsured, icon: (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>) },
   ];
 
   const features = [
@@ -299,10 +299,10 @@ export default function CarDetailPage({ params }: PageProps) {
   ];
 
   const vehicleDetails = [
-    { label: 'Fuel Type', value: 'Premium Gasoline' },
-    { label: 'Category', value: 'Luxury SUV' },
-    { label: 'Minimum Rental', value: '1 day' },
-    { label: 'Daily Rate', value: `$${rawPrice}`, accent: true },
+    { label: t.specFuelType, value: t.valPremiumGas },
+    { label: t.specCategory, value: t.valLuxurySUV },
+    { label: t.specMinRental, value: t.val1day },
+    { label: t.specDailyRate, value: `$${rawPrice}`, accent: true },
   ];
 
   return (
@@ -446,7 +446,7 @@ export default function CarDetailPage({ params }: PageProps) {
                 <div className="lux-reserve-trust">
                   <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>{t.secure}</span>
                   <span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>{t.fiveStar}</span>
-                  <span>24/7 Support</span>
+                  <span>{t.support}</span>
                 </div>
 
                 <div className="lux-reserve-price">
@@ -543,7 +543,7 @@ export default function CarDetailPage({ params }: PageProps) {
                   {/* Desglose de precio */}
                   <div className="pricing-breakdown-box">
                     <div className="price-row-item">
-                      <span>${rawPrice} x {totalDays} {totalDays === 1 ? 'day' : 'days'}</span>
+                      <span>${rawPrice} x {totalDays} {totalDays === 1 ? t.day : t.days}</span>
                       <span>${rawPrice * totalDays}</span>
                     </div>
                     <div className="price-row-item">

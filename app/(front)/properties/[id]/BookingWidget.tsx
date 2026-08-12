@@ -3,13 +3,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { checkAvailability, createReservation, AvailabilityResult } from '@/app/lib/api/booking';
 import './booking-widget.css';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getBW } from '@/app/i18n/dictionaries';
 
 const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n || 0);
 const pad = (n: number) => String(n).padStart(2, '0');
 const ds = (y: number, m: number, d: number) => `${y}-${pad(m)}-${pad(d)}`;
 const todayStr = () => new Date().toISOString().slice(0, 10);
-const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-const WD = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
 
 interface Props { listingId: number; propertyName?: string; }
 interface DayInfo { available: boolean; price: number; }
@@ -20,6 +21,10 @@ const Chevron = ({ left }: { left?: boolean }) => (
 );
 
 export default function BookingWidget({ listingId }: Props) {
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getBW(locale);
+  const M = t.months;
+  const W = t.weekdays;
   const start = new Date();
   const [viewYear, setViewYear] = useState(start.getFullYear());
   const [viewMonth, setViewMonth] = useState(start.getMonth() + 1); // 1-12
@@ -69,10 +74,10 @@ export default function BookingWidget({ listingId }: Props) {
     checkAvailability(listingId, checkIn, checkOut)
       .then((r) => {
         if (cancelled) return;
-        if (!r.available) { setRangeError('Hay noches ocupadas en ese rango. Elige otras fechas.'); setCheckOut(''); setQuote(null); }
+        if (!r.available) { setRangeError(t.rangeOccupied); setCheckOut(''); setQuote(null); }
         else setQuote(r);
       })
-      .catch((e) => { if (!cancelled) setRangeError(e instanceof Error ? e.message : 'Error verificando'); })
+      .catch((e) => { if (!cancelled) setRangeError(e instanceof Error ? e.message : t.errChecking); })
       .finally(() => { if (!cancelled) setQuoting(false); });
     return () => { cancelled = true; };
   }, [listingId, checkIn, checkOut]);
@@ -92,7 +97,7 @@ export default function BookingWidget({ listingId }: Props) {
   };
 
   const handleSubmit = async () => {
-    if (!form.first_name || !form.last_name || !form.email) { setError('Completa nombre, apellido y email.'); return; }
+    if (!form.first_name || !form.last_name || !form.email) { setError(t.errRequired); return; }
     setSubmitting(true); setError(null);
     try {
       const res = await createReservation({
@@ -103,7 +108,7 @@ export default function BookingWidget({ listingId }: Props) {
       setConfirmation({ code: res.reservation.confirmation_code, total: res.reservation.total });
       setStep('done');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo crear la reserva');
+      setError(e instanceof Error ? e.message : t.errCreate);
     } finally {
       setSubmitting(false);
     }
@@ -116,11 +121,11 @@ export default function BookingWidget({ listingId }: Props) {
           <span className="bw-done-badge">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           </span>
-          <h4>¡Reserva confirmada!</h4>
+          <h4>{t.confirmed}</h4>
           <p>{checkIn} → {checkOut}</p>
-          {confirmation.code != null && <p>Código: <strong>{confirmation.code}</strong></p>}
-          <p>Total: <strong>{fmt(confirmation.total)}</strong></p>
-          <p style={{ marginTop: '10px' }}>Te enviaremos los detalles a <strong>{form.email}</strong>. No se realizó ningún cargo todavía.</p>
+          {confirmation.code != null && <p>{t.code} <strong>{confirmation.code}</strong></p>}
+          <p>{t.total} <strong>{fmt(confirmation.total)}</strong></p>
+          <p style={{ marginTop: '10px' }}>{t.doneNoteA}<strong>{form.email}</strong>{t.doneNoteB}</p>
         </div>
       </div>
     );
@@ -135,14 +140,14 @@ export default function BookingWidget({ listingId }: Props) {
       {step === 'calendar' && (
         <>
           <div className="bw-cal-head">
-            <div className="bw-cal-title">{MONTHS[viewMonth - 1]} {viewYear}</div>
+            <div className="bw-cal-title">{M[viewMonth - 1]} {viewYear}</div>
             <div className="bw-cal-nav">
-              <button onClick={() => changeMonth(-1)} aria-label="Mes anterior"><Chevron left /></button>
-              <button onClick={() => changeMonth(1)} aria-label="Mes siguiente"><Chevron /></button>
+              <button onClick={() => changeMonth(-1)} aria-label={t.prevMonth}><Chevron left /></button>
+              <button onClick={() => changeMonth(1)} aria-label={t.nextMonth}><Chevron /></button>
             </div>
           </div>
 
-          <div className="bw-cal-weekdays">{WD.map((w) => <span key={w}>{w}</span>)}</div>
+          <div className="bw-cal-weekdays">{W.map((w) => <span key={w}>{w}</span>)}</div>
 
           <div className="bw-cal-grid">
             {Array.from({ length: firstWeekday }).map((_, i) => <div key={`b-${i}`} className="bw-cal-day bw-cal-empty" />)}
@@ -172,28 +177,28 @@ export default function BookingWidget({ listingId }: Props) {
           </div>
 
           <div className="bw-cal-legend">
-            <span><i className="bw-legend-avail" /> Disponible</span>
-            <span><i className="bw-legend-occ" /> Ocupado</span>
+            <span><i className="bw-legend-avail" /> {t.available}</span>
+            <span><i className="bw-legend-occ" /> {t.occupied}</span>
           </div>
 
-          {loadingMonth && <div className="bw-cal-hint">Cargando disponibilidad…</div>}
-          {!checkIn && !loadingMonth && <div className="bw-cal-hint">Elige tu fecha de llegada</div>}
-          {checkIn && !checkOut && <div className="bw-cal-hint">Ahora elige la fecha de salida</div>}
+          {loadingMonth && <div className="bw-cal-hint">{t.loadingAvail}</div>}
+          {!checkIn && !loadingMonth && <div className="bw-cal-hint">{t.pickArrival}</div>}
+          {checkIn && !checkOut && <div className="bw-cal-hint">{t.pickDeparture}</div>}
           {rangeError && <div className="bw-status bw-status--no">{rangeError}</div>}
-          {quoting && <div className="bw-status bw-status--info">Calculando total…</div>}
+          {quoting && <div className="bw-status bw-status--info">{t.calcTotal}</div>}
 
           {quote && quote.available && (
             <>
               <div className="bw-breakdown">
-                <div className="bw-line"><span>{fmt(quote.nights ? quote.nightly_total / quote.nights : 0)} × {quote.nights} noche{quote.nights === 1 ? '' : 's'}</span><span>{fmt(quote.nightly_total)}</span></div>
-                {quote.cleaning_fee > 0 && <div className="bw-line"><span>Limpieza</span><span>{fmt(quote.cleaning_fee)}</span></div>}
-                <div className="bw-line bw-total"><span>Total</span><span>{fmt(quote.total)}</span></div>
+                <div className="bw-line"><span>{fmt(quote.nights ? quote.nightly_total / quote.nights : 0)} × {quote.nights} {quote.nights === 1 ? t.night : t.nights}</span><span>{fmt(quote.nightly_total)}</span></div>
+                {quote.cleaning_fee > 0 && <div className="bw-line"><span>{t.cleaning}</span><span>{fmt(quote.cleaning_fee)}</span></div>}
+                <div className="bw-line bw-total"><span>{t.totalWord}</span><span>{fmt(quote.total)}</span></div>
               </div>
               <div className="bw-field">
-                <label>Huéspedes</label>
+                <label>{t.guests}</label>
                 <input className="bw-input" type="number" min={1} value={guests} onChange={(e) => setGuests(Math.max(1, Number(e.target.value) || 1))} />
               </div>
-              <button className="bw-btn" onClick={() => { setError(null); setStep('details'); }}>Continuar</button>
+              <button className="bw-btn" onClick={() => { setError(null); setStep('details'); }}>{t.cont}</button>
             </>
           )}
         </>
@@ -202,19 +207,19 @@ export default function BookingWidget({ listingId }: Props) {
       {step === 'details' && quote && (
         <>
           <div className="bw-breakdown">
-            <div className="bw-line"><span>{checkIn} → {checkOut}</span><span>{quote.nights} noche{quote.nights === 1 ? '' : 's'}</span></div>
-            <div className="bw-line bw-total"><span>Total</span><span>{fmt(quote.total)}</span></div>
+            <div className="bw-line"><span>{checkIn} → {checkOut}</span><span>{quote.nights} {quote.nights === 1 ? t.night : t.nights}</span></div>
+            <div className="bw-line bw-total"><span>{t.totalWord}</span><span>{fmt(quote.total)}</span></div>
           </div>
           <div className="bw-row">
-            <div className="bw-field"><label>Nombre *</label><input className="bw-input" value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} /></div>
-            <div className="bw-field"><label>Apellido *</label><input className="bw-input" value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} /></div>
+            <div className="bw-field"><label>{t.lblFirst}</label><input className="bw-input" value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} /></div>
+            <div className="bw-field"><label>{t.lblLast}</label><input className="bw-input" value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} /></div>
           </div>
-          <div className="bw-field"><label>Email *</label><input className="bw-input" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
-          <div className="bw-field"><label>Teléfono</label><input className="bw-input" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
-          <div className="bw-field"><label>Mensaje (opcional)</label><input className="bw-input" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Solicitudes especiales" /></div>
+          <div className="bw-field"><label>{t.lblEmail}</label><input className="bw-input" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
+          <div className="bw-field"><label>{t.lblPhone}</label><input className="bw-input" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
+          <div className="bw-field"><label>{t.lblMsg}</label><input className="bw-input" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder={t.phMsg} /></div>
           {error && <div className="bw-err">{error}</div>}
-          <button className="bw-btn" disabled={submitting} onClick={handleSubmit}>{submitting ? 'Reservando…' : 'Confirmar reserva'}</button>
-          <button className="bw-btn bw-btn--ghost" onClick={() => setStep('calendar')}>Volver</button>
+          <button className="bw-btn" disabled={submitting} onClick={handleSubmit}>{submitting ? t.booking : t.confirmBooking}</button>
+          <button className="bw-btn bw-btn--ghost" onClick={() => setStep('calendar')}>{t.back}</button>
         </>
       )}
     </div>
