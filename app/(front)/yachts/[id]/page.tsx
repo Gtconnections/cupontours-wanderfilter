@@ -26,6 +26,7 @@ function ImageGalleryModal({
   onClose: () => void;
   initialIndex?: number;
 }) {
+  const c = getDetail(localeFromPath(usePathname() || '/')).common;
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   const goToPrevious = (e: React.MouseEvent) => {
