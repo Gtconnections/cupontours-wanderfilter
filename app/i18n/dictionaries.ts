@@ -604,3 +604,157 @@ export const workDict = {
   },
 };
 export function getWork(locale: Locale) { return workDict[locale] ?? workDict.en; }
+
+// Página Terms & Conditions.
+export const termsDict = {
+  en: {
+    navTitle: "Legal",
+    n1: "1. Welcome", n2: "2. Short Term Rental", n3: "3. User Accounts", n4: "4. Payouts & Fees", n5: "5. Cancellations & Refunds", n6: "6. Limits of Liability", n7: "7. Intellectual Property",
+    pre: "Legal Framework", h1: "Terms and Conditions", updated: "Last updated: May 2026",
+    s1h: "1. Welcome to Cupontours",
+    s1p1: "Welcome to Cupontours. These Terms and Conditions govern your use of our platform, services, property management tools, and reservation ecosystem. By accessing our website, creating an account, or listing a property, you agree to comply with and be bound by the comprehensive framework detailed below.",
+    s1p2: "Our platform offers integrated luxury solutions combining premium short-term property management, exotic car rentals, and elite yacht charters. Your access to these individual verticals is strictly subject to these global operational standards.",
+    s2h: "2. Short Term Rental & Management",
+    s2p1: "Our Short-Term Property Management firm operates dedicated solutions on behalf of vacation rental owners to enhance guest satisfaction and maximize revenue at every step of the way. Owners who list their assets authorize Cupontours to execute dynamic pricing, manage global marketplace distribution, handle 24/7 guest communication, and coordinate meticulous hospitality care.",
+    s2p2: "Guests booking through our ecosystem agree to adhere to house rules, check-out protocols, occupancy limitations, and strict behavioral standards specified at the time of reservation.",
+    s3h: "3. User Accounts & Registration",
+    s3p1: "To access certain advanced components of our platform—including real-time owner financial dashboards or fast guest checkout portals—you must create a secure user profile. You are entirely responsible for protecting your account credentials and maintaining valid authentication records.",
+    s3p2: "Cupontours reserves the right to suspend, terminate, or restrict user access at any time if any fraudulent behavior, policy breach, or unauthorized asset distribution is identified.",
+    s4h: "4. Payouts, Fees, and Smart Pricing",
+    s4p1: "All property financial transactions, dynamic pricing changes, and vehicle or vessel booking payments are securely processed through our integrated institutional gates. Property owners receive transparent payouts net of management fees according to verified cycles displayed in their dynamic dashboard.",
+    s4p2: "Local taxes, tourist registration fees, and cleaning deposit requirements vary depending on seasonal fluctuations, daily market rates, and specific state legislations.",
+    s5h: "5. Cancellations, Modifications & Refund Policy",
+    s5p1: "Cancellation rules apply strictly based on the tier of service selected. Guest cancellations made within the protected grace period qualify for fractional refunds, while sudden property unavailability caused by operational emergencies triggers alternative luxury placement or comprehensive compensation options.",
+    s6h: "6. Limits of Liability",
+    s6p1: "Cupontours provides its digital solutions and marketplace services on an “as-is” and “as-available” basis. We do not assume direct liability for unforeseen structural accidents, local power failures, guest personal injury during external activities, or asset wear-and-tear inside managed real estate properties beyond standard maintenance guarantees.",
+    s7h: "7. Intellectual Property",
+    s7p1: "All software infrastructure, design elements, structural code, visual media, photographic content, logos, and written copy published across our platform remain the exclusive property of Cupontours LLC. Unauthorized duplication, modification, data scraping, or syndication without written consent is strictly prohibited and subject to legal action.",
+  },
+  es: {
+    navTitle: "Legal",
+    n1: "1. Bienvenida", n2: "2. Alquiler a Corto Plazo", n3: "3. Cuentas de Usuario", n4: "4. Pagos y Comisiones", n5: "5. Cancelaciones y Reembolsos", n6: "6. Límites de Responsabilidad", n7: "7. Propiedad Intelectual",
+    pre: "Marco Legal", h1: "Términos y Condiciones", updated: "Última actualización: mayo de 2026",
+    s1h: "1. Bienvenido a Cupontours",
+    s1p1: "Bienvenido a Cupontours. Estos Términos y Condiciones rigen el uso de nuestra plataforma, servicios, herramientas de gestión de propiedades y ecosistema de reservas. Al acceder a nuestro sitio web, crear una cuenta o publicar una propiedad, aceptas cumplir y quedar sujeto al marco integral que se detalla a continuación.",
+    s1p2: "Nuestra plataforma ofrece soluciones de lujo integradas que combinan gestión premium de propiedades a corto plazo, alquiler de autos exóticos y chárteres de yates de élite. Tu acceso a cada uno de estos segmentos está estrictamente sujeto a estos estándares operativos globales.",
+    s2h: "2. Alquiler y Gestión a Corto Plazo",
+    s2p1: "Nuestra firma de Gestión de Propiedades a Corto Plazo opera soluciones dedicadas en nombre de los propietarios de alquileres vacacionales para mejorar la satisfacción de los huéspedes y maximizar los ingresos en cada paso del camino. Los propietarios que publican sus activos autorizan a Cupontours a ejecutar precios dinámicos, gestionar la distribución global en el marketplace, atender la comunicación con huéspedes 24/7 y coordinar un cuidado hospitalario meticuloso.",
+    s2p2: "Los huéspedes que reservan a través de nuestro ecosistema aceptan cumplir las reglas de la casa, los protocolos de salida, los límites de ocupación y los estrictos estándares de comportamiento especificados al momento de la reserva.",
+    s3h: "3. Cuentas de Usuario y Registro",
+    s3p1: "Para acceder a ciertos componentes avanzados de nuestra plataforma —incluidos los paneles financieros en tiempo real para propietarios o los portales de pago rápido para huéspedes— debes crear un perfil de usuario seguro. Eres totalmente responsable de proteger tus credenciales de acceso y de mantener registros de autenticación válidos.",
+    s3p2: "Cupontours se reserva el derecho de suspender, cancelar o restringir el acceso de un usuario en cualquier momento si se identifica comportamiento fraudulento, incumplimiento de las políticas o distribución no autorizada de activos.",
+    s4h: "4. Pagos, Comisiones y Precios Inteligentes",
+    s4p1: "Todas las transacciones financieras de las propiedades, los cambios de precios dinámicos y los pagos de reservas de vehículos o embarcaciones se procesan de forma segura a través de nuestras pasarelas institucionales integradas. Los propietarios reciben pagos transparentes, netos de comisiones de gestión, según ciclos verificados que se muestran en su panel dinámico.",
+    s4p2: "Los impuestos locales, las tasas de registro turístico y los requisitos de depósito de limpieza varían según las fluctuaciones de temporada, las tarifas diarias del mercado y las legislaciones específicas de cada estado.",
+    s5h: "5. Cancelaciones, Modificaciones y Política de Reembolsos",
+    s5p1: "Las reglas de cancelación se aplican estrictamente según el nivel de servicio seleccionado. Las cancelaciones de huéspedes realizadas dentro del período de gracia protegido califican para reembolsos parciales, mientras que la indisponibilidad repentina de una propiedad por emergencias operativas activa una reubicación de lujo alternativa u opciones de compensación integrales.",
+    s6h: "6. Límites de Responsabilidad",
+    s6p1: "Cupontours ofrece sus soluciones digitales y servicios de marketplace “tal cual” y “según disponibilidad”. No asumimos responsabilidad directa por accidentes estructurales imprevistos, cortes de energía locales, lesiones personales de huéspedes durante actividades externas o el desgaste de activos dentro de las propiedades gestionadas más allá de las garantías de mantenimiento estándar.",
+    s7h: "7. Propiedad Intelectual",
+    s7p1: "Toda la infraestructura de software, los elementos de diseño, el código estructural, el contenido visual, el material fotográfico, los logotipos y los textos publicados en nuestra plataforma son propiedad exclusiva de Cupontours LLC. La duplicación, modificación, extracción de datos o redistribución no autorizadas sin consentimiento por escrito están estrictamente prohibidas y sujetas a acciones legales.",
+  },
+};
+export function getTerms(locale: Locale) { return termsDict[locale] ?? termsDict.en; }
+
+// Página Privacy Policy.
+export const privacyDict = {
+  en: {
+    navTitle: "Privacy",
+    n1: "1. Introduction", n2: "2. Information We Collect", n3: "3. How We Use Information", n4: "4. Sharing & Disclosure", n5: "5. Data Security", n6: "6. Your Privacy Rights", n7: "7. Cookies & Tracking",
+    pre: "Data Protection", h1: "Privacy Policy", updated: "Last updated: May 2026",
+    s1h: "1. Introduction",
+    s1p1: "At Cupontours, we respect your privacy and are committed to protecting the personal data you share with us. This Privacy Policy details how we collect, process, utilize, and safeguard your information across our website, mobile apps, and booking ecosystems.",
+    s1p2: "By accessing our platform or reserving any premium property, vehicle, or yacht charter, you acknowledge and agree to the data practice standards outlined in this document.",
+    s2h: "2. Information We Collect",
+    s2sA: "Personal Identifiers:", s2a: "We collect information necessary to establish luxury reservations, including your full name, email address, physical billing address, contact numbers, and official government identification profiles required for secure check-ins.",
+    s2sB: "Usage & Device Data:", s2b: "Our servers automatically track analytical records such as IP addresses, browser specifications, operating systems, platform interactions, and precise cookie-based navigation paths to enhance system speeds.",
+    s3h: "3. How We Use Your Information",
+    s3p1: "We process your operational data exclusively to facilitate premium bookings, customize platform experiences, authenticate account access, issue financial transaction payouts, and coordinate logistics with hospitality management staff.",
+    s3p2: "Additionally, with your verified consent, we may utilize contact records to distribute tailored luxury lifestyle market updates and exclusive ecosystem opportunities.",
+    s4h: "4. Information Sharing and Disclosure",
+    s4p1: "Cupontours does not sell, rent, or lease your private personal markers to external marketing syndicates. Data transfers are strictly isolated to verified service providers who assist our firm in executing payment gating, identity verification, property check-ins, or smart infrastructure distribution.",
+    s4p2: "We preserve the right to disclose records if mandated by international judicial decrees, local safety hazards, or regulatory compliance protocols.",
+    s5h: "5. Data Security Standards",
+    s5p1: "We maintain advanced administrative, industrial, and digital security architecture designed to prevent unauthorized alteration, accidental loss, data breaches, or illegal exploitation of your database files.",
+    s5p2: "While we utilize top-tier encryption frameworks for high-profile client assets, no cloud storage method or web distribution model is entirely impenetrable.",
+    s6h: "6. Your Privacy Rights",
+    s6p1: "Depending on your local legal jurisdiction, you hold sovereign rights to request clear access to your gathered personal files, demand corrections to inaccurate records, restrict targeted tracking, or request the absolute deletion of your operational account profile.",
+    s7h: "7. Cookies and Tracking Technologies",
+    s7p1: "Our platform implements clean cookie configurations and tracking pixels to store interface configurations, optimize browser load times, and analyze macro traffic patterns. You can manage or entirely block cookie storage variables via your native browser preference menus at any time.",
+  },
+  es: {
+    navTitle: "Privacidad",
+    n1: "1. Introducción", n2: "2. Información que Recopilamos", n3: "3. Cómo Usamos la Información", n4: "4. Divulgación y Terceros", n5: "5. Seguridad de Datos", n6: "6. Tus Derechos de Privacidad", n7: "7. Cookies y Rastreo",
+    pre: "Protección de Datos", h1: "Política de Privacidad", updated: "Última actualización: mayo de 2026",
+    s1h: "1. Introducción",
+    s1p1: "En Cupontours respetamos tu privacidad y nos comprometemos a proteger los datos personales que compartes con nosotros. Esta Política de Privacidad detalla cómo recopilamos, procesamos, utilizamos y protegemos tu información en nuestro sitio web, aplicaciones móviles y ecosistemas de reservas.",
+    s1p2: "Al acceder a nuestra plataforma o reservar cualquier propiedad, vehículo o chárter de yate premium, reconoces y aceptas los estándares de tratamiento de datos descritos en este documento.",
+    s2h: "2. Información que Recopilamos",
+    s2sA: "Identificadores personales:", s2a: "Recopilamos la información necesaria para establecer reservas de lujo, incluidos tu nombre completo, correo electrónico, dirección física de facturación, números de contacto y los perfiles de identificación oficial requeridos para registros seguros.",
+    s2sB: "Datos de uso y dispositivo:", s2b: "Nuestros servidores registran automáticamente datos analíticos como direcciones IP, especificaciones del navegador, sistemas operativos, interacciones con la plataforma y rutas de navegación precisas basadas en cookies para mejorar la velocidad del sistema.",
+    s3h: "3. Cómo Usamos tu Información",
+    s3p1: "Procesamos tus datos operativos exclusivamente para facilitar reservas premium, personalizar la experiencia en la plataforma, autenticar el acceso a la cuenta, emitir pagos de transacciones financieras y coordinar la logística con el personal de gestión hospitalaria.",
+    s3p2: "Además, con tu consentimiento verificado, podemos utilizar tus datos de contacto para enviarte actualizaciones de mercado de estilo de vida de lujo a tu medida y oportunidades exclusivas del ecosistema.",
+    s4h: "4. Divulgación y Compartición de Información",
+    s4p1: "Cupontours no vende, alquila ni cede tus datos personales privados a redes de marketing externas. Las transferencias de datos se limitan estrictamente a proveedores de servicios verificados que ayudan a nuestra firma a ejecutar el procesamiento de pagos, la verificación de identidad, los registros de propiedades o la distribución de infraestructura inteligente.",
+    s4p2: "Nos reservamos el derecho de divulgar registros cuando así lo exijan decretos judiciales internacionales, riesgos de seguridad locales o protocolos de cumplimiento normativo.",
+    s5h: "5. Estándares de Seguridad de Datos",
+    s5p1: "Mantenemos una arquitectura de seguridad administrativa, industrial y digital avanzada, diseñada para prevenir la alteración no autorizada, la pérdida accidental, las filtraciones de datos o la explotación ilegal de tus archivos de base de datos.",
+    s5p2: "Aunque utilizamos marcos de cifrado de primer nivel para los activos de clientes de alto perfil, ningún método de almacenamiento en la nube ni modelo de distribución web es completamente impenetrable.",
+    s6h: "6. Tus Derechos de Privacidad",
+    s6p1: "Según la jurisdicción legal de tu localidad, tienes derecho a solicitar acceso claro a tus archivos personales recopilados, exigir correcciones a registros inexactos, restringir el rastreo dirigido o solicitar la eliminación total del perfil de tu cuenta operativa.",
+    s7h: "7. Cookies y Tecnologías de Rastreo",
+    s7p1: "Nuestra plataforma implementa configuraciones de cookies limpias y píxeles de rastreo para almacenar preferencias de interfaz, optimizar los tiempos de carga del navegador y analizar patrones de tráfico a gran escala. Puedes gestionar o bloquear por completo el almacenamiento de cookies desde los menús de preferencias de tu navegador en cualquier momento.",
+  },
+};
+export function getPrivacy(locale: Locale) { return privacyDict[locale] ?? privacyDict.en; }
+
+// Página Login.
+export const loginDict = {
+  en: {
+    pre: "Dashboard Access", h1: "Welcome back to our platform!",
+    subtitle: "Please enter your credentials to access your data and continue with your activities. If you don't have an account yet, sign up now and start enjoying the benefits of our platform. Thank you for choosing us!",
+    lblUser: "Username or Email", phUser: "Enter your username",
+    lblPass: "Password", forgot: "Forgot password?",
+    btnSignIn: "Sign In", btnSigningIn: "Signing In...",
+    errEmpty: "Please enter your username and password",
+    caption: "“Find your happy place.”", captionLoc: "Miami Beach, Florida",
+  },
+  es: {
+    pre: "Acceso al Panel", h1: "¡Bienvenido de nuevo a nuestra plataforma!",
+    subtitle: "Ingresa tus credenciales para acceder a tus datos y continuar con tus actividades. Si aún no tienes una cuenta, regístrate ahora y comienza a disfrutar de los beneficios de nuestra plataforma. ¡Gracias por elegirnos!",
+    lblUser: "Usuario o correo", phUser: "Ingresa tu usuario",
+    lblPass: "Contraseña", forgot: "¿Olvidaste tu contraseña?",
+    btnSignIn: "Iniciar sesión", btnSigningIn: "Iniciando sesión...",
+    errEmpty: "Por favor, ingresa tu usuario y contraseña",
+    caption: "“Encuentra tu lugar feliz.”", captionLoc: "Miami Beach, Florida",
+  },
+};
+export function getLogin(locale: Locale) { return loginDict[locale] ?? loginDict.en; }
+
+// Página Recover Account.
+export const recoverDict = {
+  en: {
+    pre: "Security Access", h1: "Forgot your password?",
+    subtitle: "We understand, these things happen. Please enter your registered email address below, and we will immediately send you a temporary password so you can sign back in and regain access to your dashboard.",
+    lblEmail: "Email Address", phEmail: "john@example.com",
+    btnRecover: "Recover Account", btnSending: "Sending...",
+    footerText: "Remembered your password?", footerLink: "Sign In here",
+    successMsg: "We've sent a temporary password to your email. Please check your inbox (and your spam folder), then sign in and change it.",
+    genericErr: "We could not process your request. Please try again.",
+    networkErr: "Network error. Please check your connection and try again.",
+    caption: "“Security meets sanctuary.”", captionLoc: "Palm Beach, Florida",
+  },
+  es: {
+    pre: "Acceso Seguro", h1: "¿Olvidaste tu contraseña?",
+    subtitle: "Lo entendemos, estas cosas pasan. Ingresa a continuación el correo electrónico registrado y te enviaremos de inmediato una contraseña temporal para que puedas iniciar sesión de nuevo y recuperar el acceso a tu panel.",
+    lblEmail: "Correo electrónico", phEmail: "juan@ejemplo.com",
+    btnRecover: "Recuperar cuenta", btnSending: "Enviando...",
+    footerText: "¿Recordaste tu contraseña?", footerLink: "Inicia sesión aquí",
+    successMsg: "Enviamos una contraseña temporal a tu correo. Revisa tu bandeja de entrada (y la carpeta de spam), luego inicia sesión y cámbiala.",
+    genericErr: "No pudimos procesar tu solicitud. Inténtalo de nuevo.",
+    networkErr: "Error de red. Verifica tu conexión e inténtalo de nuevo.",
+    caption: "“La seguridad se une al refugio.”", captionLoc: "Palm Beach, Florida",
+  },
+};
+export function getRecover(locale: Locale) { return recoverDict[locale] ?? recoverDict.en; }
