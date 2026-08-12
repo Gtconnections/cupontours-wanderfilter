@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getPropertiesPage, searchProperties, PropertyCardData } from '../../../lib/api/properties';
 import PropertiesCatalogClient from '../../properties/PropertiesCatalogClient';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 12;
 
 type SP = { [key: string]: string | string[] | undefined };
 
@@ -40,6 +40,7 @@ export default async function PropertiesPageEs(
   const checkIn = firstStr(sp.checkIn);
   const checkOut = firstStr(sp.checkOut);
   const guests = firstStr(sp.guests);
+  const pageNum = Math.max(1, parseInt(firstStr(sp.page) || '1', 10) || 1);
 
   let initialItems: PropertyCardData[] = [];
   let initialCount = 0;
@@ -56,7 +57,7 @@ export default async function PropertiesPageEs(
       initialCount = data.length;
       initialHasSearched = true;
     } else {
-      const { items, count } = await getPropertiesPage({ page: 1, pageSize: PAGE_SIZE });
+      const { items, count } = await getPropertiesPage({ page: pageNum, pageSize: PAGE_SIZE });
       initialItems = items;
       initialCount = count;
       initialHasSearched = false;

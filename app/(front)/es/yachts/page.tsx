@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import YachtsCatalogClient from "../../yachts/YachtsCatalogClient";
-import { getYachtsPage } from "../../../lib/api/yachts";
-
-const FALLBACK_PAGE_SIZE = 12;
+import { getAllYachts } from "../../../lib/api/yachts";
 
 export const metadata: Metadata = {
   title: "Charters de yate de lujo en Miami | Cupontours",
@@ -16,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default async function YachtsPageEs() {
-  const { items, count } = await getYachtsPage(1);
-  const initialPageSize = items.length > 0 && items.length < count ? items.length : FALLBACK_PAGE_SIZE;
-  return <YachtsCatalogClient initialItems={items} initialCount={count} initialPageSize={initialPageSize} locale="es" />;
+  const items = await getAllYachts();
+  return <YachtsCatalogClient initialItems={items} initialCount={items.length} locale="es" />;
 }

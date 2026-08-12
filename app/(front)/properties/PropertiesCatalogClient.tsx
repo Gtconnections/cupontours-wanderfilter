@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './properties.css';
 import Membership from '@/components/Membership';
@@ -10,7 +10,7 @@ import HeartButton from '@/components/wishlist/HeartButton';
 import { getPropertiesPage, searchProperties, PropertyCardData } from '../../lib/api/properties';
 import { getVerticals, getCatalogSections, type Locale } from '@/app/i18n/dictionaries';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 12;
 
 const propertiesPageStructuredData = {
   "@context": "https://schema.org",
@@ -37,13 +37,16 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>(initialItems);
   const [filteredProperties, setFilteredProperties] = useState<PropertyCardData[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
   const [count, setCount] = useState(initialCount);
   const [hasSearched, setHasSearched] = useState(initialHasSearched);
   const [sortOption, setSortOption] = useState('featured');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const pageParam = parseInt(searchParams.get('page') || '1', 10);
+  const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
 
   // Los datos de la carga inicial ya vienen del servidor (SSR). Saltamos el
   // primer fetch en cliente para no volver a pedir lo mismo y no parpadear.
@@ -71,12 +74,6 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFilteredProperties(sortProperties(allProperties, sortOption));
   }, [allProperties, sortOption]);
-
-  // Reset de página al cambiar la búsqueda (no en el primer render)
-  useEffect(() => {
-    if (skipFirstFetch.current) return;
-    setPage(1);
-  }, [searchParams]);
 
   useEffect(() => {
     // Primer render: ya tenemos los datos del servidor, no re-pedimos.
@@ -131,7 +128,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
 
     loadPropertiesData();
     return () => { active = false; };
-  }, [searchParams, page]);
+  }, [searchParams]);
 
   const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
   const current = Math.min(page, totalPages);
@@ -147,7 +144,10 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
 
   const goPage = (p: number) => {
     const next = Math.min(Math.max(1, p), totalPages);
-    setPage(next);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next <= 1) params.delete('page'); else params.set('page', String(next));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     if (typeof document !== 'undefined') {
       document.getElementById('catalog-listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

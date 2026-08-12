@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import CarsCatalogClient from "../../cars/CarsCatalogClient";
-import { getCarsPage } from "../../../lib/api/cars";
-
-const FALLBACK_PAGE_SIZE = 12;
+import { getAllCars } from "../../../lib/api/cars";
 
 export const metadata: Metadata = {
   title: "Renta de autos exóticos y de lujo en Miami | Cupontours",
@@ -16,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default async function CarsPageEs() {
-  const { items, count } = await getCarsPage(1);
-  const initialPageSize = items.length > 0 && items.length < count ? items.length : FALLBACK_PAGE_SIZE;
-  return <CarsCatalogClient initialItems={items} initialCount={count} initialPageSize={initialPageSize} locale="es" />;
+  const items = await getAllCars();
+  return <CarsCatalogClient initialItems={items} initialCount={items.length} locale="es" />;
 }

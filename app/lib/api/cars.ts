@@ -48,6 +48,20 @@ export async function getCarsPage(page: number): Promise<CarsPage> {
   }
 }
 
+export async function getAllCars(): Promise<CarCatalogItem[]> {
+  const first = await getCarsPage(1);
+  const all = [...first.items];
+  const per = first.items.length;
+  if (per === 0 || all.length >= first.count) return all;
+  const pages = Math.ceil(first.count / per);
+  for (let p = 2; p <= pages; p++) {
+    const r = await getCarsPage(p);
+    if (r.items.length === 0) break;
+    all.push(...r.items);
+  }
+  return all;
+}
+
 export async function getCars(): Promise<CarCatalogItem[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/landing/cars/`, {

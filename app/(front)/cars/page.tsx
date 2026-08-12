@@ -1,19 +1,14 @@
 import CarsCatalogClient from './CarsCatalogClient';
-import { getCarsPage } from '../../lib/api/cars';
+import { getAllCars } from '../../lib/api/cars';
 
-const FALLBACK_PAGE_SIZE = 12;
-
-// Server component: trae la primera página en el servidor para que el HTML
-// salga con la flota real (SEO). Los filtros/paginación siguen en el cliente.
+// Server component: trae TODA la flota en el servidor (SEO) y el cliente
+// pagina de 12 en 12. La pagina actual va en la URL (?page=N).
 export default async function CarsPage() {
-  const { items, count } = await getCarsPage(1);
-  const initialPageSize =
-    items.length > 0 && items.length < count ? items.length : FALLBACK_PAGE_SIZE;
+  const items = await getAllCars();
   return (
     <CarsCatalogClient
       initialItems={items}
-      initialCount={count}
-      initialPageSize={initialPageSize}
+      initialCount={items.length}
     />
   );
 }

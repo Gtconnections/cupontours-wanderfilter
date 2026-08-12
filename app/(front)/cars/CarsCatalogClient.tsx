@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './cars.css';
 import Link from 'next/link';
 import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
-import { getCarsPage, CarCatalogItem } from '../../lib/api/cars';
+import { CarCatalogItem } from '../../lib/api/cars';
 import { getVerticals, getCatalogSections, type Locale } from '@/app/i18n/dictionaries';
 
 const carsPageStructuredData = {
@@ -26,51 +27,24 @@ const FALLBACK_PAGE_SIZE = 12;
 interface Props {
   initialItems: CarCatalogItem[];
   initialCount: number;
-  initialPageSize: number;
   locale?: Locale;
 }
 
-export default function CarsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
+export default function CarsCatalogClient({ initialItems, initialCount, locale = 'en' }: Props) {
   const v = getVerticals(locale).cars;
   const s = getCatalogSections(locale).cars;
   const es = locale === 'es';
-  const [fleet, setFleet] = useState<CarCatalogItem[]>(initialItems);
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState(initialCount);
-  const [pageSize, setPageSize] = useState(initialPageSize);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const fleet = initialItems;
+  const count = initialCount;
+  const pageParam = parseInt(searchParams.get('page') || '1', 10);
+  const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
 
-  // Datos de la primera página vienen del servidor (SSR): saltamos el primer fetch.
-  const skipFirstFetch = useRef(true);
-
-  useEffect(() => {
-    if (skipFirstFetch.current) {
-      skipFirstFetch.current = false;
-      return;
-    }
-    let active = true;
-    async function loadCars() {
-      try {
-        setIsLoading(true);
-        const { items, count: total } = await getCarsPage(page);
-        if (!active) return;
-        setFleet(items);
-        setCount(total);
-        if (page === 1 && items.length > 0 && items.length < total) {
-          setPageSize(items.length);
-        }
-      } catch (error) {
-        console.error("Error loading fleet page data:", error);
-      } finally {
-        if (active) setIsLoading(false);
-      }
-    }
-    loadCars();
-    return () => { active = false; };
-  }, [page]);
-
-  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+  const totalPages = Math.max(1, Math.ceil(count / FALLBACK_PAGE_SIZE));
   const current = Math.min(page, totalPages);
+  const visible = fleet.slice((current - 1) * FALLBACK_PAGE_SIZE, current * FALLBACK_PAGE_SIZE);
 
   const pageList: (number | string)[] = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -83,7 +57,10 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
 
   const goPage = (p: number) => {
     const next = Math.min(Math.max(1, p), totalPages);
-    setPage(next);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next <= 1) params.delete('page'); else params.set('page', String(next));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     if (typeof document !== 'undefined') {
       document.getElementById('fleet-listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -114,30 +91,18 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
 
         <div className="fleet-meta-row">
           <span className="fleet-count">
-            {s.count} <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
+            {s.count} <strong>{count}</strong>
           </span>
         </div>
 
         {/* GRID DE 4 COLUMNAS */}
         <div className="fleet-grid">
-          {isLoading ? (
-            Array.from({ length: 8 }).map((_, idx) => (
-              <div key={idx} className="fleet-card animate-pulse" style={{ opacity: 0.5 }}>
-                <div className="fleet-image-box" style={{ backgroundColor: '#e4e4e7', height: '220px' }}></div>
-                <div className="fleet-info-box">
-                  <div style={{ height: '12px', backgroundColor: '#e4e4e7', borderRadius: '4px', width: '30%' }}></div>
-                  <div style={{ height: '16px', backgroundColor: '#e4e4e7', marginTop: '12px', borderRadius: '4px', width: '80%' }}></div>
-                  <div style={{ height: '12px', backgroundColor: '#e4e4e7', marginTop: '8px', borderRadius: '4px', width: '60%' }}></div>
-                  <div style={{ height: '14px', backgroundColor: '#e4e4e7', marginTop: '16px', borderRadius: '4px', width: '40%' }}></div>
-                </div>
-              </div>
-            ))
-          ) : fleet.length === 0 ? (
+          {fleet.length === 0 ? (
             <div className="w-full text-center py-12 text-gray-400 text-sm">
               {s.empty}
             </div>
           ) : (
-            fleet.map((car) => (
+            visible.map((car) => (
               <Link href={`${es ? '/es' : ''}/cars/${car.id}`} key={car.id} className="link-dinamic">
                 <div className="fleet-card">
                   <div className="fleet-image-box">
