@@ -449,3 +449,81 @@ export async function changePrincipalImage(id: number, file: File): Promise<unkn
     throw error;
   }
 }
+// ======================= DOCUMENTOS (PDFs) =======================
+
+export interface RealEstateDocument {
+  id: number;
+  title: string;
+  url: string;
+  file_type: string;
+  size: number;
+  is_public: number; // 1 | 0
+  orden: number;
+}
+
+// Lista TODOS los documentos (publicos y privados) — para el dashboard.
+export async function getRealEstateDocuments(id: number): Promise<RealEstateDocument[]> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  const token = getAuthToken();
+  if (!token) throw new Error('No hay sesión activa');
+  const res = await fetch(`${API_BASE_URL}/real-estate/${id}/documentos`, {
+    headers: { 'Authorization': `Token ${token}` },
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.message || `Error ${res.status}`);
+  }
+  return res.json();
+}
+
+// Sube uno o mas PDFs. isPublic aplica a todos los de esta subida.
+export async function uploadRealEstateDocuments(id: number, files: File[], isPublic = true, title?: string): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  const token = getAuthToken();
+  if (!token) throw new Error('No hay sesión activa');
+  const formData = new FormData();
+  files.forEach((f) => formData.append('documentos[]', f));
+  formData.append('is_public', isPublic ? '1' : '0');
+  if (title) formData.append('title', title);
+  const res = await fetch(`${API_BASE_URL}/real-estate/${id}/documentos`, {
+    method: 'POST',
+    headers: { 'Authorization': `Token ${token}` },
+    body: formData,
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.message || e.error || `Error ${res.status}`);
+  }
+  return res.json();
+}
+
+// Edita title / is_public / orden de un documento.
+export async function updateRealEstateDocument(id: number, docId: number, patch: { title?: string; is_public?: number; orden?: number }): Promise<unknown> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  const token = getAuthToken();
+  if (!token) throw new Error('No hay sesión activa');
+  const res = await fetch(`${API_BASE_URL}/real-estate/${id}/documentos/${docId}`, {
+    method: 'PUT',
+    headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.message || `Error ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function deleteRealEstateDocument(id: number, docId: number): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8000/api').replace(/\/$/, "");
+  const token = getAuthToken();
+  if (!token) throw new Error('No hay sesión activa');
+  const res = await fetch(`${API_BASE_URL}/real-estate/${id}/documentos/${docId}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Token ${token}` },
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.message || `Error ${res.status}`);
+  }
+}

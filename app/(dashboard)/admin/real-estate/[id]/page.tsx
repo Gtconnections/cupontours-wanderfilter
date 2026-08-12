@@ -31,6 +31,7 @@ import Toast from '@/app/(dashboard)/admin/components/Toast';
 import ModalAddGallery from '@/app/(dashboard)/admin/components/ModalAddGallery';
 import ModalChangeImage from '@/app/(dashboard)/admin/components/ModalChangeImage';
 import ModalEditRealEstate from '@/app/(dashboard)/admin/components/ModalEditRealEstate';
+import RealEstateDocuments from '@/app/(dashboard)/admin/components/RealEstateDocuments';
 import './detail.css';
 
 interface GalleryImage {
@@ -534,6 +535,8 @@ export default function RealEstateDetailPage() {
                 <FiClock size={14} />
                 <span>Updated: {formatDate(property.updated_at)}</span>
               </div>
+
+              <RealEstateDocuments realEstateId={property.id} />
             </div>
           </div>
         </div>

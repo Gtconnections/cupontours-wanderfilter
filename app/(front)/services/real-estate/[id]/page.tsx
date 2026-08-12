@@ -20,6 +20,7 @@ interface RealEstateDetail extends RealEstateItem {
   latitude?: number | string;
   longitude?: number | string;
   units?: { tower: string; unit_code: string; size: string; price: string; currency: string }[];
+  documentos?: { id: number; title: string; url: string; file_type: string; size: number; is_public: number }[];
 }
 
 export default function RealEstateDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -92,6 +93,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
   const nearbyRows: { place: string; time: string }[] = (() => {
     try { return property.nearby ? JSON.parse(property.nearby) : []; } catch { return []; }
   })();
+  const docList = property.documentos || [];
   const mapQuery = (property.latitude && property.longitude) ? `${property.latitude},${property.longitude}` : (property.address || property.location || '');
 
   // Link dinámico a WhatsApp
@@ -236,6 +238,29 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                 <div className="re-pay-list">
                   {paymentRows.map((p, i) => (
                     <div className="re-pay-item" key={i}><span>{p.stage}</span><span className="v">{p.value}</span></div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {docList.length > 0 && (
+              <section className="re-section">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .re-docs-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+                  .re-doc-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid rgba(140,140,140,0.22); border-radius: 12px; text-decoration: none; color: inherit; transition: border-color .15s, background .15s; }
+                  .re-doc-item:hover { border-color: #d4af37; background: rgba(212,175,55,0.06); }
+                  .re-doc-item .re-doc-ico { color: #b91c1c; flex-shrink: 0; }
+                  .re-doc-item .re-doc-title { flex: 1; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+                  .re-doc-item .re-doc-dl { font-size: 13px; font-weight: 700; color: #d4af37; white-space: nowrap; }
+                ` }} />
+                <h2 className="re-section-title">{t.downloads}</h2>
+                <div className="re-docs-list">
+                  {docList.map((d, i) => (
+                    <a key={i} href={d.url} target="_blank" rel="noopener noreferrer" className="re-doc-item">
+                      <svg className="re-doc-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+                      <span className="re-doc-title">{d.title}</span>
+                      <span className="re-doc-dl">{t.download} &darr;</span>
+                    </a>
                   ))}
                 </div>
               </section>

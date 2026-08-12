@@ -863,7 +863,7 @@ export const detailDict = {
       availableUnits: "Available Units", thType: "Type", thUnit: "Unit", thSize: "Size", thPrice: "Price",
       lblLocation: "Location", lblBedrooms: "Bedrooms", lblBathrooms: "Bathrooms", lblArea: "Area", lblParking: "Parking",
       info: "Schedule a private viewing with our real estate advisors.",
-      cta: "Contact Advisor", assurance: "Verified exclusive listing.",
+      cta: "Contact Advisor", assurance: "Verified exclusive listing.", downloads: "Downloads & Documents", download: "Download",
     },
     properties: {
       eyebrow: "Premium Residence", backTo: "Back to Collection", loading: "Loading residence details...", notFound: "Residence Not Found",
@@ -957,7 +957,7 @@ export const detailDict = {
       availableUnits: "Unidades disponibles", thType: "Tipo", thUnit: "Unidad", thSize: "Tamaño", thPrice: "Precio",
       lblLocation: "Ubicación", lblBedrooms: "Habitaciones", lblBathrooms: "Baños", lblArea: "Área", lblParking: "Estacionamiento",
       info: "Agenda una visita privada con nuestros asesores inmobiliarios.",
-      cta: "Contactar asesor", assurance: "Propiedad exclusiva verificada.",
+      cta: "Contactar asesor", assurance: "Propiedad exclusiva verificada.", downloads: "Descargas y Documentos", download: "Descargar",
     },
     properties: {
       eyebrow: "Residencia Premium", backTo: "Volver a la colección", loading: "Cargando detalles de la residencia...", notFound: "Residencia no encontrada",
