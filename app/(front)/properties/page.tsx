@@ -20,10 +20,10 @@ export async function generateMetadata(
   const city = firstStr(sp.city);
   const title = city
     ? `Properties in ${city} | Cupontours`
-    : 'Luxury Properties for Rent | Cupontours';
+    : 'Luxury Vacation Rentals in Miami & Hallandale | Cupontours';
   const description = city
     ? `Explore luxury vacation rentals in ${city}. Book exclusive, professionally managed properties with Cupontours.`
-    : 'Discover exceptional luxury vacation rentals worldwide — from cozy retreats to grand estates. Book exclusive, professionally managed properties with Cupontours.';
+    : 'Premium villas and apartments managed by Cupontours in Miami, Hallandale and Orlando. Real-time availability.';
   const canonical = city ? `/properties?city=${encodeURIComponent(city)}` : '/properties';
   return {
     title,

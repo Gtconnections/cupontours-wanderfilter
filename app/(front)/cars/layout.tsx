@@ -1,9 +1,9 @@
 import { buildMetadata } from "@/app/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Luxury Car Rentals",
+  title: "Exotic & Luxury Car Rentals in Miami",
   description:
-    "Rent luxury and exotic cars in Miami and beyond — supercars, convertibles and premium SUVs delivered to you. Book your dream drive with Cupontours.",
+    "Premium fleet of SUVs, sports cars and electric vehicles in Miami. Delivery to your hotel, the airport or your property.",
   path: "/cars",
 });
 

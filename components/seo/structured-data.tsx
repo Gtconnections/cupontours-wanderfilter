@@ -8,19 +8,31 @@ interface StructuredDataProps {
 export function StructuredData({ type = 'Organization', data = {} }: StructuredDataProps) {
   const baseOrganization = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": clientConfig.company.name,
+    "@type": "TravelAgency",
+    "@id": `${clientConfig.site.url}/#organization`,
+    "name": "Cupontours",
+    // legalName = razón social registrada. Consistente con el footer.
+    // Si la entidad registrada real es "GT Connections LLC", cambia esta línea.
+    "legalName": "Cupontours LLC",
     "url": clientConfig.site.url,
     "logo": clientConfig.brand.logo,
-    "description": "Luxury travel booking platform specializing in vacation rentals, car rentals, and yacht charters",
+    "image": clientConfig.brand.logo,
+    "description": "Luxury travel and property management in Miami: vacation rentals, exotic cars, yachts, private jets and concierge services.",
     "telephone": clientConfig.company.phone,
     "email": clientConfig.company.email,
     "address": {
       "@type": "PostalAddress",
+      "addressLocality": "Miami",
       "addressRegion": "FL",
-      "addressCountry": "US",
-      "addressLocality": "Miami"
+      "addressCountry": "US"
     },
+    "areaServed": [
+      { "@type": "City", "name": "Miami" },
+      { "@type": "City", "name": "Hallandale Beach" },
+      { "@type": "City", "name": "Orlando" },
+      { "@type": "City", "name": "Atlanta" },
+      { "@type": "City", "name": "Cali" }
+    ],
     "sameAs": [
       clientConfig.social.facebook,
       clientConfig.social.instagram

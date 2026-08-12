@@ -9,10 +9,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/app/lib/seo";
+import { StructuredData } from "@/components/seo/structured-data";
 
-const DEFAULT_TITLE = "Cupontours | Luxury Vacation Rentals, Car & Yacht Charters";
+const DEFAULT_TITLE = "Luxury Rentals, Exotic Cars & Yacht Charters in Miami | Cupontours";
 const DEFAULT_DESCRIPTION =
-  "Book exclusive luxury vacation rentals, premium car rentals, and yacht charters worldwide with Cupontours — professionally managed properties and concierge-level service.";
+  "Premium hospitality management and direct bookings in Miami — villas, exotic cars, yachts and private jets. Book direct, no middlemen.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -60,6 +61,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <WishlistDrawer />
           </WishlistProvider>
         </ThemeProvider>
+      {/* JSON-LD global: TravelAgency (organización) en todas las páginas */}
+      <StructuredData type="Organization" />
       <SpeedInsights />
       <Analytics />
       </body>

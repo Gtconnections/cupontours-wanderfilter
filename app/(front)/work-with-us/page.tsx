@@ -215,7 +215,9 @@ export default function WorkWithUsPage() {
                     Privacy Notice & Terms
                   </div>
                   <ul className="info-box-list">
-                    <li>• It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</li>
+                    <li>• The information in this form is used solely to evaluate your application as a business partner.</li>
+                    <li>• We do not share your data with third parties.</li>
+                    <li>• Our partnerships team responds within a maximum of 48 business hours.</li>
                   </ul>
                 </div>
                 

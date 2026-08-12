@@ -1,9 +1,9 @@
 import { buildMetadata } from "@/app/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Invest With Us",
+  title: "Vacation Rental Management in Miami for Owners",
   description:
-    "Put your property to work with Cupontours: professional short-term rental management, dynamic pricing and multi-channel distribution across Airbnb, Vrbo and Booking, plus a full owner dashboard.",
+    "Maximize the income of your Miami property with dynamic pricing, OTA distribution and 24/7 operations.",
   path: "/invest-with-us",
 });
 

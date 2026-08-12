@@ -1,9 +1,9 @@
 import { buildMetadata } from "@/app/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Luxury Yacht Charters",
+  title: "Luxury Yacht Charters in Miami",
   description:
-    "Charter luxury yachts by the day or the week — fully crewed vessels for celebrations, getaways and private events. Book your yacht charter with Cupontours.",
+    "Private charters from intimate vessels to mega yachts with professional crew on Miami waters.",
   path: "/yachts",
 });
 
