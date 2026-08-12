@@ -25,6 +25,7 @@ interface PageMetaInput {
   /** true = no indexar (páginas privadas/legales que no quieras en Google). */
   noindex?: boolean;
   keywords?: string[];
+  languages?: Record<string, string>;
 }
 
 /**
@@ -38,6 +39,7 @@ export function buildMetadata({
   image,
   noindex,
   keywords,
+  languages,
 }: PageMetaInput): Metadata {
   const fullTitle = `${title} | ${SITE_NAME}`;
   const ogImage = image || DEFAULT_OG_IMAGE;
@@ -47,7 +49,7 @@ export function buildMetadata({
     title: fullTitle,
     description,
     ...(keywords && keywords.length ? { keywords } : {}),
-    ...(canonical ? { alternates: { canonical } } : {}),
+    ...((canonical || languages) ? { alternates: { ...(canonical ? { canonical } : {}), ...(languages ? { languages } : {}) } } : {}),
     openGraph: {
       title: fullTitle,
       description,

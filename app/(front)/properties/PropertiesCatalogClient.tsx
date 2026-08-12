@@ -8,6 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getPropertiesPage, searchProperties, PropertyCardData } from '../../lib/api/properties';
+import { getVerticals, type Locale } from '@/app/i18n/dictionaries';
 
 const PAGE_SIZE = 8;
 
@@ -26,9 +27,12 @@ interface Props {
   initialItems: PropertyCardData[];
   initialCount: number;
   initialHasSearched: boolean;
+  locale?: Locale;
 }
 
-export default function PropertiesCatalogClient({ initialItems, initialCount, initialHasSearched }: Props) {
+export default function PropertiesCatalogClient({ initialItems, initialCount, initialHasSearched, locale = 'en' }: Props) {
+  const v = getVerticals(locale).properties;
+  const es = locale === 'es';
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>(initialItems);
   const [filteredProperties, setFilteredProperties] = useState<PropertyCardData[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
@@ -161,21 +165,23 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
   const getDynamicTitle = () => {
     if (hasSearched && filteredProperties.length > 0) {
       const cityParam = searchParams.get('city');
-      return cityParam ? `Properties in ${cityParam}` : "Search Results";
+      return cityParam ? `${es ? 'Propiedades en' : 'Properties in'} ${cityParam}` : (es ? "Resultados de búsqueda" : "Search Results");
     } else if (hasSearched && filteredProperties.length === 0) {
-      return "No Properties Found";
+      return es ? "No se encontraron propiedades" : "No Properties Found";
     } else {
-      return "Luxury Properties for Rent";
+      return v.title;
     }
   };
 
   const getDynamicSubtitle = () => {
     if (hasSearched && filteredProperties.length > 0) {
-      return `Found ${filteredProperties.length} spaces matching your travel criteria. Discover unmatched style below.`;
+      return es
+        ? `Encontramos ${filteredProperties.length} espacios que coinciden con tu búsqueda. Descubre estilo inigualable abajo.`
+        : `Found ${filteredProperties.length} spaces matching your travel criteria. Discover unmatched style below.`;
     } else if (hasSearched && filteredProperties.length === 0) {
-      return "We couldn't find matches for your search criteria. Try adjusting your dates or choose an alternative location.";
+      return es ? "No encontramos resultados para tu búsqueda. Ajusta las fechas o elige otra ubicación." : "We couldn't find matches for your search criteria. Try adjusting your dates or choose an alternative location.";
     } else {
-      return "Discover exceptional vacation rentals and luxury properties. From cozy retreats to grand estates, find your perfect home.";
+      return v.subtitle;
     }
   };
 
@@ -193,7 +199,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
       <section className="catalog-hero">
         <div className="catalog-hero-overlay"></div>
         <div className="catalog-hero-content">
-          <span className="catalog-badge">Premium Collection</span>
+          <span className="catalog-badge">{v.badge}</span>
           <h1 className="catalog-title">{getDynamicTitle()}</h1>
           <p className="catalog-subtitle">{getDynamicSubtitle()}</p>
         </div>

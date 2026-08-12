@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Private charters from intimate vessels to mega yachts with professional crew on Miami waters.",
   path: "/yachts",
+  languages: { en: "/yachts", es: "/es/yachts", "x-default": "/yachts" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

@@ -8,6 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getCarsPage, CarCatalogItem } from '../../lib/api/cars';
+import { getVerticals, type Locale } from '@/app/i18n/dictionaries';
 
 const carsPageStructuredData = {
   "@context": "https://schema.org",
@@ -26,9 +27,11 @@ interface Props {
   initialItems: CarCatalogItem[];
   initialCount: number;
   initialPageSize: number;
+  locale?: Locale;
 }
 
-export default function CarsCatalogClient({ initialItems, initialCount, initialPageSize }: Props) {
+export default function CarsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
+  const v = getVerticals(locale).cars;
   const [fleet, setFleet] = useState<CarCatalogItem[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -91,9 +94,9 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
       <section className="fleet-hero">
         <div className="fleet-hero-overlay"></div>
         <div className="fleet-hero-content">
-          <span className="fleet-badge">Premium Fleet</span>
-          <h1 className="fleet-title">Luxury Car Rentals in Miami</h1>
-          <p className="fleet-subtitle">Discover our premium fleet of luxury vehicles. From elegant sedans to massive SUVs and exotic sports cars, find the perfect match to experience the city in style.</p>
+          <span className="fleet-badge">{v.badge}</span>
+          <h1 className="fleet-title">{v.title}</h1>
+          <p className="fleet-subtitle">{v.subtitle}</p>
         </div>
       </section>
 

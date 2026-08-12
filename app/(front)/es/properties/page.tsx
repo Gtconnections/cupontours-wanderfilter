@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getPropertiesPage, searchProperties, PropertyCardData } from '../../lib/api/properties';
-import PropertiesCatalogClient from './PropertiesCatalogClient';
+import { getPropertiesPage, searchProperties, PropertyCardData } from '../../../lib/api/properties';
+import PropertiesCatalogClient from '../../properties/PropertiesCatalogClient';
 
 const PAGE_SIZE = 8;
 
@@ -12,19 +12,18 @@ function firstStr(v: string | string[] | undefined): string | undefined {
   return v ?? undefined;
 }
 
-// Metadata dinámico por ciudad → cada /properties?city=X tiene su propio título/descr
 export async function generateMetadata(
   { searchParams }: { searchParams: Promise<SP> }
 ): Promise<Metadata> {
   const sp = await searchParams;
   const city = firstStr(sp.city);
   const title = city
-    ? `Properties in ${city} | Cupontours`
-    : 'Luxury Vacation Rentals in Miami & Hallandale | Cupontours';
+    ? `Propiedades en ${city} | Cupontours`
+    : 'Propiedades vacacionales de lujo en Miami y Hallandale | Cupontours';
   const description = city
-    ? `Explore luxury vacation rentals in ${city}. Book exclusive, professionally managed properties with Cupontours.`
-    : 'Premium villas and apartments managed by Cupontours in Miami, Hallandale and Orlando. Real-time availability.';
-  const canonical = city ? `/properties?city=${encodeURIComponent(city)}` : '/properties';
+    ? `Explora alquileres vacacionales de lujo en ${city}. Reserva propiedades exclusivas gestionadas por Cupontours.`
+    : 'Villas y apartamentos premium gestionados por Cupontours en Miami, Hallandale y Orlando. Disponibilidad en tiempo real.';
+  const canonical = city ? `/es/properties?city=${encodeURIComponent(city)}` : '/es/properties';
   return {
     title,
     description,
@@ -33,7 +32,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function PropertiesPage(
+export default async function PropertiesPageEs(
   { searchParams }: { searchParams: Promise<SP> }
 ) {
   const sp = await searchParams;
@@ -42,9 +41,6 @@ export default async function PropertiesPage(
   const checkOut = firstStr(sp.checkOut);
   const guests = firstStr(sp.guests);
 
-  // Traemos los datos EN EL SERVIDOR para que el HTML salga con las tarjetas
-  // reales (Google ya no ve "Loading..."). Los filtros/sort/paginación siguen
-  // en cliente dentro de PropertiesCatalogClient.
   let initialItems: PropertyCardData[] = [];
   let initialCount = 0;
   let initialHasSearched = false;
@@ -52,9 +48,7 @@ export default async function PropertiesPage(
   try {
     if (city || checkIn || checkOut || guests) {
       const data = await searchProperties({
-        city,
-        checkIn,
-        checkOut,
+        city, checkIn, checkOut,
         guests: guests ? parseInt(guests, 10) : undefined,
         limit: 50,
       });
@@ -68,7 +62,6 @@ export default async function PropertiesPage(
       initialHasSearched = false;
     }
   } catch {
-    // Si el backend falla durante el SSR, entregamos vacío y el sitio sigue vivo.
     initialItems = [];
     initialCount = 0;
     initialHasSearched = Boolean(city || checkIn || checkOut || guests);
@@ -76,12 +69,13 @@ export default async function PropertiesPage(
 
   return (
     <Suspense fallback={
-      <div className="w-full text-center py-20 text-sm text-gray-400">Loading catalog horizon...</div>
+      <div className="w-full text-center py-20 text-sm text-gray-400">Cargando catálogo...</div>
     }>
       <PropertiesCatalogClient
         initialItems={initialItems}
         initialCount={initialCount}
         initialHasSearched={initialHasSearched}
+        locale="es"
       />
     </Suspense>
   );

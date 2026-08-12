@@ -8,6 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getYachtsPage, YachtCatalogItem } from '../../lib/api/yachts';
+import { getVerticals, type Locale } from '@/app/i18n/dictionaries';
 
 const yachtsPageStructuredData = {
   "@context": "https://schema.org",
@@ -26,9 +27,11 @@ interface Props {
   initialItems: YachtCatalogItem[];
   initialCount: number;
   initialPageSize: number;
+  locale?: Locale;
 }
 
-export default function YachtsCatalogClient({ initialItems, initialCount, initialPageSize }: Props) {
+export default function YachtsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
+  const v = getVerticals(locale).yachts;
   const [fleet, setFleet] = useState<YachtCatalogItem[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -90,9 +93,9 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
       <section className="marine-hero">
         <div className="marine-hero-overlay"></div>
         <div className="marine-hero-content">
-          <span className="marine-badge">Elite Charters</span>
-          <h1 className="marine-title">Luxury Yacht Charters in Miami</h1>
-          <p className="marine-subtitle">Set sail on the crystal-clear waters of Miami with our exclusive fleet of luxury yachts. From private sailing experiences to grand oceanic tours, discover the perfect vessel for your aquatic adventure.</p>
+          <span className="marine-badge">{v.badge}</span>
+          <h1 className="marine-title">{v.title}</h1>
+          <p className="marine-subtitle">{v.subtitle}</p>
         </div>
       </section>
 

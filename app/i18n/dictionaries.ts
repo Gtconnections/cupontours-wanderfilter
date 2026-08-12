@@ -90,3 +90,45 @@ export const dict = {
 export function getDict(locale: Locale) {
   return dict[locale] ?? dict.en;
 }
+
+// Héroes de las páginas de catálogo (verticales).
+export const verticalsDict = {
+  en: {
+    properties: {
+      badge: "Premium Collection",
+      title: "Luxury Properties for Rent",
+      subtitle: "Discover exceptional vacation rentals and luxury properties. From cozy retreats to grand estates, find your perfect home.",
+    },
+    cars: {
+      badge: "Premium Fleet",
+      title: "Luxury Car Rentals in Miami",
+      subtitle: "Discover our premium fleet of luxury vehicles. From elegant sedans to massive SUVs and exotic sports cars, find the perfect match to experience the city in style.",
+    },
+    yachts: {
+      badge: "Elite Charters",
+      title: "Luxury Yacht Charters in Miami",
+      subtitle: "Set sail on the crystal-clear waters of Miami with our exclusive fleet of luxury yachts. From private sailing experiences to grand oceanic tours, discover the perfect vessel for your aquatic adventure.",
+    },
+  },
+  es: {
+    properties: {
+      badge: "Colección Premium",
+      title: "Propiedades de lujo en renta",
+      subtitle: "Descubre alquileres vacacionales y propiedades de lujo excepcionales. Desde refugios acogedores hasta grandes fincas, encuentra tu hogar perfecto.",
+    },
+    cars: {
+      badge: "Flota Premium",
+      title: "Renta de autos de lujo en Miami",
+      subtitle: "Descubre nuestra flota premium de vehículos de lujo. Desde sedanes elegantes hasta grandes SUVs y deportivos exóticos, encuentra el ideal para vivir la ciudad con estilo.",
+    },
+    yachts: {
+      badge: "Charters de Élite",
+      title: "Charters de yate de lujo en Miami",
+      subtitle: "Zarpa en las aguas cristalinas de Miami con nuestra flota exclusiva de yates de lujo. Desde experiencias privadas de navegación hasta grandes tours oceánicos, descubre la embarcación perfecta para tu aventura.",
+    },
+  },
+};
+
+export function getVerticals(locale: Locale) {
+  return verticalsDict[locale] ?? verticalsDict.en;
+}

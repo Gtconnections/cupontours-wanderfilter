@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Premium fleet of SUVs, sports cars and electric vehicles in Miami. Delivery to your hotel, the airport or your property.",
   path: "/cars",
+  languages: { en: "/cars", es: "/es/cars", "x-default": "/cars" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
