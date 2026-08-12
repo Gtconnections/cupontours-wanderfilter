@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Private flights with FBO access, custom routes and a quote in under 2 hours.",
   path: "/jets",
+  languages: { en: "/jets", es: "/es/jets", "x-default": "/jets" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

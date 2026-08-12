@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Plan unforgettable events with Cupontours: private celebrations, corporate gatherings and exclusive experiences arranged for you.",
   path: "/services/events",
+  languages: { en: "/services/events", es: "/es/services/events", "x-default": "/services/events" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

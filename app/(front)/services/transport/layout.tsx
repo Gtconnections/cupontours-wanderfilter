@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Premium transport services with Cupontours: chauffeured cars, airport transfers and private transport on demand.",
   path: "/services/transport",
+  languages: { en: "/services/transport", es: "/es/services/transport", "x-default": "/services/transport" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

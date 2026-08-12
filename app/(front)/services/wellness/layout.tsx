@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Wellness and spa concierge services with Cupontours: relaxation and rejuvenation arranged end to end.",
   path: "/services/wellness",
+  languages: { en: "/services/wellness", es: "/es/services/wellness", "x-default": "/services/wellness" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

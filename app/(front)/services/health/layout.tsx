@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Health and medical concierge services with Cupontours: trusted providers arranged for you during your stay.",
   path: "/services/health",
+  languages: { en: "/services/health", es: "/es/services/health", "x-default": "/services/health" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

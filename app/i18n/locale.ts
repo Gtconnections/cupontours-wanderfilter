@@ -1,7 +1,7 @@
 import type { Locale } from "./dictionaries";
 
 // Rutas que YA tienen versión en español (se amplía conforme se traducen más).
-export const ES_ROUTES = new Set<string>(["/", "/properties", "/cars", "/yachts"]);
+export const ES_ROUTES = new Set<string>(["/", "/properties", "/cars", "/yachts", "/jets", "/invest-with-us", "/services", "/contact", "/services/events", "/services/experiences", "/services/general", "/services/health", "/services/real-estate", "/services/transport", "/services/wellness", "/about-us", "/work-with-us"]);
 
 export function localeFromPath(pathname: string): Locale {
   return pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en";

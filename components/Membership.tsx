@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import './Membership.css';
 import { getMembresias, MembershipPlan } from '@/app/lib/api/membership';
+import { usePathname } from 'next/navigation';
+import { getMembership } from '@/app/i18n/dictionaries';
+import { localeFromPath } from '@/app/i18n/locale';
 
 function CheckIcon() {
   return (
@@ -50,6 +53,8 @@ function tierIcon(name: string) {
 }
 
 export default function Membership() {
+  const pathname = usePathname();
+  const t = getMembership(localeFromPath(pathname));
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -76,11 +81,11 @@ export default function Membership() {
       <div className="membership-glow"></div>
       <div className="membership-container">
         <div className="membership-header">
-          <span className="membership-pretitle">Membresías</span>
-          <h2 className="membership-title">Únete <span>al Club.</span></h2>
+          <span className="membership-pretitle">{t.pretitle}</span>
+          <h2 className="membership-title">{t.titleA}<span>{t.titleAccent}</span></h2>
           <span className="membership-header-divider"></span>
           <p className="membership-subtitle">
-            Disfrute de los beneficios de formar parte del primer club en Miami que le ofrece una variedad de beneficios en restaurantes exclusivos, spa, compras, eventos y mucho más.
+            {t.subtitle}
           </p>
         </div>
 
@@ -96,7 +101,7 @@ export default function Membership() {
               const isFeatured = Number(plan.featured) === 1;
               return (
                 <div key={plan.id} className={`membership-card${isFeatured ? ' highlight' : ''}`}>
-                  {isFeatured && <div className="membership-badge">Más Completo</div>}
+                  {isFeatured && <div className="membership-badge">{t.badge}</div>}
                   <div className="card-tier-row">
                     <span className="tier-icon">{tierIcon(plan.name)}</span>
                     <h3 className="card-tier">{plan.name}</h3>
@@ -112,12 +117,12 @@ export default function Membership() {
                     ))}
                   </ul>
                   <a
-                    href={`https://wa.me/17866566582?text=${encodeURIComponent(`Hola, quiero información sobre la membresía ${plan.name} de Cupontours.`)}`}
+                    href={`https://wa.me/17866566582?text=${encodeURIComponent(`${t.wa1}${plan.name}${t.wa2}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-membership"
                   >
-                    Solicitar Información
+                    {t.requestInfo}
                   </a>
                 </div>
               );

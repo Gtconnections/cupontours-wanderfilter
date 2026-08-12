@@ -5,6 +5,7 @@ export const metadata = buildMetadata({
   description:
     "Get in touch with Cupontours for luxury vacation rentals, car and yacht charters, private jets and concierge services. Speak with our Miami-based team.",
   path: "/contact",
+  languages: { en: "/contact", es: "/es/contact", "x-default": "/contact" },
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
