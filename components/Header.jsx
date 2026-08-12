@@ -379,7 +379,7 @@ export default function Header() {
               <div className="calendar-container">
                 <div className="calendar-month">
                   <div className="month-header">
-                    <button className="cal-nav" onClick={goToPreviousMonth}>
+                    <button aria-label={locale === 'es' ? 'Mes anterior' : 'Previous month'} className="cal-nav" onClick={goToPreviousMonth}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <polyline points="15 18 9 12 15 6"/>
                       </svg>
@@ -396,7 +396,7 @@ export default function Header() {
                   <div className="month-header">
                     <span></span>
                     <strong>{nextCalendar.monthName}</strong>
-                    <button className="cal-nav" onClick={goToNextMonth}>
+                    <button aria-label={locale === 'es' ? 'Mes siguiente' : 'Next month'} className="cal-nav" onClick={goToNextMonth}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <polyline points="9 18 15 12 9 6"/>
                       </svg>
@@ -419,7 +419,7 @@ export default function Header() {
                 <div className="counter-controls">
                   <button 
                     className="counter-btn" 
-                    onClick={() => handleGuestChange('sub')} 
+                    aria-label={locale === 'es' ? 'Quitar huésped' : 'Remove guest'} onClick={() => handleGuestChange('sub')} 
                     disabled={searchData.guests === 0}
                   >
                     −
@@ -427,7 +427,7 @@ export default function Header() {
                   <span className="count-value">{searchData.guests === 0 ? sd.any : searchData.guests}</span>
                   <button 
                     className="counter-btn" 
-                    onClick={() => handleGuestChange('add')}
+                    aria-label={locale === 'es' ? 'Agregar huésped' : 'Add guest'} onClick={() => handleGuestChange('add')}
                   >
                     +
                   </button>
@@ -450,7 +450,7 @@ export default function Header() {
           <ThemeToggle />
           <WishlistButton className={isSearchExpanded ? 'hide-on-mobile' : ''} />
           <Link href={L('/jets')} className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>{t.jets}</Link>
-          <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} aria-label={isMenuOpen ? (locale === 'es' ? 'Cerrar menú' : 'Close menu') : (locale === 'es' ? 'Abrir menú' : 'Open menu')} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             ) : (

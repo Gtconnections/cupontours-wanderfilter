@@ -42,6 +42,8 @@ const nextConfig: NextConfig = {
 
   // Optimizacion de imagenes: hosts remotos permitidos para next/image.
   images: {
+    // AVIF primero (mas liviano que WebP); Next cae a WebP si el navegador no soporta.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "images.unsplash.com" },

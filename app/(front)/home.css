@@ -9,7 +9,7 @@
   height: 50vh;
   min-height: 320px;
   position: relative;
-  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+  background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format,compress&fit=crop&w=1200&q=55') center/cover no-repeat;
   display: flex;
   align-items: center;
 }
@@ -372,19 +372,19 @@
 }
 
 .banner-properties {
-  background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80');
+  background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format,compress&fit=crop&w=1200&q=55');
 }
 
 .banner-cars {
-  background-image: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80');
+  background-image: url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format,compress&fit=crop&w=1200&q=55');
 }
 
 .banner-yachts {
-  background-image: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80');
+  background-image: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format,compress&fit=crop&w=1200&q=55');
 }
 
 .banner-services {
-  background-image: url('https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=1200&q=80');
+  background-image: url('https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format,compress&fit=crop&w=1200&q=55');
 }
 
 .mid-banner-overlay {
