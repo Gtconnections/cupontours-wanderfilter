@@ -138,25 +138,27 @@ export default function HomeContent({ locale }: { locale: Locale }) {
   const [homes, setHomes] = useState<PropertyCardData[]>([]);
   const [cars, setCars] = useState<CarCatalogItem[]>([]);
   const [yachts, setYachts] = useState<YachtCatalogItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [homesLoading, setHomesLoading] = useState(true);
+  const [carsLoading, setCarsLoading] = useState(true);
+  const [yachtsLoading, setYachtsLoading] = useState(true);
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        setIsLoading(true);
-        const [homesData, carsData, yachtsData] = await Promise.all([
-          getHomeProperties(), getCars(), getYachts()
-        ]);
-        setHomes(homesData.slice(0, 8));
-        setCars(carsData.slice(0, 4));
-        setYachts(yachtsData.slice(0, 4));
-      } catch (error) {
-        console.error("Error al cargar datos globales:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadData();
+    // Cada peticion es independiente: cada fila quita su skeleton apenas
+    // termina SU propia llamada, sin esperar a que terminen las demas.
+    getHomeProperties()
+      .then((data) => setHomes(data.slice(0, 8)))
+      .catch((error) => console.error("Error al cargar propiedades del home:", error))
+      .finally(() => setHomesLoading(false));
+
+    getCars()
+      .then((data) => setCars(data.slice(0, 4)))
+      .catch((error) => console.error("Error al cargar autos del home:", error))
+      .finally(() => setCarsLoading(false));
+
+    getYachts()
+      .then((data) => setYachts(data.slice(0, 4)))
+      .catch((error) => console.error("Error al cargar yates del home:", error))
+      .finally(() => setYachtsLoading(false));
   }, []);
 
   return (
@@ -182,7 +184,7 @@ export default function HomeContent({ locale }: { locale: Locale }) {
       </section>
 
       <div className="home-listings-container">
-        <RenderRow pretitle={t.rowHomesPre} title={t.rowHomesTitle} data={homes} type="home" isLoading={isLoading} locale={locale} />
+        <RenderRow pretitle={t.rowHomesPre} title={t.rowHomesTitle} data={homes} type="home" isLoading={homesLoading} locale={locale} />
 
         <div className="mid-banner banner-properties">
           <div className="mid-banner-overlay"></div>
@@ -197,7 +199,7 @@ export default function HomeContent({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <RenderRow pretitle={t.rowCarsPre} title={t.rowCarsTitle} data={cars} type="car" isLoading={isLoading} locale={locale} />
+        <RenderRow pretitle={t.rowCarsPre} title={t.rowCarsTitle} data={cars} type="car" isLoading={carsLoading} locale={locale} />
 
         <div className="mid-banner banner-cars">
           <div className="mid-banner-overlay"></div>
@@ -212,7 +214,7 @@ export default function HomeContent({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <RenderRow pretitle={t.rowYachtsPre} title={t.rowYachtsTitle} data={yachts} type="yacht" isLoading={isLoading} locale={locale} />
+        <RenderRow pretitle={t.rowYachtsPre} title={t.rowYachtsTitle} data={yachts} type="yacht" isLoading={yachtsLoading} locale={locale} />
 
         <div className="mid-banner banner-yachts">
           <div className="mid-banner-overlay"></div>
