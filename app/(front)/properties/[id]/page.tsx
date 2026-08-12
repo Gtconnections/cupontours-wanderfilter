@@ -453,6 +453,7 @@ export default function PropertyDetailPage() {
                 <img
                   src={images[activeImage]}
                   alt={propertyName}
+                  fetchPriority="high"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
                       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80';

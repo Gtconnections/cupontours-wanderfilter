@@ -345,6 +345,7 @@ export default function CarDetailPage({ params }: PageProps) {
                   key={`viewport-${currentImageIndex}`}
                   src={activeImageUrl}
                   alt={`${car.title} view ${currentImageIndex + 1}`}
+                  fetchPriority="high"
                   onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80'; }}
                 />
                 {images.length > 1 && (

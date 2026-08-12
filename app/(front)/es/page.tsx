@@ -19,5 +19,15 @@ export const metadata: Metadata = {
 };
 
 export default function HomePageEs() {
-  return <HomeContent locale="es" />;
+  return (
+    <>
+      <link
+        rel="preload"
+        as="image"
+        href="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80"
+        fetchPriority="high"
+      />
+      <HomeContent locale="es" />
+    </>
+  );
 }

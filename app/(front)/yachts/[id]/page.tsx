@@ -274,6 +274,7 @@ export default function YachtDetailPage({ params }: PageProps) {
                   key={`viewport-${currentImageIndex}`}
                   src={activeImageUrl}
                   alt={`${yacht.title} view ${currentImageIndex + 1}`}
+                  fetchPriority="high"
                   onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80'; }}
                 />
                 {images.length > 1 && (
