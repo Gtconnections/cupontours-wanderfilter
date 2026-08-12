@@ -4,9 +4,9 @@ import HeartButton from '@/components/wishlist/HeartButton';
 import { getDict, type Locale } from '@/app/i18n/dictionaries';
 import { withLocale } from '@/app/i18n/locale';
 
-import { getHomeProperties, PropertyCardData } from '../lib/api/properties';
-import { getCars, CarCatalogItem } from '../lib/api/cars';
-import { getYachts, YachtCatalogItem } from '../lib/api/yachts';
+import { PropertyCardData } from '../lib/api/properties';
+import { CarCatalogItem } from '../lib/api/cars';
+import { YachtCatalogItem } from '../lib/api/yachts';
 
 type GenericCatalogItem = PropertyCardData | CarCatalogItem | YachtCatalogItem;
 type RowType = 'home' | 'car' | 'yacht';
@@ -19,32 +19,25 @@ interface RowProps {
   locale: Locale;
 }
 
-function RowHeader({ pretitle, title, type, locale }: { pretitle: string; title: string; type: RowType; locale: Locale }) {
-  const routePrefix = type === 'home' ? 'properties' : type === 'car' ? 'cars' : 'yachts';
-  const c = getDict(locale).common;
-  const L = (href: string) => withLocale(href, locale);
-  return (
-    <div className="row-header">
-      <div className="row-title-area">
-        <span className="row-pretitle">{pretitle}</span>
-        <h3>{title}</h3>
-      </div>
-      <Link href={L(`/${routePrefix}`)} className="row-see-more">
-        {c.seeMore}
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-      </Link>
-    </div>
-  );
-}
-
-function HomeRow({ title, pretitle, data, type, locale }: RowProps) {
+// Fila del home (Server Component, presentacional). Recibe los datos ya
+// resueltos desde el servidor. Mismo markup de tarjeta que antes.
+export function HomeRow({ title, pretitle, data, type, locale }: RowProps) {
   const routePrefix = type === 'home' ? 'properties' : type === 'car' ? 'cars' : 'yachts';
   const c = getDict(locale).common;
   const L = (href: string) => withLocale(href, locale);
 
   return (
     <section className="home-row-section">
-      <RowHeader pretitle={pretitle} title={title} type={type} locale={locale} />
+      <div className="row-header">
+        <div className="row-title-area">
+          <span className="row-pretitle">{pretitle}</span>
+          <h3>{title}</h3>
+        </div>
+        <Link href={L(`/${routePrefix}`)} className="row-see-more">
+          {c.seeMore}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+        </Link>
+      </div>
 
       <div className="property-carousel">
         {data.length === 0 ? (
@@ -112,39 +105,4 @@ function HomeRow({ title, pretitle, data, type, locale }: RowProps) {
       </div>
     </section>
   );
-}
-
-export function RowSkeleton({ pretitle, title, type, locale }: { pretitle: string; title: string; type: RowType; locale: Locale }) {
-  return (
-    <section className="home-row-section">
-      <RowHeader pretitle={pretitle} title={title} type={type} locale={locale} />
-      <div className="property-carousel">
-        {Array.from({ length: 4 }).map((_, idx) => (
-          <div key={idx} className="prop-card animate-pulse" style={{ opacity: 0.5 }}>
-            <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`} style={{ backgroundColor: '#e4e4e7' }}></div>
-            <div style={{ height: '16px', backgroundColor: '#e4e4e7', marginTop: '12px', borderRadius: '4px', width: '80%' }}></div>
-            <div style={{ height: '12px', backgroundColor: '#e4e4e7', marginTop: '8px', borderRadius: '4px', width: '50%' }}></div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export async function HomesRow({ locale, pretitle, title }: { locale: Locale; pretitle: string; title: string }) {
-  let data: PropertyCardData[] = [];
-  try { data = (await getHomeProperties()).slice(0, 8); } catch (e) { console.error("Home properties:", e); }
-  return <HomeRow pretitle={pretitle} title={title} data={data} type="home" locale={locale} />;
-}
-
-export async function CarsRow({ locale, pretitle, title }: { locale: Locale; pretitle: string; title: string }) {
-  let data: CarCatalogItem[] = [];
-  try { data = (await getCars()).slice(0, 4); } catch (e) { console.error("Home cars:", e); }
-  return <HomeRow pretitle={pretitle} title={title} data={data} type="car" locale={locale} />;
-}
-
-export async function YachtsRow({ locale, pretitle, title }: { locale: Locale; pretitle: string; title: string }) {
-  let data: YachtCatalogItem[] = [];
-  try { data = (await getYachts()).slice(0, 4); } catch (e) { console.error("Home yachts:", e); }
-  return <HomeRow pretitle={pretitle} title={title} data={data} type="yacht" locale={locale} />;
 }

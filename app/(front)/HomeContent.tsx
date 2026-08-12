@@ -1,11 +1,14 @@
-import { Suspense } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import './home.css';
 import Link from 'next/link';
 import Membership from '@/components/Membership';
 import { getDict, type Locale } from '@/app/i18n/dictionaries';
 import { withLocale } from '@/app/i18n/locale';
-import { HomesRow, CarsRow, YachtsRow, RowSkeleton } from './HomeRow';
+import { HomeRow } from './HomeRow';
+
+import { getHomeProperties } from '../lib/api/properties';
+import { getCars } from '../lib/api/cars';
+import { getYachts } from '../lib/api/yachts';
 
 const homePageStructuredData = {
   "@context": "https://schema.org",
@@ -19,9 +22,18 @@ const homePageStructuredData = {
   }
 }
 
-export default function HomeContent({ locale }: { locale: Locale }) {
+export default async function HomeContent({ locale }: { locale: Locale }) {
   const t = getDict(locale).home;
   const L = (href: string) => withLocale(href, locale);
+
+  // Las 3 peticiones en paralelo en el servidor: el contenido viene entero en
+  // el HTML (sin fetch en cliente, sin skeleton). Cada una cae a [] si falla,
+  // sin tumbar la pagina.
+  const [homes, cars, yachts] = await Promise.all([
+    getHomeProperties().then((d) => d.slice(0, 8)).catch(() => []),
+    getCars().then((d) => d.slice(0, 4)).catch(() => []),
+    getYachts().then((d) => d.slice(0, 4)).catch(() => []),
+  ]);
 
   return (
     <main className="home-page-container">
@@ -46,9 +58,7 @@ export default function HomeContent({ locale }: { locale: Locale }) {
       </section>
 
       <div className="home-listings-container">
-        <Suspense fallback={<RowSkeleton pretitle={t.rowHomesPre} title={t.rowHomesTitle} type="home" locale={locale} />}>
-          <HomesRow locale={locale} pretitle={t.rowHomesPre} title={t.rowHomesTitle} />
-        </Suspense>
+        <HomeRow pretitle={t.rowHomesPre} title={t.rowHomesTitle} data={homes} type="home" locale={locale} />
 
         <div className="mid-banner banner-properties">
           <div className="mid-banner-overlay"></div>
@@ -63,9 +73,7 @@ export default function HomeContent({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <Suspense fallback={<RowSkeleton pretitle={t.rowCarsPre} title={t.rowCarsTitle} type="car" locale={locale} />}>
-          <CarsRow locale={locale} pretitle={t.rowCarsPre} title={t.rowCarsTitle} />
-        </Suspense>
+        <HomeRow pretitle={t.rowCarsPre} title={t.rowCarsTitle} data={cars} type="car" locale={locale} />
 
         <div className="mid-banner banner-cars">
           <div className="mid-banner-overlay"></div>
@@ -80,9 +88,7 @@ export default function HomeContent({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <Suspense fallback={<RowSkeleton pretitle={t.rowYachtsPre} title={t.rowYachtsTitle} type="yacht" locale={locale} />}>
-          <YachtsRow locale={locale} pretitle={t.rowYachtsPre} title={t.rowYachtsTitle} />
-        </Suspense>
+        <HomeRow pretitle={t.rowYachtsPre} title={t.rowYachtsTitle} data={yachts} type="yacht" locale={locale} />
 
         <div className="mid-banner banner-yachts">
           <div className="mid-banner-overlay"></div>
