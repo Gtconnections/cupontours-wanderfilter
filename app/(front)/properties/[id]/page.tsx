@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './property-detail.css';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { localeFromPath } from '@/app/i18n/locale';
 import { getDetail } from '@/app/i18n/dictionaries';
 import { getPropertyById } from '../../../lib/api/properties';
@@ -135,6 +135,12 @@ export default function PropertyDetailPage() {
   const t = getDetail(locale).properties;
   const c = getDetail(locale).common;
   const lp = locale === 'es' ? '/es' : '';
+  const router = useRouter();
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined' && window.history.length > 1) router.back();
+    else router.push(`${lp}/properties`);
+  };
   const id = params?.id as string;
   const { theme } = useTheme();
 
@@ -244,13 +250,13 @@ export default function PropertyDetailPage() {
           <div className="error-state">
             <h2>{t.notFound}</h2>
             <p>{error || 'The residence you are looking for does not exist.'}</p>
-            <Link href={`${lp}/properties`} className="btn-back-editorial">
+            <a href={`${lp}/properties`} onClick={handleBack} className="btn-back-editorial" style={{ cursor: 'pointer' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
               <span>{t.backTo}</span>
-            </Link>
+            </a>
           </div>
         </div>
       </main>
@@ -427,13 +433,13 @@ export default function PropertyDetailPage() {
               <span>{location}</span>
             </p>
           </div>
-          <Link href={`${lp}/properties`} className="btn-back-editorial">
+          <a href={`${lp}/properties`} onClick={handleBack} className="btn-back-editorial" style={{ cursor: 'pointer' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
             <span>{t.backTo}</span>
-          </Link>
+          </a>
         </header>
 
         <div className="property-content-layout">

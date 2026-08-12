@@ -4,7 +4,7 @@ import React, { useState, useEffect, use } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import './car-detail.css';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { localeFromPath } from '@/app/i18n/locale';
 import { getDetail } from '@/app/i18n/dictionaries';
 import { getCarById, CarDetail } from '../../../lib/api/cars';
@@ -97,6 +97,12 @@ export default function CarDetailPage({ params }: PageProps) {
   const t = getDetail(locale).cars;
   const c = getDetail(locale).common;
   const lp = locale === 'es' ? '/es' : '';
+  const router = useRouter();
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined' && window.history.length > 1) router.back();
+    else router.push(`${lp}/cars`);
+  };
 
   // Datos y carga
   const [car, setCar] = useState<CarDetail | null>(null);
@@ -220,10 +226,10 @@ export default function CarDetailPage({ params }: PageProps) {
           <div className="error-state">
             <h2>{t.notFound}</h2>
             <p>{t.notAvail}</p>
-            <Link href={`${lp}/cars`} className="btn-back-editorial">
+            <a href={`${lp}/cars`} onClick={handleBack} className="btn-back-editorial" style={{ cursor: 'pointer' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               <span>{t.backTo}</span>
-            </Link>
+            </a>
           </div>
         </div>
       </main>
@@ -321,10 +327,10 @@ export default function CarDetailPage({ params }: PageProps) {
               <span>{location}</span>
             </p>
           </div>
-          <Link href={`${lp}/cars`} className="btn-back-editorial">
+          <a href={`${lp}/cars`} onClick={handleBack} className="btn-back-editorial" style={{ cursor: 'pointer' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             <span>{t.backTo}</span>
-          </Link>
+          </a>
         </header>
 
         <div className="property-content-layout">
