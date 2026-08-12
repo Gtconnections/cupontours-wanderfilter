@@ -186,7 +186,7 @@ export default function ServicesContent({ locale = 'en' }: { locale?: Locale }) 
                 </div>
 
                 <div className="catalog-content">
-                  <h3>{t.cat[cat.title]}</h3>
+                  <h3>{t.cat[cat.title as keyof typeof t.cat] ?? cat.title}</h3>
                   <div className="catalog-link-wrapper">
                     <span className="gold-line"></span>
                     <span className="link-text">{t.verCatalogo}</span>
