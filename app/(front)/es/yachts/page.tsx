@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from "next";
 import YachtsCatalogClient from "../../yachts/YachtsCatalogClient";
 import { getAllYachts } from "../../../lib/api/yachts";
@@ -15,5 +16,9 @@ export const metadata: Metadata = {
 
 export default async function YachtsPageEs() {
   const items = await getAllYachts();
-  return <YachtsCatalogClient initialItems={items} initialCount={items.length} locale="es" />;
+  return (
+    <Suspense fallback={<div className="w-full text-center py-20 text-sm text-gray-400">Cargando catálogo...</div>}>
+      <YachtsCatalogClient initialItems={items} initialCount={items.length} locale="es" />
+    </Suspense>
+  );
 }

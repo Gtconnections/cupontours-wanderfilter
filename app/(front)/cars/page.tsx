@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import CarsCatalogClient from './CarsCatalogClient';
 import { getAllCars } from '../../lib/api/cars';
 
@@ -6,9 +7,11 @@ import { getAllCars } from '../../lib/api/cars';
 export default async function CarsPage() {
   const items = await getAllCars();
   return (
-    <CarsCatalogClient
+    <Suspense fallback={<div className="w-full text-center py-20 text-sm text-gray-400">Loading catalog...</div>}>
+      <CarsCatalogClient
       initialItems={items}
       initialCount={items.length}
     />
+    </Suspense>
   );
 }

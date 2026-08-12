@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from "next";
 import CarsCatalogClient from "../../cars/CarsCatalogClient";
 import { getAllCars } from "../../../lib/api/cars";
@@ -15,5 +16,9 @@ export const metadata: Metadata = {
 
 export default async function CarsPageEs() {
   const items = await getAllCars();
-  return <CarsCatalogClient initialItems={items} initialCount={items.length} locale="es" />;
+  return (
+    <Suspense fallback={<div className="w-full text-center py-20 text-sm text-gray-400">Cargando catálogo...</div>}>
+      <CarsCatalogClient initialItems={items} initialCount={items.length} locale="es" />
+    </Suspense>
+  );
 }

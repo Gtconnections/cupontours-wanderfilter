@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import YachtsCatalogClient from './YachtsCatalogClient';
 import { getAllYachts } from '../../lib/api/yachts';
 
@@ -6,9 +7,11 @@ import { getAllYachts } from '../../lib/api/yachts';
 export default async function YachtsPage() {
   const items = await getAllYachts();
   return (
-    <YachtsCatalogClient
+    <Suspense fallback={<div className="w-full text-center py-20 text-sm text-gray-400">Loading catalog...</div>}>
+      <YachtsCatalogClient
       initialItems={items}
       initialCount={items.length}
     />
+    </Suspense>
   );
 }
