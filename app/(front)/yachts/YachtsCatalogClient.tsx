@@ -136,7 +136,7 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
             </div>
           ) : (
             fleet.map((yacht) => (
-              <Link href={`/yachts/${yacht.id}`} key={yacht.id} className="link-dinamic">
+              <Link href={`${es ? '/es' : ''}/yachts/${yacht.id}`} key={yacht.id} className="link-dinamic">
                 <div className="marine-card">
                   <div className="marine-image-box">
                     <img
@@ -149,7 +149,7 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
                     />
                     <HeartButton
                       className="marine-heart-btn"
-                      item={{ id: String(yacht.id), type: 'yacht', title: yacht.title, image: yacht.img, price: yacht.price, href: `/yachts/${yacht.id}`, location: 'Miami, FL' }}
+                      item={{ id: String(yacht.id), type: 'yacht', title: yacht.title, image: yacht.img, price: yacht.price, href: `${es ? '/es' : ''}/yachts/${yacht.id}`, location: 'Miami, FL' }}
                     />
                   </div>
 

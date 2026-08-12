@@ -275,7 +275,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
             </div>
           ) : (
             filteredProperties.map((prop) => (
-              <a href={`/properties/${prop.id}`} key={prop.id} className="link-dinamic" style={{ textDecoration: 'none' }}>
+              <a href={`${es ? '/es' : ''}/properties/${prop.id}`} key={prop.id} className="link-dinamic" style={{ textDecoration: 'none' }}>
                 <div className="catprop-card">
                   <div className="catalog-image-box">
                     <img
@@ -294,7 +294,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
                         title: prop.title,
                         image: prop.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
                         price: `${prop.price?.currency || '$'}${prop.price?.amount || 0} / ${prop.price?.period || 'night'}`,
-                        href: `/properties/${prop.id}`,
+                        href: `${es ? '/es' : ''}/properties/${prop.id}`,
                         location: prop.location || (es ? "Destino exclusivo" : "Exclusive Destination"),
                       }}
                     />

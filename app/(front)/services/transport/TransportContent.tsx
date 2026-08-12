@@ -18,6 +18,7 @@ const transportPageStructuredData = {
 export default function PrivateTransportContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["transport"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [transports, setTransports] = useState<TransportItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +89,7 @@ export default function PrivateTransportContent({ locale = 'en' }: { locale?: Lo
             ) : (
               currentTransports.map((item) => (
                 <div key={item.id} className="transport-card">
-                  <Link href={`/services/transport/${item.id}`} className="transport-img-container">
+                  <Link href={`${lp}/services/transport/${item.id}`} className="transport-img-container">
                     <img 
                       src={`https://images.unsplash.com/photo-1627042633145-b780d842ba45?auto=format&fit=crop&w=800&q=80`} 
                       alt={item.name} 
@@ -108,7 +109,7 @@ export default function PrivateTransportContent({ locale = 'en' }: { locale?: Lo
                     
                     <div className="transport-footer">
                       <span className="transport-price">${item.price_hour} <span className="price-unit">/ Hour</span></span>
-                      <Link href={`/services/transport/${item.id}`} className="btn-black-pill small-btn">
+                      <Link href={`${lp}/services/transport/${item.id}`} className="btn-black-pill small-btn">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -143,7 +144,7 @@ export default function PrivateTransportContent({ locale = 'en' }: { locale?: Lo
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>

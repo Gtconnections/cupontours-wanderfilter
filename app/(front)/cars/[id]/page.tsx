@@ -4,6 +4,9 @@ import React, { useState, useEffect, use } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import './car-detail.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { getCarById, CarDetail } from '../../../lib/api/cars';
 import { sendCarBookingRequest } from '../../../lib/api';
 
@@ -51,7 +54,7 @@ function ImageGalleryModal({
   return (
     <div className="gallery-modal" onClick={onClose}>
       <div className="gallery-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="gallery-close" onClick={onClose} aria-label="Close gallery">
+        <button className="gallery-close" onClick={onClose} aria-label={c.closeGallery}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -62,10 +65,10 @@ function ImageGalleryModal({
         <div className="gallery-counter">{currentIndex + 1} / {images.length}</div>
         {images.length > 1 && (
           <>
-            <button className="gallery-nav gallery-prev" onClick={goToPrevious} aria-label="Previous image">
+            <button className="gallery-nav gallery-prev" onClick={goToPrevious} aria-label={c.prevImage}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
             </button>
-            <button className="gallery-nav gallery-next" onClick={goToNext} aria-label="Next image">
+            <button className="gallery-nav gallery-next" onClick={goToNext} aria-label={c.nextImage}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
             </button>
             <div className="gallery-thumbnails">
@@ -89,6 +92,10 @@ function ImageGalleryModal({
 
 export default function CarDetailPage({ params }: PageProps) {
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).cars;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   // Datos y carga
   const [car, setCar] = useState<CarDetail | null>(null);
@@ -210,11 +217,11 @@ export default function CarDetailPage({ params }: PageProps) {
       <main className="car-detail-page">
         <div className="detail-container">
           <div className="error-state">
-            <h2>Vehicle Not Found</h2>
-            <p>The requested asset is unavailable or doesn&apos;t exist.</p>
-            <Link href="/cars" className="btn-back-editorial">
+            <h2>{t.notFound}</h2>
+            <p>{t.notAvail}</p>
+            <Link href={`${lp}/cars`} className="btn-back-editorial">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              <span>Back to Fleet</span>
+              <span>{t.backTo}</span>
             </Link>
           </div>
         </div>
@@ -228,7 +235,7 @@ export default function CarDetailPage({ params }: PageProps) {
         <div className="detail-container">
           <div className="loading-state">
             <div className="loading-spinner"></div>
-            <p>Loading vehicle details...</p>
+            <p>{t.loading}</p>
           </div>
         </div>
       </main>
@@ -304,7 +311,7 @@ export default function CarDetailPage({ params }: PageProps) {
         {/* ENCABEZADO SUPERIOR */}
         <header className="lux-pagehead">
           <div className="lux-headline-text">
-            <span className="lux-eyebrow">Luxury Vehicle</span>
+            <span className="lux-eyebrow">{t.eyebrow}</span>
             <h1 className="lux-title">{car.title}</h1>
             <p className="lux-location">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -313,9 +320,9 @@ export default function CarDetailPage({ params }: PageProps) {
               <span>{location}</span>
             </p>
           </div>
-          <Link href="/cars" className="btn-back-editorial">
+          <Link href={`${lp}/cars`} className="btn-back-editorial">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            <span>Back to Fleet</span>
+            <span>{t.backTo}</span>
           </Link>
         </header>
 
@@ -335,11 +342,11 @@ export default function CarDetailPage({ params }: PageProps) {
                 />
                 {images.length > 1 && (
                   <>
-                    <button className="lux-gallery-arrow prev" type="button" aria-label="Previous image"
+                    <button className="lux-gallery-arrow prev" type="button" aria-label={c.prevImage}
                       onClick={(e) => { e.stopPropagation(); setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1)); }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
                     </button>
-                    <button className="lux-gallery-arrow next" type="button" aria-label="Next image"
+                    <button className="lux-gallery-arrow next" type="button" aria-label={c.nextImage}
                       onClick={(e) => { e.stopPropagation(); setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1)); }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                     </button>
@@ -382,7 +389,7 @@ export default function CarDetailPage({ params }: PageProps) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
                   </svg>
-                  Description
+                  {t.secDescription}
                 </h2>
                 <div className="lux-body-text">
                   <p>{car.description}</p>
@@ -396,7 +403,7 @@ export default function CarDetailPage({ params }: PageProps) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
-                Vehicle Features
+                {t.secFeatures}
               </h2>
               <div className="lux-amenities-grid">
                 {features.map((cat, i) => (
@@ -433,17 +440,17 @@ export default function CarDetailPage({ params }: PageProps) {
 
               {/* CARD DE RESERVA (formulario del auto) */}
               <div className="lux-reserve-card">
-                <span className="lux-eyebrow with-line">Enquire</span>
-                <h2 className="lux-reserve-title">Reserve This Vehicle</h2>
+                <span className="lux-eyebrow with-line">{t.tabEnquire}</span>
+                <h2 className="lux-reserve-title">{t.reserveTitle}</h2>
                 <div className="lux-reserve-trust">
-                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>Secure</span>
-                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>Five-Star</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>{t.secure}</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>{t.fiveStar}</span>
                   <span>24/7 Support</span>
                 </div>
 
                 <div className="lux-reserve-price">
                   <span className="lux-reserve-amount">${rawPrice}</span>
-                  <span className="lux-reserve-per">per day</span>
+                  <span className="lux-reserve-per">{t.perDay}</span>
                 </div>
 
                 <form onSubmit={handleBookingSubmit} className="lux-form">
@@ -455,12 +462,12 @@ export default function CarDetailPage({ params }: PageProps) {
                   <div className="widget-date-picker-box">
                     <div className="date-picker-header" onClick={() => !isSubmitting && setShowDatePicker(!showDatePicker)}>
                       <div className="picker-col">
-                        <label>Pick-up Date</label>
+                        <label>{t.pickup}</label>
                         <span className={pickUpDate ? 'selected-value' : ''}>{formatIdToText(pickUpDate)}</span>
                       </div>
                       <div className="picker-divider"></div>
                       <div className="picker-col">
-                        <label>Return Date</label>
+                        <label>{t.returnDate}</label>
                         <span className={returnDate ? 'selected-value' : ''}>{formatIdToText(returnDate)}</span>
                       </div>
                     </div>
@@ -469,7 +476,7 @@ export default function CarDetailPage({ params }: PageProps) {
                       <div className="editorial-calendar-popup">
                         <div className="calendar-months-container">
                           <div className="month-block">
-                            <h4>May 2026</h4>
+                            <h4>{t.monthA}</h4>
                             <div className="calendar-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
                             <div className="calendar-days-grid">
                               <span className="empty-day"></span><span className="empty-day"></span><span className="empty-day"></span><span className="empty-day"></span><span className="empty-day"></span>
@@ -481,7 +488,7 @@ export default function CarDetailPage({ params }: PageProps) {
                             </div>
                           </div>
                           <div className="month-block">
-                            <h4>June 2026</h4>
+                            <h4>{t.monthB}</h4>
                             <div className="calendar-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
                             <div className="calendar-days-grid">
                               <span className="empty-day"></span>
@@ -505,30 +512,30 @@ export default function CarDetailPage({ params }: PageProps) {
                     <div className="wander-input-group">
                       <label className="wander-label">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        Full Name *
+                        {t.lblName} *
                       </label>
-                      <input type="text" className="wander-input" placeholder="Enter your full name" required disabled={isSubmitting} value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                      <input type="text" className="wander-input" placeholder={t.phName} required disabled={isSubmitting} value={fullName} onChange={(e) => setFullName(e.target.value)} />
                     </div>
                     <div className="wander-input-group">
                       <label className="wander-label">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        Email Address *
+                        {t.lblEmail} *
                       </label>
-                      <input type="email" className="wander-input" placeholder="Enter your email" required disabled={isSubmitting} value={email} onChange={(e) => setEmail(e.target.value)} />
+                      <input type="email" className="wander-input" placeholder={t.phEmail} required disabled={isSubmitting} value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="wander-input-group">
                       <label className="wander-label">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        Phone Number
+                        {t.lblPhone}
                       </label>
-                      <input type="tel" className="wander-input" placeholder="Enter your phone number" disabled={isSubmitting} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                      <input type="tel" className="wander-input" placeholder={t.phPhone} disabled={isSubmitting} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                     </div>
                     <div className="wander-input-group">
                       <label className="wander-label">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        Special Requests
+                        {t.lblRequests}
                       </label>
-                      <textarea className="wander-textarea" placeholder="Tell us more about your rental needs..." rows={3} disabled={isSubmitting} value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} />
+                      <textarea className="wander-textarea" placeholder={t.phRequests} rows={3} disabled={isSubmitting} value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} />
                     </div>
                   </div>
 
@@ -539,17 +546,17 @@ export default function CarDetailPage({ params }: PageProps) {
                       <span>${rawPrice * totalDays}</span>
                     </div>
                     <div className="price-row-item">
-                      <span>Premium Fleet Insurance</span>
+                      <span>{t.insurance}</span>
                       <span>${insuranceFee}</span>
                     </div>
                     <div className="price-row-item total-row">
-                      <span>Total before taxes</span>
+                      <span>{t.totalBeforeTax}</span>
                       <span>${(rawPrice * totalDays) + insuranceFee}</span>
                     </div>
                   </div>
 
                   <button type="submit" className="btn-booking-primary" disabled={isSubmitting}>
-                    {isSubmitting ? 'Requesting...' : 'Request Rental Availability'}
+                    {isSubmitting ? t.btnSubmitting : t.btnSubmit}
                   </button>
                 </form>
 
@@ -564,7 +571,7 @@ export default function CarDetailPage({ params }: PageProps) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 16.5V14a2 2 0 0 0-2-2H4l1.5-4.5A2 2 0 0 1 7.4 6h6.2a2 2 0 0 1 1.9 1.5L17 12" /><circle cx="7" cy="17" r="2" /><circle cx="17" cy="17" r="2" />
                   </svg>
-                  Vehicle Details
+                  {t.secDetails}
                 </h2>
                 <div className="lux-pricing-table">
                   {vehicleDetails.map((row, i) => (
@@ -582,13 +589,13 @@ export default function CarDetailPage({ params }: PageProps) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                   </svg>
-                  Rental Terms
+                  {t.secTerms}
                 </h2>
                 <ul className="lux-rules">
                   <li><strong>Driver&apos;s License:</strong> A valid, unexpired domestic or international license is mandatory.</li>
-                  <li><strong>Security Deposit:</strong> A hold is executed under verified token protocols during hand-off.</li>
-                  <li><strong>Fuel Policy:</strong> Return with the same level of premium gasoline provided at delivery.</li>
-                  <li><strong>Prohibitions:</strong> No smoking, track racing, or unauthorized additional operators.</li>
+                  <li><strong>{t.secDeposit}</strong> A hold is executed under verified token protocols during hand-off.</li>
+                  <li><strong>{t.fuelPolicy}</strong> Return with the same level of premium gasoline provided at delivery.</li>
+                  <li><strong>{t.prohibitions}</strong> No smoking, track racing, or unauthorized additional operators.</li>
                 </ul>
               </div>
 

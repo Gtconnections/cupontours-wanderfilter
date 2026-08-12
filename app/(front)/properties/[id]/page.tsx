@@ -5,6 +5,9 @@ import { useParams } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './property-detail.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { getPropertyById } from '../../../lib/api/properties';
 import { HostawayListing } from '../../../lib/services/hostaway';
 import BookingWidget from './BookingWidget';
@@ -73,7 +76,7 @@ function ImageGalleryModal({
   return (
     <div className="gallery-modal" onClick={onClose}>
       <div className="gallery-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="gallery-close" onClick={onClose} aria-label="Close gallery">
+        <button className="gallery-close" onClick={onClose} aria-label={c.closeGallery}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
@@ -90,12 +93,12 @@ function ImageGalleryModal({
 
         {images.length > 1 && (
           <>
-            <button className="gallery-nav gallery-prev" onClick={goToPrevious} aria-label="Previous image">
+            <button className="gallery-nav gallery-prev" onClick={goToPrevious} aria-label={c.prevImage}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
-            <button className="gallery-nav gallery-next" onClick={goToNext} aria-label="Next image">
+            <button className="gallery-nav gallery-next" onClick={goToNext} aria-label={c.nextImage}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
@@ -127,6 +130,10 @@ function ImageGalleryModal({
 
 export default function PropertyDetailPage() {
   const params = useParams();
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).properties;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const id = params?.id as string;
   const { theme } = useTheme();
 
@@ -221,7 +228,7 @@ export default function PropertyDetailPage() {
         <div className="detail-container">
           <div className="loading-state">
             <div className="loading-spinner"></div>
-            <p>Loading residence details...</p>
+            <p>{t.loading}</p>
           </div>
         </div>
       </main>
@@ -234,14 +241,14 @@ export default function PropertyDetailPage() {
       <main className="property-detail-page">
         <div className="detail-container">
           <div className="error-state">
-            <h2>Residence Not Found</h2>
+            <h2>{t.notFound}</h2>
             <p>{error || 'The residence you are looking for does not exist.'}</p>
-            <Link href="/properties" className="btn-back-editorial">
+            <Link href={`${lp}/properties`} className="btn-back-editorial">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
-              <span>Back to Collection</span>
+              <span>{t.backTo}</span>
             </Link>
           </div>
         </div>
@@ -410,7 +417,7 @@ export default function PropertyDetailPage() {
         {/* ENCABEZADO SUPERIOR: título a la izquierda, volver a la derecha */}
         <header className="lux-pagehead">
           <div className="lux-headline-text">
-            <span className="lux-eyebrow">Premium Residence</span>
+            <span className="lux-eyebrow">{t.eyebrow}</span>
             <h1 className="lux-title">{propertyName}</h1>
             <p className="lux-location">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -419,12 +426,12 @@ export default function PropertyDetailPage() {
               <span>{location}</span>
             </p>
           </div>
-          <Link href="/properties" className="btn-back-editorial">
+          <Link href={`${lp}/properties`} className="btn-back-editorial">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            <span>Back to Collection</span>
+            <span>{t.backTo}</span>
           </Link>
         </header>
 
@@ -448,7 +455,7 @@ export default function PropertyDetailPage() {
                   <>
                     <button
                       className="lux-gallery-arrow prev"
-                      aria-label="Previous image"
+                      aria-label={c.prevImage}
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -459,7 +466,7 @@ export default function PropertyDetailPage() {
                     </button>
                     <button
                       className="lux-gallery-arrow next"
-                      aria-label="Next image"
+                      aria-label={c.nextImage}
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -516,7 +523,7 @@ export default function PropertyDetailPage() {
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
                     <line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
                   </svg>
-                  Description
+                  {t.secDescription}
                 </h2>
                 <div className="lux-body-text">
                   {descriptionText.split('\n').filter(Boolean).map((para, idx) => (
@@ -533,7 +540,7 @@ export default function PropertyDetailPage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  Amenities
+                  {t.secAmenities}
                 </h2>
                 <div className="lux-amenities-grid">
                   {displayAmenities.map((cat, i) => (
@@ -573,8 +580,8 @@ export default function PropertyDetailPage() {
 
               {/* PANEL DE RESERVA (HOSTAWAY) */}
               <div className="lux-reserve-card">
-                <span className="lux-eyebrow with-line">Enquire</span>
-                <h2 className="lux-reserve-title">Reserve This Residence</h2>
+                <span className="lux-eyebrow with-line">{t.tabEnquire}</span>
+                <h2 className="lux-reserve-title">{t.reserveTitle}</h2>
                 <div className="lux-reserve-trust">
                   <span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
@@ -589,7 +596,7 @@ export default function PropertyDetailPage() {
 
                 <div className="lux-reserve-price">
                   <span className="lux-reserve-amount">{formatMoney(pricePerNight)}</span>
-                  <span className="lux-reserve-per">per night</span>
+                  <span className="lux-reserve-per">{t.perNight}</span>
                 </div>
 
                 {/* Widget de reserva propio */}
@@ -611,28 +618,28 @@ export default function PropertyDetailPage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                   </svg>
-                  Pricing Details
+                  {t.secPricing}
                 </h2>
                 <div className="lux-pricing-table">
                   <div className="lux-pricing-row">
-                    <span>Nightly Rate</span>
+                    <span>{t.nightlyRate}</span>
                     <strong className="accent">{formatMoney(pricePerNight)}</strong>
                   </div>
                   <div className="lux-pricing-row">
-                    <span>Cleaning Fee</span>
+                    <span>{t.cleaningFee}</span>
                     <strong>{formatMoney(cleaningFee)}</strong>
                   </div>
                   <div className="lux-pricing-row">
-                    <span>Minimum Stay</span>
+                    <span>{t.minStay}</span>
                     <strong>{minNights} {minNights === 1 ? 'night' : 'nights'}</strong>
                   </div>
                   <div className="lux-pricing-row">
-                    <span>Maximum Guests</span>
+                    <span>{t.maxGuests}</span>
                     <strong>{maxGuests} guests</strong>
                   </div>
                   {beds > 0 && (
                     <div className="lux-pricing-row">
-                      <span>Beds</span>
+                      <span>{t.beds}</span>
                       <strong>{beds}</strong>
                     </div>
                   )}
@@ -645,11 +652,11 @@ export default function PropertyDetailPage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                   </svg>
-                  House Rules
+                  {t.secRules}
                 </h2>
                 <ul className="lux-rules">
-                  <li><strong>Check-in:</strong> After {checkInTime}</li>
-                  <li><strong>Check-out:</strong> Before {checkOutTime}</li>
+                  <li><strong>{t.checkIn}</strong> {t.after} {checkInTime}</li>
+                  <li><strong>{t.checkOut}</strong> {t.before} {checkOutTime}</li>
                   {houseRulesLines.slice(0, 10).map((rule, idx) => (
                     <li key={idx}>{rule}</li>
                   ))}

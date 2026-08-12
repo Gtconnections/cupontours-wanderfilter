@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { StructuredData } from "@/components/seo/structured-data";
 import './events-detail.css';
 import { getEventById, EventItem } from '@/app/lib/api/services';
@@ -15,6 +18,10 @@ interface EventDetail extends EventItem {
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Desenvolvemos la promesa de params usando React.use()
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).events;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   const [eventData, setEventData] = useState<EventDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,9 +59,9 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
     return (
       <main className="ev-page error-state">
         <div className="ev-container ev-error-container text-center">
-          <h2>Event Not Found</h2>
-          <p>The exclusive event you are looking for is not available or has already passed.</p>
-          <Link href="/services/events" className="btn-black-pill mt-4">Return to Events</Link>
+          <h2>{t.notFound}</h2>
+          <p>{t.notAvail}</p>
+          <Link href={`${lp}/services/events`} className="btn-black-pill mt-4">{t.backTo}</Link>
         </div>
       </main>
     );
@@ -74,7 +81,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   // Formateador de Fecha y Hora
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(c.dateLocale, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
@@ -114,8 +121,8 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
       <div className="ev-container">
         
         <nav className="ev-breadcrumb">
-          <Link href="/">Home</Link> <span>/</span>
-          <Link href="/services/events">Events</Link> <span>/</span>
+          <Link href={`${lp}/`}>{c.home}</Link> <span>/</span>
+          <Link href={`${lp}/services/events`}>{t.crumb}</Link> <span>/</span>
           <span className="current">{eventData.name}</span>
         </nav>
 
@@ -156,7 +163,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
             {/* Detalles del Evento (Descripción) */}
             <section className="ev-section">
-              <h2 className="ev-section-title">About The Event</h2>
+              <h2 className="ev-section-title">{t.section}</h2>
               <p className="ev-description">
                 {eventData.descripcion}
               </p>
@@ -169,33 +176,33 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
               
               <div className="widget-header">
                 <span className={`widget-price ${isFree ? 'free-price' : ''}`}>
-                  {isFree ? 'Free Entry' : `$${parseFloat(eventData.price).toFixed(2)}`}
+                  {isFree ? t.free : `$${parseFloat(eventData.price).toFixed(2)}`}
                 </span>
-                {!isFree && <span className="widget-unit">/ Ticket</span>}
+                {!isFree && <span className="widget-unit">{t.unit}</span>}
               </div>
               
               {/* Especificaciones dentro de la tarjeta adaptadas a Eventos */}
               <div className="widget-specs">
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Date & Time</span>
+                  <span className="widget-spec-label">{t.lblDate}</span>
                   <span className="widget-spec-value">{formatDateTime(eventData.fecha_hora)}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Location</span>
+                  <span className="widget-spec-label">{t.lblLocation}</span>
                   <span className="widget-spec-value">{eventData.location}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Capacity</span>
-                  <span className="widget-spec-value">Limited to {eventData.capacity} Guests</span>
+                  <span className="widget-spec-label">{t.lblCapacity}</span>
+                  <span className="widget-spec-value">{t.limitedTo} {eventData.capacity} {t.guests}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Category</span>
+                  <span className="widget-spec-label">{t.lblCategory}</span>
                   <span className="widget-spec-value">{eventData.category}</span>
                 </div>
               </div>
 
               <div className="widget-info">
-                <p>Please RSVP or purchase your tickets in advance. Access may be restricted once capacity is reached.</p>
+                <p>{t.info}</p>
               </div>
 
               <div className="widget-actions">
@@ -209,13 +216,13 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                   </svg>
-                  {isFree ? 'RSVP Now' : 'Get Tickets'}
+                  {isFree ? t.ctaFree : t.ctaPaid}
                 </a>
               </div>
 
               <div className="widget-assurance">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Secure and official registration.</span>
+                <span>{t.assurance}</span>
               </div>
             </div>
           </aside>
@@ -239,7 +246,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
             </button>
           )}
           
-          <img src={allImages[currentImgIndex]} alt="Enlarged" className="lb-image" onClick={(e) => e.stopPropagation()} />
+          <img src={allImages[currentImgIndex]} alt={c.enlarged} className="lb-image" onClick={(e) => e.stopPropagation()} />
           
           {allImages.length > 1 && (
             <button className="lb-nav lb-next" onClick={nextImage}>

@@ -18,6 +18,7 @@ const wellnessPageStructuredData = {
 export default function WellnessContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["wellness"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [wellnessServices, setWellnessServices] = useState<WellnessItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +89,7 @@ export default function WellnessContent({ locale = 'en' }: { locale?: Locale }) 
             ) : (
               currentServices.map((item) => (
                 <div key={item.id} className="well-card">
-                  <Link href={`/services/wellness/${item.id}`} className="well-img-container">
+                  <Link href={`${lp}/services/wellness/${item.id}`} className="well-img-container">
                     <img 
                       src={`https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80`} 
                       alt={item.name} 
@@ -115,7 +116,7 @@ export default function WellnessContent({ locale = 'en' }: { locale?: Locale }) 
                     
                     <div className="well-footer">
                       <span className="well-price">${parseFloat(item.price).toFixed(2)} <span className="price-unit">/ Session</span></span>
-                      <Link href={`/services/wellness/${item.id}`} className="btn-black-pill small-btn">
+                      <Link href={`${lp}/services/wellness/${item.id}`} className="btn-black-pill small-btn">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -150,7 +151,7 @@ export default function WellnessContent({ locale = 'en' }: { locale?: Locale }) 
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>

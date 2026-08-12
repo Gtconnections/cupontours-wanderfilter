@@ -4,6 +4,9 @@ import React, { useState, useEffect, use } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import './yacht-detail.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { getYachtById, YachtDetail } from '../../../lib/api/yachts';
 import YachtBookingWidget from './YachtBookingWidget';
 
@@ -51,7 +54,7 @@ function ImageGalleryModal({
   return (
     <div className="gallery-modal" onClick={onClose}>
       <div className="gallery-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="gallery-close" onClick={onClose} aria-label="Close gallery">
+        <button className="gallery-close" onClick={onClose} aria-label={c.closeGallery}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -62,10 +65,10 @@ function ImageGalleryModal({
         <div className="gallery-counter">{currentIndex + 1} / {images.length}</div>
         {images.length > 1 && (
           <>
-            <button className="gallery-nav gallery-prev" onClick={goToPrevious} aria-label="Previous image">
+            <button className="gallery-nav gallery-prev" onClick={goToPrevious} aria-label={c.prevImage}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
             </button>
-            <button className="gallery-nav gallery-next" onClick={goToNext} aria-label="Next image">
+            <button className="gallery-nav gallery-next" onClick={goToNext} aria-label={c.nextImage}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
             </button>
             <div className="gallery-thumbnails">
@@ -89,6 +92,10 @@ function ImageGalleryModal({
 
 export default function YachtDetailPage({ params }: PageProps) {
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).yachts;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   // Datos y carga
   const [yacht, setYacht] = useState<YachtDetail | null>(null);
@@ -133,11 +140,11 @@ export default function YachtDetailPage({ params }: PageProps) {
       <main className="yacht-detail-page">
         <div className="detail-container">
           <div className="error-state">
-            <h2>Vessel Not Found</h2>
-            <p>The requested charter asset is unavailable or doesn&apos;t exist.</p>
-            <Link href="/yachts" className="btn-back-editorial">
+            <h2>{t.notFound}</h2>
+            <p>{t.notAvail}</p>
+            <Link href={`${lp}/yachts`} className="btn-back-editorial">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-              <span>Back to Fleet</span>
+              <span>{t.backTo}</span>
             </Link>
           </div>
         </div>
@@ -151,7 +158,7 @@ export default function YachtDetailPage({ params }: PageProps) {
         <div className="detail-container">
           <div className="loading-state">
             <div className="loading-spinner"></div>
-            <p>Loading charter details...</p>
+            <p>{t.loading}</p>
           </div>
         </div>
       </main>
@@ -233,7 +240,7 @@ export default function YachtDetailPage({ params }: PageProps) {
         {/* ENCABEZADO SUPERIOR */}
         <header className="lux-pagehead">
           <div className="lux-headline-text">
-            <span className="lux-eyebrow">Luxury Yacht Charter</span>
+            <span className="lux-eyebrow">{t.eyebrow}</span>
             <h1 className="lux-title">{yacht.title}</h1>
             <p className="lux-location">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -242,9 +249,9 @@ export default function YachtDetailPage({ params }: PageProps) {
               <span>{location}</span>
             </p>
           </div>
-          <Link href="/yachts" className="btn-back-editorial">
+          <Link href={`${lp}/yachts`} className="btn-back-editorial">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            <span>Back to Fleet</span>
+            <span>{t.backTo}</span>
           </Link>
         </header>
 
@@ -264,11 +271,11 @@ export default function YachtDetailPage({ params }: PageProps) {
                 />
                 {images.length > 1 && (
                   <>
-                    <button className="lux-gallery-arrow prev" type="button" aria-label="Previous image"
+                    <button className="lux-gallery-arrow prev" type="button" aria-label={c.prevImage}
                       onClick={(e) => { e.stopPropagation(); setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1)); }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
                     </button>
-                    <button className="lux-gallery-arrow next" type="button" aria-label="Next image"
+                    <button className="lux-gallery-arrow next" type="button" aria-label={c.nextImage}
                       onClick={(e) => { e.stopPropagation(); setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1)); }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                     </button>
@@ -311,7 +318,7 @@ export default function YachtDetailPage({ params }: PageProps) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
                   </svg>
-                  About This Yacht
+                  {t.secAbout}
                 </h2>
                 <div className="lux-body-text">
                   <p>{yacht.description}</p>
@@ -325,7 +332,7 @@ export default function YachtDetailPage({ params }: PageProps) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
-                Features &amp; Inclusions
+                {t.secFeatures}
               </h2>
               <div className="lux-amenities-grid">
                 {features.map((cat, i) => (
@@ -362,17 +369,17 @@ export default function YachtDetailPage({ params }: PageProps) {
 
               {/* CARD DE RESERVA (formulario del yate) */}
               <div className="lux-reserve-card">
-                <span className="lux-eyebrow with-line">Enquire</span>
-                <h2 className="lux-reserve-title">Reserve This Yacht</h2>
+                <span className="lux-eyebrow with-line">{t.tabEnquire}</span>
+                <h2 className="lux-reserve-title">{t.reserveTitle}</h2>
                 <div className="lux-reserve-trust">
-                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>Secure</span>
-                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>Five-Star</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>{t.secure}</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>{t.fiveStar}</span>
                   <span>24/7 Support</span>
                 </div>
 
                 <div className="lux-reserve-price">
                   <span className="lux-reserve-amount">{yacht.price_full_day}</span>
-                  <span className="lux-reserve-per">per full day</span>
+                  <span className="lux-reserve-per">{t.perFullDay}</span>
                 </div>
                 {yacht.price_half_day && (
                   <p className="lux-reserve-note">Half-day option: {yacht.price_half_day}</p>
@@ -391,7 +398,7 @@ export default function YachtDetailPage({ params }: PageProps) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 11l19-9-9 19-2-8-8-2z" />
                   </svg>
-                  Charter Details
+                  {t.secDetails}
                 </h2>
                 <div className="lux-pricing-table">
                   {charterDetails.map((row, i) => (
@@ -409,13 +416,13 @@ export default function YachtDetailPage({ params }: PageProps) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                   </svg>
-                  Charter Terms
+                  {t.secTerms}
                 </h2>
                 <ul className="lux-rules">
-                  <li><strong>Certified Crew:</strong> A licensed captain and professional crew are included in every charter.</li>
-                  <li><strong>Security Deposit:</strong> A refundable hold is arranged under verified protocols before departure.</li>
-                  <li><strong>Fuel Policy:</strong> Full fuel for the charter duration is covered per the agreement.</li>
-                  <li><strong>Safety First:</strong> Life jackets and safety equipment are provided for all guests onboard.</li>
+                  <li><strong>{t.certifiedCrew}</strong> A licensed captain and professional crew are included in every charter.</li>
+                  <li><strong>{t.secDeposit}</strong> A refundable hold is arranged under verified protocols before departure.</li>
+                  <li><strong>{t.fuelPolicy}</strong> Full fuel for the charter duration is covered per the agreement.</li>
+                  <li><strong>{t.safetyFirst}</strong> Life jackets and safety equipment are provided for all guests onboard.</li>
                 </ul>
               </div>
 

@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { StructuredData } from "@/components/seo/structured-data";
 import './real-estate-detail.css';
 import { getRealEstateById, RealEstateItem } from '@/app/lib/api/services';
@@ -22,6 +25,10 @@ interface RealEstateDetail extends RealEstateItem {
 export default function RealEstateDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Desenvolvemos la promesa de params usando React.use()
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).realEstate;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   const [property, setProperty] = useState<RealEstateDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,9 +66,9 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
     return (
       <main className="re-detail-page error-state">
         <div className="re-container re-error-container text-center">
-          <h2>Property Not Found</h2>
-          <p>The exclusive property you are looking for is not available.</p>
-          <Link href="/services/real-estate" className="btn-black-pill mt-4">Return to Portfolio</Link>
+          <h2>{t.notFound}</h2>
+          <p>{t.notAvail}</p>
+          <Link href={`${lp}/services/real-estate`} className="btn-black-pill mt-4">{t.backTo}</Link>
         </div>
       </main>
     );
@@ -131,8 +138,8 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
       <div className="re-container">
         
         <nav className="re-breadcrumb">
-          <Link href="/">Home</Link> <span>/</span>
-          <Link href="/services/real-estate">Real Estate</Link> <span>/</span>
+          <Link href={`${lp}/`}>{c.home}</Link> <span>/</span>
+          <Link href={`${lp}/services/real-estate`}>{t.crumb}</Link> <span>/</span>
           <span className="current">{property.name}</span>
         </nav>
 
@@ -181,7 +188,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
 
             {/* The Property (Descripción) */}
             <section className="re-section">
-              <h2 className="re-section-title">The Property</h2>
+              <h2 className="re-section-title">{t.section}</h2>
               <p className="re-description">
                 {property.descripcion}
               </p>
@@ -196,7 +203,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   .re-spec-item .v { font-weight: 600; text-align: right; }
                   @media (max-width: 640px) { .re-specs-list { grid-template-columns: 1fr; } }
                 ` }} />
-                <h2 className="re-section-title">Details</h2>
+                <h2 className="re-section-title">{t.details}</h2>
                 <div className="re-specs-list">
                   {extraFields.map((f, i) => (
                     <div className="re-spec-item" key={i}><span className="k">{f.label}</span><span className="v">{f.value}</span></div>
@@ -211,7 +218,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   .re-amenities { display: flex; flex-wrap: wrap; gap: 10px; }
                   .re-amenity { border: 1px solid rgba(212,175,55,0.4); color: #d4af37; border-radius: 999px; padding: 7px 14px; font-size: 13px; }
                 ` }} />
-                <h2 className="re-section-title">Amenities</h2>
+                <h2 className="re-section-title">{t.amenities}</h2>
                 <div className="re-amenities">
                   {amenityList.map((a, i) => (<span className="re-amenity" key={i}>{a}</span>))}
                 </div>
@@ -225,7 +232,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   .re-pay-item { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(140,140,140,0.18); }
                   .re-pay-item .v { font-weight: 700; color: #d4af37; white-space: nowrap; }
                 ` }} />
-                <h2 className="re-section-title">Payment Plan</h2>
+                <h2 className="re-section-title">{t.paymentPlan}</h2>
                 <div className="re-pay-list">
                   {paymentRows.map((p, i) => (
                     <div className="re-pay-item" key={i}><span>{p.stage}</span><span className="v">{p.value}</span></div>
@@ -243,9 +250,9 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   .re-near-item .v { font-weight: 600; color: #d4af37; white-space: nowrap; }
                   @media (max-width: 640px) { .re-near-list { grid-template-columns: 1fr; } }
                 ` }} />
-                <h2 className="re-section-title">Location</h2>
+                <h2 className="re-section-title">{t.lblLocation}</h2>
                 {mapQuery && (
-                  <iframe className="re-map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`} title="Map" />
+                  <iframe className="re-map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`} title={t.map} />
                 )}
                 {nearbyRows.length > 0 && (
                   <div className="re-near-list">
@@ -267,15 +274,15 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   .re-units-table th.ru-price, .re-units-table td.ru-price { text-align: right; font-weight: 700; color: #d4af37; white-space: nowrap; }
                   .re-units-table tbody tr:hover td { background: rgba(212,175,55,0.06); }
                 ` }} />
-                <h2 className="re-section-title">Available Units</h2>
+                <h2 className="re-section-title">{t.availableUnits}</h2>
                 <div className="re-units-wrap">
                   <table className="re-units-table">
                     <thead>
                       <tr>
-                        <th>Type</th>
-                        <th>Unit</th>
-                        <th>Size</th>
-                        <th className="ru-price">Price</th>
+                        <th>{t.thType}</th>
+                        <th>{t.thUnit}</th>
+                        <th>{t.thSize}</th>
+                        <th className="ru-price">{t.thPrice}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -300,35 +307,35 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
               <div className="widget-header">
                 <span className="widget-price">{formatMoney(property.price, property.currency)}</span>
                 <span className="widget-unit">
-                  {property.operation_type.toLowerCase() === 'renta' ? '/ Month' : ''}
+                  {property.operation_type.toLowerCase() === 'renta' ? t.unit : ''}
                 </span>
               </div>
               
               {/* Especificaciones Inmobiliarias dentro de la tarjeta */}
               <div className="widget-specs">
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Location</span>
+                  <span className="widget-spec-label">{t.lblLocation}</span>
                   <span className="widget-spec-value">{property.location}</span>
                 </div>
                 {property.bedrooms > 0 && (
                   <div className="widget-spec-row">
-                    <span className="widget-spec-label">Bedrooms</span>
+                    <span className="widget-spec-label">{t.lblBedrooms}</span>
                     <span className="widget-spec-value">{property.bedrooms}</span>
                   </div>
                 )}
                 {property.bathrooms > 0 && (
                   <div className="widget-spec-row">
-                    <span className="widget-spec-label">Bathrooms</span>
+                    <span className="widget-spec-label">{t.lblBathrooms}</span>
                     <span className="widget-spec-value">{property.bathrooms}</span>
                   </div>
                 )}
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Area</span>
+                  <span className="widget-spec-label">{t.lblArea}</span>
                   <span className="widget-spec-value">{property.sqft} sqft</span>
                 </div>
                 {property.parking_spaces > 0 && (
                   <div className="widget-spec-row">
-                    <span className="widget-spec-label">Parking</span>
+                    <span className="widget-spec-label">{t.lblParking}</span>
                     <span className="widget-spec-value">{property.parking_spaces} Space(s)</span>
                   </div>
                 )}
@@ -336,7 +343,7 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
 
               <div className="widget-info">
                 <p>Address: {property.address}</p>
-                <p style={{ marginTop: '8px' }}>Schedule a private viewing with our real estate advisors.</p>
+                <p style={{ marginTop: '8px' }}>{t.info}</p>
               </div>
 
               <div className="widget-actions">
@@ -350,13 +357,13 @@ export default function RealEstateDetailPage({ params }: { params: Promise<{ id:
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                   </svg>
-                  Contact Advisor
+                  {t.cta}
                 </a>
               </div>
 
               <div className="widget-assurance">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Verified exclusive listing.</span>
+                <span>{t.assurance}</span>
               </div>
             </div>
           </aside>

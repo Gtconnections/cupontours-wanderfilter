@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { StructuredData } from "@/components/seo/structured-data";
 import './health-detail.css';
 import { getHealthById, HealthItem } from '@/app/lib/api/services';
@@ -15,6 +18,10 @@ interface HealthDetail extends HealthItem {
 export default function HealthDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Desenvolvemos la promesa de params usando React.use()
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).health;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   const [healthService, setHealthService] = useState<HealthDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,9 +59,9 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
     return (
       <main className="health-page error-state">
         <div className="health-container health-error-container text-center">
-          <h2>Service Not Found</h2>
-          <p>The medical or health service you are looking for is not available.</p>
-          <Link href="/services/health" className="btn-black-pill mt-4">Return to Health</Link>
+          <h2>{t.notFound}</h2>
+          <p>{t.notAvail}</p>
+          <Link href={`${lp}/services/health`} className="btn-black-pill mt-4">{t.backTo}</Link>
         </div>
       </main>
     );
@@ -99,8 +106,8 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
       <div className="health-container">
         
         <nav className="health-breadcrumb">
-          <Link href="/">Home</Link> <span>/</span>
-          <Link href="/services/health">Health & Medical</Link> <span>/</span>
+          <Link href={`${lp}/`}>{c.home}</Link> <span>/</span>
+          <Link href={`${lp}/services/health`}>{t.crumb}</Link> <span>/</span>
           <span className="current">{healthService.name}</span>
         </nav>
 
@@ -141,7 +148,7 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
 
             {/* Detalles del Servicio (Descripción) */}
             <section className="health-section">
-              <h2 className="health-section-title">The Service</h2>
+              <h2 className="health-section-title">{t.section}</h2>
               <p className="health-description">
                 {healthService.descripcion}
               </p>
@@ -156,27 +163,27 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
                 <span className="widget-price">
                   ${parseFloat(healthService.price).toFixed(2)}
                 </span>
-                <span className="widget-unit">/ Consultation</span>
+                <span className="widget-unit">{t.unit}</span>
               </div>
               
               {/* Especificaciones dentro de la tarjeta adaptadas a Health */}
               <div className="widget-specs">
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Location</span>
+                  <span className="widget-spec-label">{t.lblLocation}</span>
                   <span className="widget-spec-value">{healthService.location}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Duration</span>
+                  <span className="widget-spec-label">{t.lblDuration}</span>
                   <span className="widget-spec-value">{healthService.duration_minutes} Minutes</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Category</span>
+                  <span className="widget-spec-label">{t.lblCategory}</span>
                   <span className="widget-spec-value">{healthService.category}</span>
                 </div>
               </div>
 
               <div className="widget-info">
-                <p>Appointments are strictly scheduled. Please ensure you carry valid identification or relevant medical history records.</p>
+                <p>{t.info}</p>
               </div>
 
               <div className="widget-actions">
@@ -190,13 +197,13 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                   </svg>
-                  Book Appointment
+                  {t.cta}
                 </a>
               </div>
 
               <div className="widget-assurance">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Certified medical professionals & absolute privacy.</span>
+                <span>{t.assurance}</span>
               </div>
             </div>
           </aside>
@@ -220,7 +227,7 @@ export default function HealthDetailPage({ params }: { params: Promise<{ id: str
             </button>
           )}
           
-          <img src={allImages[currentImgIndex]} alt="Enlarged" className="lb-image" onClick={(e) => e.stopPropagation()} />
+          <img src={allImages[currentImgIndex]} alt={c.enlarged} className="lb-image" onClick={(e) => e.stopPropagation()} />
           
           {allImages.length > 1 && (
             <button className="lb-nav lb-next" onClick={nextImage}>

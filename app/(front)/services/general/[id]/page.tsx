@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { StructuredData } from "@/components/seo/structured-data";
 import './general-detail.css';
 import { getGeneralServiceById, GeneralServiceItem } from '@/app/lib/api/services';
@@ -15,6 +18,10 @@ interface GeneralServiceDetail extends GeneralServiceItem {
 export default function GeneralServiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Desenvolvemos la promesa de params usando React.use()
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).general;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   const [service, setService] = useState<GeneralServiceDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,9 +59,9 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
     return (
       <main className="gen-page error-state">
         <div className="gen-container gen-error-container text-center">
-          <h2>Service Not Found</h2>
-          <p>The premium service you are looking for is not available.</p>
-          <Link href="/services/general" className="btn-black-pill mt-4">Return to Services</Link>
+          <h2>{t.notFound}</h2>
+          <p>{t.notAvail}</p>
+          <Link href={`${lp}/services/general`} className="btn-black-pill mt-4">{t.backTo}</Link>
         </div>
       </main>
     );
@@ -73,7 +80,7 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
 
   // Lógica inteligente de precios
   const isQuote = !service.price || service.price_type === 'cotizacion';
-  const displayPrice = isQuote ? 'Upon Request' : `$${parseFloat(service.price!).toFixed(2)}`;
+  const displayPrice = isQuote ? t.uponRequest : `$${parseFloat(service.price!).toFixed(2)}`;
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
@@ -103,8 +110,8 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
       <div className="gen-container">
         
         <nav className="gen-breadcrumb">
-          <Link href="/">Home</Link> <span>/</span>
-          <Link href="/services/general">General Services</Link> <span>/</span>
+          <Link href={`${lp}/`}>{c.home}</Link> <span>/</span>
+          <Link href={`${lp}/services/general`}>{t.crumb}</Link> <span>/</span>
           <span className="current">{service.name}</span>
         </nav>
 
@@ -145,7 +152,7 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
 
             {/* Detalles del Servicio (Descripción) */}
             <section className="gen-section">
-              <h2 className="gen-section-title">Service Details</h2>
+              <h2 className="gen-section-title">{t.section}</h2>
               <p className="gen-description">
                 {service.descripcion}
               </p>
@@ -160,29 +167,29 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
                 <span className={`widget-price ${isQuote ? 'quote-price' : ''}`}>
                   {displayPrice}
                 </span>
-                {!isQuote && <span className="widget-unit">/ Base</span>}
+                {!isQuote && <span className="widget-unit">{t.unit}</span>}
               </div>
               
               {/* Especificaciones dentro de la tarjeta adaptadas a Servicios */}
               <div className="widget-specs">
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Category</span>
+                  <span className="widget-spec-label">{t.lblCategory}</span>
                   <span className="widget-spec-value">{service.category}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Service Mode</span>
+                  <span className="widget-spec-label">{t.lblMode}</span>
                   <span className="widget-spec-value">
-                    {service.price_type === 'cotizacion' ? 'Custom Assessment' : 'Standard Rate'}
+                    {service.price_type === 'cotizacion' ? t.customAssessment : t.standardRate}
                   </span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Availability</span>
-                  <span className="widget-spec-value">On Demand</span>
+                  <span className="widget-spec-label">{t.lblAvailability}</span>
+                  <span className="widget-spec-value">{t.onDemand}</span>
                 </div>
               </div>
 
               <div className="widget-info">
-                <p>Prices and availability may vary based on specific requirements and logistics. Our team will provide a tailored solution.</p>
+                <p>{t.info}</p>
               </div>
 
               <div className="widget-actions">
@@ -196,13 +203,13 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                   </svg>
-                  {isQuote ? 'Request a Quote' : 'Book Service'}
+                  {isQuote ? t.cta : t.ctaBook}
                 </a>
               </div>
 
               <div className="widget-assurance">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Trusted professionals & secure process.</span>
+                <span>{t.assurance}</span>
               </div>
             </div>
           </aside>
@@ -226,7 +233,7 @@ export default function GeneralServiceDetailPage({ params }: { params: Promise<{
             </button>
           )}
           
-          <img src={allImages[currentImgIndex]} alt="Enlarged" className="lb-image" onClick={(e) => e.stopPropagation()} />
+          <img src={allImages[currentImgIndex]} alt={c.enlarged} className="lb-image" onClick={(e) => e.stopPropagation()} />
           
           {allImages.length > 1 && (
             <button className="lb-nav lb-next" onClick={nextImage}>

@@ -18,6 +18,7 @@ const realEstatePageStructuredData = {
 export default function RealEstateContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["real-estate"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [properties, setProperties] = useState<RealEstateItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -133,7 +134,7 @@ export default function RealEstateContent({ locale = 'en' }: { locale?: Locale }
             ) : (
               currentProperties.map((item) => (
                 <div key={item.id} className="re-card">
-                  <Link href={`/services/real-estate/${item.id}`} className="re-img-container">
+                  <Link href={`${lp}/services/real-estate/${item.id}`} className="re-img-container">
                     <img 
                       src={item.principal_image} 
                       alt={item.name} 
@@ -182,7 +183,7 @@ export default function RealEstateContent({ locale = 'en' }: { locale?: Locale }
                     </div>
                     
                     <div className="re-footer">
-                      <Link href={`/services/real-estate/${item.id}`} className="btn-black-pill small-btn w-full">
+                      <Link href={`${lp}/services/real-estate/${item.id}`} className="btn-black-pill small-btn w-full">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -217,7 +218,7 @@ export default function RealEstateContent({ locale = 'en' }: { locale?: Locale }
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>

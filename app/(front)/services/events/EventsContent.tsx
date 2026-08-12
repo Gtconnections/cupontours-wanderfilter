@@ -18,6 +18,7 @@ const eventsPageStructuredData = {
 export default function EventsContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["events"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [events, setEvents] = useState<EventItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,7 +101,7 @@ export default function EventsContent({ locale = 'en' }: { locale?: Locale }) {
             ) : (
               currentEvents.map((item) => (
                 <div key={item.id} className="event-card">
-                  <Link href={`/services/events/${item.id}`} className="event-img-container">
+                  <Link href={`${lp}/services/events/${item.id}`} className="event-img-container">
                     <img 
                       src={`https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80`} 
                       alt={item.name} 
@@ -135,7 +136,7 @@ export default function EventsContent({ locale = 'en' }: { locale?: Locale }) {
                         {parseFloat(item.price) === 0 ? t.freeEntry : `$${parseFloat(item.price).toFixed(2)}`} 
                         {parseFloat(item.price) > 0 && <span className="price-unit">{t.ticketUnit}</span>}
                       </span>
-                      <Link href={`/services/events/${item.id}`} className="btn-black-pill small-btn">
+                      <Link href={`${lp}/services/events/${item.id}`} className="btn-black-pill small-btn">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -170,7 +171,7 @@ export default function EventsContent({ locale = 'en' }: { locale?: Locale }) {
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>

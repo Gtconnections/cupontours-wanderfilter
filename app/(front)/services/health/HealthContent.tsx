@@ -18,6 +18,7 @@ const healthPageStructuredData = {
 export default function HealthContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["health"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [healthServices, setHealthServices] = useState<HealthItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +89,7 @@ export default function HealthContent({ locale = 'en' }: { locale?: Locale }) {
             ) : (
               currentServices.map((item) => (
                 <div key={item.id} className="health-card">
-                  <Link href={`/services/health/${item.id}`} className="health-img-container">
+                  <Link href={`${lp}/services/health/${item.id}`} className="health-img-container">
                     <img 
                       src={`https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80`} 
                       alt={item.name} 
@@ -115,7 +116,7 @@ export default function HealthContent({ locale = 'en' }: { locale?: Locale }) {
                     
                     <div className="health-footer">
                       <span className="health-price">${parseFloat(item.price).toFixed(2)} <span className="price-unit">/ Consultation</span></span>
-                      <Link href={`/services/health/${item.id}`} className="btn-black-pill small-btn">
+                      <Link href={`${lp}/services/health/${item.id}`} className="btn-black-pill small-btn">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -150,7 +151,7 @@ export default function HealthContent({ locale = 'en' }: { locale?: Locale }) {
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>

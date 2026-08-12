@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getDetail } from '@/app/i18n/dictionaries';
 import { StructuredData } from "@/components/seo/structured-data";
 import './experiences-detail.css';
 import { getExperienceById, ExperienceItem } from '@/app/lib/api/services';
@@ -15,6 +18,10 @@ interface ExperienceDetail extends ExperienceItem {
 export default function ExperienceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Desenvolvemos la promesa de params usando React.use() (Next.js 15+)
   const { id } = use(params);
+  const locale = localeFromPath(usePathname() || '/');
+  const t = getDetail(locale).experiences;
+  const c = getDetail(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
 
   const [experience, setExperience] = useState<ExperienceDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,9 +59,9 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
     return (
       <main className="ed-page error-state">
         <div className="ed-container ed-error-container text-center">
-          <h2>Experience Not Found</h2>
-          <p>The curated experience you are looking for is not available.</p>
-          <Link href="/services/experiences" className="btn-black-pill mt-4">Return to Experiences</Link>
+          <h2>{t.notFound}</h2>
+          <p>{t.notAvail}</p>
+          <Link href={`${lp}/services/experiences`} className="btn-black-pill mt-4">{t.backTo}</Link>
         </div>
       </main>
     );
@@ -99,8 +106,8 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
       <div className="ed-container">
         
         <nav className="ed-breadcrumb">
-          <Link href="/">Home</Link> <span>/</span>
-          <Link href="/services/experiences">Experiences</Link> <span>/</span>
+          <Link href={`${lp}/`}>{c.home}</Link> <span>/</span>
+          <Link href={`${lp}/services/experiences`}>{t.crumb}</Link> <span>/</span>
           <span className="current">{experience.name}</span>
         </nav>
 
@@ -141,7 +148,7 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
 
             {/* The Experience (Descripción) */}
             <section className="ed-section">
-              <h2 className="ed-section-title">The Experience</h2>
+              <h2 className="ed-section-title">{t.section}</h2>
               <p className="ed-description">
                 {experience.descripcion}
               </p>
@@ -153,31 +160,31 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
             <div className="ed-booking-widget">
               <div className="widget-header">
                 <span className="widget-price">${parseFloat(experience.price).toFixed(2)}</span>
-                <span className="widget-unit">/ Person</span>
+                <span className="widget-unit">{t.unit}</span>
               </div>
               
               {/* Especificaciones de la Experiencia */}
               <div className="widget-specs">
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Location</span>
+                  <span className="widget-spec-label">{t.lblLocation}</span>
                   <span className="widget-spec-value">{experience.location}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Duration</span>
+                  <span className="widget-spec-label">{t.lblDuration}</span>
                   <span className="widget-spec-value">{experience.duration_days} Day{experience.duration_days > 1 ? 's' : ''}</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Capacity</span>
+                  <span className="widget-spec-label">{t.lblCapacity}</span>
                   <span className="widget-spec-value">{experience.capacity_min} - {experience.capacity_max} Pax</span>
                 </div>
                 <div className="widget-spec-row">
-                  <span className="widget-spec-label">Pet Friendly</span>
+                  <span className="widget-spec-label">{t.lblPet}</span>
                   <span className="widget-spec-value">{experience.pet_friendly === 1 ? 'Yes' : 'No'}</span>
                 </div>
               </div>
 
               <div className="widget-info">
-                <p>Curated local experience. Availability may vary based on season and group size.</p>
+                <p>{t.info}</p>
               </div>
 
               <div className="widget-actions">
@@ -191,13 +198,13 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
                   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                   </svg>
-                  Request Booking
+                  {t.cta}
                 </a>
               </div>
 
               <div className="widget-assurance">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span>Direct contact with our concierges.</span>
+                <span>{t.assurance}</span>
               </div>
             </div>
           </aside>
@@ -221,7 +228,7 @@ export default function ExperienceDetailPage({ params }: { params: Promise<{ id:
             </button>
           )}
           
-          <img src={allImages[currentImgIndex]} alt="Enlarged" className="lb-image" onClick={(e) => e.stopPropagation()} />
+          <img src={allImages[currentImgIndex]} alt={c.enlarged} className="lb-image" onClick={(e) => e.stopPropagation()} />
           
           {allImages.length > 1 && (
             <button className="lb-nav lb-next" onClick={nextImage}>

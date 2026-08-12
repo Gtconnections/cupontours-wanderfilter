@@ -18,6 +18,7 @@ const generalServicesPageStructuredData = {
 export default function GeneralServicesContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["general"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [services, setServices] = useState<GeneralServiceItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +89,7 @@ export default function GeneralServicesContent({ locale = 'en' }: { locale?: Loc
             ) : (
               currentServices.map((item) => (
                 <div key={item.id} className="gen-card">
-                  <Link href={`/services/general/${item.id}`} className="gen-img-container">
+                  <Link href={`${lp}/services/general/${item.id}`} className="gen-img-container">
                     <img 
                       src={`https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=800&q=80`} 
                       alt={item.name} 
@@ -109,7 +110,7 @@ export default function GeneralServicesContent({ locale = 'en' }: { locale?: Loc
                           : `$${parseFloat(item.price).toFixed(2)}`}
                         {item.price_type === 'fijo' && <span className="price-unit"> / Base</span>}
                       </span>
-                      <Link href={`/services/general/${item.id}`} className="btn-black-pill small-btn">
+                      <Link href={`${lp}/services/general/${item.id}`} className="btn-black-pill small-btn">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -144,7 +145,7 @@ export default function GeneralServicesContent({ locale = 'en' }: { locale?: Loc
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>

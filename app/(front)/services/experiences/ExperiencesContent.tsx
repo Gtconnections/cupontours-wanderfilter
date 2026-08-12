@@ -18,6 +18,7 @@ const experiencesPageStructuredData = {
 export default function ExperiencesContent({ locale = 'en' }: { locale?: Locale }) {
   const t = getServices(locale)["experiences"];
   const c = getServices(locale).common;
+  const lp = locale === 'es' ? '/es' : '';
   const [experiences, setExperiences] = useState<ExperienceItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +89,7 @@ export default function ExperiencesContent({ locale = 'en' }: { locale?: Locale 
             ) : (
               currentExperiences.map((item) => (
                 <div key={item.id} className="experience-card">
-                  <Link href={`/services/experiences/${item.id}`} className="experience-img-container">
+                  <Link href={`${lp}/services/experiences/${item.id}`} className="experience-img-container">
                     <img 
                       src={`https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80`} 
                       alt={item.name} 
@@ -125,7 +126,7 @@ export default function ExperiencesContent({ locale = 'en' }: { locale?: Locale 
                     
                     <div className="experience-footer">
                       <span className="experience-price">${item.price} <span className="price-unit">/ Person</span></span>
-                      <Link href={`/services/experiences/${item.id}`} className="btn-black-pill small-btn">
+                      <Link href={`${lp}/services/experiences/${item.id}`} className="btn-black-pill small-btn">
                         {c.viewDetails}
                       </Link>
                     </div>
@@ -160,7 +161,7 @@ export default function ExperiencesContent({ locale = 'en' }: { locale?: Locale 
           <h2>{t.ctaTitle}</h2>
           <p>{t.ctaText}</p>
           <div className="cta-actions">
-            <Link href="/contact" className="btn-outline-pill">{t.ctaBtn}</Link>
+            <Link href={`${lp}/contact`} className="btn-outline-pill">{t.ctaBtn}</Link>
           </div>
         </div>
       </section>
