@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/app/lib/seo";
 import { StructuredData } from "@/components/seo/structured-data";
+import HtmlLang from "@/components/i18n/HtmlLang";
 
 const DEFAULT_TITLE = "Luxury Rentals, Exotic Cars & Yacht Charters in Miami | Cupontours";
 const DEFAULT_DESCRIPTION =
@@ -48,7 +49,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
@@ -61,6 +62,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <WishlistDrawer />
           </WishlistProvider>
         </ThemeProvider>
+      {/* Ajusta <html lang> según el idioma de la ruta */}
+      <HtmlLang />
       {/* JSON-LD global: TravelAgency (organización) en todas las páginas */}
       <StructuredData type="Organization" />
       <SpeedInsights />
