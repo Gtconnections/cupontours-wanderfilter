@@ -33,6 +33,7 @@ interface Props {
 export default function CarsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
   const v = getVerticals(locale).cars;
   const s = getCatalogSections(locale).cars;
+  const es = locale === 'es';
   const [fleet, setFleet] = useState<CarCatalogItem[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -182,7 +183,7 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
 
         {totalPages > 1 && (
           <div className="fleet-pager">
-            <button className="fleet-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">‹</button>
+            <button className="fleet-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label={es ? "Página anterior" : "Previous page"}>‹</button>
             {pageList.map((n, idx) =>
               typeof n === 'number' ? (
                 <button key={n} className={`fleet-pager-num ${n === current ? 'active' : ''}`} onClick={() => goPage(n)}>{n}</button>
@@ -190,7 +191,7 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
                 <span key={`ellipsis-${idx}`} className="fleet-pager-ellipsis">…</span>
               )
             )}
-            <button className="fleet-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label="Next page">›</button>
+            <button className="fleet-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label={es ? "Página siguiente" : "Next page"}>›</button>
           </div>
         )}
       </section>

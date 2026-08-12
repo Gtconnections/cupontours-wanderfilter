@@ -1,7 +1,10 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { useWishlist, WishlistItem } from './WishlistProvider';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getWishlist } from '@/app/i18n/dictionaries';
 import './wishlist.css';
 
 interface HeartButtonProps {
@@ -12,12 +15,13 @@ interface HeartButtonProps {
 export default function HeartButton({ item, className = '' }: HeartButtonProps) {
   const { isSaved, toggle } = useWishlist();
   const saved = isSaved(item.type, item.id);
+  const t = getWishlist(localeFromPath(usePathname() || '/'));
 
   return (
     <button
       type="button"
       className={`wishlist-heart ${className} ${saved ? 'is-saved' : ''}`}
-      aria-label={saved ? 'Remove from wishlist' : 'Save to wishlist'}
+      aria-label={saved ? t.removeFrom : t.saveTo}
       aria-pressed={saved}
       onClick={(e) => {
         e.preventDefault();

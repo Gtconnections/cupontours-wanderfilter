@@ -2,7 +2,9 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
+import { getDict } from "@/app/i18n/dictionaries"
+import { localeFromPath } from "@/app/i18n/locale"
 import { Star, MapPin, Users, Car, Ship, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -58,6 +60,7 @@ export function PropertyCard({
   isFavorite = false 
 }: PropertyCardProps) {
   const router = useRouter()
+  const c = getDict(localeFromPath(usePathname() || "/")).card
   
   const handleBookingClick = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -90,14 +93,14 @@ export function PropertyCard({
             {features.guests && (
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>{features.guests} guests</span>
+                <span>{features.guests} {c.guests}</span>
               </div>
             )}
             {features.bedrooms && (
-              <span>{features.bedrooms} bed</span>
+              <span>{features.bedrooms} {c.bed}</span>
             )}
             {features.bathrooms && (
-              <span>{features.bathrooms} bath</span>
+              <span>{features.bathrooms} {c.bath}</span>
             )}
           </div>
         )
@@ -108,7 +111,7 @@ export function PropertyCard({
             {features.seats && (
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>{features.seats} seats</span>
+                <span>{features.seats} {c.seats}</span>
               </div>
             )}
             {features.transmission && (
@@ -132,11 +135,11 @@ export function PropertyCard({
             {features.guests && (
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>{features.guests} guests</span>
+                <span>{features.guests} {c.guests}</span>
               </div>
             )}
             {features.crew && (
-              <span>{features.crew} crew</span>
+              <span>{features.crew} {c.crew}</span>
             )}
           </div>
         )
@@ -147,11 +150,11 @@ export function PropertyCard({
             {(features.passengers || features.maxPassengers) && (
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>{features.passengers || features.maxPassengers} passengers</span>
+                <span>{features.passengers || features.maxPassengers} {c.passengers}</span>
               </div>
             )}
             {features.range && (
-              <span>{features.range} range</span>
+              <span>{features.range} {c.range}</span>
             )}
             {features.speed && (
               <span>{features.speed}</span>
@@ -165,11 +168,11 @@ export function PropertyCard({
             {features.passengers && (
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>{features.passengers} passengers</span>
+                <span>{features.passengers} {c.passengers}</span>
               </div>
             )}
             {features.range && (
-              <span>{features.range} range</span>
+              <span>{features.range} {c.range}</span>
             )}
             {features.speed && (
               <span>{features.speed}</span>
@@ -185,29 +188,29 @@ export function PropertyCard({
   const getBookingButtonText = () => {
     switch (data.type) {
       case "car":
-        return data.available ? "Rent Now" : "Unavailable"
+        return data.available ? c.rentNow : c.unavailable
       case "yacht":
-        return data.available ? "Charter Now" : "Unavailable"
+        return data.available ? c.charterNow : c.unavailable
       case "jet":
       case "helicopter":
-        return data.available ? "Book Flight" : "Unavailable"
+        return data.available ? c.bookFlight : c.unavailable
       case "property":
       default:
-        return data.available ? "Book Now" : "Unavailable"
+        return data.available ? c.bookNow : c.unavailable
     }
   }
 
   const getPeriodText = () => {
     switch (data.type) {
       case "property":
-        return "night"
+        return c.night
       case "car":
-        return "day"
+        return c.day
       case "yacht":
-        return "day"
+        return c.day
       case "jet":
       case "helicopter":
-        return "hour"
+        return c.hour
       default:
         return data.price.period || "day"
     }
@@ -236,7 +239,7 @@ export function PropertyCard({
             />
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
-              <div className="text-muted-foreground text-sm">No image available</div>
+              <div className="text-muted-foreground text-sm">{c.noImage}</div>
             </div>
           )}
           
@@ -302,7 +305,7 @@ export function PropertyCard({
               {renderStars(data.rating)}
             </div>
             <span className="text-sm text-muted-foreground">
-              ({data.reviewCount} reviews)
+              ({data.reviewCount} {c.reviews})
             </span>
           </div>
 

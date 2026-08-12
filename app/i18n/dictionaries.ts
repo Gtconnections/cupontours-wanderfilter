@@ -42,6 +42,21 @@ export const dict = {
       bnSvcText: "From private transport to bespoke wellness, events, and experiences — explore our full concierge-level services collection.",
       bnSvcCta: "Explore Services",
     },
+    search: {
+      whereTo: "Where to?", where: "Where?", whereShort: "Where",
+      when: "When?", whenShort: "When", who: "Who?", whoShort: "Who",
+      search: "Search", availableDest: "Available Destinations", loadingCities: "Loading cities...",
+      dates: "Dates", guests: "Guests", any: "Any", clear: "Clear", apply: "Apply",
+      guestOne: "guest", guestMany: "guests",
+      weekdays: ["Su","Mo","Tu","We","Th","Fr","Sa"], dateLocale: "en-US",
+    },
+    card: {
+      guests: "guests", bed: "bed", bath: "bath", seats: "seats", crew: "crew",
+      passengers: "passengers", range: "range", reviews: "reviews",
+      rentNow: "Rent Now", charterNow: "Charter Now", bookFlight: "Book Flight",
+      bookNow: "Book Now", unavailable: "Unavailable",
+      night: "night", day: "day", hour: "hour", noImage: "No image available",
+    },
   },
   es: {
     nav: {
@@ -71,7 +86,7 @@ export const dict = {
       rowHomesPre: "Curaduría", rowHomesTitle: "Disfruta tu estadía en una de nuestras propiedades",
       rowCarsPre: "La Flota Premium", rowCarsTitle: "Autos excepcionales para el máximo desempeño",
       rowYachtsPre: "Colección de Charters", rowYachtsTitle: "Elegancia sobre el agua, diseñada para el lujo",
-      bnPropKicker: "Boutique Living", bnPropTitle: "¡Reserva hoy las vacaciones de tus sueños!",
+      bnPropKicker: "Vida Boutique", bnPropTitle: "¡Reserva hoy las vacaciones de tus sueños!",
       bnPropText: "No esperes para crear recuerdos inolvidables. Nuestras propiedades de lujo ofrecen la mezcla perfecta de confort y elegancia para tu próxima escapada. Reserva ahora y vive la hospitalidad al más alto nivel.",
       bnPropCta: "Explorar Propiedades",
       bnCarsKicker: "Desempeño de Élite", bnCarsTitle: "Conduce con Estilo por Miami",
@@ -83,6 +98,21 @@ export const dict = {
       bnSvcKicker: "Colección Concierge", bnSvcTitle: "Descubre Nuestros Servicios",
       bnSvcText: "Desde transporte privado hasta bienestar, eventos y experiencias a la medida — explora toda nuestra colección de servicios de concierge.",
       bnSvcCta: "Explorar Servicios",
+    },
+    search: {
+      whereTo: "¿A dónde?", where: "¿Dónde?", whereShort: "Dónde",
+      when: "¿Cuándo?", whenShort: "Cuándo", who: "¿Quién?", whoShort: "Quién",
+      search: "Buscar", availableDest: "Destinos disponibles", loadingCities: "Cargando ciudades...",
+      dates: "Fechas", guests: "Huéspedes", any: "Cualquiera", clear: "Limpiar", apply: "Aplicar",
+      guestOne: "huésped", guestMany: "huéspedes",
+      weekdays: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"], dateLocale: "es-ES",
+    },
+    card: {
+      guests: "huéspedes", bed: "hab", bath: "baño", seats: "asientos", crew: "tripulación",
+      passengers: "pasajeros", range: "alcance", reviews: "reseñas",
+      rentNow: "Alquilar", charterNow: "Reservar charter", bookFlight: "Reservar vuelo",
+      bookNow: "Reservar", unavailable: "No disponible",
+      night: "noche", day: "día", hour: "hora", noImage: "Imagen no disponible",
     },
   },
 };
@@ -758,3 +788,24 @@ export const recoverDict = {
   },
 };
 export function getRecover(locale: Locale) { return recoverDict[locale] ?? recoverDict.en; }
+
+// Wishlist (global: drawer + botones).
+export const wishlistDict = {
+  en: {
+    title: "Your Wishlist", close: "Close wishlist", ariaWishlist: "Wishlist",
+    emptyTitle: "Your wishlist is empty",
+    emptySub: "Tap the heart on any property, car or yacht to save it here.",
+    clearAll: "Clear all",
+    tProperty: "Property", tCar: "Car", tYacht: "Yacht",
+    removeFrom: "Remove from wishlist", saveTo: "Save to wishlist", openWishlist: "Open wishlist",
+  },
+  es: {
+    title: "Tu lista de deseos", close: "Cerrar lista", ariaWishlist: "Lista de deseos",
+    emptyTitle: "Tu lista de deseos está vacía",
+    emptySub: "Toca el corazón en cualquier propiedad, auto o yate para guardarlo aquí.",
+    clearAll: "Vaciar todo",
+    tProperty: "Propiedad", tCar: "Auto", tYacht: "Yate",
+    removeFrom: "Quitar de la lista", saveTo: "Guardar en la lista", openWishlist: "Abrir lista de deseos",
+  },
+};
+export function getWishlist(locale: Locale) { return wishlistDict[locale] ?? wishlistDict.en; }

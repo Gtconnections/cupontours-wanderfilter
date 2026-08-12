@@ -38,6 +38,7 @@ export default function Header() {
   // i18n: idioma según la ruta (/es -> español)
   const locale = localeFromPath(pathname);
   const t = getDict(locale).nav;
+  const sd = getDict(locale).search;
   const L = (href) => withLocale(href, locale);
 
   const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account'];
@@ -94,7 +95,7 @@ export default function Header() {
   }, []);
 
   // Formateadores para mostrar en el buscador
-  const formatWhere = () => searchData.location || "Where";
+  const formatWhere = () => searchData.location || sd.whereShort;
   // Formateadores para mostrar en el buscador - CORREGIDO
   const formatWhen = () => {
     if (searchData.checkIn && searchData.checkOut) {
@@ -106,15 +107,15 @@ export default function Header() {
       const checkOutDate = new Date(checkOutParts[0], checkOutParts[1] - 1, checkOutParts[2]);
       
       const options = { month: 'short', day: 'numeric' };
-      return `${checkInDate.toLocaleDateString('en-US', options)} - ${checkOutDate.toLocaleDateString('en-US', options)}`;
+      return `${checkInDate.toLocaleDateString(sd.dateLocale, options)} - ${checkOutDate.toLocaleDateString(sd.dateLocale, options)}`;
     }
-    return "When";
+    return sd.whenShort;
   };
   const formatWho = () => {
     if (searchData.guests > 0) {
-      return `${searchData.guests} guest${searchData.guests > 1 ? 's' : ''}`;
+      return `${searchData.guests} ${searchData.guests > 1 ? sd.guestMany : sd.guestOne}`;
     }
-    return "Who";
+    return sd.whoShort;
   };
 
   // Funciones del calendario
@@ -192,7 +193,7 @@ export default function Header() {
     const daysInMonth = getDaysInMonth(year, month);
     const firstDay = getFirstDayOfMonth(year, month);
     
-    const monthName = monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const monthName = monthDate.toLocaleDateString(sd.dateLocale, { month: 'long', year: 'numeric' });
     
     const days = [];
     // Días vacíos al inicio
@@ -293,7 +294,7 @@ export default function Header() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <span>{searchData.location || "Where to?"}</span>
+              <span>{searchData.location || sd.whereTo}</span>
             </button>
           )}
 
@@ -306,7 +307,7 @@ export default function Header() {
                   <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
                 <span style={{color: searchData.location ? 'var(--text-main)' : 'var(--text-muted)', fontWeight: searchData.location ? '500' : '400'}}>
-                  {activeSearchTab === 'where' ? 'Where?' : formatWhere()}
+                  {activeSearchTab === 'where' ? sd.where : formatWhere()}
                 </span>
               </div>
             </div>
@@ -316,7 +317,7 @@ export default function Header() {
             <div className={`search-segment when-segment ${activeSearchTab === 'when' ? 'active' : ''}`} onClick={() => setActiveSearchTab('when')}>
               <div className="segment-content">
                 <span style={{color: (searchData.checkIn && searchData.checkOut) ? 'var(--text-main)' : 'var(--text-muted)', fontWeight: (searchData.checkIn && searchData.checkOut) ? '500' : '400'}}>
-                  {activeSearchTab === 'when' ? 'When?' : formatWhen()}
+                  {activeSearchTab === 'when' ? sd.when : formatWhen()}
                 </span>
               </div>
             </div>
@@ -326,14 +327,14 @@ export default function Header() {
             <div className={`search-segment who-segment ${activeSearchTab === 'who' ? 'active' : ''}`} onClick={() => setActiveSearchTab('who')}>
               <div className="segment-content">
                 <span style={{color: searchData.guests > 0 ? 'var(--text-main)' : 'var(--text-muted)', fontWeight: searchData.guests > 0 ? '500' : '400'}}>
-                  {activeSearchTab === 'who' ? 'Who?' : formatWho()}
+                  {activeSearchTab === 'who' ? sd.who : formatWho()}
                 </span>
               </div>
               <button className="search-btn" onClick={(e) => { 
                 e.stopPropagation(); 
                 performSearch();
               }}>
-                Search
+                {sd.search}
               </button>
             </div>
           </div>
@@ -342,9 +343,9 @@ export default function Header() {
           {activeSearchTab === 'where' && (
             <div className="search-popover popover-where">
               <div className="popover-section">
-                <p className="popover-subtitle">Available Destinations</p>
+                <p className="popover-subtitle">{sd.availableDest}</p>
                 {isLoadingCities ? (
-                  <div className="loading-cities">Loading cities...</div>
+                  <div className="loading-cities">{sd.loadingCities}</div>
                 ) : (
                   availableCities.map((city) => (
                     <div 
@@ -373,7 +374,7 @@ export default function Header() {
           {activeSearchTab === 'when' && (
             <div className="search-popover popover-when">
               <div className="when-tabs">
-                <button className="when-tab active">Dates</button>
+                <button className="when-tab active">{sd.dates}</button>
               </div>
               <div className="calendar-container">
                 <div className="calendar-month">
@@ -387,7 +388,7 @@ export default function Header() {
                     <span></span>
                   </div>
                   <div className="cal-grid">
-                    {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => <div key={d} className="cal-day-name">{d}</div>)}
+                    {sd.weekdays.map(d => <div key={d} className="cal-day-name">{d}</div>)}
                     {currentCalendar.days}
                   </div>
                 </div>
@@ -402,7 +403,7 @@ export default function Header() {
                     </button>
                   </div>
                   <div className="cal-grid">
-                    {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => <div key={d} className="cal-day-name">{d}</div>)}
+                    {sd.weekdays.map(d => <div key={d} className="cal-day-name">{d}</div>)}
                     {nextCalendar.days}
                   </div>
                 </div>
@@ -414,7 +415,7 @@ export default function Header() {
           {activeSearchTab === 'who' && (
             <div className="search-popover popover-who">
               <div className="counter-row">
-                <span className="counter-label">Guests</span>
+                <span className="counter-label">{sd.guests}</span>
                 <div className="counter-controls">
                   <button 
                     className="counter-btn" 
@@ -423,7 +424,7 @@ export default function Header() {
                   >
                     −
                   </button>
-                  <span className="count-value">{searchData.guests === 0 ? 'Any' : searchData.guests}</span>
+                  <span className="count-value">{searchData.guests === 0 ? sd.any : searchData.guests}</span>
                   <button 
                     className="counter-btn" 
                     onClick={() => handleGuestChange('add')}
@@ -435,9 +436,9 @@ export default function Header() {
               <div className="popover-actions">
                 <button className="popover-clear" onClick={() => {
                   setSearchData(prev => ({...prev, guests: 0}));
-                }}>Clear</button>
+                }}>{sd.clear}</button>
                 <button className="popover-apply" onClick={handleApply}>
-                  Apply
+                  {sd.apply}
                 </button>
               </div>
             </div>

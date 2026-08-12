@@ -2,17 +2,16 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useWishlist, WishlistType } from './WishlistProvider';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getWishlist } from '@/app/i18n/dictionaries';
 import './wishlist.css';
-
-const TYPE_LABEL: Record<WishlistType, string> = {
-  property: 'Property',
-  car: 'Car',
-  yacht: 'Yacht',
-};
 
 export default function WishlistDrawer() {
   const { items, count, isOpen, close, remove, clear } = useWishlist();
+  const t = getWishlist(localeFromPath(usePathname() || '/'));
+  const TYPE_LABEL: Record<WishlistType, string> = { property: t.tProperty, car: t.tCar, yacht: t.tYacht };
 
   return (
     <>
@@ -25,7 +24,7 @@ export default function WishlistDrawer() {
       <aside
         className={`wishlist-drawer ${isOpen ? 'open' : ''}`}
         role="dialog"
-        aria-label="Wishlist"
+        aria-label={t.ariaWishlist}
         aria-modal="true"
       >
         <div className="wishlist-drawer-head">
@@ -33,10 +32,10 @@ export default function WishlistDrawer() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
-            <span>Your Wishlist</span>
+            <span>{t.title}</span>
             {count > 0 && <span className="wishlist-drawer-count">{count}</span>}
           </div>
-          <button className="wishlist-drawer-close" onClick={close} aria-label="Close wishlist">
+          <button className="wishlist-drawer-close" onClick={close} aria-label={t.close}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
@@ -52,8 +51,8 @@ export default function WishlistDrawer() {
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                 </svg>
               </div>
-              <p className="wishlist-empty-title">Your wishlist is empty</p>
-              <p className="wishlist-empty-sub">Tap the heart on any property, car or yacht to save it here.</p>
+              <p className="wishlist-empty-title">{t.emptyTitle}</p>
+              <p className="wishlist-empty-sub">{t.emptySub}</p>
             </div>
           ) : (
             <ul className="wishlist-list">
@@ -79,7 +78,7 @@ export default function WishlistDrawer() {
                   </div>
                   <button
                     className="wishlist-row-remove"
-                    aria-label={`Remove ${it.title} from wishlist`}
+                    aria-label={`${t.removeFrom}: ${it.title}`}
                     onClick={() => remove(it.type, it.id)}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -95,7 +94,7 @@ export default function WishlistDrawer() {
 
         {count > 0 && (
           <div className="wishlist-drawer-foot">
-            <button className="wishlist-clear-btn" onClick={clear}>Clear all</button>
+            <button className="wishlist-clear-btn" onClick={clear}>{t.clearAll}</button>
           </div>
         )}
       </aside>

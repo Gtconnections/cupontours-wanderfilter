@@ -1,17 +1,21 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { useWishlist } from './WishlistProvider';
+import { localeFromPath } from '@/app/i18n/locale';
+import { getWishlist } from '@/app/i18n/dictionaries';
 import './wishlist.css';
 
 export default function WishlistButton({ className = '' }: { className?: string }) {
   const { count, open } = useWishlist();
+  const t = getWishlist(localeFromPath(usePathname() || '/'));
 
   return (
     <button
       type="button"
       className={`wishlist-btn ${className}`}
-      aria-label={`Open wishlist${count > 0 ? ` (${count})` : ''}`}
+      aria-label={`${t.openWishlist}${count > 0 ? ` (${count})` : ''}`}
       onClick={open}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -295,29 +295,29 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
                         image: prop.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
                         price: `${prop.price?.currency || '$'}${prop.price?.amount || 0} / ${prop.price?.period || 'night'}`,
                         href: `/properties/${prop.id}`,
-                        location: prop.location || "Exclusive Destination",
+                        location: prop.location || (es ? "Destino exclusivo" : "Exclusive Destination"),
                       }}
                     />
                   </div>
 
                   <div className="catalog-info-box">
                     <div className="catalog-location-row">
-                      <span className="location-text">{prop.location || "Exclusive Destination"}</span>
+                      <span className="location-text">{prop.location || (es ? "Destino exclusivo" : "Exclusive Destination")}</span>
                     </div>
                     <h4 className="catalog-prop-title">{prop.title}</h4>
 
                     {/* Specs en chips */}
                     <div className="catalog-prop-specs">
-                      <span className="spec-item">{prop.features?.bedrooms || 0} bedrooms</span>
-                      <span className="spec-item">{prop.features?.bathrooms || 0} baths</span>
+                      <span className="spec-item">{prop.features?.bedrooms || 0} {es ? "hab." : "bedrooms"}</span>
+                      <span className="spec-item">{prop.features?.bathrooms || 0} {es ? "baños" : "baths"}</span>
                       {prop.features?.guests ? (
-                        <span className="spec-item">{prop.features.guests} guests</span>
+                        <span className="spec-item">{prop.features.guests} {es ? "huéspedes" : "guests"}</span>
                       ) : null}
                     </div>
 
                     <div className="catalog-price-row">
                       <span className="price-text">
-                        <strong>{prop.price?.currency || '$'}{prop.price?.amount || 0}</strong> / {prop.price?.period || 'night'}
+                        <strong>{prop.price?.currency || '$'}{prop.price?.amount || 0}</strong> / {prop.price?.period || (es ? 'noche' : 'night')}
                       </span>
                       <span className="rating-text">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{marginRight: '4px'}}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -334,7 +334,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
         {/* PAGINACIÓN NUMERADA (solo catálogo, no búsqueda) */}
         {!hasSearched && totalPages > 1 && (
           <div className="catprop-pager">
-            <button className="catprop-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">‹</button>
+            <button className="catprop-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label={es ? "Página anterior" : "Previous page"}>‹</button>
             {pageList.map((n, idx) =>
               typeof n === 'number' ? (
                 <button key={n} className={`catprop-pager-num ${n === current ? 'active' : ''}`} onClick={() => goPage(n)}>{n}</button>
@@ -342,7 +342,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
                 <span key={`ellipsis-${idx}`} className="catprop-pager-ellipsis">…</span>
               )
             )}
-            <button className="catprop-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label="Next page">›</button>
+            <button className="catprop-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label={es ? "Página siguiente" : "Next page"}>›</button>
           </div>
         )}
       </section>

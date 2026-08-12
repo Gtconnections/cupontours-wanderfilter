@@ -33,6 +33,7 @@ interface Props {
 export default function YachtsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
   const v = getVerticals(locale).yachts;
   const s = getCatalogSections(locale).yachts;
+  const es = locale === 'es';
   const [fleet, setFleet] = useState<YachtCatalogItem[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -165,7 +166,7 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
                       </div>
                       <div className="spec-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg>
-                        <span>{yacht.specs.split(' • ')[1] || '12 Guests'}</span>
+                        <span>{yacht.specs.split(' • ')[1] || (es ? '12 Huéspedes' : '12 Guests')}</span>
                       </div>
                       <div className="spec-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
@@ -189,7 +190,7 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
 
         {totalPages > 1 && (
           <div className="marine-pager">
-            <button className="marine-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="Previous page">‹</button>
+            <button className="marine-pager-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label={es ? "Página anterior" : "Previous page"}>‹</button>
             {pageList.map((n, idx) =>
               typeof n === 'number' ? (
                 <button key={n} className={`marine-pager-num ${n === current ? 'active' : ''}`} onClick={() => goPage(n)}>{n}</button>
@@ -197,7 +198,7 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
                 <span key={`ellipsis-${idx}`} className="marine-pager-ellipsis">…</span>
               )
             )}
-            <button className="marine-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label="Next page">›</button>
+            <button className="marine-pager-btn" onClick={() => goPage(current + 1)} disabled={current === totalPages} aria-label={es ? "Página siguiente" : "Next page"}>›</button>
           </div>
         )}
       </section>
