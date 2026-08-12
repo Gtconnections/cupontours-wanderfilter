@@ -12,7 +12,7 @@ export const SITE_NAME = 'Cupontours';
 // se puede reemplazar por una imagen 1200x630 diseñada.
 export const DEFAULT_OG_IMAGE =
   process.env.NEXT_PUBLIC_OG_IMAGE ||
-  'https://res.cloudinary.com/gt-connections/image/upload/v1680756313/cupon-tours/logo-cupon-tours-email_rwh0tm.png';
+  `${SITE_URL}/og-default.jpg`;
 
 interface PageMetaInput {
   /** Título de la página SIN el sufijo de marca (el template agrega "| Cupontours"). */
