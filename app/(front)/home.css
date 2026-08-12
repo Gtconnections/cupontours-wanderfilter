@@ -316,6 +316,30 @@
   white-space: nowrap;
 }
 
+/* Specs con iconos (tarjetas de propiedades) */
+.prop-specs.has-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  -webkit-line-clamp: unset;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.prop-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.prop-spec-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
 .prop-price-row {
   display: flex;
   justify-content: space-between;

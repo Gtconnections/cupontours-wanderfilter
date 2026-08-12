@@ -50,8 +50,10 @@ export function HomeRow({ title, pretitle, data, type, locale }: RowProps) {
             const imgUrl = isProperty
               ? ((item as PropertyCardData).images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80")
               : (item as CarCatalogItem | YachtCatalogItem).img;
+            const beds = isProperty ? ((item as PropertyCardData).features?.bedrooms || 0) : 0;
+            const baths = isProperty ? ((item as PropertyCardData).features?.bathrooms || 0) : 0;
             const displaySpecs = isProperty
-              ? `${(item as PropertyCardData).features?.bedrooms || 0} bd • ${(item as PropertyCardData).features?.bathrooms || 0} ba`
+              ? `${beds} ${beds === 1 ? 'bed' : 'beds'} • ${baths} ${baths === 1 ? 'bath' : 'baths'}`
               : (item as CarCatalogItem | YachtCatalogItem).specs;
             const displayPrice = isProperty
               ? `${(item as PropertyCardData).price?.currency || '$'}${(item as PropertyCardData).price?.amount || 0} / ${(item as PropertyCardData).price?.period || 'night'}`
@@ -88,7 +90,20 @@ export function HomeRow({ title, pretitle, data, type, locale }: RowProps) {
                     <div className="prop-title-row">
                       <h4>{item.title}</h4>
                     </div>
-                    <p className="prop-specs">{displaySpecs}</p>
+                    {isProperty ? (
+                      <div className="prop-specs has-icons">
+                        <span className="prop-spec">
+                          <svg className="prop-spec-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 4v16" /><path d="M2 8h18a2 2 0 0 1 2 2v10" /><path d="M2 17h20" /><path d="M6 8v9" /></svg>
+                          {beds} {beds === 1 ? 'bed' : 'beds'}
+                        </span>
+                        <span className="prop-spec">
+                          <svg className="prop-spec-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.68 3 4 3.68 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" /><line x1="10" x2="8" y1="5" y2="7" /><line x1="2" x2="22" y1="12" y2="12" /><line x1="7" x2="7" y1="19" y2="21" /><line x1="17" x2="17" y1="19" y2="21" /></svg>
+                          {baths} {baths === 1 ? 'bath' : 'baths'}
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="prop-specs">{displaySpecs}</p>
+                    )}
                     <div className="prop-price-row">
                       <span className="price">{displayPrice}</span>
                       <span className="rating">
