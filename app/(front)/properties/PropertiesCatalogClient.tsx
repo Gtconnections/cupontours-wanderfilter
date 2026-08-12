@@ -8,7 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getPropertiesPage, searchProperties, PropertyCardData } from '../../lib/api/properties';
-import { getVerticals, type Locale } from '@/app/i18n/dictionaries';
+import { getVerticals, getCatalogSections, type Locale } from '@/app/i18n/dictionaries';
 
 const PAGE_SIZE = 8;
 
@@ -32,6 +32,7 @@ interface Props {
 
 export default function PropertiesCatalogClient({ initialItems, initialCount, initialHasSearched, locale = 'en' }: Props) {
   const v = getVerticals(locale).properties;
+  const s = getCatalogSections(locale).properties;
   const es = locale === 'es';
   const [allProperties, setAllProperties] = useState<PropertyCardData[]>(initialItems);
   const [filteredProperties, setFilteredProperties] = useState<PropertyCardData[]>(initialItems);
@@ -154,11 +155,11 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
 
   const getSortLabel = () => {
     switch (sortOption) {
-      case 'featured': return 'Featured';
-      case 'price-asc': return 'Price: Low to High';
-      case 'price-desc': return 'Price: High to Low';
-      case 'rating': return 'Top Rated';
-      default: return 'Featured';
+      case 'featured': return s.sortFeatured;
+      case 'price-asc': return s.sortPriceAsc;
+      case 'price-desc': return s.sortPriceDesc;
+      case 'rating': return s.sortRating;
+      default: return s.sortFeatured;
     }
   };
 
@@ -186,10 +187,10 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
   };
 
   const sortOptions = [
-    { key: 'featured', label: 'Featured' },
-    { key: 'price-asc', label: 'Price: Low to High' },
-    { key: 'price-desc', label: 'Price: High to Low' },
-    { key: 'rating', label: 'Top Rated' },
+    { key: 'featured', label: s.sortFeatured },
+    { key: 'price-asc', label: s.sortPriceAsc },
+    { key: 'price-desc', label: s.sortPriceDesc },
+    { key: 'rating', label: s.sortRating },
   ];
 
   return (
@@ -209,14 +210,14 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
       <section className="catalog-listings-section" id="catalog-listings">
 
         <div className="listings-editorial-header">
-          <span className="pre-title">The Collection</span>
-          <h2>{hasSearched ? "Available Getaways" : "Find Your Perfect Place"}</h2>
-          <p>Explore our complete portfolio of institutionally managed luxury homes, crafted for exceptional stays.</p>
+          <span className="pre-title">{s.secPre}</span>
+          <h2>{hasSearched ? s.secTitleSearch : s.secTitleDefault}</h2>
+          <p>{s.secText}</p>
         </div>
 
         <div className="catalog-meta-row">
           <span className="properties-count">
-            Showing <strong>{isLoading ? "..." : (hasSearched ? filteredProperties.length : count)}</strong> extraordinary spaces
+            {s.showingA} <strong>{isLoading ? "..." : (hasSearched ? filteredProperties.length : count)}</strong> {s.showingB}
           </span>
 
           {/* SORT DROPDOWN (funcional, client-side) */}
@@ -226,7 +227,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
               type="button"
               onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
             >
-              <span>Sort by: {getSortLabel()}</span>
+              <span>{s.sortBy} {getSortLabel()}</span>
               <svg
                 width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                 style={{ transform: isSortDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}
@@ -270,7 +271,7 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
             ))
           ) : filteredProperties.length === 0 ? (
             <div className="w-full text-center py-12 text-gray-400 text-sm" style={{ gridColumn: '1 / -1' }}>
-              No properties available at the moment matching this horizon.
+              {s.empty}
             </div>
           ) : (
             filteredProperties.map((prop) => (

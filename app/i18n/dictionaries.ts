@@ -132,3 +132,21 @@ export const verticalsDict = {
 export function getVerticals(locale: Locale) {
   return verticalsDict[locale] ?? verticalsDict.en;
 }
+
+// Secciones internas de los catálogos (debajo del hero).
+export const catalogSections = {
+  en: {
+    cars: { secPre: "The Collection", secTitle: "Premium Car Rentals", secText: "Explore our curated selection of high-performance vehicles, meticulously maintained and ready to elevate your driving experience.", count: "Available vehicles:", empty: "No vehicles available at the moment." },
+    yachts: { secPre: "The Fleet", secTitle: "Choose Your Dream Yacht", secText: "Explore our exclusive collection of mega yachts and luxury boats. From intimate catamaran excursions to grand customized charters, we offer the perfect vessel for every occasion.", count: "Vessels docked:", empty: "No vessels available at the moment." },
+    properties: { secPre: "The Collection", secTitleDefault: "Find Your Perfect Place", secTitleSearch: "Available Getaways", secText: "Explore our complete portfolio of institutionally managed luxury homes, crafted for exceptional stays.", showingA: "Showing", showingB: "extraordinary spaces", empty: "No properties available at the moment matching this horizon.", sortBy: "Sort by:", sortFeatured: "Featured", sortPriceAsc: "Price: Low to High", sortPriceDesc: "Price: High to Low", sortRating: "Top Rated" },
+  },
+  es: {
+    cars: { secPre: "La Colección", secTitle: "Renta de Autos Premium", secText: "Explora nuestra selección curada de vehículos de alto desempeño, impecablemente mantenidos y listos para elevar tu experiencia al volante.", count: "Vehículos disponibles:", empty: "No hay vehículos disponibles por ahora." },
+    yachts: { secPre: "La Flota", secTitle: "Elige tu Yate Soñado", secText: "Explora nuestra colección exclusiva de mega yates y barcos de lujo. Desde excursiones íntimas en catamarán hasta grandes charters personalizados, tenemos la embarcación perfecta para cada ocasión.", count: "Embarcaciones disponibles:", empty: "No hay embarcaciones disponibles por ahora." },
+    properties: { secPre: "La Colección", secTitleDefault: "Encuentra tu Lugar Ideal", secTitleSearch: "Escapadas Disponibles", secText: "Explora nuestro portafolio completo de casas de lujo gestionadas profesionalmente, diseñadas para estadías excepcionales.", showingA: "Mostrando", showingB: "espacios extraordinarios", empty: "No hay propiedades disponibles por ahora para este horizonte.", sortBy: "Ordenar por:", sortFeatured: "Destacados", sortPriceAsc: "Precio: menor a mayor", sortPriceDesc: "Precio: mayor a menor", sortRating: "Mejor valorados" },
+  },
+};
+
+export function getCatalogSections(locale: Locale) {
+  return catalogSections[locale] ?? catalogSections.en;
+}

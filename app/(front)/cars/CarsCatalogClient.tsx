@@ -8,7 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getCarsPage, CarCatalogItem } from '../../lib/api/cars';
-import { getVerticals, type Locale } from '@/app/i18n/dictionaries';
+import { getVerticals, getCatalogSections, type Locale } from '@/app/i18n/dictionaries';
 
 const carsPageStructuredData = {
   "@context": "https://schema.org",
@@ -32,6 +32,7 @@ interface Props {
 
 export default function CarsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
   const v = getVerticals(locale).cars;
+  const s = getCatalogSections(locale).cars;
   const [fleet, setFleet] = useState<CarCatalogItem[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -105,14 +106,14 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
 
         {/* Cabecera Editorial */}
         <div className="fleet-editorial-header">
-          <span className="pre-title">The Collection</span>
-          <h2>Premium Car Rentals</h2>
-          <p>Explore our curated selection of high-performance vehicles, meticulously maintained and ready to elevate your driving experience.</p>
+          <span className="pre-title">{s.secPre}</span>
+          <h2>{s.secTitle}</h2>
+          <p>{s.secText}</p>
         </div>
 
         <div className="fleet-meta-row">
           <span className="fleet-count">
-            Available vehicles: <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
+            {s.count} <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
           </span>
         </div>
 
@@ -132,7 +133,7 @@ export default function CarsCatalogClient({ initialItems, initialCount, initialP
             ))
           ) : fleet.length === 0 ? (
             <div className="w-full text-center py-12 text-gray-400 text-sm">
-              No vehicles available at the moment.
+              {s.empty}
             </div>
           ) : (
             fleet.map((car) => (

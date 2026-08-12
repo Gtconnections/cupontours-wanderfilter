@@ -8,7 +8,7 @@ import Membership from '@/components/Membership';
 import HeartButton from '@/components/wishlist/HeartButton';
 
 import { getYachtsPage, YachtCatalogItem } from '../../lib/api/yachts';
-import { getVerticals, type Locale } from '@/app/i18n/dictionaries';
+import { getVerticals, getCatalogSections, type Locale } from '@/app/i18n/dictionaries';
 
 const yachtsPageStructuredData = {
   "@context": "https://schema.org",
@@ -32,6 +32,7 @@ interface Props {
 
 export default function YachtsCatalogClient({ initialItems, initialCount, initialPageSize, locale = 'en' }: Props) {
   const v = getVerticals(locale).yachts;
+  const s = getCatalogSections(locale).yachts;
   const [fleet, setFleet] = useState<YachtCatalogItem[]>(initialItems);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -103,14 +104,14 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
       <section className="marine-listings-section" id="marine-fleet">
 
         <div className="marine-editorial-header">
-          <span className="pre-title">The Fleet</span>
-          <h2>Choose Your Dream Yacht</h2>
-          <p>Explore our exclusive collection of mega yachts and luxury boats. From intimate catamaran excursions to grand customized charters, we offer the perfect vessel for every occasion.</p>
+          <span className="pre-title">{s.secPre}</span>
+          <h2>{s.secTitle}</h2>
+          <p>{s.secText}</p>
         </div>
 
         <div className="marine-meta-row">
           <span className="marine-count">
-            Vessels docked: <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
+            {s.count} <strong>{count > 0 ? count : (isLoading ? "..." : 0)}</strong>
           </span>
         </div>
 
@@ -130,7 +131,7 @@ export default function YachtsCatalogClient({ initialItems, initialCount, initia
             ))
           ) : fleet.length === 0 ? (
             <div className="w-full text-center py-12 text-gray-400 text-sm">
-              No vessels available at the moment.
+              {s.empty}
             </div>
           ) : (
             fleet.map((yacht) => (
