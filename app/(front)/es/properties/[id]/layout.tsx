@@ -11,21 +11,21 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   try {
     const p = await getPropertyById(id);
-    if (!p) return { title: "Luxury Vacation Rental | Cupontours" };
-    const title = p.name || "Luxury Vacation Rental";
+    if (!p) return { title: "Alquiler vacacional de lujo | Cupontours" };
+    const title = p.name || "Alquiler vacacional de lujo";
     const img = p.listingImages?.length ? p.listingImages[0].url : undefined;
     return buildMetadata({
       title,
       description: metaDescription(
         p.description,
-        `Book ${title}${p.city ? " in " + p.city : ""} — a luxury vacation rental professionally managed by Cupontours.`
+        `Reserva ${title}${p.city ? " en " + p.city : ""} — alquiler vacacional de lujo gestionado por Cupontours.`
       ),
-      path: `/properties/${id}`,
+      path: `/es/properties/${id}`,
       languages: { en: `/properties/${id}`, es: `/es/properties/${id}`, "x-default": `/properties/${id}` },
       image: img,
     });
   } catch {
-    return { title: "Luxury Vacation Rental | Cupontours" };
+    return { title: "Alquiler vacacional de lujo | Cupontours" };
   }
 }
 
@@ -40,8 +40,8 @@ export default async function Layout({ params, children }: Props) {
         "@context": "https://schema.org",
         "@type": "LodgingBusiness",
         name: p.name,
-        description: metaDescription(p.description, p.name || "Luxury vacation rental"),
-        url: `${SITE_URL}/properties/${id}`,
+        description: metaDescription(p.description, p.name || "Alquiler vacacional de lujo"),
+        url: `${SITE_URL}/es/properties/${id}`,
         ...(images ? { image: images } : {}),
         address: {
           "@type": "PostalAddress",

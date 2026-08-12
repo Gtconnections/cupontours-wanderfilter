@@ -11,14 +11,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   try {
     const item = await getRealEstateById(id);
-    if (!item) return { title: "Real Estate Service | Cupontours" };
+    if (!item) return { title: "Bienes raices | Cupontours" };
     return buildMetadata({
       title: item.name,
       description: metaDescription(
         item.descripcion,
-        `${item.name}${item.location ? " in " + item.location : ""} — luxury real estate development available through Cupontours.`
+        `${item.name}${item.location ? " en " + item.location : ""} — desarrollo inmobiliario de lujo disponible a traves de Cupontours.`
       ),
-      path: `/services/real-estate/${id}`,
+      path: `/es/services/real-estate/${id}`,
       languages: {
         en: `/services/real-estate/${id}`,
         es: `/es/services/real-estate/${id}`,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       image: item.principal_image,
     });
   } catch {
-    return { title: "Real Estate Service | Cupontours" };
+    return { title: "Bienes raices | Cupontours" };
   }
 }
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getCarById } from "@/app/lib/api/cars";
+import { getYachtById } from "@/app/lib/api/yachts";
 import { buildMetadata, metaDescription, parsePrice, SITE_URL } from "@/app/lib/seo";
 
 interface Props {
@@ -10,19 +10,19 @@ interface Props {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   try {
-    const car = await getCarById(id);
+    const yacht = await getYachtById(id);
     return buildMetadata({
-      title: car.title,
+      title: yacht.title,
       description: metaDescription(
-        car.description,
-        `Rent the ${car.title} with Cupontours — premium luxury and exotic car rentals in Miami and beyond.`
+        yacht.description,
+        `Renta el ${yacht.title} con Cupontours — yate de lujo con tripulacion para dias inolvidables en el mar.`
       ),
-      path: `/cars/${id}`,
-      languages: { en: `/cars/${id}`, es: `/es/cars/${id}`, "x-default": `/cars/${id}` },
-      image: car.img,
+      path: `/es/yachts/${id}`,
+      languages: { en: `/yachts/${id}`, es: `/es/yachts/${id}`, "x-default": `/yachts/${id}` },
+      image: yacht.img,
     });
   } catch {
-    return { title: "Luxury Car Rental | Cupontours" };
+    return { title: "Renta de yate de lujo | Cupontours" };
   }
 }
 
@@ -30,15 +30,15 @@ export default async function Layout({ params, children }: Props) {
   const { id } = await params;
   let jsonLd: Record<string, unknown> | null = null;
   try {
-    const car = await getCarById(id);
-    const price = parsePrice(car.price);
+    const yacht = await getYachtById(id);
+    const price = parsePrice(yacht.price_full_day);
     jsonLd = {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: car.title,
-      category: "Car Rental",
-      description: metaDescription(car.description, car.title),
-      image: car.gallery?.length ? car.gallery : car.img,
+      name: yacht.title,
+      category: "Yacht Charter",
+      description: metaDescription(yacht.description, yacht.title),
+      image: yacht.gallery?.length ? yacht.gallery : yacht.img,
       ...(price
         ? {
             offers: {
@@ -46,7 +46,7 @@ export default async function Layout({ params, children }: Props) {
               price: String(price),
               priceCurrency: "USD",
               availability: "https://schema.org/InStock",
-              url: `${SITE_URL}/cars/${id}`,
+              url: `${SITE_URL}/es/yachts/${id}`,
             },
           }
         : {}),

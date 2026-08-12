@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         `Charter the ${yacht.title} with Cupontours — a fully crewed luxury yacht for unforgettable days on the water.`
       ),
       path: `/yachts/${id}`,
+      languages: { en: `/yachts/${id}`, es: `/es/yachts/${id}`, "x-default": `/yachts/${id}` },
       image: yacht.img,
     });
   } catch {

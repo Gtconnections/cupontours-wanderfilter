@@ -15,14 +15,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       title: car.title,
       description: metaDescription(
         car.description,
-        `Rent the ${car.title} with Cupontours — premium luxury and exotic car rentals in Miami and beyond.`
+        `Renta el ${car.title} con Cupontours — autos de lujo y exoticos en Miami y mas alla.`
       ),
-      path: `/cars/${id}`,
+      path: `/es/cars/${id}`,
       languages: { en: `/cars/${id}`, es: `/es/cars/${id}`, "x-default": `/cars/${id}` },
       image: car.img,
     });
   } catch {
-    return { title: "Luxury Car Rental | Cupontours" };
+    return { title: "Renta de auto de lujo | Cupontours" };
   }
 }
 
@@ -46,7 +46,7 @@ export default async function Layout({ params, children }: Props) {
               price: String(price),
               priceCurrency: "USD",
               availability: "https://schema.org/InStock",
-              url: `${SITE_URL}/cars/${id}`,
+              url: `${SITE_URL}/es/cars/${id}`,
             },
           }
         : {}),
