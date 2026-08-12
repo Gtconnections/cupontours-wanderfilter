@@ -9,6 +9,7 @@ import { HomeRow } from './HomeRow';
 import { getHomeProperties } from '../lib/api/properties';
 import { getCars } from '../lib/api/cars';
 import { getYachts } from '../lib/api/yachts';
+import { unstable_cache } from 'next/cache';
 
 const homePageStructuredData = {
   "@context": "https://schema.org",
@@ -22,6 +23,27 @@ const homePageStructuredData = {
   }
 }
 
+// Cachea los datos del home (son publicos y compartidos por todos) para que el
+// TTFB no dependa del backend en cada request: sirve de cache y revalida en
+// segundo plano. Los errores NO se cachean (Next no cachea promesas rechazadas),
+// asi que un fallo del backend reintenta en el siguiente request.
+const HOME_REVALIDATE = 120;
+const getHomesCached = unstable_cache(
+  async () => (await getHomeProperties()).slice(0, 8),
+  ['home-properties'],
+  { revalidate: HOME_REVALIDATE, tags: ['home'] },
+);
+const getCarsCached = unstable_cache(
+  async () => (await getCars()).slice(0, 4),
+  ['home-cars'],
+  { revalidate: HOME_REVALIDATE, tags: ['home'] },
+);
+const getYachtsCached = unstable_cache(
+  async () => (await getYachts()).slice(0, 4),
+  ['home-yachts'],
+  { revalidate: HOME_REVALIDATE, tags: ['home'] },
+);
+
 export default async function HomeContent({ locale }: { locale: Locale }) {
   const t = getDict(locale).home;
   const L = (href: string) => withLocale(href, locale);
@@ -30,9 +52,9 @@ export default async function HomeContent({ locale }: { locale: Locale }) {
   // el HTML (sin fetch en cliente, sin skeleton). Cada una cae a [] si falla,
   // sin tumbar la pagina.
   const [homes, cars, yachts] = await Promise.all([
-    getHomeProperties().then((d) => d.slice(0, 8)).catch(() => []),
-    getCars().then((d) => d.slice(0, 4)).catch(() => []),
-    getYachts().then((d) => d.slice(0, 4)).catch(() => []),
+    getHomesCached().catch(() => []),
+    getCarsCached().catch(() => []),
+    getYachtsCached().catch(() => []),
   ]);
 
   return (

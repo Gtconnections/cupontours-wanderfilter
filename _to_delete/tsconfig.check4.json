@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true, "skipLibCheck": true },
+  "include": ["app/(front)/HomeContent.tsx", "app/(front)/HomeRow.tsx", "app/(front)/page.tsx", "app/(front)/es/page.tsx"]
+}
