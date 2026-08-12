@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import WishlistButton from '@/components/wishlist/WishlistButton';
 import ThemeToggle from '@/components/theme/ThemeToggle';
+import { getDict } from '@/app/i18n/dictionaries';
+import { localeFromPath, withLocale } from '@/app/i18n/locale';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,7 +34,12 @@ export default function Header() {
   const searchRef = useRef(null);
   const pathname = usePathname();
   const router = useRouter();
-  
+
+  // i18n: idioma según la ruta (/es -> español)
+  const locale = localeFromPath(pathname);
+  const t = getDict(locale).nav;
+  const L = (href) => withLocale(href, locale);
+
   const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account'];
   const isLightPage =
         lightPages.includes(pathname) ||
@@ -272,7 +279,7 @@ export default function Header() {
       <div className="header-container">
         
         {/* LOGOTIPO */}
-        <Link href="/" className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>
+        <Link href={L('/')} className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>
           <span className="brand-header-cupon">cupon</span>
           <span className="brand-header-tours">tours</span>
         </Link>
@@ -441,7 +448,7 @@ export default function Header() {
         <div className="header-right" ref={menuRef}>
           <ThemeToggle />
           <WishlistButton className={isSearchExpanded ? 'hide-on-mobile' : ''} />
-          <Link href="/jets" className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>Luxury Jets</Link>
+          <Link href={L('/jets')} className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>{t.jets}</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -452,20 +459,20 @@ export default function Header() {
           
           <nav className={`dropdown-menu ${isMenuOpen ? 'open' : ''}`}>
             <ul>
-              <li><Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
+              <li><Link href={L('/')} onClick={() => setIsMenuOpen(false)}>{t.home}</Link></li>
               <li className="menu-divider"></li>
               {/* Verticales B2C (reservar) */}
-              <li><Link href="https://luxury.cupontours.com" target="_blank">Luxury Villas</Link></li>
-              <li><Link href="/properties" onClick={() => setIsMenuOpen(false)}>Properties</Link></li>
-              <li><Link href="/cars" onClick={() => setIsMenuOpen(false)}>Cars</Link></li>
-              <li><Link href="/yachts" onClick={() => setIsMenuOpen(false)}>Yachts</Link></li>
-              <li><Link href="/services" onClick={() => setIsMenuOpen(false)}>Services</Link></li>
+              <li><Link href="https://luxury.cupontours.com" target="_blank">{t.villas}</Link></li>
+              <li><Link href={L('/properties')} onClick={() => setIsMenuOpen(false)}>{t.properties}</Link></li>
+              <li><Link href={L('/cars')} onClick={() => setIsMenuOpen(false)}>{t.cars}</Link></li>
+              <li><Link href={L('/yachts')} onClick={() => setIsMenuOpen(false)}>{t.yachts}</Link></li>
+              <li><Link href={L('/services')} onClick={() => setIsMenuOpen(false)}>{t.services}</Link></li>
               <li className="menu-divider"></li>
               {/* Puerta única B2B (dueños) */}
-              <li><Link href="/invest-with-us" onClick={() => setIsMenuOpen(false)}>List your property</Link></li>
+              <li><Link href={L('/invest-with-us')} onClick={() => setIsMenuOpen(false)}>{t.listProperty}</Link></li>
               <li className="menu-divider"></li>
-              <li><Link href="/about-us" onClick={() => setIsMenuOpen(false)}>About</Link></li>
-              <li><Link href="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
+              <li><Link href={L('/about-us')} onClick={() => setIsMenuOpen(false)}>{t.about}</Link></li>
+              <li><Link href={L('/contact')} onClick={() => setIsMenuOpen(false)}>{t.contact}</Link></li>
             </ul>
           </nav>
         </div>

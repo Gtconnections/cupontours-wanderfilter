@@ -1,8 +1,16 @@
 "use client"; 
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { getDict } from '@/app/i18n/dictionaries';
+import { localeFromPath, withLocale } from '@/app/i18n/locale';
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 
 export default function Footer() {
+  const pathname = usePathname();
+  const locale = localeFromPath(pathname);
+  const t = getDict(locale).footer;
+  const L = (href) => withLocale(href, locale);
   const partnerships = [
     { name: 'Airbnb', logo: 'https://res.cloudinary.com/gt-connections/image/upload/v1701816605/cupon-tours/airbnb-boton_yzaxmu.webp' },
     { name: 'Vrbo', logo: 'https://res.cloudinary.com/gt-connections/image/upload/v1701816583/cupon-tours/vrbo-boton_m0z2jy.webp' },
@@ -19,7 +27,7 @@ export default function Footer() {
       {/* MARQUESINA DE SOCIOS */}
       <section className="platforms-marquee-section">
         <div className="marquee-wrapper">
-          <span className="marquee-title">Platforms & Partnerships</span>
+          <span className="marquee-title">{t.platforms}</span>
           <div className="marquee-row-cards">
             {partnerships.map((partner, index) => (
               <div key={index} className="partner-card-badge">
@@ -42,7 +50,7 @@ export default function Footer() {
 
       {/* FOOTER TOP INTEGRADO */}
       <div className="footer-top">
-        <span className="follow-text">Follow us @CuponTours</span>
+        <span className="follow-text">{t.follow}</span>
         <div className="social-links">
           <a href={process.env.NEXT_PUBLIC_TWITTER_URL || 'https://x.com/cupontours'} target="_blank" rel="noopener noreferrer">X (Twitter)</a>
           <a href={process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/cupontours'} target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -60,7 +68,7 @@ export default function Footer() {
             <span className="brand-cupon">cupon</span><span className="brand-tours">tours</span>
           </div>
           <p className="footer-brand-desc">
-            Discover amazing deals on luxury properties, cars, and yachts
+            {t.brandDesc}
           </p>
           
           <div className="footer-contact-info-list">
@@ -86,49 +94,52 @@ export default function Footer() {
         {/* COLUMNAS COMPLEMENTARIAS */}
         <div className="footer-links-container">
           <div className="footer-col">
-            <h4>Quick Links</h4>
+            <h4>{t.quickLinks}</h4>
             <ul>
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/about-us">About Us</Link></li>
-              <li><Link href="/properties">Properties</Link></li>
-              <li><Link href="/cars">Cars</Link></li>
-              <li><Link href="/yachts">Yachts</Link></li>
-              <li><Link href="/work-with-us">Work with Us</Link></li>
-              <li><Link href="/invest-with-us">Invest with Us</Link></li>
+              <li><Link href={L('/')}>{t.home}</Link></li>
+              <li><Link href={L('/about-us')}>{t.aboutUs}</Link></li>
+              <li><Link href={L('/properties')}>{t.properties}</Link></li>
+              <li><Link href={L('/cars')}>{t.cars}</Link></li>
+              <li><Link href={L('/yachts')}>{t.yachts}</Link></li>
+              <li><Link href={L('/work-with-us')}>{t.workWithUs}</Link></li>
+              <li><Link href={L('/invest-with-us')}>{t.investWithUs}</Link></li>
             </ul>
           </div>
           <div className="footer-col">
-            <h4>Popular Destinations</h4>
+            <h4>{t.destinations}</h4>
             <ul>
-              <li><Link href="/properties?city=Miami">Miami, Florida, USA</Link></li>
-              <li><Link href="/properties?city=Hallandale">Hallandale, Florida, USA</Link></li>
-              <li><Link href="/properties?city=Orlando">Orlando, Florida, USA</Link></li>
-              <li><Link href="/properties?city=Atlanta">Atlanta, Georgia, USA</Link></li>
-              <li><Link href="/properties?city=Cali">Cali, Colombia</Link></li>
-              <li><Link href="/properties?city=Lago%20Calima">Lago Calima, Colombia</Link></li>
-              <li><Link href="/properties?city=Valledupar">Valledupar, Colombia</Link></li>
+              <li><Link href={L('/properties?city=Miami')}>Miami, Florida, USA</Link></li>
+              <li><Link href={L('/properties?city=Hallandale')}>Hallandale, Florida, USA</Link></li>
+              <li><Link href={L('/properties?city=Orlando')}>Orlando, Florida, USA</Link></li>
+              <li><Link href={L('/properties?city=Atlanta')}>Atlanta, Georgia, USA</Link></li>
+              <li><Link href={L('/properties?city=Cali')}>Cali, Colombia</Link></li>
+              <li><Link href={L('/properties?city=Lago%20Calima')}>Lago Calima, Colombia</Link></li>
+              <li><Link href={L('/properties?city=Valledupar')}>Valledupar, Colombia</Link></li>
             </ul>
           </div>
           <div className="footer-col">
-            <h4>Operators</h4>
+            <h4>{t.operators}</h4>
             <ul>
-              <li><Link href="/login">Owner Dashboard <span className="new-badge">VIP</span></Link></li>
-              <li><Link href="/contact">Contact</Link></li>
-              <li><Link href="/terms">Terms of Service</Link></li>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
+              <li><Link href={L('/login')}>{t.ownerDashboard} <span className="new-badge">VIP</span></Link></li>
+              <li><Link href={L('/contact')}>{t.contact}</Link></li>
+              <li><Link href={L('/terms')}>{t.terms}</Link></li>
+              <li><Link href={L('/privacy')}>{t.privacy}</Link></li>
             </ul>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2026 <a href="https://www.cupontours.com" className='link-footer'>Cupontours LLC</a>. All rights reserved.®</p>
-        <button className="btn-circle" aria-label="Copy Link">
+        <p>&copy; 2026 <a href="https://www.cupontours.com" className='link-footer'>Cupontours LLC</a>. {t.rights}®</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <LanguageSwitcher />
+          <button className="btn-circle" aria-label="Copy Link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
           </svg>
-        </button>
+          </button>
+        </div>
       </div>
     </footer>
   );
