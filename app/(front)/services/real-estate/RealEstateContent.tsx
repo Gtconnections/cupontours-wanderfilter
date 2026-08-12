@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import SmartImage from "@/components/SmartImage";
 import { StructuredData } from "@/components/seo/structured-data";
 import './real-estate.css';
 import Link from 'next/link';
@@ -135,11 +136,11 @@ export default function RealEstateContent({ locale = 'en' }: { locale?: Locale }
               currentProperties.map((item) => (
                 <div key={item.id} className="re-card">
                   <Link href={`${lp}/services/real-estate/${item.id}`} className="re-img-container">
-                    <img 
-                      src={item.principal_image} 
-                      alt={item.name} 
+                    <SmartImage
+                      src={item.principal_image}
+                      alt={item.name}
                       className="re-img"
-                      loading="lazy" 
+                      fallbackSrc="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"
                     />
                     <div className="badges-container">
                       <div className={`re-badge ${item.operation_type.toLowerCase() === 'venta' ? 'gold' : 'dark'}`}>

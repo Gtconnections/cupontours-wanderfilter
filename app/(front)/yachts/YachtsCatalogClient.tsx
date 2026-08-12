@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import SmartImage from "@/components/SmartImage";
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './yachts.css';
@@ -104,13 +105,10 @@ export default function YachtsCatalogClient({ initialItems, initialCount, locale
               <Link href={`${es ? '/es' : ''}/yachts/${yacht.id}`} key={yacht.id} className="link-dinamic">
                 <div className="marine-card">
                   <div className="marine-image-box">
-                    <img
+                    <SmartImage
                       src={yacht.img}
                       alt={yacht.title}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
-                      }}
+                      fallbackSrc="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80"
                     />
                     <HeartButton
                       className="marine-heart-btn"

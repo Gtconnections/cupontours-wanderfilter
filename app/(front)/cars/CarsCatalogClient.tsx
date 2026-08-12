@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import SmartImage from "@/components/SmartImage";
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './cars.css';
@@ -106,13 +107,10 @@ export default function CarsCatalogClient({ initialItems, initialCount, locale =
               <Link href={`${es ? '/es' : ''}/cars/${car.id}`} key={car.id} className="link-dinamic">
                 <div className="fleet-card">
                   <div className="fleet-image-box">
-                    <img
+                    <SmartImage
                       src={car.img}
                       alt={car.title}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80";
-                      }}
+                      fallbackSrc="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
                     />
                     <HeartButton
                       className="fleet-heart-btn"

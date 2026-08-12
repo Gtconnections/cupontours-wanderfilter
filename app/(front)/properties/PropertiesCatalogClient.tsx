@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import SmartImage from "@/components/SmartImage";
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './properties.css';
@@ -278,13 +279,10 @@ export default function PropertiesCatalogClient({ initialItems, initialCount, in
               <a href={`${es ? '/es' : ''}/properties/${prop.id}`} key={prop.id} className="link-dinamic" style={{ textDecoration: 'none' }}>
                 <div className="catprop-card">
                   <div className="catalog-image-box">
-                    <img
-                      src={prop.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"}
+                    <SmartImage
+                      src={prop.images?.[0]}
                       alt={prop.title}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80";
-                      }}
+                      fallbackSrc="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"
                     />
                     <HeartButton
                       className="catalog-heart-btn"

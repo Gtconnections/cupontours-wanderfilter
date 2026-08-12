@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
+import SmartImage from "@/components/SmartImage";
 import { StructuredData } from "@/components/seo/structured-data";
 import './car-detail.css';
 import Link from 'next/link';
@@ -341,12 +342,13 @@ export default function CarDetailPage({ params }: PageProps) {
             {/* GALERÍA */}
             <section className="lux-gallery">
               <div className="lux-gallery-main" onClick={() => openGallery(currentImageIndex)}>
-                <img
+                <SmartImage
                   key={`viewport-${currentImageIndex}`}
                   src={activeImageUrl}
                   alt={`${car.title} view ${currentImageIndex + 1}`}
-                  fetchPriority="high"
-                  onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80'; }}
+                  priority
+                  sizes="(max-width: 900px) 100vw, 66vw"
+                  fallbackSrc="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
                 />
                 {images.length > 1 && (
                   <>

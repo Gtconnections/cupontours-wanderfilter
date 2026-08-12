@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import SmartImage from "@/components/SmartImage";
 import { StructuredData } from "@/components/seo/structured-data"
 import './home.css';
 import Link from 'next/link';
@@ -87,15 +88,12 @@ function RenderRow({ title, pretitle, data, type, isLoading, locale }: RenderRow
               <a href={L(`/${routePrefix}/${item.id}`)} key={item.id} className="prop-card-link-wrapper" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="prop-card">
                   <div className={`prop-image-container ${type === 'car' ? 'car-ratio' : type === 'yacht' ? 'yacht-ratio' : ''}`}>
-                    <img
+                    <SmartImage
                       src={imgUrl}
                       alt={item.title}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = type === 'car'
-                          ? "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
-                          : "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80";
-                      }}
+                      fallbackSrc={type === 'car'
+                        ? "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
+                        : "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80"}
                     />
                     <HeartButton
                       className="heart-btn"

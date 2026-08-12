@@ -40,6 +40,17 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   /* config options here */
 
+  // Optimizacion de imagenes: hosts remotos permitidos para next/image.
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "**.amazonaws.com" },
+      { protocol: "https", hostname: "**.digitaloceanspaces.com" },
+      { protocol: "https", hostname: "**.cloudfront.net" },
+    ],
+  },
+
   // Cabeceras de seguridad para todas las rutas.
   async headers() {
     return [

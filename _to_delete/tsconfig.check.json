@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true, "skipLibCheck": true },
+  "include": [
+    "components/SmartImage.tsx",
+    "app/(front)/properties/PropertiesCatalogClient.tsx",
+    "app/(front)/cars/CarsCatalogClient.tsx",
+    "app/(front)/yachts/YachtsCatalogClient.tsx",
+    "app/(front)/HomeContent.tsx",
+    "app/(front)/services/real-estate/RealEstateContent.tsx",
+    "app/(front)/cars/[id]/page.tsx",
+    "app/(front)/yachts/[id]/page.tsx",
+    "app/(front)/properties/[id]/page.tsx",
+    "app/(front)/services/real-estate/[id]/page.tsx"
+  ]
+}

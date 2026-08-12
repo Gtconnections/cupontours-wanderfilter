@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import SmartImage from "@/components/SmartImage";
 import { useParams } from 'next/navigation';
 import { StructuredData } from "@/components/seo/structured-data";
 import './property-detail.css';
@@ -450,14 +451,12 @@ export default function PropertyDetailPage() {
             {/* GALERÍA CON MINIATURAS */}
             <section className="lux-gallery">
               <div className="lux-gallery-main" onClick={() => openGallery(activeImage)}>
-                <img
+                <SmartImage
                   src={images[activeImage]}
                   alt={propertyName}
-                  fetchPriority="high"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80';
-                  }}
+                  priority
+                  sizes="(max-width: 900px) 100vw, 66vw"
+                  fallbackSrc="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80"
                 />
                 {images.length > 1 && (
                   <>
