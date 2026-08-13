@@ -43,7 +43,7 @@ export default function Header() {
   const sd = getDict(locale).search;
   const L = (href) => withLocale(href, locale);
 
-  const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account'];
+  const lightPages = ['/about', '/contact', '/about-us', '/terms', '/privacy', '/services', '/login', '/recover-account', '/skyscanner-test'];
   const isLightPage =
         lightPages.includes(pathname) ||
         (pathname.startsWith('/properties/') && pathname !== '/properties') ||
