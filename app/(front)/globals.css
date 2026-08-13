@@ -1314,12 +1314,13 @@ body {
 .menu-theme-li { display: none; }
 
 /* Items de acción del menú (Favoritos, Tema): texto izquierda, ícono derecha */
-.menu-action-row {
+.dropdown-menu .menu-action-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 8px 24px;
+  width: 100%;
 }
 .menu-action-label { font-size: 14px; font-weight: 600; color: #222222; }
 [data-theme="dark"] .menu-action-label { color: #ece7dd; }
