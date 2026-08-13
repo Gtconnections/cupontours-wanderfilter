@@ -1312,12 +1312,31 @@ body {
 }
 .menu-theme-row span { font-size: 14px; font-weight: 600; color: #222222; }
 [data-theme="dark"] .menu-theme-row span { color: #ece7dd; }
+
+/* Toggle dentro del menú: visible sobre el fondo del menú (claro u oscuro) */
+.menu-theme-row .theme-toggle--menu {
+  background: #f5f5f5;
+  color: #222222;
+  border: 1px solid var(--border-light);
+}
+.menu-theme-row .theme-toggle--menu:hover { background: #ececec; }
+[data-theme="dark"] .menu-theme-row .theme-toggle--menu {
+  background: #1c1c20;
+  color: #d4af37;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+[data-theme="dark"] .menu-theme-row .theme-toggle--menu:hover { background: #24242a; }
+
+/* Contador de favoritos en el item del menú */
+.menu-wishlist-count { opacity: 0.55; font-weight: 500; }
+
 .mobile-only { display: none; }
 
 @media (max-width: 767px) {
   .logo-full { display: none; }
   .logo-short { display: inline-flex; align-items: center; text-transform: none; letter-spacing: 0.5px; }
   .theme-toggle--header { display: none !important; }
+  .wishlist--header { display: none !important; }
   .menu-theme-li { display: block; }
   li.mobile-only { display: block; }
 }

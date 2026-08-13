@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import WishlistButton from '@/components/wishlist/WishlistButton';
+import { useWishlist } from '@/components/wishlist/WishlistProvider';
 import ThemeToggle from '@/components/theme/ThemeToggle';
 import { getDict } from '@/app/i18n/dictionaries';
 import { localeFromPath, withLocale } from '@/app/i18n/locale';
@@ -34,6 +35,7 @@ export default function Header() {
   const searchRef = useRef(null);
   const pathname = usePathname();
   const router = useRouter();
+  const { count: wishlistCount, open: openWishlist } = useWishlist();
 
   // i18n: idioma según la ruta (/es -> español)
   const locale = localeFromPath(pathname);
@@ -454,7 +456,7 @@ export default function Header() {
         {/* RIGHT ACTIONS */}
         <div className="header-right" ref={menuRef}>
           <ThemeToggle className="theme-toggle--header" />
-          <WishlistButton className={isSearchExpanded ? 'hide-on-mobile' : ''} />
+          <WishlistButton className="wishlist--header" />
           <Link href={L('/jets')} className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>{t.jets}</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} aria-label={isMenuOpen ? (locale === 'es' ? 'Cerrar menú' : 'Close menu') : (locale === 'es' ? 'Abrir menú' : 'Open menu')} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
@@ -481,6 +483,12 @@ export default function Header() {
               <li><Link href={L('/about-us')} onClick={() => setIsMenuOpen(false)}>{t.about}</Link></li>
               <li><Link href={L('/contact')} onClick={() => setIsMenuOpen(false)}>{t.contact}</Link></li>
               <li className="menu-divider mobile-only"></li>
+              <li className="mobile-only">
+                <a style={{ cursor: 'pointer' }} onClick={() => { openWishlist(); setIsMenuOpen(false); }}>
+                  {locale === 'es' ? 'Favoritos' : 'Wishlist'}
+                  {wishlistCount > 0 && <span className="menu-wishlist-count"> ({wishlistCount})</span>}
+                </a>
+              </li>
               <li className="menu-theme-li">
                 <div className="menu-theme-row">
                   <span>{locale === 'es' ? 'Tema' : 'Theme'}</span>
