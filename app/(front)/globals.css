@@ -1276,10 +1276,18 @@ body {
 [data-theme="dark"] .when-tabs { background: #1c1c20; }
 [data-theme="dark"] .when-tab.active { background: #26262c; color: #ece7dd; box-shadow: none; }
 [data-theme="dark"] .cal-nav:hover { background: #1c1c20; }
+[data-theme="dark"] .cal-day { color: #ece7dd; }
 [data-theme="dark"] .cal-day.disabled { color: #4d4a44; }
 [data-theme="dark"] .cal-day.selectable:hover { background: #24242a; }
 [data-theme="dark"] .cal-day.selected { background: #d4af37; color: #0a0a0b; }
 [data-theme="dark"] .cal-day.in-range { background: rgba(212, 175, 55, 0.18); }
+[data-theme="dark"] .cal-day-name { color: #a7a199; }
+[data-theme="dark"] .month-header,
+[data-theme="dark"] .month-header strong { color: #ece7dd; }
+[data-theme="dark"] .cal-nav { color: #ece7dd; }
+[data-theme="dark"] .when-tab { color: #a7a199; }
+[data-theme="dark"] .count-value { color: #ece7dd; }
+[data-theme="dark"] .popover-clear { color: #ece7dd; }
 [data-theme="dark"] .location-item .icon-box { border-color: rgba(255, 255, 255, 0.10); color: #ece7dd; }
 [data-theme="dark"] .location-item span { color: #ece7dd; }
 [data-theme="dark"] .location-item:hover { background-color: #1c1c20; }
@@ -1327,7 +1335,9 @@ body {
 }
 [data-theme="dark"] .menu-theme-row .theme-toggle--menu:hover { background: #24242a; }
 
-/* Contador de favoritos en el item del menú */
+/* Item de favoritos en el menú (ícono + texto) */
+.menu-wishlist-link { display: flex; align-items: center; gap: 10px; }
+.menu-wishlist-link svg { flex-shrink: 0; }
 .menu-wishlist-count { opacity: 0.55; font-weight: 500; }
 
 .mobile-only { display: none; }
