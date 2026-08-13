@@ -281,8 +281,14 @@ export default function Header() {
         
         {/* LOGOTIPO */}
         <Link href={L('/')} className={`logo ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>
-          <span className="brand-header-cupon">cupon</span>
-          <span className="brand-header-tours">tours</span>
+          <span className="logo-full">
+            <span className="brand-header-cupon">cupon</span>
+            <span className="brand-header-tours">tours</span>
+          </span>
+          <span className="logo-short">
+            <span className="brand-header-cupon">C</span>
+            <span className="brand-header-tours">P</span>
+          </span>
         </Link>
         
         {/* CENTRO: BUSCADOR INTERACTIVO */}
@@ -447,7 +453,7 @@ export default function Header() {
 
         {/* RIGHT ACTIONS */}
         <div className="header-right" ref={menuRef}>
-          <ThemeToggle />
+          <ThemeToggle className="theme-toggle--header" />
           <WishlistButton className={isSearchExpanded ? 'hide-on-mobile' : ''} />
           <Link href={L('/jets')} className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>{t.jets}</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} aria-label={isMenuOpen ? (locale === 'es' ? 'Cerrar menú' : 'Close menu') : (locale === 'es' ? 'Abrir menú' : 'Open menu')} onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -474,6 +480,13 @@ export default function Header() {
               <li className="menu-divider"></li>
               <li><Link href={L('/about-us')} onClick={() => setIsMenuOpen(false)}>{t.about}</Link></li>
               <li><Link href={L('/contact')} onClick={() => setIsMenuOpen(false)}>{t.contact}</Link></li>
+              <li className="menu-divider mobile-only"></li>
+              <li className="menu-theme-li">
+                <div className="menu-theme-row">
+                  <span>{locale === 'es' ? 'Tema' : 'Theme'}</span>
+                  <ThemeToggle className="theme-toggle--menu" />
+                </div>
+              </li>
             </ul>
           </nav>
         </div>

@@ -953,7 +953,14 @@ body {
 .popover-where {
   min-width: 320px !important;
   padding: 16px 20px !important;
+  max-height: 72vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+
+.popover-where::-webkit-scrollbar { width: 6px; }
+.popover-where::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 3px; }
+.popover-where::-webkit-scrollbar-track { background: transparent; }
 
 .popover-where .popover-subtitle {
   font-size: 12px;
@@ -968,7 +975,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
+  padding: 5px 12px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -1288,6 +1295,32 @@ body {
 [data-theme="dark"] .dropdown-menu { background: #141416; border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55); }
 [data-theme="dark"] .dropdown-menu li a { color: #ece7dd; }
 [data-theme="dark"] .dropdown-menu li a:hover { background: #1c1c20; }
+[data-theme="dark"] .popover-where::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); }
+
+/* ==========================================================================
+   LOGO RESPONSIVE (móvil: cupontours -> CP) + TEMA EN MENÚ (solo móvil)
+   ========================================================================== */
+.logo-full { display: inline-flex; align-items: center; }
+.logo-short { display: none; }
+
+.menu-theme-li { display: none; }
+.menu-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px 12px;
+}
+.menu-theme-row span { font-size: 14px; font-weight: 600; color: #222222; }
+[data-theme="dark"] .menu-theme-row span { color: #ece7dd; }
+.mobile-only { display: none; }
+
+@media (max-width: 767px) {
+  .logo-full { display: none; }
+  .logo-short { display: inline-flex; align-items: center; text-transform: none; letter-spacing: 0.5px; }
+  .theme-toggle--header { display: none !important; }
+  .menu-theme-li { display: block; }
+  li.mobile-only { display: block; }
+}
 
 /* ---- FOOTER ---- */
 [data-theme="dark"] .partner-card-badge { background: #141416; border-color: rgba(255, 255, 255, 0.08); }
