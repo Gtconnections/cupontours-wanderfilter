@@ -1274,6 +1274,11 @@ body {
 [data-theme="dark"] .cal-day.selected { background: #d4af37; color: #0a0a0b; }
 [data-theme="dark"] .cal-day.in-range { background: rgba(212, 175, 55, 0.18); }
 [data-theme="dark"] .location-item .icon-box { border-color: rgba(255, 255, 255, 0.10); color: #ece7dd; }
+[data-theme="dark"] .location-item span { color: #ece7dd; }
+[data-theme="dark"] .location-item:hover { background-color: #1c1c20; }
+[data-theme="dark"] .popover-subtitle,
+[data-theme="dark"] .popover-where .popover-subtitle { color: #a7a199; }
+[data-theme="dark"] .loading-cities { color: #a7a199; }
 [data-theme="dark"] .counter-label { color: #ece7dd; }
 [data-theme="dark"] .counter-btn { border-color: rgba(255, 255, 255, 0.16); background: transparent; color: #ece7dd; }
 [data-theme="dark"] .counter-btn:hover:not(:disabled) { border-color: #d4af37; background: #1c1c20; }
