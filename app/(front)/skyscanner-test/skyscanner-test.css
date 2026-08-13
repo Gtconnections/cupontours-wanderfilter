@@ -3,80 +3,94 @@
    ========================================================================== */
 .sky-test {
   min-height: 100vh;
-  padding: 120px 16px 64px;
+  padding: 130px 16px 72px;
   display: flex;
   justify-content: center;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(212, 175, 55, 0.10), transparent 70%);
 }
 
 .sky-test-container {
   width: 100%;
-  max-width: 880px;
+  max-width: 860px;
+}
+
+/* --- Encabezado --- */
+.sky-test-header {
+  text-align: center;
+  margin-bottom: 32px;
 }
 
 .sky-test-eyebrow {
   display: inline-block;
   font-size: 11px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   font-weight: 700;
-  color: #d4af37;
+  color: #b9932f;
   text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .sky-test-header h1 {
-  font-size: clamp(26px, 4vw, 40px);
+  font-size: clamp(28px, 5vw, 46px);
   font-weight: 700;
-  line-height: 1.15;
-  margin: 10px 0 14px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
   color: #111111;
 }
 
 .sky-test-accent {
+  font-style: italic;
+  font-weight: 600;
   color: #d4af37;
 }
 
-.sky-test-header p {
-  color: #555555;
-  font-size: 15px;
-  line-height: 1.65;
-  max-width: 640px;
+/* --- Panel del widget --- */
+.sky-test-panel {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 22px;
+  padding: 28px;
+  min-height: 130px;
+  box-shadow: 0 18px 50px rgba(17, 17, 17, 0.08);
+  overflow: hidden;
 }
 
-.sky-test-header code {
-  background: rgba(0, 0, 0, 0.06);
-  padding: 1px 6px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.sky-test-widget {
-  margin: 32px 0 20px;
-  min-height: 120px;
-}
-
-.sky-test-note {
-  font-size: 13px;
-  color: #8a8478;
-  line-height: 1.6;
+/* Filo dorado superior */
+.sky-test-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
 }
 
 @media (min-width: 768px) {
   .sky-test {
-    padding-top: 140px;
+    padding-top: 150px;
+  }
+  .sky-test-panel {
+    padding: 36px;
   }
 }
 
 /* --- Tema oscuro --- */
+[data-theme="dark"] .sky-test {
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(212, 175, 55, 0.12), transparent 70%);
+}
+[data-theme="dark"] .sky-test-eyebrow {
+  color: #d4af37;
+}
 [data-theme="dark"] .sky-test-header h1 {
   color: #ece7dd;
 }
-[data-theme="dark"] .sky-test-header p {
-  color: #a7a199;
-}
-[data-theme="dark"] .sky-test-header code {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ece7dd;
-}
-[data-theme="dark"] .sky-test-note {
-  color: #6f6a63;
+[data-theme="dark"] .sky-test-panel {
+  background: #141416;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
 }

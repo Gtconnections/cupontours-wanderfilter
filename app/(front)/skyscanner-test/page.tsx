@@ -15,17 +15,14 @@ export default function SkyscannerTestPage() {
         <header className="sky-test-header">
           <span className="sky-test-eyebrow">INTEGRACIÓN · PRUEBAS</span>
           <h1>
-            Skyscanner · <span className="sky-test-accent">Multi-vertical</span>
+            Skyscanner <span className="sky-test-accent">Multi-vertical</span>
           </h1>
-          <p>
-            Widget reutilizable con carga automática del loader y reconstrucción
-            en cambios de ruta y de tema (claro/oscuro). El loader de Skyscanner
-            puede devolver <code>403</code> en <code>localhost</code> por su
-            protección anti-bot y renderiza bien una vez desplegado.
-          </p>
         </header>
 
-        <section className="sky-test-widget" aria-label="Skyscanner multi-vertical widget">
+        <section
+          className="sky-test-panel"
+          aria-label="Skyscanner multi-vertical widget"
+        >
           <SkyscannerWidget
             verticals={["flights", "hotels", "cars"]}
             defaultTab="flights"
@@ -40,12 +37,6 @@ export default function SkyscannerTestPage() {
              */
           />
         </section>
-
-        <p className="sky-test-note">
-          Este widget soporta únicamente <strong>vuelos, hoteles y autos</strong>.
-          “Packages” no está disponible como vertical en la integración de
-          Skyscanner.
-        </p>
       </div>
     </main>
   );
