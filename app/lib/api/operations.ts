@@ -325,3 +325,31 @@ export function addIncidental(guestId: number, payload: { title: string; amount?
 export function deleteIncidental(incidentalId: number): Promise<null> {
   return request(`/ops/guests/incidentals/${incidentalId}/`, { method: 'DELETE' });
 }
+
+// ── Beta: clasificador de entrega de turno (solo clasifica, no crea nada) ──
+export type HandoffBucket = 'urgente' | 'low_stock' | 'turnover' | 'checkin' | 'limpieza' | 'info';
+
+export interface HandoffItem {
+  bucket: HandoffBucket;
+  title: string;
+  property: string | null;
+  listing_id: number | null;
+  listing_name: string | null;
+  category: string;
+  priority: 'baja' | 'media' | 'alta' | 'urgente';
+  resolved: boolean;
+  action: string;
+  excerpt: string;
+  confidence: number | null;
+}
+
+export interface HandoffResult {
+  model: string;
+  count: number;
+  items: HandoffItem[];
+}
+
+/** Envía el texto de la entrega de turno y devuelve la clasificación propuesta. */
+export function classifyHandoff(text: string): Promise<HandoffResult> {
+  return request('/ops/handoff/classify/', { method: 'POST', body: JSON.stringify({ text }) });
+}

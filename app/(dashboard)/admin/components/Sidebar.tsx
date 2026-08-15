@@ -43,6 +43,7 @@ export function Sidebar() {
         { name: "Maintenance", href: "/admin/operations" },
         { name: "Inventory", href: "/admin/operations?tab=inventory" },
         { name: "Turnovers", href: "/admin/operations/turnovers" },
+        { name: "Handoff IA (Beta)", href: "/admin/operations/handoff" },
       ]
     },
     {

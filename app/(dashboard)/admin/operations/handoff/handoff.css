@@ -1,0 +1,164 @@
+/* ==========================================================================
+   Beta · Entrega de turno → Dashboard (clasificador)
+   ========================================================================== */
+.handoff-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 8px 4px 48px;
+}
+
+.handoff-head {
+  margin-bottom: 22px;
+}
+.handoff-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #b9932f;
+}
+.handoff-head h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 8px 0 6px;
+  color: #1a1a1a;
+}
+.handoff-head p {
+  color: #6b6b6b;
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 640px;
+  margin: 0;
+}
+
+.handoff-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 18px;
+}
+.handoff-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.handoff-card-head h2 {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b6b6b;
+  margin: 0;
+}
+.handoff-example {
+  background: transparent;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+}
+.handoff-example:hover { background: #f5f5f5; }
+
+.handoff-page textarea {
+  width: 100%;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  padding: 12px;
+  font: inherit;
+  font-size: 13px;
+  color: #333;
+  background: #fafafa;
+  resize: vertical;
+  line-height: 1.5;
+}
+.handoff-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.handoff-btn {
+  background: #d4af37;
+  color: #0a0a0b;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 11px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.handoff-btn:disabled { opacity: 0.55; cursor: default; }
+
+.handoff-error {
+  color: #c0392b;
+  font-size: 13px;
+  margin: 12px 0 0;
+}
+.handoff-empty { color: #888; font-size: 13px; }
+.handoff-count { font-size: 12px; color: #6b6b6b; }
+
+.handoff-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+.handoff-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+.b-urg { background: #fdecec; color: #c0392b; }
+.b-turn { background: #eaf3ff; color: #2a6fd6; }
+.b-low { background: #fff4e0; color: #b9791a; }
+.b-chk { background: #e9f8ee; color: #1e9e54; }
+.b-clean { background: #f0ecfb; color: #6a45c9; }
+.b-info { background: #f0f0f0; color: #777; }
+
+.handoff-item-body { flex: 1; min-width: 0; }
+.handoff-item-title { font-size: 14px; font-weight: 600; line-height: 1.35; color: #1a1a1a; }
+.handoff-item-meta {
+  font-size: 12px;
+  color: #6b6b6b;
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+.handoff-pill {
+  background: #f2f2f2;
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-size: 11px;
+  color: #555;
+}
+.handoff-pill.match { background: #e9f8ee; color: #1e9e54; }
+.handoff-pill.muted { background: #f7e9e9; color: #b06; opacity: 0.75; }
+.handoff-resolved { color: #1e9e54; }
+.handoff-conf { color: #999; }
+.handoff-item-action { font-size: 12px; margin-top: 6px; color: #0a7d3b; font-weight: 600; }
+.handoff-item-excerpt { font-size: 12px; margin-top: 6px; color: #999; font-style: italic; }
+.handoff-foot { font-size: 12px; color: #8a8478; margin: 14px 0 0; line-height: 1.5; }
+
+/* --- Tema oscuro (el back office hereda las variables del front) --- */
+[data-theme="dark"] .handoff-head h1 { color: #ece7dd; }
+[data-theme="dark"] .handoff-head p { color: #a7a199; }
+[data-theme="dark"] .handoff-card { background: #141416; border-color: rgba(255,255,255,0.08); box-shadow: 0 16px 44px rgba(0,0,0,0.5); }
+[data-theme="dark"] .handoff-card-head h2 { color: #a7a199; }
+[data-theme="dark"] .handoff-page textarea { background: #1c1c20; border-color: rgba(255,255,255,0.10); color: #ece7dd; }
+[data-theme="dark"] .handoff-example { background: #1c1c20; border-color: rgba(255,255,255,0.12); color: #ece7dd; }
+[data-theme="dark"] .handoff-item { border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .handoff-item-title { color: #ece7dd; }
+[data-theme="dark"] .handoff-pill { background: #24242a; color: #cfc9c0; }
+[data-theme="dark"] .handoff-item-excerpt { color: #7f7a72; }
