@@ -51,6 +51,24 @@ export default async function Layout({ params, children }: Props) {
         },
         ...(p.price ? { priceRange: `$${p.price}` } : {}),
         ...(p.bedroomsNumber ? { numberOfRooms: p.bedroomsNumber } : {}),
+        // Offer con precio por noche → habilita el snippet de precio en Google.
+        ...(p.price
+          ? {
+              makesOffer: {
+                "@type": "Offer",
+                price: String(p.price),
+                priceCurrency: "USD",
+                availability: "https://schema.org/InStock",
+                url: `${SITE_URL}/properties/${id}`,
+                priceSpecification: {
+                  "@type": "UnitPriceSpecification",
+                  price: String(p.price),
+                  priceCurrency: "USD",
+                  unitText: "NIGHT",
+                },
+              },
+            }
+          : {}),
       };
     }
   } catch {}

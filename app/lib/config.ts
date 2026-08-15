@@ -41,6 +41,12 @@ export const clientConfig = {
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api',
   },
 
+  // Analytics & tracking (opcional). El tracking queda inerte si están vacíos.
+  analytics: {
+    gtmId: process.env.NEXT_PUBLIC_GTM_ID || '',
+    metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || '',
+  },
+
   // Site Configuration
   site: {
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.cupontours.com',

@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/app/lib/seo";
 import { StructuredData } from "@/components/seo/structured-data";
 import HtmlLang from "@/components/i18n/HtmlLang";
+import SiteAnalytics from "@/components/analytics/Analytics";
 
 const DEFAULT_TITLE = "Luxury Rentals, Exotic Cars & Yacht Charters in Miami | Cupontours";
 const DEFAULT_DESCRIPTION =
@@ -54,6 +55,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body>
+        {/* GTM + Meta Pixel (inerte si no hay IDs en .env) */}
+        <SiteAnalytics />
         <ThemeProvider>
           <WishlistProvider>
             <Header />
