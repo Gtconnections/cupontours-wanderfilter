@@ -228,10 +228,10 @@ export default function LuxuryPropertiesPage() {
           </button>
           <button
             className="wander-btn-primary"
-            onClick={() => router.push('/admin/properties/create')}
+            onClick={() => router.push('/admin/properties/create-luxury')}
           >
             <FiPlus size={16} />
-            Create Property
+            Create Luxury Property
           </button>
         </div>
       </header>
