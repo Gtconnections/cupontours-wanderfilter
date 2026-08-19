@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface SmartImageProps {
@@ -17,16 +16,16 @@ interface SmartImageProps {
 }
 
 /**
- * Envoltura de next/image en modo `fill`. Reemplaza a <img> dentro de
- * contenedores que ya son position:relative con dimensiones (aspect-ratio /
- * padding-top). Mantiene el respaldo onError via estado (next/image no permite
- * reasignar .src directamente).
+ * Imagen de catalogo cargada directamente con <img> (sin pasar por el
+ * optimizador de next/image, porque las URLs que devuelve el backend se rompen
+ * al optimizarse). Rellena el contenedor (position:relative) igual que el modo
+ * `fill` de next/image y mantiene el respaldo onError via estado.
  */
 export default function SmartImage({
   src,
   alt,
   fallbackSrc,
-  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+  sizes,
   className,
   priority = false,
   objectFit = "cover",
@@ -41,14 +40,21 @@ export default function SmartImage({
   if (!imgSrc) return null;
 
   return (
-    <Image
+    <img
       src={imgSrc}
       alt={alt}
-      fill
       sizes={sizes}
-      priority={priority}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : undefined}
+      decoding="async"
       className={className}
-      style={{ objectFit }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit,
+      }}
       onError={() => {
         if (fallbackSrc && imgSrc !== fallbackSrc) setImgSrc(fallbackSrc);
       }}

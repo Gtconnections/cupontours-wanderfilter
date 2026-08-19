@@ -281,13 +281,13 @@ export default function ModalEditListing({
                   className="wander-edit-select"
                   value={formData.listing_type}
                   onChange={handleChange}
-                  disabled={isLoading || isSuccess}
+                  disabled={isLoading || isSuccess || formData.listing_type.toLowerCase() === 'luxury'}
                 >
-                  <option value="House">House</option>
-                  <option value="Apartment">Apartment</option>
-                  <option value="Car">Car</option>
-                  <option value="Business">Business</option>
-                  <option value="Luxury">Luxury</option>
+                  <option value="house">House</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="car">Car</option>
+                  <option value="business">Business</option>
+                  <option value="luxury">Luxury</option>
                 </select>
               </div>
             </div>
