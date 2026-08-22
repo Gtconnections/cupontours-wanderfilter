@@ -349,7 +349,31 @@ export interface HandoffResult {
   items: HandoffItem[];
 }
 
-/** Envía el texto de la entrega de turno y devuelve la clasificación propuesta. */
-export function classifyHandoff(text: string): Promise<HandoffResult> {
-  return request('/ops/handoff/classify/', { method: 'POST', body: JSON.stringify({ text }) });
+interface HandoffJobStart { job_id: string; status: string; }
+interface HandoffJobStatus { status: 'pending' | 'done' | 'error' | 'not_found'; result?: HandoffResult; error?: string; }
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+/**
+ * Clasifica una entrega de turno (asíncrono). Lanza el job con un POST y luego
+ * consulta el estado por GET hasta que termina. Así no depende del corte de
+ * ~11s del edge para llamadas síncronas.
+ */
+export async function classifyHandoff(text: string): Promise<HandoffResult> {
+  const start: HandoffJobStart = await request('/ops/handoff/classify/', {
+    method: 'POST',
+    body: JSON.stringify({ text }),
+  });
+  if (!start?.job_id) throw new Error('No se pudo iniciar la clasificación.');
+
+  const deadline = Date.now() + 90_000; // 90s máximo
+  await sleep(1200);
+  while (Date.now() < deadline) {
+    const st: HandoffJobStatus = await request(`/ops/handoff/classify/?job=${encodeURIComponent(start.job_id)}`);
+    if (st.status === 'done' && st.result) return st.result;
+    if (st.status === 'error') throw new Error(st.error || 'Error al clasificar.');
+    if (st.status === 'not_found') throw new Error('El trabajo expiró, reintenta.');
+    await sleep(1500);
+  }
+  throw new Error('La clasificación tardó demasiado. Reintenta.');
 }
