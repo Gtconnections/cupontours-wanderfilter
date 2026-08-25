@@ -727,7 +727,7 @@ export interface EditListingData {
   max_of_guest: number;
   listing_status: boolean;
   description: string;
-  wa_codes: string;
+  wa_codes?: string;
 }
 
 // 🔥 EDITAR PROPIEDAD
@@ -1969,7 +1969,7 @@ export interface CreateListingData {
   max_of_guest: number;
   booking_price: number;
   description: string;
-  wa_codes: string;
+  wa_codes?: string;
   amenities: number[];
 }
 
