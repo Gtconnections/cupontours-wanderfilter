@@ -82,6 +82,7 @@ export default function HandoffPage() {
 
   const [listings, setListings] = useState<ListingOption[]>([]);
   const [rows, setRows] = useState<RowState[]>([]);
+  const [autoCreate, setAutoCreate] = useState(true);
 
   useEffect(() => {
     if (isChecking) return;
@@ -91,38 +92,12 @@ export default function HandoffPage() {
       .catch(() => setListings([]));
   }, [isChecking]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onClassify = async () => {
-    if (!text.trim() || loading) return;
-    setLoading(true);
-    setError(null);
-    setResult(null);
-    setRows([]);
-    try {
-      const res = await classifyHandoff(text.trim());
-      setResult(res);
-      setRows(
-        res.items.map((it) => ({
-          listingId: it.listing_id ? String(it.listing_id) : '',
-          category: defaultCategory(it),
-          priority: TICKET_PRIORITIES.some((p) => p[0] === it.priority) ? it.priority : 'media',
-          status: 'idle' as const,
-        })),
-      );
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo clasificar.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const patchRow = (idx: number, patch: Partial<RowState>) =>
     setRows((prev) => prev.map((r, i) => (i === idx ? { ...r, ...patch } : r)));
 
-  const createOne = async (idx: number) => {
-    if (!result) return;
-    const it = result.items[idx];
-    const rs = rows[idx];
-    if (!rs || rs.status === 'creating' || rs.status === 'done') return;
+  // Núcleo de creación: recibe el item y su fila (así lo usan el botón manual y
+  // el modo automático, sin depender del estado aún no aplicado).
+  const runCreate = async (idx: number, it: HandoffItem, rs: RowState) => {
     if (!rs.listingId) { patchRow(idx, { status: 'error', error: 'Elige una propiedad.' }); return; }
     patchRow(idx, { status: 'creating', error: undefined });
     try {
@@ -148,19 +123,73 @@ export default function HandoffPage() {
     }
   };
 
+  const onClassify = async () => {
+    if (!text.trim() || loading) return;
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setRows([]);
+    try {
+      const res = await classifyHandoff(text.trim());
+      const initialRows: RowState[] = res.items.map((it) => ({
+        listingId: it.listing_id ? String(it.listing_id) : '',
+        category: defaultCategory(it),
+        priority: TICKET_PRIORITIES.some((p) => p[0] === it.priority) ? it.priority : 'media',
+        status: 'idle',
+      }));
+      setResult(res);
+      setRows(initialRows);
+
+      // Modo automático: crea los tickets de los items que SÍ matchearon
+      // propiedad. Los sin propiedad quedan para completar a mano.
+      if (autoCreate) {
+        for (let i = 0; i < res.items.length; i++) {
+          const it = res.items[i];
+          const rs = initialRows[i];
+          if (isTicketable(it) && rs.listingId) {
+            // eslint-disable-next-line no-await-in-loop
+            await runCreate(i, it, rs);
+          }
+        }
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'No se pudo clasificar.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createOne = (idx: number) => {
+    if (!result) return;
+    const it = result.items[idx];
+    const rs = rows[idx];
+    if (!rs || rs.status === 'creating' || rs.status === 'done') return;
+    void runCreate(idx, it, rs);
+  };
+
   const createAll = async () => {
     if (!result) return;
     for (let i = 0; i < result.items.length; i++) {
-      if (isTicketable(result.items[i]) && rows[i]?.status === 'idle' && rows[i]?.listingId) {
+      const it = result.items[i];
+      const rs = rows[i];
+      if (isTicketable(it) && rs?.status === 'idle' && rs.listingId) {
         // eslint-disable-next-line no-await-in-loop
-        await createOne(i);
+        await runCreate(i, it, rs);
       }
     }
   };
 
-  const accionables = result ? result.items.filter(isTicketable).length : 0;
+  const creados = result
+    ? result.items.filter((it, i) => isTicketable(it) && rows[i]?.status === 'done').length
+    : 0;
   const pendientes = result
     ? result.items.filter((it, i) => isTicketable(it) && rows[i]?.status !== 'done').length
+    : 0;
+  const creables = result
+    ? result.items.filter((it, i) => isTicketable(it) && rows[i]?.status === 'idle' && rows[i]?.listingId).length
+    : 0;
+  const sinPropiedad = result
+    ? result.items.filter((it, i) => isTicketable(it) && rows[i]?.status !== 'done' && !rows[i]?.listingId).length
     : 0;
 
   return (
@@ -168,7 +197,7 @@ export default function HandoffPage() {
       <header className="handoff-head">
         <span className="handoff-eyebrow">Operaciones · Beta</span>
         <h1>Entrega de turno → Dashboard</h1>
-        <p>Pega el reporte del turno. Claude lo clasifica y, si estás de acuerdo, creas los tickets directo desde aquí (mantenimiento, limpieza e insumos). Los check-ins e informativos no generan ticket.</p>
+        <p>Pega el reporte del turno y dale clasificar: Claude lo clasifica y <strong>crea los tickets automáticamente</strong> (mantenimiento, limpieza e insumos). Los ítems sin propiedad detectada quedan para que la elijas; los check-ins e informativos no generan ticket.</p>
       </header>
 
       <section className="handoff-card">
@@ -185,8 +214,12 @@ export default function HandoffPage() {
           rows={8}
         />
         <div className="handoff-actions">
+          <label className="handoff-auto">
+            <input type="checkbox" checked={autoCreate} onChange={(e) => setAutoCreate(e.target.checked)} />
+            Crear tickets automáticamente
+          </label>
           <button type="button" className="handoff-btn" onClick={onClassify} disabled={loading || !text.trim()}>
-            {loading ? 'Clasificando…' : '✦ Clasificar con IA'}
+            {loading ? (autoCreate ? 'Clasificando y creando…' : 'Clasificando…') : '✦ Clasificar' + (autoCreate ? ' y crear' : '')}
           </button>
         </div>
         {error && <p className="handoff-error">{error}</p>}
@@ -197,10 +230,12 @@ export default function HandoffPage() {
           <div className="handoff-card-head">
             <h2>2 · Propuesta</h2>
             <div className="handoff-head-actions">
-              <span className="handoff-count">{result.count} detectados · {accionables} accionables</span>
-              {pendientes > 0 && (
+              <span className="handoff-count">
+                {result.count} detectados · {creados} creados{pendientes > 0 ? ` · ${pendientes} pendientes` : ''}
+              </span>
+              {creables > 0 && (
                 <button type="button" className="handoff-btn sm" onClick={createAll}>
-                  Crear todos ({pendientes})
+                  Crear pendientes ({creables})
                 </button>
               )}
             </div>
@@ -208,6 +243,13 @@ export default function HandoffPage() {
 
           {result.items.length === 0 && (
             <p className="handoff-empty">La IA no detectó items. Prueba con más detalle.</p>
+          )}
+
+          {sinPropiedad > 0 && (
+            <p className="handoff-warn">
+              ⚠ {sinPropiedad} ítem(s) no se crearon solos porque no se detectó la propiedad.
+              Elige la propiedad en cada uno y dale “Crear ticket”.
+            </p>
           )}
 
           {result.items.map((it: HandoffItem, idx: number) => {

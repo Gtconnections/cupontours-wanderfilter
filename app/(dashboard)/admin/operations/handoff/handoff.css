@@ -195,3 +195,28 @@
   border-color: rgba(255,255,255,0.12);
   color: #ece7dd;
 }
+
+/* --- Modo automático: checkbox + aviso --- */
+.handoff-actions { justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.handoff-auto {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+}
+.handoff-auto input { accent-color: #d4af37; width: 15px; height: 15px; }
+.handoff-warn {
+  font-size: 12.5px;
+  color: #8a5a00;
+  background: #fff7e6;
+  border: 1px solid #ffe2ad;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+[data-theme="dark"] .handoff-auto { color: #a7a199; }
+[data-theme="dark"] .handoff-warn { background: #2a2310; border-color: #4a3c14; color: #e0b96a; }
