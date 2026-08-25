@@ -49,6 +49,15 @@ const TICKET_PRIORITIES: [string, string][] = [
 const VALID_CATS = new Set(TICKET_CATEGORIES.map((c) => c[0]));
 const mapCategory = (c: string) => (VALID_CATS.has(c) ? c : 'otro');
 
+// Opción A: todo cae en Tickets. La categoría por defecto sale de la IA; si no
+// es específica, se decide por el bucket (limpieza/turnover → Limpieza).
+const defaultCategory = (it: HandoffItem): string => {
+  const c = mapCategory(it.category);
+  if (c !== 'otro') return c;
+  if (it.bucket === 'limpieza' || it.bucket === 'turnover') return 'limpieza';
+  return 'otro';
+};
+
 interface ListingOption { id: number; name: string; }
 interface RowState {
   listingId: string;
@@ -94,7 +103,7 @@ export default function HandoffPage() {
       setRows(
         res.items.map((it) => ({
           listingId: it.listing_id ? String(it.listing_id) : '',
-          category: mapCategory(it.category),
+          category: defaultCategory(it),
           priority: TICKET_PRIORITIES.some((p) => p[0] === it.priority) ? it.priority : 'media',
           status: 'idle' as const,
         })),
@@ -159,7 +168,7 @@ export default function HandoffPage() {
       <header className="handoff-head">
         <span className="handoff-eyebrow">Operaciones · Beta</span>
         <h1>Entrega de turno → Dashboard</h1>
-        <p>Pega el reporte del turno. Claude lo clasifica y, si estás de acuerdo, creas los tickets de mantenimiento directo desde aquí.</p>
+        <p>Pega el reporte del turno. Claude lo clasifica y, si estás de acuerdo, creas los tickets directo desde aquí (mantenimiento, limpieza e insumos). Los check-ins e informativos no generan ticket.</p>
       </header>
 
       <section className="handoff-card">
