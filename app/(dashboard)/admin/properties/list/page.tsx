@@ -338,7 +338,7 @@ export default function PropertiesListPage() {
               
               <div className="wander-property-info">
                 <h3 className="wander-property-title">
-                  {property.public_name || property.name}
+                  {property.name || property.public_name}
                 </h3>
                 <p className="wander-property-owner">
                   <FiUser size={12} style={{ marginRight: '4px' }} />

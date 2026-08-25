@@ -36,6 +36,7 @@ export default function ModalEditListing({
     max_of_guest: 0,
     listing_status: true,
     description: '',
+    wa_codes: '',
   });
 
   const [owners, setOwners] = useState<Owner[]>([]);
@@ -100,6 +101,7 @@ export default function ModalEditListing({
         max_of_guest: listing.max_of_guest || 0,
         listing_status: listing.listing_status !== undefined ? listing.listing_status : true,
         description: listing.description || '',
+        wa_codes: listing.wa_codes || '',
       });
       setError(null);
       setIsSuccess(false);
@@ -341,6 +343,23 @@ export default function ModalEditListing({
                   placeholder="603926"
                 />
               </div>
+            </div>
+
+            {/* Códigos WhatsApp (alias para el clasificador de entrega de turno) */}
+            <div className="wander-edit-form-group">
+              <label className="wander-edit-label">Códigos WhatsApp</label>
+              <input
+                type="text"
+                name="wa_codes"
+                className="wander-edit-input"
+                value={formData.wa_codes}
+                onChange={handleChange}
+                disabled={isLoading || isSuccess}
+                placeholder="FM 1612, 1612, Flamingo 1612 (separados por coma)"
+              />
+              <span style={{ fontSize: '0.78rem', opacity: 0.7, marginTop: '4px', display: 'block' }}>
+                Alias que usa el equipo en WhatsApp. Se usan para matchear la entrega de turno.
+              </span>
             </div>
 
             {/* Description */}

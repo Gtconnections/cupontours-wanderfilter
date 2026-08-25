@@ -77,6 +77,7 @@ export default function CreatePropertyPage() {
     max_of_guest: 2,
     booking_price: 0,
     description: '',
+    wa_codes: '',
     amenities: [],
   });
 
@@ -493,6 +494,26 @@ export default function CreatePropertyPage() {
                   onChange={handleChange}
                   disabled={isLoading}
                 />
+              </div>
+
+              <div className="wander-create-property-field full-width">
+                <label className="wander-create-property-label">
+                  <FiTag size={16} />
+                  Códigos WhatsApp
+                </label>
+                <input
+                  type="text"
+                  name="wa_codes"
+                  className="wander-create-property-input"
+                  placeholder="FM 1612, 1612, Flamingo 1612 (separados por coma)"
+                  value={formData.wa_codes}
+                  onChange={handleChange}
+                  disabled={isLoading}
+                />
+                <span style={{ fontSize: '0.78rem', opacity: 0.7, marginTop: '4px', display: 'block' }}>
+                  Alias que usa el equipo en WhatsApp para esta propiedad. Se usan para
+                  matchear la entrega de turno automáticamente.
+                </span>
               </div>
 
               <div className="wander-create-property-field full-width">
