@@ -90,6 +90,7 @@ function paginate<T>(arr: T[], pg: number): { items: T[]; totalPages: number; cu
   return { items: arr.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE), totalPages, current };
 }
 
+
 function Pager({ page, totalPages, onPage }: { page: number; totalPages: number; onPage: (p: number) => void }) {
   if (totalPages <= 1) return null;
   return (
