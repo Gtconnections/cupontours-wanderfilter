@@ -162,3 +162,36 @@
 [data-theme="dark"] .handoff-item-title { color: #ece7dd; }
 [data-theme="dark"] .handoff-pill { background: #24242a; color: #cfc9c0; }
 [data-theme="dark"] .handoff-item-excerpt { color: #7f7a72; }
+
+/* --- Fase 2: crear tickets desde la propuesta --- */
+.handoff-head-actions { display: flex; align-items: center; gap: 12px; }
+.handoff-btn.sm { padding: 7px 14px; font-size: 13px; border-radius: 8px; }
+
+.handoff-ticket-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #ececec;
+}
+.handoff-select {
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 12px;
+  color: #333;
+  background: #fff;
+  max-width: 190px;
+}
+.handoff-created { font-size: 13px; font-weight: 600; color: #1e9e54; }
+.handoff-row-error { font-size: 12px; color: #c0392b; }
+
+[data-theme="dark"] .handoff-ticket-form { border-top-color: rgba(255,255,255,0.10); }
+[data-theme="dark"] .handoff-select {
+  background: #1c1c20;
+  border-color: rgba(255,255,255,0.12);
+  color: #ece7dd;
+}
