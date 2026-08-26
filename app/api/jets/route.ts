@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
+import { sendMail } from '@/app/lib/services/mailer';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +21,7 @@ export async function POST(request: Request) {
 
     // Estructura del correo electrónico editorial de Wander
     const msg = {
-      to: 'jimenito.2014.mj@gmail.com',
+      to: process.env.CONTACT_INBOX || 'info@cupontours.com',
       from: from, // ✅ Ahora es "CuponTours <info@cupontours.com>"
       replyTo: contact.email,
       subject: `[Private Aviation] Charter Quote Request - ${contact.firstName} ${contact.lastName}`,
@@ -47,7 +46,7 @@ export async function POST(request: Request) {
       `,
     };
 
-    await sgMail.send(msg);
+    await sendMail(msg);
 
     return NextResponse.json(
       { success: true, message: "Your flight criteria has been processed successfully! An aviation specialist will reach out within 2 hours." },
