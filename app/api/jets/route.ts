@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sendMail } from '@/app/lib/services/mailer';
+import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 
 export async function POST(request: Request) {
@@ -26,24 +27,25 @@ export async function POST(request: Request) {
       replyTo: contact.email,
       subject: `[Private Aviation] Charter Quote Request - ${contact.firstName} ${contact.lastName}`,
       text: `New private charter inquiry received:\n\nFLIGHT CRITERIA:\nDeparture: ${flightCriteria.departureCity}\nDestination: ${flightCriteria.destinationCity}\nPassengers: ${flightCriteria.passengers}\nTrip Type: ${flightCriteria.tripType}\nTime: ${flightCriteria.departureTime}\nDates: ${flightCriteria.departureDate} -> ${flightCriteria.returnDate || 'N/A'}\n\nCONTACT INFO:\nName: ${contact.firstName} ${contact.lastName}\nEmail: ${contact.email}\nPhone: ${contact.phone}\nInstagram: ${contact.instagram || 'Not provided'}`,
-      html: `
-        <div style="font-family: sans-serif; padding: 20px; color: #111111; max-width: 600px; margin: 0 auto; border: 1px solid #e4e4e7; border-radius: 12px;">
-          <h2 style="font-size: 20px; font-weight: 700; border-bottom: 1px solid #ebebeb; padding-bottom: 12px; color: #111111;">New Private Jet Quote Request</h2>
-          
-          <h3 style="font-size: 15px; margin-top: 20px; color: #444444;">Flight Criteria</h3>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Route:</strong> ${flightCriteria.departureCity} &rarr; ${flightCriteria.destinationCity}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Trip Type:</strong> ${flightCriteria.tripType}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Passengers:</strong> ${flightCriteria.passengers}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Departure Time:</strong> ${flightCriteria.departureTime}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Date:</strong> ${flightCriteria.departureDate}</p>
-          
-          <h3 style="font-size: 15px; margin-top: 24px; color: #444444; border-top: 1px solid #f4f4f5; padding-top: 16px;">Contact Details</h3>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Client:</strong> ${contact.firstName} ${contact.lastName}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Email:</strong> ${contact.email}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Phone:</strong> ${contact.phone}</p>
-          <p style="font-size: 14px; margin: 8px 0;"><strong>Instagram:</strong> ${contact.instagram || 'Not provided'}</p>
-        </div>
-      `,
+      html: renderInquiryEmail({
+        eyebrow: 'Private aviation',
+        title: 'New Private Jet Quote Request',
+        sections: [
+          { heading: 'Flight Criteria', rows: [
+            { label: 'Route', value: `${flightCriteria.departureCity} → ${flightCriteria.destinationCity}` },
+            { label: 'Trip Type', value: flightCriteria.tripType },
+            { label: 'Passengers', value: String(flightCriteria.passengers) },
+            { label: 'Departure Time', value: flightCriteria.departureTime },
+            { label: 'Date', value: flightCriteria.departureDate },
+          ] },
+          { heading: 'Contact Details', rows: [
+            { label: 'Client', value: `${contact.firstName} ${contact.lastName}` },
+            { label: 'Email', value: contact.email },
+            { label: 'Phone', value: contact.phone },
+            { label: 'Instagram', value: contact.instagram || 'Not provided' },
+          ] },
+        ],
+      }),
     };
 
     await sendMail(msg);

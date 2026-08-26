@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sendMail } from '@/app/lib/services/mailer';
+import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 
 export async function POST(request: Request) {
@@ -26,18 +27,18 @@ export async function POST(request: Request) {
       replyTo: email,
       subject: `Work With Us Request: ${firstName} ${lastName}`,
       text: `New alliance request received from your website:\n\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber || 'Not provided'}\n\nMessage:\n${message}`,
-      html: `
-        <div style="font-family: sans-serif; padding: 20px; color: #111111; max-width: 600px; margin: 0 auto; border: 1px solid #e4e4e7; border-radius: 12px;">
-          <h2 style="font-size: 20px; font-weight: 700; border-bottom: 1px solid #ebebeb; padding-bottom: 12px; color: #111111;">New Alliance Request</h2>
-          <p style="font-size: 14px; margin: 16px 0;"><strong>Name:</strong> ${firstName} ${lastName}</p>
-          <p style="font-size: 14px; margin: 16px 0;"><strong>Email:</strong> ${email}</p>
-          <p style="font-size: 14px; margin: 16px 0;"><strong>Phone:</strong> ${phoneNumber || 'Not provided'}</p>
-          <div style="background-color: #f5f5f5; padding: 16px; border-radius: 8px; margin-top: 20px;">
-            <p style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Property/Alliance Details:</p>
-            <p style="font-size: 14px; line-height: 1.5; white-space: pre-wrap; margin: 0;">${message}</p>
-          </div>
-        </div>
-      `,
+      html: renderInquiryEmail({
+        eyebrow: 'Work with us',
+        title: 'New Alliance Request',
+        sections: [
+          { rows: [
+            { label: 'Name', value: `${firstName} ${lastName}` },
+            { label: 'Email', value: email },
+            { label: 'Phone', value: phoneNumber || 'Not provided' },
+          ] },
+        ],
+        message: { label: 'Property / Alliance details', body: message },
+      }),
     };
 
     await sendMail(msg);

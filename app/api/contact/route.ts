@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sendMail } from '@/app/lib/services/mailer';
-
-// Inicializamos SendGrid con tu API Key alojada de forma segura en las variables de entorno (.env.local)
+import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 export async function POST(request: Request) {
   try {
@@ -28,18 +27,18 @@ export async function POST(request: Request) {
       replyTo: email,
       subject: `New Contact Request: ${firstName} ${lastName}`,
       text: `New contact request received from your website:\n\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber || 'Not provided'}\n\nMessage:\n${message}`,
-      html: `
-        <div style="font-family: sans-serif; padding: 20px; color: #111111; max-width: 600px; margin: 0 auto; border: 1px solid #e4e4e7; border-radius: 12px;">
-          <h2 style="font-size: 20px; font-weight: 700; border-bottom: 1px solid #ebebeb; padding-bottom: 12px;">New Contact Request</h2>
-          <p style="font-size: 14px; margin: 16px 0;"><strong>Name:</strong> ${firstName} ${lastName}</p>
-          <p style="font-size: 14px; margin: 16px 0;"><strong>Email:</strong> ${email}</p>
-          <p style="font-size: 14px; margin: 16px 0;"><strong>Phone:</strong> ${phoneNumber || 'Not provided'}</p>
-          <div style="background-color: #f5f5f5; padding: 16px; border-radius: 8px; margin-top: 20px;">
-            <p style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Message:</p>
-            <p style="font-size: 14px; line-height: 1.5; white-space: pre-wrap; margin: 0;">${message}</p>
-          </div>
-        </div>
-      `,
+      html: renderInquiryEmail({
+        eyebrow: 'Website inquiry',
+        title: 'New Contact Request',
+        sections: [
+          { rows: [
+            { label: 'Name', value: `${firstName} ${lastName}` },
+            { label: 'Email', value: email },
+            { label: 'Phone', value: phoneNumber || 'Not provided' },
+          ] },
+        ],
+        message: { label: 'Message', body: message },
+      }),
     };
 
     // Envío del correo vía SendGrid
