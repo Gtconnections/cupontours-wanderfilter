@@ -5,10 +5,12 @@
 
 // Server-side environment variables
 export const serverConfig = {
-  // SendGrid Email Configuration
+  // (Obsoleto) Config de SendGrid. Ya no se usa: los correos salen por Gmail SMTP
+  // (ver app/lib/services/mailer.ts). Se deja el shape sin credenciales para no
+  // romper referencias antiguas; no pongas API keys aquí.
   sendGrid: {
-    apiKey: process.env.SENDGRID_API_KEY || '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',
-    fromEmail: process.env.SENDGRID_FROM_EMAIL || 'non-reply@cupontour.com',
+    apiKey: process.env.SENDGRID_API_KEY || '',
+    fromEmail: process.env.SENDGRID_FROM_EMAIL || 'info@cupontours.com',
     fromName: process.env.SENDGRID_FROM_NAME || 'Cupon Tours',
   },
 
