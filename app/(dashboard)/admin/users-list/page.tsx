@@ -11,12 +11,14 @@ import {
   deleteUser,
   createUser,
   updateUserStatus,
+  adminSetPassword,
   UpdateUserData,
   CreateUserData
 } from '@/app/lib/api/profiles';
 import EditUserModal from '../components/EditUserModal';
 import DeleteUserModal from '../components/DeleteUserModal';
 import CreateUserModal from '../components/CreateUserModal';
+import AdminChangePasswordModal from '../components/AdminChangePasswordModal';
 import {
   FiRefreshCw,
   FiPlus,
@@ -25,6 +27,7 @@ import {
   FiUser,
   FiUserCheck,
   FiUserX,
+  FiKey,
   FiChevronLeft,
   FiChevronRight
 } from 'react-icons/fi';
@@ -77,6 +80,7 @@ export default function UsersListPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   // Cargar datos
   const loadProfiles = useCallback(async (forceRefresh = false) => {
@@ -185,10 +189,24 @@ export default function UsersListPage() {
     setIsDeleteModalOpen(true);
   };
 
+  // 🔥 ABRIR MODAL DE CAMBIO DE CONTRASEÑA (admin)
+  const openPasswordModal = (user: UserProfile) => {
+    setSelectedUser(user);
+    setIsPasswordModalOpen(true);
+  };
+
+  // 🔥 RESETEAR CONTRASEÑA (admin)
+  const handleAdminSetPassword = async (newPassword: string) => {
+    if (!selectedUser) return;
+    await adminSetPassword(selectedUser.user.id, newPassword);
+    showToast('Contraseña actualizada correctamente', 'success');
+  };
+
   // 🔥 CERRAR MODALES
   const closeModals = () => {
     setIsEditModalOpen(false);
     setIsDeleteModalOpen(false);
+    setIsPasswordModalOpen(false);
     setSelectedUser(null);
   };
 
@@ -521,6 +539,13 @@ export default function UsersListPage() {
                         </svg>
                       </button>
                       <button
+                        onClick={() => openPasswordModal(profile)}
+                        className="wander-action-btn wander-action-edit"
+                        title="Cambiar contraseña"
+                      >
+                        <FiKey size={16} />
+                      </button>
+                      <button
                         onClick={() => openDeleteModal(profile)}
                         className="wander-action-btn wander-action-delete"
                         title="Eliminar usuario"
@@ -622,6 +647,13 @@ export default function UsersListPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onCreate={handleCreateUser}
+      />
+
+      <AdminChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        user={selectedUser}
+        onClose={closeModals}
+        onSubmit={handleAdminSetPassword}
       />
     </div>
   );

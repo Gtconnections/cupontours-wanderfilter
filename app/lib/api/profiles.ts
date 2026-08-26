@@ -445,6 +445,51 @@ export async function createUser(userData: CreateUserData): Promise<unknown> {
   }
 }
 
+// 🔥 RESETEAR CONTRASEÑA DE OTRO USUARIO (solo admin/staff, no pide la clave actual)
+export async function adminSetPassword(userId: number, newPassword: string): Promise<void> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('No hay sesión activa');
+  }
+
+  const url = `${API_BASE_URL}/authenticate/admin-set-password/`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`,
+    },
+    body: JSON.stringify({ user_id: userId, new_password: newPassword }),
+  });
+
+  if (response.status === 401) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('isUserLoggedIn');
+      localStorage.removeItem('userData');
+      window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+    }
+    throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+  }
+
+  if (response.status === 403) {
+    throw new Error('Solo un administrador puede cambiar contraseñas.');
+  }
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    let msg = `Error ${response.status}: no se pudo cambiar la contraseña`;
+    try {
+      const data = JSON.parse(errorText);
+      msg = data.error || data.detail || msg;
+    } catch { /* texto plano */ }
+    throw new Error(msg);
+  }
+}
+
 export function clearProfilesCache() {
   profilesCache = {
     data: null,
