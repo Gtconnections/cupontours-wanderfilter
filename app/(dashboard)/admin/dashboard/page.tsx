@@ -10,6 +10,101 @@ import { useAuth } from '@/app/lib/utils/useAuth';
 // Cuántas reservaciones se muestran por página en "Reservations Information".
 const RES_PAGE_SIZE = 8;
 
+// Bloque placeholder con animación shimmer, para los skeletons de carga.
+function SkeletonBlock({
+  height = 20,
+  width = '100%',
+  radius = 8,
+  style = {},
+}: {
+  height?: number | string;
+  width?: number | string;
+  radius?: number;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <div
+      style={{
+        height,
+        width,
+        borderRadius: radius,
+        background: 'linear-gradient(90deg, #ececec 25%, #f5f5f5 37%, #ececec 63%)',
+        backgroundSize: '400% 100%',
+        animation: 'wanderShimmer 1.4s ease infinite',
+        ...style,
+      }}
+    />
+  );
+}
+
+// Skeleton del dashboard: muestra la estructura al instante mientras cargan
+// los datos, para que se sienta que algo está pasando (no una pantalla vacía).
+function DashboardSkeleton() {
+  const card: React.CSSProperties = {
+    background: '#fff',
+    border: '1px solid #ebebeb',
+    borderRadius: '12px',
+    padding: '20px',
+  };
+  return (
+    <div className="wander-dashboard-view" aria-busy="true">
+      <style>{`@keyframes wanderShimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }`}</style>
+
+      {/* Header */}
+      <div style={{ marginBottom: '24px' }}>
+        <SkeletonBlock height={26} width={220} />
+        <div style={{ height: 8 }} />
+        <SkeletonBlock height={14} width={320} />
+      </div>
+
+      {/* Tarjetas de métricas */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} style={card}>
+            <SkeletonBlock height={14} width={90} />
+            <div style={{ height: 12 }} />
+            <SkeletonBlock height={28} width={120} />
+          </div>
+        ))}
+      </div>
+
+      {/* Gráfico */}
+      <div style={{ ...card, marginBottom: '24px' }}>
+        <SkeletonBlock height={16} width={160} />
+        <div style={{ height: 16 }} />
+        <SkeletonBlock height={220} />
+      </div>
+
+      {/* Calendario */}
+      <div style={{ ...card, marginBottom: '24px' }}>
+        <SkeletonBlock height={16} width={160} />
+        <div style={{ height: 16 }} />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+          {Array.from({ length: 35 }).map((_, i) => (
+            <SkeletonBlock key={i} height={56} />
+          ))}
+        </div>
+      </div>
+
+      {/* Lista de reservaciones */}
+      <div style={card}>
+        <SkeletonBlock height={16} width={200} />
+        <div style={{ height: 16 }} />
+        {[0, 1, 2, 3, 4].map((i) => (
+          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0', gap: '12px' }}>
+            <div style={{ flex: 1 }}>
+              <SkeletonBlock height={14} width="40%" />
+              <div style={{ height: 8 }} />
+              <SkeletonBlock height={12} width="60%" />
+            </div>
+            <SkeletonBlock height={24} width={80} radius={20} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function AdminDashboardPage() {
   const { token, isChecking, logout } = useAuth();
 
@@ -37,7 +132,11 @@ export default function AdminDashboardPage() {
         
         const data = await getDashboardData();
         setDashboardData(data);
-        try { setAttention(await getAttention()); } catch { /* attention es best-effort */ }
+        setIsLoading(false); // mostramos el contenido principal apenas llega
+
+        // "Requires your attention" es secundario: se carga en segundo plano y
+        // aparece cuando esté listo, sin retrasar el resto del dashboard.
+        getAttention().then(setAttention).catch(() => { /* best-effort */ });
       } catch (err) {
         console.error('Error al cargar datos del dashboard:', err);
         setError(`Error al cargar datos: ${(err instanceof Error ? err.message : undefined)}`);
@@ -191,14 +290,7 @@ export default function AdminDashboardPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="wander-dashboard-view">
-        <div className="wander-empty-state-viewport">
-          <span className="wander-empty-title">Loading Analytics...</span>
-          <p className="wander-empty-desc">Fetching real-time data from the ecosystem.</p>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (error || !dashboardData) {
