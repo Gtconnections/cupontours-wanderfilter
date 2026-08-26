@@ -7,15 +7,25 @@ import { getDashboardData, DashboardData, Reservation, ReservationData, MonthlyR
 import { getAttention, AttentionData } from '@/app/lib/api/operations';
 import { useAuth } from '@/app/lib/utils/useAuth';
 
+// Cuántas reservaciones se muestran por página en "Reservations Information".
+const RES_PAGE_SIZE = 8;
+
 export default function AdminDashboardPage() {
   const { token, isChecking, logout } = useAuth();
-  
+
   const [activeTab, setActiveTab] = useState<'upcoming' | 'checkin' | 'checkout'>('upcoming');
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [attention, setAttention] = useState<AttentionData | null>(null);
+  // Página actual de la lista de reservaciones (paginado en cliente).
+  const [resPage, setResPage] = useState(1);
+
+  // Al cambiar de pestaña (upcoming/checkin/checkout), volver a la página 1.
+  useEffect(() => {
+    setResPage(1);
+  }, [activeTab]);
 
   useEffect(() => {
     async function loadDashboard() {
@@ -725,70 +735,132 @@ export default function AdminDashboardPage() {
           </button>
         </div>
 
-        {(activeTab === 'upcoming' && dashboardData.upcoming_reservations?.length === 0) ||
-         (activeTab === 'checkin' && dashboardData.check_in?.length === 0) ||
-         (activeTab === 'checkout' && dashboardData.check_out?.length === 0) ? (
-          <div className="wander-empty-state-viewport">
-            <span className="wander-empty-title">
-              {activeTab === 'upcoming' && 'Upcoming Reservations'}
-              {activeTab === 'checkin' && 'Check In Schedule'}
-              {activeTab === 'checkout' && 'Check Out Schedule'}
-            </span>
-            <p className="wander-empty-desc">
-              {(activeTab === 'upcoming' && "You don't have upcoming reservations.")}
-              {(activeTab === 'checkin' && "You don't have check-ins scheduled.")}
-              {(activeTab === 'checkout' && "You don't have check-outs scheduled.")}
-            </p>
-          </div>
-        ) : (
-          <div className="wander-reservations-list">
-            {(activeTab === 'upcoming' ? dashboardData.upcoming_reservations :
-              activeTab === 'checkin' ? dashboardData.check_in :
-              dashboardData.check_out)?.map((reservation: Reservation) => (
-                <div key={reservation.id} className="wander-reservation-item" style={{
-                  padding: '16px',
-                  borderBottom: '1px solid #ebebeb',
+        {(() => {
+          const activeList = (activeTab === 'upcoming' ? dashboardData.upcoming_reservations :
+            activeTab === 'checkin' ? dashboardData.check_in :
+            dashboardData.check_out) || [];
+
+          if (activeList.length === 0) {
+            return (
+              <div className="wander-empty-state-viewport">
+                <span className="wander-empty-title">
+                  {activeTab === 'upcoming' && 'Upcoming Reservations'}
+                  {activeTab === 'checkin' && 'Check In Schedule'}
+                  {activeTab === 'checkout' && 'Check Out Schedule'}
+                </span>
+                <p className="wander-empty-desc">
+                  {(activeTab === 'upcoming' && "You don't have upcoming reservations.")}
+                  {(activeTab === 'checkin' && "You don't have check-ins scheduled.")}
+                  {(activeTab === 'checkout' && "You don't have check-outs scheduled.")}
+                </p>
+              </div>
+            );
+          }
+
+          const totalPages = Math.max(1, Math.ceil(activeList.length / RES_PAGE_SIZE));
+          const page = Math.min(resPage, totalPages);
+          const pageItems = activeList.slice((page - 1) * RES_PAGE_SIZE, page * RES_PAGE_SIZE);
+
+          return (
+            <>
+              <div className="wander-reservations-list">
+                {pageItems.map((reservation: Reservation) => (
+                  <div key={reservation.id} className="wander-reservation-item" style={{
+                    padding: '16px',
+                    borderBottom: '1px solid #ebebeb',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '8px'
+                  }}>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: '14px' }}>
+                        {reservation.listing_name}
+                      </div>
+                      <div style={{ fontSize: '13px', color: '#717171' }}>
+                        {reservation.guest_name} • {reservation.nights || 0} noches • {reservation.number_of_guest || 0} huéspedes
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+                        {formatDate(reservation.start_date)} → {formatDate(reservation.end_date)}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontWeight: 600, fontSize: '15px' }}>
+                        {formatCurrency(Number(reservation.earnings) || 0)}
+                      </span>
+                      <span style={{
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        backgroundColor: reservation.status === 'confirmed' ? '#dcfce7' :
+                                       reservation.status === 'pending' ? '#fef3c7' :
+                                       reservation.status === 'cancelled' ? '#fee2e2' : '#e5e7eb',
+                        color: reservation.status === 'confirmed' ? '#166534' :
+                               reservation.status === 'pending' ? '#92400e' :
+                               reservation.status === 'cancelled' ? '#991b1b' : '#374151'
+                      }}>
+                        {reservation.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  flexWrap: 'wrap',
-                  gap: '8px'
+                  justifyContent: 'center',
+                  gap: '16px',
+                  padding: '16px',
+                  borderTop: '1px solid #ebebeb',
+                  flexWrap: 'wrap'
                 }}>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: '14px' }}>
-                      {reservation.listing_name}
-                    </div>
-                    <div style={{ fontSize: '13px', color: '#717171' }}>
-                      {reservation.guest_name} • {reservation.nights || 0} noches • {reservation.number_of_guest || 0} huéspedes
-                    </div>
-                    <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
-                      {formatDate(reservation.start_date)} → {formatDate(reservation.end_date)}
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontWeight: 600, fontSize: '15px' }}>
-                      {formatCurrency(Number(reservation.earnings) || 0)}
-                    </span>
-                    <span style={{
-                      padding: '4px 12px',
-                      borderRadius: '20px',
-                      fontSize: '11px',
+                  <button
+                    type="button"
+                    onClick={() => setResPage((p) => Math.max(1, p - 1))}
+                    disabled={page <= 1}
+                    style={{
+                      padding: '6px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #d0d0d0',
+                      background: '#fff',
+                      fontSize: '13px',
                       fontWeight: 600,
-                      textTransform: 'uppercase',
-                      backgroundColor: reservation.status === 'confirmed' ? '#dcfce7' :
-                                     reservation.status === 'pending' ? '#fef3c7' :
-                                     reservation.status === 'cancelled' ? '#fee2e2' : '#e5e7eb',
-                      color: reservation.status === 'confirmed' ? '#166534' :
-                             reservation.status === 'pending' ? '#92400e' :
-                             reservation.status === 'cancelled' ? '#991b1b' : '#374151'
-                    }}>
-                      {reservation.status}
-                    </span>
-                  </div>
+                      cursor: page <= 1 ? 'not-allowed' : 'pointer',
+                      opacity: page <= 1 ? 0.5 : 1
+                    }}
+                  >
+                    ← Anterior
+                  </button>
+                  <span style={{ fontSize: '13px', color: '#717171' }}>
+                    Página {page} de {totalPages} · {activeList.length} reservaciones
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setResPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page >= totalPages}
+                    style={{
+                      padding: '6px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #d0d0d0',
+                      background: '#fff',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      cursor: page >= totalPages ? 'not-allowed' : 'pointer',
+                      opacity: page >= totalPages ? 0.5 : 1
+                    }}
+                  >
+                    Siguiente →
+                  </button>
                 </div>
-              ))}
-          </div>
-        )}
+              )}
+            </>
+          );
+        })()}
       </section>
     </div>
   );
