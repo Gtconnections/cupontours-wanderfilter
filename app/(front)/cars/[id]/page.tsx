@@ -380,7 +380,7 @@ export default function CarDetailPage({ params }: PageProps) {
             </section>
 
             {/* SPECS */}
-            <section className="lux-card">
+            <section className="lux-card lux-card--stats">
               <div className="lux-stats-grid">
                 {statCards.map((s, i) => (
                   <div key={i} className="lux-stat">

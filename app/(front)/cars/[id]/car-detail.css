@@ -590,3 +590,23 @@
 
   .lux-amenities-grid { grid-template-columns: repeat(2, 1fr); gap: 26px 34px; }
 }
+
+/* ============================================
+   VISTA APILADA (móvil / tablet): calendario + info clave tras la galería.
+   Las columnas usan display:contents para intercalar con order.
+   Solo por debajo del layout de 2 columnas (1024px).
+   ============================================ */
+@media (max-width: 1023px) {
+  .content-left-side,
+  .content-right-side,
+  .content-right-side .lux-sticky {
+    display: contents;
+  }
+
+  .lux-gallery                                       { order: 1; }
+  .lux-card--stats                                   { order: 2; }
+  .lux-reserve-card                                  { order: 3; }
+  .content-left-side .lux-card:not(.lux-card--stats) { order: 4; }
+  .lux-badges-card                                   { order: 5; }
+  .content-right-side .lux-card                       { order: 6; }
+}
