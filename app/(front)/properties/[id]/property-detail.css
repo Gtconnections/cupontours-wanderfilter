@@ -756,3 +756,26 @@
 
   .lux-amenities-grid { grid-template-columns: repeat(2, 1fr); gap: 26px 34px; }
 }
+
+/* ============================================
+   VISTA APILADA (móvil / tablet): subir el calendario y la info clave
+   justo después de la galería.
+   Truco: las columnas usan `display: contents` para que sus hijos pasen a ser
+   ítems flex directos de `.property-content-layout`, y con `order` intercalamos:
+   galería → info clave (stats) → calendario → descripción/amenities → resto.
+   Solo aplica por debajo del layout de 2 columnas (1024px).
+   ============================================ */
+@media (max-width: 1023px) {
+  .content-left-side,
+  .content-right-side,
+  .content-right-side .lux-sticky {
+    display: contents;
+  }
+
+  .lux-gallery                                       { order: 1; }
+  .lux-card--stats                                   { order: 2; }
+  .lux-reserve-card                                  { order: 3; }
+  .content-left-side .lux-card:not(.lux-card--stats) { order: 4; }
+  .lux-badges-card                                   { order: 5; }
+  .content-right-side .lux-card                       { order: 6; }
+}
