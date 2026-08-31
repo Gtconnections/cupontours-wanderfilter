@@ -89,7 +89,8 @@ export default function LoginContent({ locale = 'en' }: { locale?: Locale }) {
 
       await new Promise(resolve => setTimeout(resolve, 200));
 
-      window.location.href = '/admin/dashboard';
+      const pos = String(result.position || '').toLowerCase();
+      window.location.href = pos === 'agent' ? '/admin/agents' : '/admin/dashboard';
 
     } catch (error) {
       console.error('Error en el login:', error);

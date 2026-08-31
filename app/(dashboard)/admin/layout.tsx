@@ -4,6 +4,7 @@ import "@/app/(front)/globals.css"; // Cargamos tus variables globales (--bg-mai
 import { Sidebar } from "./components/Sidebar";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
+import RoleGate from "./components/RoleGate";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -33,7 +34,7 @@ export default function AdminLayout({
 
             {/* 3. VIEWPORT DE CONTENIDO VARIABLE (AQUÍ CAEN LAS TABLAS Y FILTROS) */}
             <main className="wander-admin-viewport">
-              {children}
+              <RoleGate>{children}</RoleGate>
             </main>
 
             {/* 4. COMPONENTE FOOTER */}

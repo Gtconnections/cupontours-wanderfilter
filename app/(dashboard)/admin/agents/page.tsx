@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import {
   getAgents, getAgentDashboard, assignAgent,
@@ -229,7 +230,11 @@ export default function AdminAgentsPage() {
                   <tbody>
                     {dash.listings.map((l) => (
                       <tr key={l.id}>
-                        <td style={td}><strong>{l.name}</strong></td>
+                        <td style={td}>
+                          <Link href={`/admin/agents/property/${l.id}`} style={{ color: INK, fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 3 }}>
+                            {l.name}
+                          </Link>
+                        </td>
                         <td style={td}>{Number(l.commission_pct)}%</td>
                         <td style={td}>{l.last_pl?.date || '—'}</td>
                         <td style={td}>{l.last_pl ? money(l.last_pl.total_income) : '—'}</td>

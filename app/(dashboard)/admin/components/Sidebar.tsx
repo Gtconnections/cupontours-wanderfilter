@@ -7,7 +7,9 @@ import { useState, useEffect } from "react";
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const position = String((user?.position as string) || '').toLowerCase();
+  const isAgent = position === 'agent' || position === '4';
 
   // 🔥 ESTADO PARA SUBMENÚS DESPLEGADOS
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
@@ -141,16 +143,57 @@ export function Sidebar() {
     // { name: "Cupon Tours Chat", href: "/admin/chat" }, // oculto temporalmente
   ];
 
+  // 🔥 MENÚ REDUCIDO PARA AGENTES (solo su panel y su perfil)
+  const agentMenuItems = [
+    { name: "Mi panel", href: "/admin/agents" },
+    { name: "Mi perfil", href: "/admin/profile" },
+  ];
+
+  if (isAgent) {
+    return (
+      <aside className="wander-sidebar">
+        <div className="wander-sidebar-brand">
+          <img
+            src="https://res.cloudinary.com/gt-connections/image/upload/v1701818354/cupon-tours/STARTUP/logo-cupontours_s3akql.png"
+            alt="Cupontours Wander"
+            className="wander-admin-logo"
+          />
+        </div>
+
+        <ul className="wander-sidebar-menu">
+          {agentMenuItems.map((item) => {
+            const isActive = pathname === item.href || (item.href === "/admin/agents" && pathname.startsWith("/admin/agents"));
+            return (
+              <li key={item.href} className={`wander-menu-item ${isActive ? "active" : ""}`}>
+                <Link href={item.href}>
+                  <span>{item.name}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="wander-sidebar-footer">
+          <div className="wander-menu-item">
+            <a href="#" onClick={logout}>
+              <span style={{ color: '#dc3545' }}>Cerrar Sesión</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="wander-sidebar">
       <div className="wander-sidebar-brand">
-        <img 
-          src="https://res.cloudinary.com/gt-connections/image/upload/v1701818354/cupon-tours/STARTUP/logo-cupontours_s3akql.png" 
-          alt="Cupontours Wander" 
+        <img
+          src="https://res.cloudinary.com/gt-connections/image/upload/v1701818354/cupon-tours/STARTUP/logo-cupontours_s3akql.png"
+          alt="Cupontours Wander"
           className="wander-admin-logo"
         />
       </div>
-      
+
       <ul className="wander-sidebar-menu">
         {/* Menú principal */}
         {mainMenuItems.map((item) => {

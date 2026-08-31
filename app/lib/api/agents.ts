@@ -89,6 +89,35 @@ export async function getAgentDashboard(agentId?: number): Promise<AgentDashboar
   return request(`/agents/me/dashboard/${q}`);
 }
 
+export interface AgentListingDetail {
+  id: number;
+  name: string;
+  public_name: string;
+  listing_type: string | null;
+  address: string | null;
+  status: string | null;
+  beds: number | null;
+  bath: number | null;
+  max_of_guest: number | null;
+  rent_price: string;
+  description: string;
+  commission_pct: string;
+  principal_photo: string | null;
+  photos: string[];
+  agreement: { title: string; expiration_date: string | null; url: string | null } | null;
+  pl_history: {
+    date: string | null;
+    total_income: string;
+    total_expenses: string;
+    income_minus_expenses: string;
+    partner_net: string;
+  }[];
+}
+
+export async function getAgentListing(listingId: number): Promise<AgentListingDetail> {
+  return request(`/agents/me/listings/${listingId}/`);
+}
+
 export async function assignAgent(
   listingId: number,
   agentId: number | null,
