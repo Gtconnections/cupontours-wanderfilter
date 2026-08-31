@@ -33,6 +33,7 @@ export function Sidebar() {
         { name: "Create an Invoice", href: "/admin/properties/invoices/create" },
         { name: "Create a Reservation", href: "/admin/properties/reservations/create" },
         { name: "Agreements", href: "/admin/properties/agreements" },
+        { name: "Agentes", href: "/admin/agents" },
         { name: "Create masses", href: "/admin/properties/create-masses" },
       ]
     },

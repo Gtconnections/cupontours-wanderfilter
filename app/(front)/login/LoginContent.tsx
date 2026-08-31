@@ -44,6 +44,7 @@ export default function LoginContent({ locale = 'en' }: { locale?: Locale }) {
       const positionMap: Record<string, string> = {
         'admin': '1', 'administrator': '1', 'superadmin': '1',
         'owner': '2', 'proprietor': '2',
+        'agent': '4', 'seller': '4',
         'customer': '3', 'client': '3', 'user': '3'
       };
       localStorage.setItem('position', positionMap[userData.position.toLowerCase()] || '3');
