@@ -45,6 +45,7 @@ export interface UpdateUserData {
 export const POSITIONS = [
   { value: 'admin', label: 'Admin' },
   { value: 'owner', label: 'Owner' },
+  { value: 'agent', label: 'Agent' },
   { value: 'seller', label: 'Seller' },
   { value: 'housekeeper', label: 'Housekeeper' },
   { value: 'front_desk', label: 'Front Desk' },

@@ -276,6 +276,7 @@ export default function UsersListPage() {
     const colors: Record<string, string> = {
       'admin': '#dc2626',
       'owner': '#2563eb',
+      'agent': '#c8a24b',
       'customer': '#16a34a',
       'user': '#6b7280',
       'seller': '#8b5cf6',
