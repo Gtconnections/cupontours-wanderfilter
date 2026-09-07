@@ -493,13 +493,13 @@ export default function ModalEditListing({
                 Normas que el agente de atención al cliente usará para responder (mascotas, check-in, ruido, etc.). Si una regla no está aquí, el agente no la inventa.
               </span>
               {(formData.rules || []).map((rule, index) => (
-                <div key={index} className="wander-edit-row" style={{ marginBottom: '8px', alignItems: 'center' }}>
+                <div key={index} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px' }}>
                   <select
                     className="wander-edit-select"
                     value={rule.categoria || ''}
                     onChange={(e) => updateRule(index, 'categoria', e.target.value)}
                     disabled={isLoading || isSuccess}
-                    style={{ maxWidth: '190px' }}
+                    style={{ flex: '0 0 180px', maxWidth: '180px' }}
                   >
                     <option value="">Categoría…</option>
                     {RULE_CATEGORIES.map((c) => (
@@ -513,13 +513,15 @@ export default function ModalEditListing({
                     onChange={(e) => updateRule(index, 'texto', e.target.value)}
                     disabled={isLoading || isSuccess}
                     placeholder="Ej: No se permiten mascotas."
+                    style={{ flex: '1 1 auto', minWidth: 0 }}
                   />
                   <button
                     type="button"
                     onClick={() => removeRule(index)}
                     disabled={isLoading || isSuccess}
                     aria-label="Eliminar regla"
-                    style={{ background: 'transparent', border: 'none', color: '#dc3545', fontSize: '1.1rem', cursor: 'pointer', padding: '0 6px' }}
+                    title="Eliminar"
+                    style={{ flex: '0 0 auto', background: 'transparent', border: 'none', color: '#dc3545', fontSize: '1.25rem', lineHeight: 1, cursor: 'pointer', padding: '4px 6px' }}
                   >
                     ✕
                   </button>
