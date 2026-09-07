@@ -3,7 +3,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { editListing, EditListingData, PropertyDetailResponse, getOwners, Owner } from '@/app/lib/api/propertiesAdmin';
+import { editListing, EditListingData, PropertyDetailResponse, getOwners, Owner, PropertyRule } from '@/app/lib/api/propertiesAdmin';
+
+const RULE_CATEGORIES = ['Check-in/Check-out','Mascotas','Fumar','Fiestas/Eventos','Ruido','Piscina','Parking','WiFi','Basura','Depósito','Niños','Otros'];
 
 interface ModalEditListingProps {
   isOpen: boolean;
@@ -37,6 +39,7 @@ export default function ModalEditListing({
     listing_status: true,
     description: '',
     wa_codes: '',
+    rules: [],
   });
 
   const [owners, setOwners] = useState<Owner[]>([]);
@@ -102,6 +105,7 @@ export default function ModalEditListing({
         listing_status: listing.listing_status !== undefined ? listing.listing_status : true,
         description: listing.description || '',
         wa_codes: listing.wa_codes || '',
+        rules: listing.rules || [],
       });
       setError(null);
       setIsSuccess(false);
@@ -145,6 +149,21 @@ export default function ModalEditListing({
     }
   };
 
+  // Reglas de la propiedad (lista dinámica)
+  const addRule = () => {
+    setFormData(prev => ({ ...prev, rules: [...(prev.rules || []), { categoria: '', texto: '' }] }));
+  };
+  const updateRule = (index: number, field: 'categoria' | 'texto', value: string) => {
+    setFormData(prev => {
+      const rules = [...(prev.rules || [])];
+      rules[index] = { ...rules[index], [field]: value };
+      return { ...prev, rules };
+    });
+  };
+  const removeRule = (index: number) => {
+    setFormData(prev => ({ ...prev, rules: (prev.rules || []).filter((_, i) => i !== index) }));
+  };
+
   // Manejar envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,7 +190,10 @@ export default function ModalEditListing({
     setError(null);
 
     try {
-      await editListing(listingId, formData);
+      const cleanedRules = (formData.rules || [])
+        .map((r: PropertyRule) => ({ categoria: (r.categoria || '').trim(), texto: (r.texto || '').trim() }))
+        .filter((r) => r.texto);
+      await editListing(listingId, { ...formData, rules: cleanedRules });
       setIsSuccess(true);
       
       // Mostrar mensaje de éxito
@@ -462,6 +484,56 @@ export default function ModalEditListing({
               <div className="wander-edit-form-group">
                 {/* Espacio vacío para mantener grid */}
               </div>
+            </div>
+
+            {/* Reglas de la propiedad (para el agente IA) */}
+            <div className="wander-edit-form-group">
+              <label className="wander-edit-label">Reglas de la propiedad</label>
+              <span style={{ fontSize: '0.78rem', opacity: 0.7, marginBottom: '8px', display: 'block' }}>
+                Normas que el agente de atención al cliente usará para responder (mascotas, check-in, ruido, etc.). Si una regla no está aquí, el agente no la inventa.
+              </span>
+              {(formData.rules || []).map((rule, index) => (
+                <div key={index} className="wander-edit-row" style={{ marginBottom: '8px', alignItems: 'center' }}>
+                  <select
+                    className="wander-edit-select"
+                    value={rule.categoria || ''}
+                    onChange={(e) => updateRule(index, 'categoria', e.target.value)}
+                    disabled={isLoading || isSuccess}
+                    style={{ maxWidth: '190px' }}
+                  >
+                    <option value="">Categoría…</option>
+                    {RULE_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    className="wander-edit-input"
+                    value={rule.texto || ''}
+                    onChange={(e) => updateRule(index, 'texto', e.target.value)}
+                    disabled={isLoading || isSuccess}
+                    placeholder="Ej: No se permiten mascotas."
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeRule(index)}
+                    disabled={isLoading || isSuccess}
+                    aria-label="Eliminar regla"
+                    style={{ background: 'transparent', border: 'none', color: '#dc3545', fontSize: '1.1rem', cursor: 'pointer', padding: '0 6px' }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addRule}
+                disabled={isLoading || isSuccess}
+                className="wander-modal-btn-cancel"
+                style={{ marginTop: '4px' }}
+              >
+                + Agregar regla
+              </button>
             </div>
 
             {error && (

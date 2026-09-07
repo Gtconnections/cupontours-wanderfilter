@@ -72,6 +72,7 @@ export interface PropertyDetail {
     net_income: number;
   }[];
   amenities: RawApiItem[];
+  rules?: PropertyRule[];
 }
 
 export interface PropertyAgreement {
@@ -711,6 +712,11 @@ export async function getOwners(): Promise<Owner[]> {
 }
 
 // 🔥 INTERFACE PARA EDITAR PROPIEDAD
+export interface PropertyRule {
+  categoria?: string;
+  texto: string;
+}
+
 export interface EditListingData {
   owner_id: number;
   listing_public_name: string;
@@ -728,6 +734,7 @@ export interface EditListingData {
   listing_status: boolean;
   description: string;
   wa_codes?: string;
+  rules?: PropertyRule[];
 }
 
 // 🔥 EDITAR PROPIEDAD
