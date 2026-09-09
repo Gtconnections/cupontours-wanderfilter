@@ -90,7 +90,7 @@ export default function LoginContent({ locale = 'en' }: { locale?: Locale }) {
       await new Promise(resolve => setTimeout(resolve, 200));
 
       const pos = String(result.position || '').toLowerCase();
-      window.location.href = pos === 'agent' ? '/admin/agents' : '/admin/dashboard';
+      window.location.href = pos === 'agent' ? '/admin/agents' : (pos === 'owner' ? '/admin/properties/list' : '/admin/dashboard');
 
     } catch (error) {
       console.error('Error en el login:', error);
