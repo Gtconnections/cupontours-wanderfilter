@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { editListing, EditListingData, PropertyDetailResponse, getOwners, Owner, PropertyRule } from '@/app/lib/api/propertiesAdmin';
 
-const RULE_CATEGORIES = ['Check-in/Check-out','Mascotas','Fumar','Fiestas/Eventos','Ruido','Piscina','Parking','WiFi','Basura','Depósito','Niños','Otros'];
+const RULE_CATEGORIES = ['Check-in / Check-out','Estacionamiento','Wi-Fi','Amenities','Interior y suministros','Reglas','Servicios adicionales','Limpieza / basura','Mantenimiento / emergencias','Escalamiento','Ubicación','Otros'];
 
 interface ModalEditListingProps {
   isOpen: boolean;
