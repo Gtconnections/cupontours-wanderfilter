@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
 
 export function Navbar() {
@@ -10,6 +10,17 @@ export function Navbar() {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Cerrar el menú móvil al navegar
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
+
+  // Reflejar el estado del menú en el <body> para que el CSS muestre el sidebar
+  useEffect(() => {
+    document.body.classList.toggle('wander-sidebar-open', menuOpen);
+    return () => { document.body.classList.remove('wander-sidebar-open'); };
+  }, [menuOpen]);
 
   // Cerrar dropdown al hacer clic fuera
   useEffect(() => {
@@ -48,6 +59,19 @@ export function Navbar() {
   };
 
   return (
+    <>
+    <button
+      className="wander-hamburger"
+      aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+      onClick={() => setMenuOpen((v) => !v)}
+    >
+      {menuOpen ? (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      ) : (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      )}
+    </button>
+    {menuOpen && <div className="wander-mobile-overlay" onClick={() => setMenuOpen(false)} />}
     <nav className="wander-navbar">
       <div className="wander-nav-left">
         <h1>Dashboard</h1>
@@ -124,5 +148,6 @@ export function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }

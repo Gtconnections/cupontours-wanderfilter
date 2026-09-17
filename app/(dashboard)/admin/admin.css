@@ -465,3 +465,40 @@
 .wander-sidebar-menu::-webkit-scrollbar-thumb:hover {
   background: #b0b0b0;
 }
+/* ==========================================================================
+   MENÚ MÓVIL — botón hamburguesa + overlay (agregado)
+   ========================================================================== */
+.wander-hamburger {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 14px;
+  z-index: 130;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-main, #ffffff);
+  color: var(--text-main, #111111);
+  border: 1px solid var(--border-light, #ebebeb);
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
+}
+.wander-hamburger:hover { background-color: var(--bg-hover, #f5f5f5); }
+
+.wander-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 95;
+  border: none;
+}
+
+@media (max-width: 1024px) {
+  /* El sidebar ya está oculto (translateX(-100%)) arriba; lo mostramos al abrir */
+  .wander-hamburger { display: inline-flex; }
+  body.wander-sidebar-open .wander-sidebar { transform: translateX(0); }
+  /* Espacio para que el título del navbar no quede bajo el botón fijo */
+  .wander-navbar { padding-left: 64px; }
+}
