@@ -276,15 +276,25 @@ export default function PricingPage() {
     }
   };
 
-  const handleRunAgent = async () => {
+  const handleRunAgent = async (apply = false) => {
+    if (apply && !window.confirm(
+      'Vas a ESCRIBIR los descuentos en PriceLabs (no es simulación).\n\n' +
+      'Solo se aplicarán si el backend tiene PRICING_AGENT_APPLY=1. ¿Continuar?'
+    )) return;
     setAgentBusy(true);
     setError(null);
     try {
-      const r = await runPricingAgent();
+      const r = await runPricingAgent(0, apply);
       setAgentRun(r);
       const p = await getAgentProposals(r.run_id);
       setProposals(p.proposals);
-      flash(`Agente: ${r.proposed} propuestas, ${r.skipped} saltadas`);
+      if (apply && r.apply_enabled) {
+        flash(`Aplicado: ${r.applied_ok} escritas, ${r.applied_fail} fallidas, ${r.reverted} revertidas`);
+      } else if (apply && !r.apply_enabled) {
+        flash('Simulado: falta PRICING_AGENT_APPLY=1 en el backend para escribir.');
+      } else {
+        flash(`Agente: ${r.proposed} propuestas, ${r.skipped} saltadas`);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al correr el agente');
     } finally {
@@ -455,17 +465,37 @@ export default function PricingPage() {
       {/* Agente de precios (Fase 2, dry-run) */}
       <div className="pr-card" style={{ marginBottom: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-          <div className="pr-settings-title" style={{ margin: 0 }}>Agente de precios — dry-run (temporada baja)</div>
-          <button className="pr-btn pr-btn-gold" onClick={handleRunAgent} disabled={agentBusy}>
-            {agentBusy ? 'Corriendo...' : 'Correr agente (dry-run)'}
-          </button>
+          <div className="pr-settings-title" style={{ margin: 0 }}>Agente de precios (temporada baja)</div>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button className="pr-btn" onClick={() => handleRunAgent(false)} disabled={agentBusy}>
+              {agentBusy ? 'Corriendo...' : 'Simular (dry-run)'}
+            </button>
+            <button className="pr-btn pr-btn-gold" onClick={() => handleRunAgent(true)} disabled={agentBusy}
+              title="Escribe los descuentos en PriceLabs (requiere PRICING_AGENT_APPLY=1)">
+              {agentBusy ? '...' : 'Aplicar en PriceLabs'}
+            </button>
+          </div>
         </div>
         <p className="pr-settings-hint" style={{ marginTop: '8px' }}>
-          Revisa la ocupación futura de cada propiedad y <strong>propone</strong> descuentos por bajo flujo (piso protegido, tope de descuento). No cambia precios: solo registra para revisión.
+          Revisa la ocupación futura de cada propiedad y <strong>propone</strong> descuentos por bajo flujo (piso protegido, tope de descuento).
+          «Simular» solo registra propuestas; «Aplicar» escribe el descuento como <em>override</em> sobre el precio recomendado de PriceLabs y quita el descuento de las propiedades que se recuperaron.
         </p>
         {agentRun && (
           <div style={{ fontSize: '13px', margin: '8px 0' }}>
-            Última corrida <code>{agentRun.run_id}</code>: <strong>{agentRun.proposed}</strong> propuestas · {agentRun.skipped} saltadas · umbral &lt;{agentRun.low_occ}% · tope {agentRun.max_disc}% · ventana {agentRun.window}d {agentRun.pricelabs_enabled ? '· PriceLabs ✓' : '· PriceLabs ✗'}
+            Última corrida <code>{agentRun.run_id}</code>: <strong>{agentRun.proposed}</strong> propuestas · {agentRun.skipped} saltadas
+            {typeof agentRun.market_hits === 'number' && (
+              <> · mercado {agentRun.market_hits}✓/{agentRun.market_misses}✗</>
+            )}
+            {agentRun.apply_enabled && (
+              <> · <strong style={{ color: '#1e7d34' }}>aplicadas {agentRun.applied_ok}</strong>
+                {agentRun.applied_fail ? <span style={{ color: '#c0392b' }}> · {agentRun.applied_fail} fallidas</span> : null}
+                {agentRun.reverted ? <> · {agentRun.reverted} revertidas</> : null}
+              </>
+            )}
+            {!agentRun.dry_run && !agentRun.apply_enabled && (
+              <> · <span style={{ color: '#c0392b' }}>simulado (falta PRICING_AGENT_APPLY=1)</span></>
+            )}
+            {' '}· umbral &lt;{agentRun.low_occ}% · tope {agentRun.max_disc}% · ventana {agentRun.window}d {agentRun.pricelabs_enabled ? '· PriceLabs ✓' : '· PriceLabs ✗'}
           </div>
         )}
         {proposals.length > 0 ? (
@@ -482,8 +512,12 @@ export default function PricingPage() {
               </thead>
               <tbody>
                 {proposals.slice(0, 100).map((p) => (
-                  <tr key={p.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                    <td style={{ padding: '6px 8px' }}>{p.listing_name}</td>
+                  <tr key={p.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }} title={p.reason}>
+                    <td style={{ padding: '6px 8px' }}>
+                      {p.listing_name}
+                      {p.status === 'applied' && <span style={{ color: '#1e7d34', fontSize: '11px' }}> ✓aplicada</span>}
+                      {p.status === 'reverted' && <span style={{ color: '#8a6d3b', fontSize: '11px' }}> ↩revertida</span>}
+                    </td>
                     <td style={{ padding: '6px 8px' }}>{Math.round(Number(p.occupancy))}%</td>
                     <td style={{ padding: '6px 8px', color: '#c0392b', fontWeight: 600 }}>-{Math.round(Number(p.discount_percent))}%</td>
                     <td style={{ padding: '6px 8px' }}>

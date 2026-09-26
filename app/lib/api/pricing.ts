@@ -200,14 +200,24 @@ export interface AgentRunResult {
   skipped: number;
   pricelabs_enabled: boolean;
   dry_run: boolean;
+  apply_enabled?: boolean;
+  market_hits?: number;
+  market_misses?: number;
+  floor_fallbacks?: number;
+  applied_ok?: number;
+  applied_fail?: number;
+  reverted?: number;
+  abs_floor?: string;
   low_occ: string;
   max_disc: string;
   window: number;
 }
 
-// Dispara una corrida dry-run del agente (crea propuestas, no toca PriceLabs).
-export function runPricingAgent(limit = 0): Promise<AgentRunResult> {
-  return request('/pricing/agent/run/', { method: 'POST', body: JSON.stringify({ limit }) });
+// Dispara una corrida del agente. apply=false (default) = dry-run (no toca
+// PriceLabs). apply=true intenta escritura real, pero el candado maestro sigue
+// siendo la variable de entorno PRICING_AGENT_APPLY=1 en el backend.
+export function runPricingAgent(limit = 0, apply = false): Promise<AgentRunResult> {
+  return request('/pricing/agent/run/', { method: 'POST', body: JSON.stringify({ limit, apply }) });
 }
 
 // Lista las propuestas registradas (opcionalmente de una corrida).
