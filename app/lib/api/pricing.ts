@@ -150,3 +150,26 @@ export function generateRecommendations(p: {
 }): Promise<{ success: boolean; generated: number }> {
   return request('/pricing/generate/', { method: 'POST', body: JSON.stringify(p) });
 }
+
+// ---- Fase 1 PriceLabs: precio de mercado (SOLO LECTURA) ----
+export interface MarketDay {
+  date: string;
+  pricelabs_price: number | null;
+}
+
+export interface MarketResponse {
+  enabled: boolean;
+  mapped?: boolean;
+  message?: string;
+  listing_id?: number;
+  pricelabs_listing_id?: string;
+  month?: string;
+  count_with_price?: number;
+  days: MarketDay[];
+}
+
+// Trae el precio recomendado de PriceLabs por día para el mes. Si PriceLabs no
+// está configurado (falta la API key), devuelve { enabled: false, ... }.
+export function getMarketPrices(listingId: number, month: string): Promise<MarketResponse> {
+  return request(`/pricing/market/?listing_id=${listingId}&month=${month}`);
+}

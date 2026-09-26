@@ -15,6 +15,7 @@ import {
   addDateRule,
   deleteDateRule,
   generateRecommendations,
+  getMarketPrices,
   DailyResponse,
   DailyPrice,
   PricingRules,
@@ -62,6 +63,11 @@ export default function PricingPage() {
 
   const [selected, setSelected] = useState<DailyPrice | null>(null);
   const [overrideValue, setOverrideValue] = useState('');
+
+  // Fase 1: precio de mercado (PriceLabs) por día
+  const [market, setMarket] = useState<Record<string, number | null>>({});
+  const [marketEnabled, setMarketEnabled] = useState<boolean | null>(null);
+  const [marketMsg, setMarketMsg] = useState<string | null>(null);
 
   // Fase 2: Rules Engine
   const [rules, setRules] = useState<PricingRules>(DEFAULT_RULES);
@@ -121,6 +127,17 @@ export default function PricingPage() {
         max_price: resp.settings.max_price,
         weekend_multiplier: resp.settings.weekend_multiplier,
       });
+      // Fase 1: traer precio de mercado (PriceLabs). No rompe si falla o no está configurado.
+      try {
+        const m = await getMarketPrices(listingId, monthStr);
+        const map: Record<string, number | null> = {};
+        (m.days || []).forEach((d) => { map[d.date] = d.pricelabs_price; });
+        setMarket(map);
+        setMarketEnabled(m.enabled);
+        setMarketMsg(m.message || null);
+      } catch {
+        setMarket({}); setMarketEnabled(null); setMarketMsg(null);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar precios');
       setData(null);
@@ -409,7 +426,14 @@ export default function PricingPage() {
         <span><i className="pr-dot pr-dot--weekend" /> Fin de semana</span>
         <span><i className="pr-dot pr-dot--manual" /> Precio manual</span>
         <span><i className="pr-dot pr-dot--booked" /> Reservado</span>
+        {marketEnabled === true && <span><i className="pr-dot" style={{ background: '#2563eb' }} /> PriceLabs (mercado)</span>}
       </div>
+
+      {marketEnabled === false && (
+        <div className="pr-state" style={{ marginBottom: '12px', textAlign: 'left', padding: '10px 14px' }}>
+          <small>💡 PriceLabs aún no está configurado. Agrega la variable <code>PRICELABS_API_KEY</code> en el backend para ver el precio de mercado por día{marketMsg ? ` (${marketMsg})` : ''}.</small>
+        </div>
+      )}
 
       <div className="pr-card">
         {loading ? (
@@ -442,6 +466,11 @@ export default function PricingPage() {
                         : d.source === 'manual' ? <span className="pr-day-tag pr-day-tag--manual">Manual</span> : null}
                     </div>
                     <span className="pr-day-price">{money(d.price)}</span>
+                    {market[d.date] != null && (
+                      <span style={{ display: 'block', fontSize: '10px', fontWeight: 600, color: '#2563eb', marginTop: '2px' }}>
+                        PL ${Math.round(market[d.date] as number)}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -453,6 +482,7 @@ export default function PricingPage() {
                   <strong>{selected.date}</strong>
                   <small>
                     Sugerido: {money(selected.suggested_price)} · Ocupación (30d): {Math.round(selected.occupancy * 100)}%
+                    {market[selected.date] != null ? ` · PriceLabs: $${Math.round(market[selected.date] as number)}` : ''}
                     {selected.is_booked ? ' · Reservado' : ''}
                   </small>
                 </div>
