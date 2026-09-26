@@ -173,3 +173,44 @@ export interface MarketResponse {
 export function getMarketPrices(listingId: number, month: string): Promise<MarketResponse> {
   return request(`/pricing/market/?listing_id=${listingId}&month=${month}`);
 }
+
+// ---- Fase 2: Agente de precios (dry-run) ----
+export interface AgentProposal {
+  id: number;
+  listing_id: number;
+  listing_name: string;
+  run_id: string;
+  window_start: string;
+  window_end: string;
+  occupancy: string;
+  threshold: string;
+  market_avg: string | null;
+  floor_min: string;
+  discount_percent: string;
+  proposed_avg: string | null;
+  reason: string;
+  status: string;
+  applied: boolean;
+  created_at: string;
+}
+
+export interface AgentRunResult {
+  run_id: string;
+  proposed: number;
+  skipped: number;
+  pricelabs_enabled: boolean;
+  dry_run: boolean;
+  low_occ: string;
+  max_disc: string;
+  window: number;
+}
+
+// Dispara una corrida dry-run del agente (crea propuestas, no toca PriceLabs).
+export function runPricingAgent(limit = 0): Promise<AgentRunResult> {
+  return request('/pricing/agent/run/', { method: 'POST', body: JSON.stringify({ limit }) });
+}
+
+// Lista las propuestas registradas (opcionalmente de una corrida).
+export function getAgentProposals(runId?: string): Promise<{ count: number; proposals: AgentProposal[] }> {
+  return request(`/pricing/agent/proposals/${runId ? `?run_id=${runId}` : ''}`);
+}

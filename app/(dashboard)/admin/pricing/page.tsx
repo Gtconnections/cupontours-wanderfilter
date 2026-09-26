@@ -16,6 +16,10 @@ import {
   deleteDateRule,
   generateRecommendations,
   getMarketPrices,
+  runPricingAgent,
+  getAgentProposals,
+  AgentProposal,
+  AgentRunResult,
   DailyResponse,
   DailyPrice,
   PricingRules,
@@ -68,6 +72,11 @@ export default function PricingPage() {
   const [market, setMarket] = useState<Record<string, number | null>>({});
   const [marketEnabled, setMarketEnabled] = useState<boolean | null>(null);
   const [marketMsg, setMarketMsg] = useState<string | null>(null);
+
+  // Fase 2: agente de precios (dry-run)
+  const [agentRun, setAgentRun] = useState<AgentRunResult | null>(null);
+  const [proposals, setProposals] = useState<AgentProposal[]>([]);
+  const [agentBusy, setAgentBusy] = useState(false);
 
   // Fase 2: Rules Engine
   const [rules, setRules] = useState<PricingRules>(DEFAULT_RULES);
@@ -149,6 +158,11 @@ export default function PricingPage() {
   useEffect(() => {
     loadDaily();
   }, [loadDaily]);
+
+  // Cargar las últimas propuestas del agente al abrir
+  useEffect(() => {
+    getAgentProposals().then((r) => setProposals(r.proposals)).catch(() => { /* noop */ });
+  }, []);
 
   // Cargar reglas + overrides por fecha al cambiar de propiedad
   useEffect(() => {
@@ -259,6 +273,22 @@ export default function PricingPage() {
       setError(err instanceof Error ? err.message : 'Error al generar recomendaciones');
     } finally {
       setGenerating(false);
+    }
+  };
+
+  const handleRunAgent = async () => {
+    setAgentBusy(true);
+    setError(null);
+    try {
+      const r = await runPricingAgent();
+      setAgentRun(r);
+      const p = await getAgentProposals(r.run_id);
+      setProposals(p.proposals);
+      flash(`Agente: ${r.proposed} propuestas, ${r.skipped} saltadas`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al correr el agente');
+    } finally {
+      setAgentBusy(false);
     }
   };
 
@@ -420,6 +450,54 @@ export default function PricingPage() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Agente de precios (Fase 2, dry-run) */}
+      <div className="pr-card" style={{ marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+          <div className="pr-settings-title" style={{ margin: 0 }}>Agente de precios — dry-run (temporada baja)</div>
+          <button className="pr-btn pr-btn-gold" onClick={handleRunAgent} disabled={agentBusy}>
+            {agentBusy ? 'Corriendo...' : 'Correr agente (dry-run)'}
+          </button>
+        </div>
+        <p className="pr-settings-hint" style={{ marginTop: '8px' }}>
+          Revisa la ocupación futura de cada propiedad y <strong>propone</strong> descuentos por bajo flujo (piso protegido, tope de descuento). No cambia precios: solo registra para revisión.
+        </p>
+        {agentRun && (
+          <div style={{ fontSize: '13px', margin: '8px 0' }}>
+            Última corrida <code>{agentRun.run_id}</code>: <strong>{agentRun.proposed}</strong> propuestas · {agentRun.skipped} saltadas · umbral &lt;{agentRun.low_occ}% · tope {agentRun.max_disc}% · ventana {agentRun.window}d {agentRun.pricelabs_enabled ? '· PriceLabs ✓' : '· PriceLabs ✗'}
+          </div>
+        )}
+        {proposals.length > 0 ? (
+          <div style={{ overflowX: 'auto', marginTop: '10px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+              <thead>
+                <tr style={{ textAlign: 'left', borderBottom: '1px solid rgba(212,175,55,0.25)' }}>
+                  <th style={{ padding: '6px 8px' }}>Propiedad</th>
+                  <th style={{ padding: '6px 8px' }}>Ocupación</th>
+                  <th style={{ padding: '6px 8px' }}>Descuento</th>
+                  <th style={{ padding: '6px 8px' }}>Mercado → Propuesto</th>
+                  <th style={{ padding: '6px 8px' }}>Piso</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proposals.slice(0, 100).map((p) => (
+                  <tr key={p.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                    <td style={{ padding: '6px 8px' }}>{p.listing_name}</td>
+                    <td style={{ padding: '6px 8px' }}>{Math.round(Number(p.occupancy))}%</td>
+                    <td style={{ padding: '6px 8px', color: '#c0392b', fontWeight: 600 }}>-{Math.round(Number(p.discount_percent))}%</td>
+                    <td style={{ padding: '6px 8px' }}>
+                      {p.market_avg ? `$${Math.round(Number(p.market_avg))}` : '—'} → {p.proposed_avg ? `$${Math.round(Number(p.proposed_avg))}` : '—'}
+                    </td>
+                    <td style={{ padding: '6px 8px', color: '#5b6b7b' }}>${Math.round(Number(p.floor_min))}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="pr-settings-hint" style={{ marginTop: '8px' }}>Aún no hay propuestas. Corre el agente para generarlas.</div>
+        )}
       </div>
 
       <div className="pr-legend">
