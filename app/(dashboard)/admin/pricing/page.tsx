@@ -167,10 +167,17 @@ export default function PricingPage() {
     loadDaily();
   }, [loadDaily]);
 
-  // Cargar las últimas propuestas del agente al abrir
+  // Cargar propuestas del agente: al abrir y cada vez que cambia el buscador
+  // (búsqueda del lado del servidor, encuentra aunque haya miles).
   useEffect(() => {
-    getAgentProposals().then((r) => setProposals(r.proposals)).catch(() => { /* noop */ });
-  }, []);
+    const q = propFilter.trim();
+    const id = setTimeout(() => {
+      getAgentProposals(agentRun?.run_id, q || undefined)
+        .then((r) => setProposals(r.proposals))
+        .catch(() => { /* noop */ });
+    }, 350);
+    return () => clearTimeout(id);
+  }, [propFilter, agentRun?.run_id]);
 
   // Cargar reglas + overrides por fecha al cambiar de propiedad
   useEffect(() => {

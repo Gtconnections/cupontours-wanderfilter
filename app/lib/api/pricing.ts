@@ -224,7 +224,12 @@ export function runPricingAgent(limit = 0, apply = false): Promise<AgentRunResul
   return request('/pricing/agent/run/', { method: 'POST', body: JSON.stringify({ limit, apply }) });
 }
 
-// Lista las propuestas registradas (opcionalmente de una corrida).
-export function getAgentProposals(runId?: string): Promise<{ count: number; proposals: AgentProposal[] }> {
-  return request(`/pricing/agent/proposals/${runId ? `?run_id=${runId}` : ''}`);
+// Lista las propuestas registradas. Sin runId = última corrida. `q` filtra por
+// nombre de propiedad del lado del servidor (encuentra aunque haya miles).
+export function getAgentProposals(runId?: string, q?: string): Promise<{ count: number; proposals: AgentProposal[] }> {
+  const params = new URLSearchParams();
+  if (runId) params.set('run_id', runId);
+  if (q) params.set('q', q);
+  const qs = params.toString();
+  return request(`/pricing/agent/proposals/${qs ? `?${qs}` : ''}`);
 }
