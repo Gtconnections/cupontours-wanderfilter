@@ -208,6 +208,10 @@ export interface AgentRunResult {
   applied_fail?: number;
   reverted?: number;
   abs_floor?: string;
+  scanned?: number;
+  properties_with_discount?: number;
+  months?: number;
+  horizon?: number;
   low_occ: string;
   max_disc: string;
   window: number;

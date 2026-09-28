@@ -32,6 +32,13 @@ const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
 const money = (v: string | null) => (v === null || v === '' ? '—' : `$${Number(v).toFixed(0)}`);
 
+const fmtMonth = (isoDate: string) => {
+  const parts = (isoDate || '').split('-');
+  if (parts.length < 2) return isoDate || '—';
+  const m = parseInt(parts[1], 10) - 1;
+  return `${MONTHS_ES[m] ?? ''} ${parts[0]}`.trim();
+};
+
 const IconChevron = ({ dir }: { dir: 'left' | 'right' }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points={dir === 'left' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} /></svg>
 );
@@ -477,12 +484,15 @@ export default function PricingPage() {
           </div>
         </div>
         <p className="pr-settings-hint" style={{ marginTop: '8px' }}>
-          Revisa la ocupación futura de cada propiedad y <strong>propone</strong> descuentos por bajo flujo (piso protegido, tope de descuento).
-          «Simular» solo registra propuestas; «Aplicar» escribe el descuento como <em>override</em> sobre el precio recomendado de PriceLabs y quita el descuento de las propiedades que se recuperaron.
+          Analiza la ocupación <strong>mes por mes</strong> hacia adelante y <strong>propone</strong> un descuento por cada mes con baja ocupación (piso protegido, tope de descuento). Una propiedad ocupada esta semana pero libre en octubre recibe descuento para octubre.
+          «Simular» solo registra propuestas; «Aplicar» escribe el descuento como <em>override</em> por rango de fechas sobre el precio recomendado de PriceLabs y quita el descuento de los meses que se recuperaron.
         </p>
         {agentRun && (
           <div style={{ fontSize: '13px', margin: '8px 0' }}>
-            Última corrida <code>{agentRun.run_id}</code>: <strong>{agentRun.proposed}</strong> propuestas · {agentRun.skipped} saltadas
+            Última corrida <code>{agentRun.run_id}</code>: <strong>{agentRun.proposed}</strong> propuestas
+            {typeof agentRun.properties_with_discount === 'number' && (
+              <> en {agentRun.properties_with_discount} propiedades</>
+            )} · {agentRun.skipped} meses saltados
             {typeof agentRun.market_hits === 'number' && (
               <> · mercado {agentRun.market_hits}✓/{agentRun.market_misses}✗</>
             )}
@@ -495,7 +505,7 @@ export default function PricingPage() {
             {!agentRun.dry_run && !agentRun.apply_enabled && (
               <> · <span style={{ color: '#c0392b' }}>simulado (falta PRICING_AGENT_APPLY=1)</span></>
             )}
-            {' '}· umbral &lt;{agentRun.low_occ}% · tope {agentRun.max_disc}% · ventana {agentRun.window}d {agentRun.pricelabs_enabled ? '· PriceLabs ✓' : '· PriceLabs ✗'}
+            {' '}· umbral &lt;{agentRun.low_occ}% · tope {agentRun.max_disc}% · horizonte {agentRun.window}d ({agentRun.months ?? '·'} meses) {agentRun.pricelabs_enabled ? '· PriceLabs ✓' : '· PriceLabs ✗'}
           </div>
         )}
         {proposals.length > 0 ? (
@@ -504,6 +514,7 @@ export default function PricingPage() {
               <thead>
                 <tr style={{ textAlign: 'left', borderBottom: '1px solid rgba(212,175,55,0.25)' }}>
                   <th style={{ padding: '6px 8px' }}>Propiedad</th>
+                  <th style={{ padding: '6px 8px' }}>Mes</th>
                   <th style={{ padding: '6px 8px' }}>Ocupación</th>
                   <th style={{ padding: '6px 8px' }}>Descuento</th>
                   <th style={{ padding: '6px 8px' }}>Mercado → Propuesto</th>
@@ -518,6 +529,7 @@ export default function PricingPage() {
                       {p.status === 'applied' && <span style={{ color: '#1e7d34', fontSize: '11px' }}> ✓aplicada</span>}
                       {p.status === 'reverted' && <span style={{ color: '#8a6d3b', fontSize: '11px' }}> ↩revertida</span>}
                     </td>
+                    <td style={{ padding: '6px 8px', textTransform: 'capitalize' }}>{fmtMonth(p.window_start)}</td>
                     <td style={{ padding: '6px 8px' }}>{Math.round(Number(p.occupancy))}%</td>
                     <td style={{ padding: '6px 8px', color: '#c0392b', fontWeight: 600 }}>-{Math.round(Number(p.discount_percent))}%</td>
                     <td style={{ padding: '6px 8px' }}>
