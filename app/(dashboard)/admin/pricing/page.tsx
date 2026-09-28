@@ -84,6 +84,7 @@ export default function PricingPage() {
   const [agentRun, setAgentRun] = useState<AgentRunResult | null>(null);
   const [proposals, setProposals] = useState<AgentProposal[]>([]);
   const [agentBusy, setAgentBusy] = useState(false);
+  const [propFilter, setPropFilter] = useState('');
 
   // Fase 2: Rules Engine
   const [rules, setRules] = useState<PricingRules>(DEFAULT_RULES);
@@ -508,8 +509,26 @@ export default function PricingPage() {
             {' '}· umbral &lt;{agentRun.low_occ}% · tope {agentRun.max_disc}% · horizonte {agentRun.window}d ({agentRun.months ?? '·'} meses) {agentRun.pricelabs_enabled ? '· PriceLabs ✓' : '· PriceLabs ✗'}
           </div>
         )}
-        {proposals.length > 0 ? (
+        {proposals.length > 0 ? (() => {
+          const q = propFilter.trim().toLowerCase();
+          const filtered = proposals
+            .filter((p) => !q || (p.listing_name || '').toLowerCase().includes(q) || fmtMonth(p.window_start).toLowerCase().includes(q))
+            .sort((a, b) => Number(b.discount_percent) - Number(a.discount_percent));
+          const shown = filtered.slice(0, 300);
+          return (
           <div style={{ overflowX: 'auto', marginTop: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+              <input
+                type="text"
+                value={propFilter}
+                onChange={(e) => setPropFilter(e.target.value)}
+                placeholder="Buscar propiedad o mes…"
+                style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.15)', fontSize: '13px', minWidth: '220px' }}
+              />
+              <span className="pr-settings-hint" style={{ margin: 0 }}>
+                Mostrando {shown.length} de {filtered.length}{filtered.length !== proposals.length ? ` (${proposals.length} en total)` : ''}
+              </span>
+            </div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ textAlign: 'left', borderBottom: '1px solid rgba(212,175,55,0.25)' }}>
@@ -522,7 +541,7 @@ export default function PricingPage() {
                 </tr>
               </thead>
               <tbody>
-                {proposals.slice(0, 100).map((p) => (
+                {shown.map((p) => (
                   <tr key={p.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }} title={p.reason}>
                     <td style={{ padding: '6px 8px' }}>
                       {p.listing_name}
@@ -541,7 +560,8 @@ export default function PricingPage() {
               </tbody>
             </table>
           </div>
-        ) : (
+          );
+        })() : (
           <div className="pr-settings-hint" style={{ marginTop: '8px' }}>Aún no hay propuestas. Corre el agente para generarlas.</div>
         )}
       </div>
