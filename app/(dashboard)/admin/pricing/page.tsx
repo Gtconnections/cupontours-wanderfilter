@@ -85,6 +85,7 @@ export default function PricingPage() {
   const [proposals, setProposals] = useState<AgentProposal[]>([]);
   const [agentBusy, setAgentBusy] = useState(false);
   const [propFilter, setPropFilter] = useState('');
+  const [propPage, setPropPage] = useState(0);
 
   // Fase 2: Rules Engine
   const [rules, setRules] = useState<PricingRules>(DEFAULT_RULES);
@@ -173,7 +174,7 @@ export default function PricingPage() {
     const q = propFilter.trim();
     const id = setTimeout(() => {
       getAgentProposals(agentRun?.run_id, q || undefined)
-        .then((r) => setProposals(r.proposals))
+        .then((r) => { setProposals(r.proposals); setPropPage(0); })
         .catch(() => { /* noop */ });
     }, 350);
     return () => clearTimeout(id);
@@ -521,7 +522,10 @@ export default function PricingPage() {
           const filtered = proposals
             .filter((p) => !q || (p.listing_name || '').toLowerCase().includes(q) || fmtMonth(p.window_start).toLowerCase().includes(q))
             .sort((a, b) => Number(b.discount_percent) - Number(a.discount_percent));
-          const shown = filtered.slice(0, 300);
+          const PER = 15;
+          const pageCount = Math.max(1, Math.ceil(filtered.length / PER));
+          const page = Math.min(propPage, pageCount - 1);
+          const shown = filtered.slice(page * PER, page * PER + PER);
           return (
           <div style={{ overflowX: 'auto', marginTop: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
@@ -533,7 +537,7 @@ export default function PricingPage() {
                 style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.15)', fontSize: '13px', minWidth: '220px' }}
               />
               <span className="pr-settings-hint" style={{ margin: 0 }}>
-                Mostrando {shown.length} de {filtered.length}{filtered.length !== proposals.length ? ` (${proposals.length} en total)` : ''}
+                {filtered.length === 0 ? 'Sin resultados' : `${page * PER + 1}–${page * PER + shown.length} de ${filtered.length}`}
               </span>
             </div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
@@ -566,6 +570,17 @@ export default function PricingPage() {
                 ))}
               </tbody>
             </table>
+            {pageCount > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '10px' }}>
+                <button className="pr-btn" onClick={() => setPropPage(Math.max(0, page - 1))} disabled={page === 0}>
+                  ← Anterior
+                </button>
+                <span className="pr-settings-hint" style={{ margin: 0 }}>Página {page + 1} de {pageCount}</span>
+                <button className="pr-btn" onClick={() => setPropPage(Math.min(pageCount - 1, page + 1))} disabled={page >= pageCount - 1}>
+                  Siguiente →
+                </button>
+              </div>
+            )}
           </div>
           );
         })() : (
