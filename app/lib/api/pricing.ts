@@ -210,6 +210,8 @@ export interface AgentRunResult {
   abs_floor?: string;
   scanned?: number;
   properties_with_discount?: number;
+  skipped_no_sync?: number;
+  sync_on_count?: number;
   months?: number;
   horizon?: number;
   low_occ: string;
