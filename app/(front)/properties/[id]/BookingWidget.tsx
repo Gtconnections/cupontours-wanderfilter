@@ -12,6 +12,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const ds = (y: number, m: number, d: number) => `${y}-${pad(m)}-${pad(d)}`;
 const todayStr = () => new Date().toISOString().slice(0, 10);
 
+// === MANTENIMIENTO DE RESERVAS ===
+// Pon en false para REACTIVAR las reservas en la web.
+const BOOKING_MAINTENANCE = true;
+
 interface Props { listingId: number; propertyName?: string; }
 interface DayInfo { available: boolean; price: number; }
 const isAvail = (v: number | boolean | string) => v === 1 || v === true || v === '1';
@@ -23,6 +27,9 @@ const Chevron = ({ left }: { left?: boolean }) => (
 export default function BookingWidget({ listingId }: Props) {
   const locale = localeFromPath(usePathname() || '/');
   const t = getBW(locale);
+  const maintenanceMsg = locale === 'es'
+    ? 'Las reservas en linea estan temporalmente en mantenimiento. Escribenos y con gusto gestionamos tu reserva.'
+    : 'Online bookings are temporarily under maintenance. Please contact us and we will be glad to help with your reservation.';
   const M = t.months;
   const W = t.weekdays;
   const start = new Date();
@@ -97,6 +104,7 @@ export default function BookingWidget({ listingId }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (BOOKING_MAINTENANCE) { setError(maintenanceMsg); return; }
     if (!form.first_name || !form.last_name || !form.email) { setError(t.errRequired); return; }
     setSubmitting(true); setError(null);
     try {
@@ -137,6 +145,11 @@ export default function BookingWidget({ listingId }: Props) {
 
   return (
     <div className="bw">
+      {BOOKING_MAINTENANCE && (
+        <div style={{ background: '#fff4e5', border: '1px solid #f0b37e', color: '#8a5a00', borderRadius: 8, padding: '10px 12px', marginBottom: 12, fontSize: 13, lineHeight: 1.45, textAlign: 'center' }}>
+          {'\uD83D\uDEE0\uFE0F '}{maintenanceMsg}
+        </div>
+      )}
       {step === 'calendar' && (
         <>
           <div className="bw-cal-head">
@@ -198,7 +211,7 @@ export default function BookingWidget({ listingId }: Props) {
                 <label>{t.guests}</label>
                 <input className="bw-input" type="number" min={1} value={guests} onChange={(e) => setGuests(Math.max(1, Number(e.target.value) || 1))} />
               </div>
-              <button className="bw-btn" onClick={() => { setError(null); setStep('details'); }}>{t.cont}</button>
+              <button className="bw-btn" onClick={() => { if (BOOKING_MAINTENANCE) { setRangeError(maintenanceMsg); return; } setError(null); setStep('details'); }}>{t.cont}</button>
             </>
           )}
         </>
