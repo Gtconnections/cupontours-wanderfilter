@@ -198,3 +198,30 @@ export async function sendYachtBookingRequest(payload: YachtBookingPayload): Pro
     throw error;
   }
 }
+export interface PropertyInquiryPayload {
+  propertyId: number;
+  propertyName?: string;
+  checkIn?: string;
+  checkOut?: string;
+  client: { fullName: string; email: string; phoneNumber?: string; message?: string };
+}
+
+export async function sendPropertyInquiry(
+  payload: PropertyInquiryPayload
+): Promise<{ success: boolean; message: string }> {
+  try {
+    const response = await fetch("/api/booking/properties", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "An error occurred while sending your inquiry.");
+    }
+    return data;
+  } catch (error) {
+    console.error("Local Next.js fetch property inquiry API error:", error);
+    throw error;
+  }
+}

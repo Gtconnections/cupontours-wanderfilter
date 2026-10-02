@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { checkAvailability, createReservation, AvailabilityResult } from '@/app/lib/api/booking';
+import { sendPropertyInquiry } from '@/app/lib/api';
 import './booking-widget.css';
 import { usePathname } from 'next/navigation';
 import { localeFromPath } from '@/app/i18n/locale';
@@ -24,7 +25,7 @@ const Chevron = ({ left }: { left?: boolean }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points={left ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} /></svg>
 );
 
-export default function BookingWidget({ listingId }: Props) {
+export default function BookingWidget({ listingId, propertyName }: Props) {
   const locale = localeFromPath(usePathname() || '/');
   const t = getBW(locale);
   const maintenanceMsg = locale === 'es'
@@ -51,6 +52,12 @@ export default function BookingWidget({ listingId }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<{ code: string | number | null; total: number } | null>(null);
+  // Consulta por correo (modo mantenimiento)
+  const [inqOpen, setInqOpen] = useState(false);
+  const [inqSent, setInqSent] = useState(false);
+  const [inqSending, setInqSending] = useState(false);
+  const [inqMsg, setInqMsg] = useState<string | null>(null);
+  const [inq, setInq] = useState({ fullName: '', email: '', phoneNumber: '', message: '' });
 
   // Cargar disponibilidad del mes visible
   const loadMonth = useCallback(async () => {
@@ -122,6 +129,19 @@ export default function BookingWidget({ listingId }: Props) {
     }
   };
 
+  const handleInquiry = async () => {
+    if (!inq.fullName || !inq.email) { setInqMsg(locale === 'es' ? 'Nombre y correo son obligatorios.' : 'Name and email are required.'); return; }
+    setInqSending(true); setInqMsg(null);
+    try {
+      await sendPropertyInquiry({ propertyId: listingId, propertyName, checkIn: checkIn || undefined, checkOut: checkOut || undefined, client: { fullName: inq.fullName, email: inq.email, phoneNumber: inq.phoneNumber, message: inq.message } });
+      setInqSent(true);
+    } catch (e) {
+      setInqMsg(e instanceof Error ? e.message : (locale === 'es' ? 'No se pudo enviar. Intenta de nuevo.' : 'Could not send. Please try again.'));
+    } finally {
+      setInqSending(false);
+    }
+  };
+
   if (step === 'done' && confirmation) {
     return (
       <div className="bw">
@@ -146,8 +166,28 @@ export default function BookingWidget({ listingId }: Props) {
   return (
     <div className="bw">
       {BOOKING_MAINTENANCE && (
-        <div style={{ background: '#fff4e5', border: '1px solid #f0b37e', color: '#8a5a00', borderRadius: 8, padding: '10px 12px', marginBottom: 12, fontSize: 13, lineHeight: 1.45, textAlign: 'center' }}>
-          {'\uD83D\uDEE0\uFE0F '}{maintenanceMsg}
+        <div style={{ background: '#fff4e5', border: '1px solid #f0b37e', borderRadius: 8, padding: 12, marginBottom: 12 }}>
+          <div style={{ color: '#8a5a00', fontSize: 13, lineHeight: 1.45, textAlign: 'center' }}>
+            {'\uD83D\uDEE0\uFE0F '}{maintenanceMsg}
+          </div>
+          {inqSent ? (
+            <div style={{ color: '#1e7d34', textAlign: 'center', fontSize: 13, marginTop: 10, fontWeight: 600 }}>
+              {locale === 'es' ? '\u00A1Consulta enviada! Te contactaremos pronto.' : 'Inquiry sent! We will contact you soon.'}
+            </div>
+          ) : !inqOpen ? (
+            <button className="bw-btn" style={{ marginTop: 10 }} onClick={() => setInqOpen(true)}>
+              {locale === 'es' ? 'Enviar una consulta' : 'Send an inquiry'}
+            </button>
+          ) : (
+            <div style={{ marginTop: 10 }}>
+              <div className="bw-field"><label>{locale === 'es' ? 'Nombre' : 'Name'}</label><input className="bw-input" value={inq.fullName} onChange={(e) => setInq({ ...inq, fullName: e.target.value })} /></div>
+              <div className="bw-field"><label>{locale === 'es' ? 'Correo' : 'Email'}</label><input className="bw-input" type="email" value={inq.email} onChange={(e) => setInq({ ...inq, email: e.target.value })} /></div>
+              <div className="bw-field"><label>{locale === 'es' ? 'Tel\u00E9fono' : 'Phone'}</label><input className="bw-input" type="tel" value={inq.phoneNumber} onChange={(e) => setInq({ ...inq, phoneNumber: e.target.value })} /></div>
+              <div className="bw-field"><label>{locale === 'es' ? 'Mensaje' : 'Message'}</label><input className="bw-input" value={inq.message} onChange={(e) => setInq({ ...inq, message: e.target.value })} placeholder={locale === 'es' ? 'Fechas, dudas, etc.' : 'Dates, questions, etc.'} /></div>
+              {inqMsg && <div className="bw-err">{inqMsg}</div>}
+              <button className="bw-btn" disabled={inqSending} onClick={handleInquiry}>{inqSending ? (locale === 'es' ? 'Enviando...' : 'Sending...') : (locale === 'es' ? 'Enviar consulta' : 'Send inquiry')}</button>
+            </div>
+          )}
         </div>
       )}
       {step === 'calendar' && (
