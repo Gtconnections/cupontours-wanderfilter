@@ -36,6 +36,11 @@ const HOSTAWAY_WIDGET_COLORS = {
 
 const HOSTAWAY_SCRIPT_SRC = 'https://d2q3n06xhbi0am.cloudfront.net/calendar.js';
 
+// Mientras no tengamos nuestro metodo de pago propio, usamos el widget de
+// Hostaway (checkout en book.cupontours.com, con las fechas ya seteadas).
+// Pon en false para volver al BookingWidget propio cuando el pago este listo.
+const USE_HOSTAWAY_WIDGET = true;
+
 // ============================================
 // Componente de galería modal (pantalla completa)
 // ============================================
@@ -606,12 +611,16 @@ export default function PropertyDetailPage() {
                   <span className="lux-reserve-per">{t.perNight}</span>
                 </div>
 
-                {/* Widget de reserva propio */}
+                {/* Widget de reserva: Hostaway (con pago) o propio, segun la bandera */}
                 <div className="lux-widget-mount">
-                  <BookingWidget
-                    listingId={Number(id)}
-                    propertyName={property?.name || ""}
-                  />
+                  {USE_HOSTAWAY_WIDGET ? (
+                    <div id="hostaway-calendar-widget" />
+                  ) : (
+                    <BookingWidget
+                      listingId={Number(id)}
+                      propertyName={property?.name || ""}
+                    />
+                  )}
                 </div>
 
                 <p className="lux-reserve-disclaimer">
