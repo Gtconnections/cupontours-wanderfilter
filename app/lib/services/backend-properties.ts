@@ -54,6 +54,8 @@ export async function getBackendListings(params?: {
   const res = await fetch(url, {
     headers: { 'Content-Type': 'application/json' },
     cache: 'no-store',
+    // Evita que un backend colgado deje la petición esperando indefinidamente.
+    signal: AbortSignal.timeout(15000),
   });
 
   if (!res.ok) {
@@ -80,6 +82,8 @@ export async function getBackendListing(
   const res = await fetch(url, {
     headers: { 'Content-Type': 'application/json' },
     cache: 'no-store',
+    // Evita que un backend colgado deje la petición esperando indefinidamente.
+    signal: AbortSignal.timeout(15000),
   });
 
   if (res.status === 404) {

@@ -3,7 +3,13 @@ import { sendMail } from '@/app/lib/services/mailer';
 import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 
+import { checkRateLimit, rateLimitedResponse } from '@/app/lib/rate-limit';
+
 export async function POST(request: Request) {
+  // Frena el abuso del formulario (spam / email bombing vía Gmail SMTP).
+  const rl = checkRateLimit(request);
+  if (!rl.ok) return rateLimitedResponse(rl.retryAfter);
+
   try {
     const body = await request.json();
     const { flightCriteria, contact } = body;
@@ -56,8 +62,9 @@ export async function POST(request: Request) {
     );
 
   } catch (error) {
+    console.error("Jets route error:", error);
     return NextResponse.json(
-      { success: false, message: error instanceof Error ? error.message : "Failed to process the flight inquiry via Next.js handles." },
+      { success: false, message: "Failed to send your inquiry. Please try again later." },
       { status: 500 }
     );
   }

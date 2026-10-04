@@ -3,7 +3,13 @@ import { sendMail } from '@/app/lib/services/mailer';
 import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 
+import { checkRateLimit, rateLimitedResponse } from '@/app/lib/rate-limit';
+
 export async function POST(request: Request) {
+  // Frena el abuso del formulario (spam / email bombing vía Gmail SMTP).
+  const rl = checkRateLimit(request);
+  if (!rl.ok) return rateLimitedResponse(rl.retryAfter);
+
   try {
     const body = await request.json();
     const { interestType, firstName, lastName, email, phoneNumber, message } = body;
@@ -58,7 +64,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { success: false, message: sgError.message || "Failed to process the email delivery via Next.js handles." },
+      { success: false, message: "Failed to send your request. Please try again later." },
       { status: 500 }
     );
   }
