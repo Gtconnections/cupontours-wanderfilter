@@ -3,7 +3,13 @@ import { sendMail } from '@/app/lib/services/mailer';
 import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 // Consulta de una propiedad (reusa el mismo recurso de correo que autos/yates).
+import { checkRateLimit, rateLimitedResponse } from '@/app/lib/rate-limit';
+
 export async function POST(request: Request) {
+  // Frena el abuso del formulario (spam / email bombing vía Gmail SMTP).
+  const rl = checkRateLimit(request);
+  if (!rl.ok) return rateLimitedResponse(rl.retryAfter);
+
   try {
     const body = await request.json();
     const { propertyId, propertyName, checkIn, checkOut, client } = body;
@@ -54,8 +60,9 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Booking properties route error:", error);
     return NextResponse.json(
-      { success: false, message: error instanceof Error ? error.message : "Failed to send the inquiry email." },
+      { success: false, message: "Failed to send your inquiry. Please try again later." },
       { status: 500 }
     );
   }
