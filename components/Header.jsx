@@ -37,6 +37,21 @@ export default function Header() {
   const router = useRouter();
   const { count: wishlistCount, open: openWishlist } = useWishlist();
 
+  // Sesión: si hay sesión, el icono de usuario lleva al dashboard (según rol)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dashboardHref, setDashboardHref] = useState('/admin/dashboard');
+
+  const resolveDashboardHref = () => {
+    try {
+      const pos = localStorage.getItem('position');
+      if (pos === '4') return '/admin/agents';
+      if (pos === '2') return '/admin/properties/list';
+      return '/admin/dashboard';
+    } catch {
+      return '/admin/dashboard';
+    }
+  };
+
   // i18n: idioma según la ruta (/es -> español)
   const locale = localeFromPath(pathname);
   const t = getDict(locale).nav;
@@ -75,6 +90,17 @@ export default function Header() {
     };
     loadCities();
   }, []);
+
+  // Detectar sesión (se re-evalúa al cambiar de ruta)
+  useEffect(() => {
+    try {
+      const logged = localStorage.getItem('isUserLoggedIn') === 'true' && !!localStorage.getItem('accessToken');
+      setIsLoggedIn(logged);
+      if (logged) setDashboardHref(resolveDashboardHref());
+    } catch {
+      setIsLoggedIn(false);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -457,6 +483,13 @@ export default function Header() {
         <div className="header-right" ref={menuRef}>
           <ThemeToggle className="theme-toggle--header" />
           <WishlistButton className="wishlist--header" />
+          {!isLoggedIn ? (
+            <Link href={L('/login')} className={`btn-vip ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>{t.vipLogin} <span className="new-badge">VIP</span></Link>
+          ) : (
+            <Link href={dashboardHref} className={`user-icon-btn ${isSearchExpanded ? 'hide-on-mobile' : ''}`} aria-label={t.myDashboard} title={t.myDashboard}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </Link>
+          )}
           <Link href={L('/jets')} className={`btn-host ${isSearchExpanded ? 'hide-on-mobile' : ''}`}>{t.jets}</Link>
           <button className={`menu-btn ${isMenuOpen ? 'active' : ''}`} aria-label={isMenuOpen ? (locale === 'es' ? 'Cerrar menú' : 'Close menu') : (locale === 'es' ? 'Abrir menú' : 'Open menu')} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
@@ -479,6 +512,11 @@ export default function Header() {
               <li className="menu-divider"></li>
               {/* Puerta única B2B (dueños) */}
               <li><Link href={L('/invest-with-us')} onClick={() => setIsMenuOpen(false)}>{t.listProperty}</Link></li>
+              {!isLoggedIn ? (
+                <li><Link href={L('/login')} onClick={() => setIsMenuOpen(false)}>{t.vipLogin} <span className="new-badge">VIP</span></Link></li>
+              ) : (
+                <li><Link href={dashboardHref} onClick={() => setIsMenuOpen(false)}>{t.myDashboard}</Link></li>
+              )}
               <li className="menu-divider"></li>
               <li><Link href={L('/about-us')} onClick={() => setIsMenuOpen(false)}>{t.about}</Link></li>
               <li><Link href={L('/contact')} onClick={() => setIsMenuOpen(false)}>{t.contact}</Link></li>
