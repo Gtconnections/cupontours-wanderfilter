@@ -513,7 +513,7 @@ export default function Header() {
               {/* Puerta única B2B (dueños) */}
               <li><Link href={L('/invest-with-us')} onClick={() => setIsMenuOpen(false)}>{t.listProperty}</Link></li>
               {!isLoggedIn ? (
-                <li><Link href={L('/login')} onClick={() => setIsMenuOpen(false)}>{t.vipLogin} <span className="new-badge">VIP</span></Link></li>
+                <li><Link href={L('/login')} onClick={() => setIsMenuOpen(false)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign: '-3px', marginRight: '6px'}}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Login</Link></li>
               ) : (
                 <li><Link href={dashboardHref} onClick={() => setIsMenuOpen(false)}>{t.myDashboard}</Link></li>
               )}
