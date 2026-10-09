@@ -166,6 +166,98 @@ body {
   }
 }
 
+/* Botón VIP login (barra superior) */
+.btn-vip {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(212,175,55,0.55);
+  font-weight: 600;
+  font-size: 13px;
+  transition: var(--transition);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn-vip .new-badge {
+  border-color: rgba(212,175,55,0.7);
+  color: #f3d27a;
+  margin-left: 2px;
+}
+
+.btn-vip.hide-on-mobile {
+  display: none !important;
+}
+
+.header-scrolled .btn-vip {
+  background: #f5f5f5;
+  color: var(--text-main);
+}
+
+.header-scrolled .btn-vip .new-badge {
+  color: #9a7b1e;
+  border-color: rgba(154,123,30,0.5);
+}
+
+@media (min-width: 768px) {
+  .btn-vip {
+    display: inline-flex;
+    padding: 20px 20px;
+    font-size: 14px;
+    line-height: 0;
+  }
+}
+
+.btn-vip:hover {
+  background: rgba(255, 255, 255, 0.30);
+  transform: translateY(-1px);
+}
+
+.header-scrolled .btn-vip:hover {
+  background: #ececec;
+}
+
+/* Icono de usuario (con sesión -> dashboard) */
+.user-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212,175,55,0.55);
+  color: #ffffff;
+  text-decoration: none;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.user-icon-btn.hide-on-mobile {
+  display: none !important;
+}
+
+.header-scrolled .user-icon-btn {
+  background: #f5f5f5;
+  color: var(--text-main);
+}
+
+.user-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.30);
+  transform: translateY(-1px);
+}
+
+.header-scrolled .user-icon-btn:hover {
+  background: #ececec;
+}
+
 .menu-btn { 
   background: rgba(255,255,255,0.15); 
   backdrop-filter: blur(10px); 
@@ -1256,6 +1348,11 @@ body {
 [data-theme="dark"] .header-scrolled .brand-header-tours { color: #d4af37; }
 [data-theme="dark"] .header-scrolled .btn-host { background: #1c1c20; color: #ece7dd; }
 [data-theme="dark"] .header-scrolled .btn-host:hover { background: #26262c; }
+[data-theme="dark"] .header-scrolled .btn-vip { background: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .header-scrolled .btn-vip:hover { background: #26262c; }
+[data-theme="dark"] .header-scrolled .btn-vip .new-badge { color: #f3d27a; border-color: rgba(212,175,55,0.7); }
+[data-theme="dark"] .header-scrolled .user-icon-btn { background: #1c1c20; color: #ece7dd; }
+[data-theme="dark"] .header-scrolled .user-icon-btn:hover { background: #26262c; }
 [data-theme="dark"] .header-scrolled .menu-btn { background: #1c1c20; color: #ece7dd; border-color: rgba(255, 255, 255, 0.10); }
 [data-theme="dark"] .header-scrolled .menu-btn:hover { background: #26262c; }
 [data-theme="dark"] .menu-btn.active { background: #d4af37 !important; color: #0a0a0b !important; border-color: #d4af37 !important; }
