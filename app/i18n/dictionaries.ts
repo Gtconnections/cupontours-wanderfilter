@@ -7,6 +7,7 @@ export const dict = {
       cars: "Cars", yachts: "Yachts", services: "Services",
       jets: "Luxury Jets", listProperty: "List your property",
       about: "About", contact: "Contact",
+      vipLogin: "VIP Login", myDashboard: "My Dashboard",
     },
     footer: {
       follow: "Follow us @CuponTours",
@@ -64,6 +65,7 @@ export const dict = {
       cars: "Autos", yachts: "Yates", services: "Servicios",
       jets: "Jets Privados", listProperty: "Publica tu propiedad",
       about: "Nosotros", contact: "Contacto",
+      vipLogin: "Acceso VIP", myDashboard: "Mi Panel",
     },
     footer: {
       follow: "Síguenos @CuponTours",
