@@ -1511,6 +1511,7 @@ export interface Reservation {
   guest_id: number;
   guest_name: string;
   guest_phone: string;
+  pl_locked?: boolean; // true si ya se generó el P&L del mes -> no se puede editar/eliminar
 }
 
 // 🔥 INTERFACE PARA LA RESPUESTA DE RESERVACIONES

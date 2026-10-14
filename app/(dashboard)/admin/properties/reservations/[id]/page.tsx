@@ -61,14 +61,10 @@ export default function ReservationsPage() {
   const [reservationToDelete, setReservationToDelete] = useState<Reservation | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // 🔥 Verificar si la reservación ya pasó (fecha final < hoy)
-  const isReservationPast = (endDate: string) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const end = new Date(endDate);
-    end.setHours(0, 0, 0, 0);
-    return end < today;
-  };
+  // 🔥 Verificar si la reserva está bloqueada por Profit & Loss ya generado.
+  // Mientras no exista el P&L del mes se puede editar/eliminar el monto,
+  // sin importar si la reserva ya pasó. Una vez generado el P&L, se bloquea.
+  const isReservationLocked = (res: Reservation) => res.pl_locked === true;
 
   const loadReservations = useCallback(async (page = 1, start = '', end = '') => {
     if (!isAuthenticated || !token) {
@@ -397,7 +393,7 @@ export default function ReservationsPage() {
               </tr>
             ) : (
               reservations.map((res) => {
-                const isPast = isReservationPast(res.end_date);
+                const locked = isReservationLocked(res);
                 return (
                   <tr key={res.id}>
                     <td className="wander-reservations-id">{res.id}</td>
@@ -425,8 +421,8 @@ export default function ReservationsPage() {
                         >
                           <FiEye size={15} />
                         </button>
-                        {/* 🔥 Editar - Solo visible si NO ha pasado */}
-                        {!isPast && (
+                        {/* 🔥 Editar - Solo visible si el P&L del mes NO se ha generado */}
+                        {!locked && (
                           <button
                             className="wander-reservations-action-btn-icon edit"
                             onClick={() => router.push(`/admin/properties/reservations/edit?id=${res.id}`)}
@@ -435,8 +431,8 @@ export default function ReservationsPage() {
                             <FiEdit2 size={15} />
                           </button>
                         )}
-                        {/* 🔥 Eliminar - Solo visible si NO ha pasado */}
-                        {!isPast && (
+                        {/* 🔥 Eliminar - Solo visible si el P&L del mes NO se ha generado */}
+                        {!locked && (
                           <button
                             className="wander-reservations-action-btn-icon delete"
                             onClick={() => handleDeleteClick(res)}
