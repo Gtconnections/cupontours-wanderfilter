@@ -160,9 +160,11 @@ body {
 @media (min-width: 768px) {
   .btn-host {
     display: inline-flex;
-    padding: 20px 20px;
+    align-items: center;
+    height: 40px;
+    padding: 0 20px;
     font-size: 14px;
-    line-height: 0;
+    line-height: 1;
   }
 }
 
@@ -208,9 +210,11 @@ body {
 @media (min-width: 768px) {
   .btn-vip {
     display: inline-flex;
-    padding: 20px 20px;
+    align-items: center;
+    height: 40px;
+    padding: 0 20px;
     font-size: 14px;
-    line-height: 0;
+    line-height: 1;
   }
 }
 
