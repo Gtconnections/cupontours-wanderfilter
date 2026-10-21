@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import { sendAllianceRequest } from '../../lib/api';
+import { useSpamGuard, Honeypot } from '@/app/lib/anti-spam-client';
 import './work.css';
 import { getWork, type Locale } from '@/app/i18n/dictionaries';
 
@@ -22,6 +23,9 @@ export default function WorkContent({ locale = 'en' }: { locale?: Locale }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Anti-spam (Capa 1): honeypot + temporizador.
+  const { hpRef, payload: spamPayload } = useSpamGuard();
 
   const revenueEstimates = [
     { beds: t.r1beds, price: '$3,000*', desc: t.r1desc },
@@ -52,7 +56,7 @@ export default function WorkContent({ locale = 'en' }: { locale?: Locale }) {
     setIsLoading(true);
     setStatusMessage(null);
 
-    const payload = { firstName, lastName, email, phoneNumber, message };
+    const payload = { firstName, lastName, email, phoneNumber, message, ...spamPayload() };
 
     try {
       const response = await sendAllianceRequest(payload);
@@ -104,6 +108,7 @@ export default function WorkContent({ locale = 'en' }: { locale?: Locale }) {
               <p>{t.formP}</p>
 
               <form onSubmit={handleAllySubmit} className="ally-form custom-wander-layout">
+                <Honeypot inputRef={hpRef} />
 
                 {statusMessage && (
                   <div style={{

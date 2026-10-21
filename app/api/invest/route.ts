@@ -4,6 +4,7 @@ import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 
 import { checkRateLimit, rateLimitedResponse } from '@/app/lib/rate-limit';
+import { isBotSubmission, validateLead } from '@/app/lib/anti-spam';
 
 export async function POST(request: Request) {
   // Frena el abuso del formulario (spam / email bombing vía Gmail SMTP).
@@ -19,6 +20,17 @@ export async function POST(request: Request) {
         { success: false, message: "Missing required fields." },
         { status: 400 }
       );
+    }
+
+    // Anti-spam (Capa 1): bots se descartan en silencio; basura de contenido también.
+    const ok = { success: true, message: "Your investment strategy request has been submitted successfully! Our team will contact you shortly." };
+    if (isBotSubmission(body)) {
+      return NextResponse.json(ok, { status: 200 });
+    }
+    const spam = validateLead({ email, names: [firstName, lastName], texts: [interestType, firstName, lastName, phoneNumber], message });
+    if (!spam.ok) {
+      if (spam.hard) return NextResponse.json({ success: false, message: spam.message }, { status: 400 });
+      return NextResponse.json(ok, { status: 200 });
     }
 
     // ✅ Formatear el remitente con nombre: "CuponTours <info@cupontours.com>"

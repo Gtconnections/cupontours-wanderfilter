@@ -4,6 +4,7 @@ import { StructuredData } from "@/components/seo/structured-data";
 import './about.css';
 import Link from 'next/link';
 import { sendAboutContactRequest } from '../../lib/api';
+import { useSpamGuard, Honeypot } from '@/app/lib/anti-spam-client';
 import { TRUST_STATS } from '../../lib/trust';
 import { getAbout, type Locale } from '@/app/i18n/dictionaries';
 
@@ -24,6 +25,9 @@ export default function AboutContent({ locale = 'en' }: { locale?: Locale }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Anti-spam (Capa 1): honeypot + temporizador.
+  const { hpRef, payload: spamPayload } = useSpamGuard();
 
   const stats = [
     { value: TRUST_STATS.propertiesManaged, label: t.s1 },
@@ -55,7 +59,7 @@ export default function AboutContent({ locale = 'en' }: { locale?: Locale }) {
     setIsLoading(true);
     setStatusMessage(null);
 
-    const payload = { firstName, lastName, email, phoneNumber, message };
+    const payload = { firstName, lastName, email, phoneNumber, message, ...spamPayload() };
 
     try {
       const response = await sendAboutContactRequest(payload);
@@ -211,6 +215,7 @@ export default function AboutContent({ locale = 'en' }: { locale?: Locale }) {
               <p>{t.formP}</p>
 
               <form onSubmit={handleContactSubmit} className="clean-form custom-wander-layout mt-4">
+                <Honeypot inputRef={hpRef} />
 
                 {statusMessage && (
                   <div style={{

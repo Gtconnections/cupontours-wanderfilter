@@ -3,6 +3,7 @@ import { sendMail } from '@/app/lib/services/mailer';
 import { renderInquiryEmail } from '@/app/lib/services/email-template';
 
 import { checkRateLimit, rateLimitedResponse } from '@/app/lib/rate-limit';
+import { isBotSubmission, validateLead } from '@/app/lib/anti-spam';
 
 export async function POST(request: Request) {
   // Frena el abuso del formulario (spam / email bombing vía Gmail SMTP).
@@ -19,6 +20,18 @@ export async function POST(request: Request) {
         { success: false, message: "Missing required fields." },
         { status: 400 }
       );
+    }
+
+    // Anti-spam (Capa 1): bots (honeypot / envío instantáneo) se descartan en
+    // silencio con una respuesta de éxito para no darles pistas.
+    const ok = { success: true, message: "Your message has been sent successfully straight through our platform setup!" };
+    if (isBotSubmission(body)) {
+      return NextResponse.json(ok, { status: 200 });
+    }
+    const spam = validateLead({ email, names: [firstName, lastName], texts: [firstName, lastName, phoneNumber], message });
+    if (!spam.ok) {
+      if (spam.hard) return NextResponse.json({ success: false, message: spam.message }, { status: 400 });
+      return NextResponse.json(ok, { status: 200 });
     }
 
     // ✅ Formatear el remitente con nombre: "CuponTours <info@cupontours.com>"

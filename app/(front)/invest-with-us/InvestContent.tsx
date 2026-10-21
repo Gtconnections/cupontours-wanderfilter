@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { StructuredData } from "@/components/seo/structured-data";
 import { sendInvestRequest } from '../../lib/api';
+import { useSpamGuard, Honeypot } from '@/app/lib/anti-spam-client';
 import { TRUST_STATS } from '../../lib/trust'; // Fuente única de métricas de confianza
 import './invest.css';
 import { getInvest, type Locale } from '@/app/i18n/dictionaries';
@@ -25,6 +26,9 @@ export default function InvestContent({ locale = 'en' }: { locale?: Locale }) {
   // Estados de control para la solicitud local
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Anti-spam (Capa 1): honeypot + temporizador.
+  const { hpRef, payload: spamPayload } = useSpamGuard();
 
   // Estado para controlar el popup de la galería interactiva
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
@@ -75,7 +79,7 @@ export default function InvestContent({ locale = 'en' }: { locale?: Locale }) {
     setIsLoading(true);
     setStatusMessage(null);
 
-    const payload = { interestType, firstName, lastName, email, phoneNumber, message };
+    const payload = { interestType, firstName, lastName, email, phoneNumber, message, ...spamPayload() };
 
     try {
       const response = await sendInvestRequest(payload);
@@ -330,6 +334,7 @@ export default function InvestContent({ locale = 'en' }: { locale?: Locale }) {
               <p>{t.formDesc}</p>
               
               <form onSubmit={handleInvestSubmit} className="clean-form custom-wander-layout mt-4">
+                <Honeypot inputRef={hpRef} />
                 
                 {/* Capa de Estado Dinámica (Éxito o Error) */}
                 {statusMessage && (

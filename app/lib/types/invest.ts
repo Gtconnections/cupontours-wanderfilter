@@ -8,6 +8,9 @@ export interface InvestPayload {
   email: string;
   phoneNumber: string;
   message: string;
+  // Anti-spam (honeypot + temporizador); el usuario real no los ve.
+  _hp_url?: string;
+  _elapsed?: number;
 }
 
 /**
