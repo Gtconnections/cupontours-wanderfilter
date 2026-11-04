@@ -253,6 +253,67 @@ export async function getProperties(filters: PropertiesFilters = {}, forceRefres
   }
 }
 
+// 🔥 OBTENER TODAS LAS PROPIEDADES DE UNA SOLA VEZ (sin paginar).
+// El backend /listings-sync/ devuelve el arreglo completo cuando NO se le pasa
+// `paginated`. El filtrado y la paginación se hacen en el cliente, así la
+// búsqueda no dispara una petición por cada tecla y la carga ocurre una vez.
+let allPropertiesCache: { data: Property[] | null; timestamp: number } = { data: null, timestamp: 0 };
+
+export async function getAllProperties(forceRefresh = false): Promise<Property[]> {
+  const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");
+
+  const token = getAuthToken();
+  if (!token) {
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+    throw new Error('No hay sesión activa');
+  }
+
+  if (!forceRefresh && allPropertiesCache.data && (Date.now() - allPropertiesCache.timestamp) < CACHE_DURATION) {
+    return allPropertiesCache.data;
+  }
+
+  try {
+    // Sin `paginated` -> el backend responde el arreglo completo de propiedades.
+    const url = `${API_BASE_URL}/listings-sync/`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('isUserLoggedIn');
+        localStorage.removeItem('userData');
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}&error=session_expired`;
+      }
+      throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText || 'Error al cargar las propiedades'}`);
+    }
+
+    const data = await response.json();
+    // El endpoint sin paginar devuelve un arreglo; toleramos ambas formas por si acaso.
+    const list: Property[] = Array.isArray(data) ? data : (data.results || []);
+
+    allPropertiesCache = { data: list, timestamp: Date.now() };
+    return list;
+  } catch (error) {
+    console.error('❌ Error en getAllProperties:', error);
+    if (allPropertiesCache.data) return allPropertiesCache.data;
+    throw error;
+  }
+}
+
 // 🔥 OBTENER LISTA DE PROPIEDADES LUXURY
 export async function getLuxuryProperties(filters: PropertiesFilters = {}): Promise<PropertiesResponse> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");

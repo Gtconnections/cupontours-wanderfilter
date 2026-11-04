@@ -2,10 +2,10 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getProperties, Property, refreshProperties, syncHostawayProperties } from '@/app/lib/api/propertiesAdmin';
+import { getAllProperties, Property, syncHostawayProperties } from '@/app/lib/api/propertiesAdmin';
 import type { IconType } from 'react-icons';
 import {
   FiPlus,
@@ -21,7 +21,6 @@ import {
   FiCalendar,
   FiFileText,
   FiLink,
-  FiEdit2,
   FiChevronLeft,
   FiChevronRight
 } from 'react-icons/fi';
@@ -45,23 +44,20 @@ const LoadingSkeleton = () => (
 export default function PropertiesListPage() {
   const router = useRouter();
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
-  
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
+
+  // Todas las propiedades se traen UNA sola vez; el filtro y la paginación
+  // se resuelven 100% en el cliente (sin pedir a la base por cada tecla).
+  const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthVerified, setIsAuthVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMsg, setSyncMsg] = useState<string | null>(null);
-  
-  // Estados de paginación y filtros
-  const [filters, setFilters] = useState({
-    page: 1,
-    page_size: 10,
-    search: '',
-  });
-  
-  const [totalPages, setTotalPages] = useState(0);
+
+  // Estado de filtro y paginación (solo frontend)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const loadProperties = useCallback(async (forceRefresh = false) => {
     if (!isAuthenticated || !token) {
@@ -73,46 +69,70 @@ export default function PropertiesListPage() {
     setError(null);
 
     try {
-      const data = await getProperties(filters, forceRefresh);
-      setProperties(data.results || []);
-      setTotalCount(data.count || 0);
-      setTotalPages(Math.ceil((data.count || 0) / (filters.page_size || 10)));
+      const data = await getAllProperties(forceRefresh);
+      setAllProperties(data);
     } catch (err) {
       console.error('❌ Error cargando propiedades:', err);
       setError((err instanceof Error ? err.message : undefined) || 'Error al cargar las propiedades');
     } finally {
       setIsLoading(false);
     }
-  }, [filters, token, isAuthenticated, router]);
+  }, [token, isAuthenticated, router]);
 
   useEffect(() => {
     if (isChecking) return;
-    
+
     const hasAuth = checkAuth();
     // Auth check reads cookies/localStorage, only available after mount; deferring
     // to an effect (rather than a lazy initializer) avoids an SSR hydration mismatch.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsAuthVerified(true);
-    
+
     if (!hasAuth) {
       router.push('/login');
       return;
     }
 
+    // Se carga una sola vez cuando la sesión queda verificada (no por cada filtro).
     loadProperties();
-  }, [filters, isAuthenticated, isChecking, loadProperties, router, checkAuth]);
+  }, [isChecking, isAuthenticated, loadProperties, router, checkAuth]);
+
+  // --- Filtro en el cliente ---
+  const filteredProperties = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
+    if (!q) return allProperties;
+    return allProperties.filter((p) =>
+      (p.name || '').toLowerCase().includes(q) ||
+      (p.public_name || '').toLowerCase().includes(q) ||
+      (p.property_id || '').toLowerCase().includes(q) ||
+      (p.owner || '').toLowerCase().includes(q) ||
+      (p.address || '').toLowerCase().includes(q)
+    );
+  }, [allProperties, searchTerm]);
+
+  const totalCount = filteredProperties.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  const currentPage = Math.min(page, totalPages);
+
+  // --- Paginación en el cliente ---
+  const pageItems = useMemo(
+    () => filteredProperties.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+    [filteredProperties, currentPage, pageSize]
+  );
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
-    setFilters(prev => ({ ...prev, page: newPage }));
+    setPage(newPage);
   };
 
-  const handleSearch = (searchTerm: string) => {
-    setFilters(prev => ({ ...prev, search: searchTerm, page: 1 }));
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    setPage(1);
   };
 
   const handlePageSizeChange = (size: number) => {
-    setFilters(prev => ({ ...prev, page_size: size, page: 1 }));
+    setPageSize(size);
+    setPage(1);
   };
 
   const handleRefresh = async () => {
@@ -151,7 +171,7 @@ export default function PropertiesListPage() {
       'cleaning': { label: 'CLEANING', color: '#2563eb' },
       'business': { label: 'BUSINESS', color: '#8b5cf6' },
     };
-    const s = statusMap[status] || { label: status.toUpperCase(), color: '#6b7280' };
+    const s = statusMap[status] || { label: (status || '').toUpperCase(), color: '#6b7280' };
     return (
       <span style={{
         display: 'inline-block',
@@ -236,7 +256,7 @@ export default function PropertiesListPage() {
           <span className="wander-breadcrumb">Listings / Properties</span>
           <h2>Properties</h2>
           <p className="wander-properties-subtitle">
-            {totalCount} {totalCount === 1 ? 'propiedad' : 'propiedades'} registradas
+            {allProperties.length} {allProperties.length === 1 ? 'propiedad' : 'propiedades'} registradas
           </p>
         </div>
         <div className="wander-properties-actions">
@@ -248,14 +268,14 @@ export default function PropertiesListPage() {
             <FiRefreshCw size={16} />
             {isSyncing ? 'Sincronizando...' : 'Sincronizar Hostaway'}
           </button>
-          <button 
+          <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
           >
             <FiRefreshCw size={16} />
             Actualizar
           </button>
-          <button 
+          <button
             className="wander-btn-primary"
             onClick={() => router.push('/admin/properties/create')}
           >
@@ -271,18 +291,18 @@ export default function PropertiesListPage() {
         </div>
       )}
 
-      {/* Filtros y búsqueda */}
+      {/* Filtros y búsqueda (instantáneos, sin pedir a la base) */}
       <div className="wander-properties-filters">
         <div className="wander-search-box">
           <FiSearch size={16} />
           <input
             type="text"
             placeholder="Buscar por nombre..."
-            value={filters.search}
+            value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
             className="wander-search-input"
           />
-          {filters.search && (
+          {searchTerm && (
             <button
               onClick={() => handleSearch('')}
               className="wander-clear-search"
@@ -295,7 +315,7 @@ export default function PropertiesListPage() {
         <div className="wander-page-size">
           <label>Mostrar:</label>
           <select
-            value={filters.page_size || 10}
+            value={pageSize}
             onChange={(e) => handlePageSizeChange(Number(e.target.value))}
             className="wander-select"
           >
@@ -309,16 +329,16 @@ export default function PropertiesListPage() {
 
       {/* Grid de propiedades - 2 columnas */}
       <div className="wander-properties-grid">
-        {properties.length === 0 ? (
+        {pageItems.length === 0 ? (
           <div className="wander-properties-empty">
             <span className="wander-empty-icon">🏠</span>
             <p>No se encontraron propiedades</p>
             <span className="wander-empty-desc">
-              {filters.search ? 'Prueba con otro término de búsqueda' : 'No hay propiedades registradas aún'}
+              {searchTerm ? 'Prueba con otro término de búsqueda' : 'No hay propiedades registradas aún'}
             </span>
           </div>
         ) : (
-          properties.map((property) => (
+          pageItems.map((property) => (
             <div key={property.id} className="wander-property-card">
               <div className="wander-property-image">
                 {property.photo ? (
@@ -335,7 +355,7 @@ export default function PropertiesListPage() {
                   {getTypeBadge(property.listing_type)}
                 </div>
               </div>
-              
+
               <div className="wander-property-info">
                 <h3 className="wander-property-title">
                   {property.name || property.public_name}
@@ -369,38 +389,38 @@ export default function PropertiesListPage() {
                   )}
                 </div>
               </div>
-              
-              {/* 6 Links de acción */}
+
+              {/* Links de acción */}
               <div className="wander-property-actions">
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-details"
                 >
                   <FiEye size={14} />
                   Details
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/reservations/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-reservations"
                 >
                   <FiCalendar size={14} />
                   Reservations
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/calendar/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-calendar"
                 >
                   <FiCalendar size={14} />
                   Calendar
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/invoices/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-invoices"
                 >
                   <FiFileText size={14} />
                   Invoices
                 </button>
-                <button 
+                <button
                   onClick={() => router.push(`/admin/properties/access-links/${property.id}`)}
                   className="wander-prop-btn wander-prop-btn-access"
                 >
@@ -413,27 +433,26 @@ export default function PropertiesListPage() {
         )}
       </div>
 
-      {/* Paginación */}
-      {totalPages > 0 && (
+      {/* Paginación (en el cliente) */}
+      {totalCount > 0 && (
         <div className="wander-properties-pagination">
           <div className="wander-pagination-info">
-            Mostrando {((filters.page || 1) - 1) * (filters.page_size || 10) + 1} - 
-            {Math.min((filters.page || 1) * (filters.page_size || 10), totalCount)} de {totalCount} propiedades
+            Mostrando {(currentPage - 1) * pageSize + 1} -{' '}
+            {Math.min(currentPage * pageSize, totalCount)} de {totalCount} propiedades
           </div>
-          
+
           <div className="wander-pagination-controls">
             <button
-              onClick={() => handlePageChange((filters.page || 1) - 1)}
-              disabled={filters.page === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
               className="wander-pagination-btn"
             >
               <FiChevronLeft size={14} />
             </button>
-            
+
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              const currentPage = filters.page || 1;
               let pageNum;
-              
+
               if (totalPages <= 5) {
                 pageNum = i + 1;
               } else if (currentPage <= 3) {
@@ -443,7 +462,7 @@ export default function PropertiesListPage() {
               } else {
                 pageNum = currentPage - 2 + i;
               }
-              
+
               return (
                 <button
                   key={pageNum}
@@ -454,10 +473,10 @@ export default function PropertiesListPage() {
                 </button>
               );
             })}
-            
+
             <button
-              onClick={() => handlePageChange((filters.page || 1) + 1)}
-              disabled={filters.page === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
               className="wander-pagination-btn"
             >
               <FiChevronRight size={14} />
