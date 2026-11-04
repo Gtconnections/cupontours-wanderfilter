@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getListingsNamesAndIds, ListingSimple, createProfitAndLoss } from '@/app/lib/api/propertiesAdmin';
+import { getAllListingsNamesAndIds, ListingSimple, createProfitAndLoss } from '@/app/lib/api/propertiesAdmin';
 
 interface ModalCreatePLProps {
   isOpen: boolean;
@@ -29,7 +29,7 @@ export default function ModalCreatePL({
   const loadListings = async () => {
     setIsLoadingListings(true);
     try {
-      const data = await getListingsNamesAndIds();
+      const data = await getAllListingsNamesAndIds();
       setListings(data);
     } catch (err) {
       console.error('❌ Error al cargar listings:', err);

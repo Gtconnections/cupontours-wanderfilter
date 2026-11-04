@@ -6,7 +6,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getListingsNamesAndIds, ListingSimple, createReservation, CreateReservationData } from '@/app/lib/api/propertiesAdmin';
+import { getAllListingsNamesAndIds, ListingSimple, createReservation, CreateReservationData } from '@/app/lib/api/propertiesAdmin';
 import { FiArrowLeft, FiSave, FiCalendar, FiUser, FiPhone, FiTag, FiDollarSign, FiClock, FiUsers, FiX } from 'react-icons/fi';
 import './create.css';
 
@@ -75,7 +75,7 @@ function CreateReservationContent() {
   const loadListings = async () => {
     setIsLoadingListings(true);
     try {
-      const data = await getListingsNamesAndIds();
+      const data = await getAllListingsNamesAndIds();
       setListings(data);
       
       // Verificar si viene un listing_id en la URL

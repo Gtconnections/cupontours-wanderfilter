@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FiX, FiPlus, FiTrash2, FiTag, FiLink, FiFileText } from 'react-icons/fi';
-import { createAccessLink, getListingsNamesAndIds, ListingSimple } from '@/app/lib/api/propertiesAdmin';
+import { createAccessLink, getAllListingsNamesAndIds, ListingSimple } from '@/app/lib/api/propertiesAdmin';
 import './ModalCreateAccessLink.css';
 
 interface ModalCreateAccessLinkProps {

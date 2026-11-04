@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import { 
-  getListingsNamesAndIds, 
+  getAllListingsNamesAndIds, 
   ListingSimple, 
   getReservationDetail, 
   ReservationDetail,
@@ -90,7 +90,7 @@ function EditReservationContent() {
     try {
       // Cargar listings y detalle en paralelo
       const [listingsData, reservationData] = await Promise.all([
-        getListingsNamesAndIds(),
+        getAllListingsNamesAndIds(),
         getReservationDetail(parseInt(reservationId!))
       ]);
 

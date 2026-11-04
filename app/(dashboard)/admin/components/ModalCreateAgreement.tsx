@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { getListingsNamesAndIds, ListingSimple, createAgreement } from '@/app/lib/api/propertiesAdmin';
+import { getAllListingsNamesAndIds, ListingSimple, createAgreement } from '@/app/lib/api/propertiesAdmin';
 import { FiX, FiUpload, FiFile } from 'react-icons/fi';
 
 interface ModalCreateAgreementProps {
@@ -37,7 +37,7 @@ export default function ModalCreateAgreement({
   const loadListings = async () => {
     setIsLoadingListings(true);
     try {
-      const data = await getListingsNamesAndIds();
+      const data = await getAllListingsNamesAndIds();
       setListings(data);
     } catch (err) {
       console.error('❌ Error al cargar listings:', err);

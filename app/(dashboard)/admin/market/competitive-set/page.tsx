@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getListingsNamesAndIds } from '@/app/lib/api/propertiesAdmin';
+import { getAllListingsNamesAndIds } from '@/app/lib/api/propertiesAdmin';
 import { getCompetitiveSet, CompetitiveSetResponse } from '@/app/lib/api/market';
 import '../market.css';
 
@@ -22,7 +22,7 @@ export default function CompetitiveSetPage() {
 
   const loadListings = useCallback(async () => {
     try {
-      const data = await getListingsNamesAndIds();
+      const data = await getAllListingsNamesAndIds();
       setListings(data as ListingOption[]);
       if (Array.isArray(data) && data.length && selected === '') setSelected((data[0] as ListingOption).id);
     } catch { /* noop */ }

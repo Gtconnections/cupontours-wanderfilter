@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import {
-  getListingsNamesAndIds,
+  getAllListingsNamesAndIds,
   ListingSimple,
   getInvoiceDetail,
   InvoiceDetail,
@@ -93,7 +93,7 @@ function EditInvoiceContent() {
     try {
       // Cargar listings y detalle en paralelo
       const [listingsData, invoiceData] = await Promise.all([
-        getListingsNamesAndIds(),
+        getAllListingsNamesAndIds(),
         getInvoiceDetail(parseInt(invoiceId!))
       ]);
 
