@@ -1269,6 +1269,26 @@ export async function getListingsNamesAndIdsSync(): Promise<ListingSimple[]> {
   }
 }
 
+// 🔥 OBTENER TODAS las propiedades (id + nombre INTERNO), combinando las viejas
+// y las sincronizadas de Hostaway. Ambos endpoints ya devuelven el nombre
+// interno (internalListingName) via build_listing_names. Se deduplica por id y
+// se ordena por nombre.
+export async function getAllListingsNamesAndIds(): Promise<ListingSimple[]> {
+  const [legacy, synced] = await Promise.all([
+    getListingsNamesAndIds().catch(() => [] as ListingSimple[]),
+    getListingsNamesAndIdsSync().catch(() => [] as ListingSimple[]),
+  ]);
+
+  const byId = new Map<number, ListingSimple>();
+  for (const l of [...legacy, ...synced]) {
+    if (l && typeof l.id === 'number') byId.set(l.id, l);
+  }
+
+  return Array.from(byId.values()).sort((a, b) =>
+    (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })
+  );
+}
+
 // 🔥 CREAR PROFIT AND LOSS
 export async function createProfitAndLoss(data: CreateProfitAndLossData): Promise<CreateProfitAndLossResponse> {
   const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://dashboard-cp-backend-nyc-prd-74333.ondigitalocean.app/api').replace(/\/$/, "");

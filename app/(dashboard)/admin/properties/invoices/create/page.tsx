@@ -6,7 +6,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
-import { getListingsNamesAndIds, ListingSimple, createInvoice, CreateInvoiceData } from '@/app/lib/api/propertiesAdmin';
+import { getAllListingsNamesAndIds, ListingSimple, createInvoice, CreateInvoiceData } from '@/app/lib/api/propertiesAdmin';
 import { 
   FiArrowLeft, 
   FiSave, 
@@ -78,7 +78,7 @@ function CreateInvoiceContent() {
   const loadListings = async () => {
     setIsLoadingListings(true);
     try {
-      const data = await getListingsNamesAndIds();
+      const data = await getAllListingsNamesAndIds();
       setListings(data);
       
       // Verificar si viene un listing_id en la URL
