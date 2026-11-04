@@ -271,13 +271,25 @@ export default function ProfitAndLossDetailPage() {
             </div>
           </div>
 
-          {/* Stats */}
+          {/* Stats — desglose completo (igual que el dashboard viejo) */}
           <div className="wander-pl-detail-summary-card stats">
             <h3>Stats</h3>
             <div className="wander-pl-detail-summary-item">
-              <span>Income - Expenses:</span>
+              <span>Net:</span>
               <span className={isNegative ? 'negative' : 'positive'}>
                 {formatCurrency(data.income_minus_expenses)}
+              </span>
+            </div>
+            <div className="wander-pl-detail-summary-item">
+              <span>Management Fee:</span>
+              <span className={parseFloat(data.fee_cupon_tours) < 0 ? 'negative' : 'positive'}>
+                {formatCurrency(data.fee_cupon_tours)}
+              </span>
+            </div>
+            <div className="wander-pl-detail-summary-item">
+              <span>Refunds:</span>
+              <span className={parseFloat(data.refunds) < 0 ? 'negative' : 'positive'}>
+                {formatCurrency(data.refunds)}
               </span>
             </div>
             <div className="wander-pl-detail-summary-item">
@@ -287,7 +299,7 @@ export default function ProfitAndLossDetailPage() {
               </span>
             </div>
             <div className="wander-pl-detail-summary-item total">
-              <span>Deposit:</span>
+              <span>Partner Deposit:</span>
               <span className={parseFloat(data.deposit) < 0 ? 'negative' : 'positive'}>
                 {formatCurrency(data.deposit)}
               </span>
