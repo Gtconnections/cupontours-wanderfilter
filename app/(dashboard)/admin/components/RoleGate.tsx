@@ -9,6 +9,17 @@ const AGENT_ALLOWED = ['/admin/agents', '/admin/profile'];
 // Rutas que un OWNER sí puede abrir: todo lo de propiedades (el backend ya filtra
 // a las suyas) y su perfil.
 const OWNER_ALLOWED = ['/admin/properties', '/admin/profile'];
+// Rutas de MANIPULACIÓN que un OWNER NO puede abrir (es solo-lectura): crear/editar
+// propiedades, reservas, facturas, etc. Aunque estén bajo /admin/properties, se bloquean.
+const OWNER_DENY = [
+  '/admin/properties/create',
+  '/admin/properties/create-luxury',
+  '/admin/properties/agreements',
+  '/admin/properties/reservations/create',
+  '/admin/properties/reservations/edit',
+  '/admin/properties/invoices/create',
+  '/admin/properties/invoices/edit',
+];
 
 function matchesAny(pathname: string, list: string[]): boolean {
   return list.some((p) => pathname === p || pathname.startsWith(p + '/'));
@@ -39,7 +50,8 @@ export default function RoleGate({ children }: { children: React.ReactNode }) {
     home = '/admin/properties/list';
   }
 
-  const blocked = allowed !== null && !matchesAny(pathname, allowed);
+  const deniedForOwner = isOwner && matchesAny(pathname, OWNER_DENY);
+  const blocked = (allowed !== null && !matchesAny(pathname, allowed)) || deniedForOwner;
 
   useEffect(() => {
     if (isChecking) return;

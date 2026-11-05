@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getInvoicesByListing, Invoice, InvoicesResponse, InvoicesFilters } from '@/app/lib/api/propertiesAdmin';
 import { 
   FiArrowLeft, 
@@ -43,6 +44,7 @@ export default function InvoicesPage() {
   const listingId = parseInt(params.id as string);
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -231,13 +233,15 @@ export default function InvoicesPage() {
           </p>
         </div>
         <div className="wander-invoices-actions">
-          <Link 
+          {!isOwner && (
+          <Link
             href={`/admin/properties/invoices/create?listing_id=${listingId}`}
             className="wander-btn-primary"
           >
             <FiPlus size={16} />
             Create Invoice
           </Link>
+          )}
           <Link 
             href={`/admin/properties/${listingId}`}
             className="wander-btn-secondary"

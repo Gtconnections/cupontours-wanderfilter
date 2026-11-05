@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getPropertyDetail, PropertyDetailResponse, refreshPropertyDetail, deleteListingImage, deleteListing, updatePrincipalPhoto } from '@/app/lib/api/propertiesAdmin';
 import {
   FiCamera,
@@ -51,6 +52,7 @@ export default function PropertyDetailPage() {
   const propertyId = parseInt(params.id as string);
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [data, setData] = useState<PropertyDetailResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -375,6 +377,7 @@ export default function PropertyDetailPage() {
             ID #{listing.listing_id} • {listing.listing_type} • {listing.address}
           </p>
         </div>
+        {!isOwner && (
         <div className="wander-property-detail-actions-top">
           <button
             onClick={() => setIsImagesModalOpen(true)}
@@ -395,6 +398,7 @@ export default function PropertyDetailPage() {
             <FiTrash2 size={16} /> Delete
           </button>
         </div>
+        )}
       </header>
 
       {/* Acciones secundarias */}
@@ -503,8 +507,8 @@ export default function PropertyDetailPage() {
                   className="wander-lightbox-image"
                 />
                 
-                {/* Botón eliminar en la imagen - solo para imágenes que no son la principal */}
-                {images[currentImageIndex].id !== -1 ? (
+                {/* Botón eliminar/cambiar imagen - oculto para owner (solo lectura) */}
+                {!isOwner && (images[currentImageIndex].id !== -1 ? (
                   <button
                     className="wander-lightbox-delete"
                     onClick={(e) => confirmDeleteImage(images[currentImageIndex].id, e)}
@@ -523,7 +527,7 @@ export default function PropertyDetailPage() {
                   >
                     <FiCamera size={20} />
                   </button>
-                )}
+                ))}
               </div>
 
               {/* Miniaturas en la parte inferior */}

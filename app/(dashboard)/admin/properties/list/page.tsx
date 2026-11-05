@@ -5,6 +5,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getAllProperties, Property, syncHostawayProperties } from '@/app/lib/api/propertiesAdmin';
 import type { IconType } from 'react-icons';
 import {
@@ -44,6 +45,7 @@ const LoadingSkeleton = () => (
 export default function PropertiesListPage() {
   const router = useRouter();
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
 
   // Todas las propiedades se traen UNA sola vez; el filtro y la paginación
   // se resuelven 100% en el cliente (sin pedir a la base por cada tecla).
@@ -260,14 +262,16 @@ export default function PropertiesListPage() {
           </p>
         </div>
         <div className="wander-properties-actions">
-          <button
-            onClick={handleSyncHostaway}
-            disabled={isSyncing}
-            className="wander-btn-secondary"
-          >
-            <FiRefreshCw size={16} />
-            {isSyncing ? 'Sincronizando...' : 'Sincronizar Hostaway'}
-          </button>
+          {!isOwner && (
+            <button
+              onClick={handleSyncHostaway}
+              disabled={isSyncing}
+              className="wander-btn-secondary"
+            >
+              <FiRefreshCw size={16} />
+              {isSyncing ? 'Sincronizando...' : 'Sincronizar Hostaway'}
+            </button>
+          )}
           <button
             onClick={handleRefresh}
             className="wander-btn-secondary"
@@ -275,13 +279,15 @@ export default function PropertiesListPage() {
             <FiRefreshCw size={16} />
             Actualizar
           </button>
-          <button
-            className="wander-btn-primary"
-            onClick={() => router.push('/admin/properties/create')}
-          >
-            <FiPlus size={16} />
-            Create Property
-          </button>
+          {!isOwner && (
+            <button
+              className="wander-btn-primary"
+              onClick={() => router.push('/admin/properties/create')}
+            >
+              <FiPlus size={16} />
+              Create Property
+            </button>
+          )}
         </div>
       </header>
 

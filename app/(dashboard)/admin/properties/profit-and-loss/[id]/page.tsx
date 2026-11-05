@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getProfitAndLossDetail, ProfitAndLossDetail, deleteProfitAndLoss } from '@/app/lib/api/propertiesAdmin';
 import DeletePropertyModal from '../../../components/DeletePropertyModal';
 import { generateProfitAndLossPDF } from './generatePDF';
@@ -26,6 +27,7 @@ export default function ProfitAndLossDetailPage() {
   const plId = parseInt(params.id as string);
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [data, setData] = useState<ProfitAndLossDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -211,13 +213,15 @@ export default function ProfitAndLossDetailPage() {
           </Link>
         </div>
         <div className="wander-pl-detail-actions-right">
-          <button 
+          {!isOwner && (
+          <button
             className="wander-pl-delete-btn"
             onClick={() => setIsDeleteModalOpen(true)}
           >
             🗑️ Delete P&L
           </button>
-          <button 
+          )}
+          <button
             className="wander-pl-pdf-btn"
             onClick={handleGeneratePDF}
           >

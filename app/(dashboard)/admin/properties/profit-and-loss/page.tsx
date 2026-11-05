@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getProfitAndLoss, ProfitAndLossItem, ProfitAndLossResponse, ProfitAndLossFilters } from '@/app/lib/api/propertiesAdmin';
 import ModalCreatePL from '../../components/ModalCreatePL';
 import './profit-and-loss.css';
@@ -27,6 +28,7 @@ function ProfitAndLossContent() {
   const searchParams = useSearchParams();
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [data, setData] = useState<ProfitAndLossResponse | null>(null);
   const [items, setItems] = useState<ProfitAndLossItem[]>([]);
@@ -192,12 +194,14 @@ function ProfitAndLossContent() {
       <div className="wander-pl-header">
         <div className="wander-pl-header-content">
           <h1>Profit and Loss</h1>
-          <button 
+          {!isOwner && (
+          <button
             className="wander-pl-create-btn"
             onClick={() => setIsCreateModalOpen(true)}
           >
             + Create PL
           </button>
+          )}
         </div>
       </div>
 

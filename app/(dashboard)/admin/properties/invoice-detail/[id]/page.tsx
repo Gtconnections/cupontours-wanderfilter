@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getInvoiceDetail, InvoiceDetail, deleteInvoice, deleteInvoiceImage } from '@/app/lib/api/propertiesAdmin';
 import ModalDeleteInvoice from '../../../components/ModalDeleteInvoice';
 import ModalAddFiles from '../../../components/ModalAddFiles';
@@ -46,6 +47,7 @@ export default function InvoiceDetailPage() {
   const invoiceId = parseInt(params.id as string);
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [invoice, setInvoice] = useState<InvoiceDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -573,6 +575,7 @@ export default function InvoiceDetailPage() {
                   >
                     View
                   </a>
+                  {!isOwner && (
                   <button
                     onClick={() => {
                       setFileToDelete(file);
@@ -583,6 +586,7 @@ export default function InvoiceDetailPage() {
                   >
                     <FiTrash2 size={14} />
                   </button>
+                  )}
                 </div>
               </div>
             ))
@@ -596,21 +600,25 @@ export default function InvoiceDetailPage() {
 
       {/* Actions */}
       <div className="wander-invoice-detail-actions-bar">
-        <button 
+        {!isOwner && (
+        <button
           onClick={handleEdit}
           className="wander-invoice-detail-action-btn"
         >
           <FiEdit2 size={16} />
           Edit
         </button>
-        <button 
+        )}
+        {!isOwner && (
+        <button
           onClick={() => setIsDeleteModalOpen(true)}
           className="wander-invoice-detail-action-btn"
         >
           <FiTrash2 size={16} />
           Delete
         </button>
-        <button 
+        )}
+        <button
           onClick={generatePDF}
           className="wander-invoice-detail-action-btn"
         >

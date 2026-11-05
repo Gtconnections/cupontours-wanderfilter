@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getReservations, Reservation, ReservationsFilters, getReservationDetail, ReservationDetail, deleteReservation } from '@/app/lib/api/propertiesAdmin';
 import ModalReservationDetail from '../../../components/ModalReservationDetail';
 import ModalDeleteReservation from '../../../components/ModalDeleteReservation';
@@ -35,6 +36,7 @@ export default function ReservationsPage() {
   const listingId = parseInt(params.id as string);
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [listingName, setListingName] = useState('');
@@ -291,13 +293,15 @@ export default function ReservationsPage() {
             </div>
           </div>
           <div className="wander-reservations-header-actions">
-            <a 
+            {!isOwner && (
+            <a
                 href={`/admin/properties/reservations/create?listing_id=${listingId}`}
                 className="wander-reservations-action-btn create"
                 >
                 <FiPlus size={16} />
                 Create Reservation
                 </a>
+            )}
             <Link 
               href={`/admin/properties/${listingId}`}
               className="wander-reservations-action-btn back"
@@ -422,7 +426,7 @@ export default function ReservationsPage() {
                           <FiEye size={15} />
                         </button>
                         {/* 🔥 Editar - Solo visible si el P&L del mes NO se ha generado */}
-                        {!locked && (
+                        {!locked && !isOwner && (
                           <button
                             className="wander-reservations-action-btn-icon edit"
                             onClick={() => router.push(`/admin/properties/reservations/edit?id=${res.id}`)}
@@ -432,7 +436,7 @@ export default function ReservationsPage() {
                           </button>
                         )}
                         {/* 🔥 Eliminar - Solo visible si el P&L del mes NO se ha generado */}
-                        {!locked && (
+                        {!locked && !isOwner && (
                           <button
                             className="wander-reservations-action-btn-icon delete"
                             onClick={() => handleDeleteClick(res)}

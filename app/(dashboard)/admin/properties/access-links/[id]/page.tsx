@@ -6,6 +6,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
+import { useIsOwner } from '@/app/lib/utils/useIsOwner';
 import { getAccessLinks, AccessLink, getAccessLinkDetail, deleteAccessLink } from '@/app/lib/api/propertiesAdmin';
 import ModalAccessLinkDetail from '../../../components/ModalAccessLinkDetail';
 import ModalDeleteAccessLink from '../../../components/ModalDeleteAccessLink';
@@ -43,6 +44,7 @@ export default function AccessLinksPage() {
   const listingId = parseInt(params.id as string);
   
   const { token, isChecking, isAuthenticated, checkAuth } = useAuth();
+  const isOwner = useIsOwner(); // owner = solo lectura
   
   const [accessLinks, setAccessLinks] = useState<AccessLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -240,13 +242,15 @@ export default function AccessLinksPage() {
           </p>
         </div>
         <div className="wander-access-links-actions">
-          <button 
+          {!isOwner && (
+          <button
             onClick={() => setIsCreateModalOpen(true)}
             className="wander-btn-primary"
           >
             <FiPlus size={16} />
             Create Access Link
           </button>
+          )}
           <Link 
             href={`/admin/properties/${listingId}`}
             className="wander-btn-secondary"
@@ -314,6 +318,7 @@ export default function AccessLinksPage() {
                       >
                         <FiEye size={15} />
                       </button>
+                      {!isOwner && (
                       <button
                         className="wander-access-links-action-btn delete"
                         onClick={() => handleDeleteClick(item)}
@@ -321,6 +326,7 @@ export default function AccessLinksPage() {
                       >
                         <FiTrash2 size={15} />
                       </button>
+                      )}
                     </div>
                   </td>
                 </tr>
