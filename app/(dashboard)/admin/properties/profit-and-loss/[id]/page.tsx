@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { parseLocalDate } from '@/app/lib/utils/date';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -135,7 +136,7 @@ export default function ProfitAndLossDetailPage() {
   };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'long',
       day: '2-digit',
@@ -144,7 +145,7 @@ export default function ProfitAndLossDetailPage() {
   };
 
   const formatShortDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: '2-digit',

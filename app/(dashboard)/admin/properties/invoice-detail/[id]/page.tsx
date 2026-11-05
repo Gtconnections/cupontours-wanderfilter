@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { parseLocalDate } from '@/app/lib/utils/date';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -215,7 +216,7 @@ export default function InvoiceDetailPage() {
     
     doc.setFont('helvetica', 'normal');
     doc.setTextColor('#000000');
-    doc.text(new Date(invoice.date).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }), 60, yPos);
+    doc.text(parseLocalDate(invoice.date).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' }), 60, yPos);
     
     const typeLabel = invoice.invoice_type === 'expenses' ? 'Expense' : 'Income';
     const typeColor = invoice.invoice_type === 'expenses' ? '#dc2626' : '#16a34a';
@@ -347,7 +348,7 @@ export default function InvoiceDetailPage() {
   };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'long',
       day: '2-digit',

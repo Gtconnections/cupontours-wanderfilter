@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { parseLocalDate } from '@/app/lib/utils/date';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -746,7 +747,7 @@ export default function PropertyDetailPage() {
               {listing.agreements.map((agreement, index: number) => (
                 <div key={index} className="wander-agreement-item">
                   <span className="wander-agreement-title">{agreement.agreements_title}</span>
-                  <span className="wander-agreement-date">Expires: {new Date(agreement.expiration_date).toLocaleDateString('en-US', {
+                  <span className="wander-agreement-date">Expires: {parseLocalDate(agreement.expiration_date).toLocaleDateString('en-US', {
                     month: 'short',
                     day: '2-digit',
                     year: 'numeric',
@@ -782,7 +783,7 @@ export default function PropertyDetailPage() {
                 <tbody>
                   {displayPL.map((item) => (
                     <tr key={item.id}>
-                      <td>{new Date(item.date).toLocaleDateString('en-US', {
+                      <td>{parseLocalDate(item.date).toLocaleDateString('en-US', {
                         month: 'short',
                         day: '2-digit',
                         year: 'numeric',

@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
+import { parseLocalDate } from '@/app/lib/utils/date';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/utils/useAuth';
@@ -142,7 +143,7 @@ function ProfitAndLossContent() {
 
   // Formatear fecha
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: '2-digit',

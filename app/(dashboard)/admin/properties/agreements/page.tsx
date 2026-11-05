@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { parseLocalDate } from '@/app/lib/utils/date';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/utils/useAuth';
 import { getAgreements, Agreement, AgreementsResponse, AgreementsFilters, deleteAgreement } from '@/app/lib/api/propertiesAdmin';
@@ -164,7 +165,7 @@ export default function AgreementsPage() {
 
   // Formatear fecha
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: '2-digit',
@@ -174,7 +175,7 @@ export default function AgreementsPage() {
 
   // Formatear fecha completa
   const formatFullDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: '2-digit',

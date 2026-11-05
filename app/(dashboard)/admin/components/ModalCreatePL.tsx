@@ -106,9 +106,11 @@ export default function ModalCreatePL({
     setError(null);
 
     try {
-      const date = new Date(startDate);
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = String(date.getFullYear());
+      // Mes/año desde la cadena YYYY-MM-DD (sin new Date, que corre el día por zona
+      // horaria y hacía que un P&L de octubre se generara/mostrara como septiembre).
+      const [yStr, mStr] = String(startDate).split('-');
+      const month = (mStr || '').padStart(2, '0');
+      const year = yStr || '';
 
       const payload = {
         type,
